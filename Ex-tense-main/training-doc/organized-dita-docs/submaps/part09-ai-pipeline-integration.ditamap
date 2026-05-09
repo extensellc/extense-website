@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="part09-ai-pipeline-integration">
+  <title>AI Pipeline &amp; Chatbot Integration</title>
+  <topicmeta>
+    <shortdesc>Connect enriched DITA content to RAG pipelines, vector stores, and chatbot delivery systems</shortdesc>
+    <metadata>
+      <othermeta name="difficulty" content="advanced"/>
+      <othermeta name="learningObjectives" content="Build a RAG pipeline from DITA source, configure section-aware chunking, and generate cited chatbot responses."/>
+    </metadata>
+  </topicmeta>
+  <topicref href="../topics/part09-integrate/ch11-rag-pipeline-architecture.dita" navtitle="RAG Pipeline Architecture">
+    <topicmeta><shortdesc>Four-stage pipeline: ingest, retrieve, rerank, generate — and why DITA is the ideal source</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part09-integrate/ch12-chunking-and-embedding.dita" navtitle="Section-Aware Chunking and Embedding">
+    <topicmeta><shortdesc>How DITA sections become semantically coherent, metadata-rich vector chunks</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part09-integrate/ch13-retrieval-and-generation.dita" navtitle="Retrieval, Reranking, and Answer Generation">
+    <topicmeta><shortdesc>Metadata-filtered vector search, cross-encoder reranking, and cited answer generation</shortdesc></topicmeta>
+  </topicref>
+</map>

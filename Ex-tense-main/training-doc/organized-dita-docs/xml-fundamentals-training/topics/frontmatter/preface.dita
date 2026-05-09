@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="preface">
+  <title>Preface</title>
+  <shortdesc>How to use this training guide, what you will learn, and who this guide is
+    for.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-01-15"/>
+    </critdates>
+    <metadata>
+      <audience type="user" experiencelevel="novice"/>
+    </metadata>
+  </prolog>
+  <conbody>
+    <section id="who-is-this-for">
+      <title>Who Is This Guide For?</title>
+      <p>This training guide is designed for anyone who needs to understand XML technologies — whether
+        you are a technical writer, content strategist, developer, or information architect. No prior
+        XML experience is required.</p>
+      <p>By the end of this guide, you will have the foundational knowledge needed to work with
+        XML-based standards like DITA, XSLT, and other markup languages.</p>
+    </section>
+
+    <section id="what-you-will-learn">
+      <title>What You Will Learn</title>
+      <p>The guide is organized into four progressive parts:</p>
+      <ol>
+        <li><b>XML Fundamentals</b> — Syntax rules, elements, attributes, namespaces, and the
+          document tree. These are the building blocks of every XML technology.</li>
+        <li><b>Document Type Definitions (DTD)</b> — Your first schema language. Learn how DTDs
+          define structure, enforce validation, and manage reusable content with entities.</li>
+        <li><b>XML Schema Definition (XSD)</b> — A more powerful schema language with data types,
+          restrictions, and type inheritance.</li>
+        <li><b>Introduction to DITA</b> — How all of these concepts come together in the Darwin
+          Information Typing Architecture — the industry standard for structured content.</li>
+      </ol>
+    </section>
+
+    <section id="how-to-use">
+      <title>How to Use This Guide</title>
+      <p>Each chapter builds on the previous one. We recommend working through the parts in order,
+        especially if you are new to XML. Each chapter includes:</p>
+      <ul>
+        <li><b>Explanatory text</b> with real-world context and examples</li>
+        <li><b>Code examples</b> you can type and experiment with</li>
+        <li><b>Quick-reference topics</b> you can return to while working</li>
+      </ul>
+      <p>The <b>Learner Exercises</b> section provides hands-on practice for each part. Complete the
+        exercises after reading the corresponding chapters — they reinforce the concepts through a
+        progressive project.</p>
+      <note type="tip">Keep the quick-reference topics open while doing the exercises. They serve as
+        a concise syntax guide you will use often as you work.</note>
+    </section>
+
+    <section id="conventions">
+      <title>Conventions Used</title>
+      <ul>
+        <li><codeph>Monospace text</codeph> indicates code, element names, attribute names, or file
+          names.</li>
+        <li><b>Bold text</b> indicates key terms or important concepts.</li>
+        <li><filepath>File paths</filepath> indicate files or directories you should create or
+          navigate to.</li>
+        <li>Notes labeled <b>Tip</b>, <b>Important</b>, or <b>Note</b> provide supplementary
+          guidance.</li>
+      </ul>
+    </section>
+  </conbody>
+</concept>

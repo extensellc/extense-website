@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="setting-up-authoring-tools" xml:lang="en-US">
+  <title>Setting Up Authoring Tools</title>
+  <shortdesc>Install and configure Oxygen XML Editor for productive DITA authoring with schema validation, visual editing, and built-in DITA-OT publishing.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Oxygen XML</indexterm><indexterm>Oxygen XML Editor</indexterm><indexterm>Oxygen XML Author</indexterm><indexterm>Authoring tools</indexterm><indexterm>Editor setup</indexterm>
+      </keywords>
+      <category>taxonomy:getting-started</category>
+      <audience type="user" othertype="beginner"/>
+      <audience type="user" othertype="technical-writer"/>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="setting-up-authoring-tools"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="authoring"/>
+    <data name="content-intent" value="how-to"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="installing-dita-ot"/>
+  </prolog>
+  <taskbody>
+
+    <prereq>
+      <p><b>After completing this chapter, you will be able to:</b></p>
+      <ul>
+        <li>Install and configure Oxygen XML Editor for DITA authoring</li>
+        <li>Use Author mode for WYSIWYG-style DITA editing</li>
+        <li>Validate DITA topics against the schema in real time</li>
+        <li>Publish directly from Oxygen using DITA-OT transformation scenarios</li>
+        <li>Set up Git for version-controlled DITA projects</li>
+      </ul>
+      <p><b>Prerequisites:</b> <xref href="installing-dita-ot.dita">DITA-OT installed</xref> and working.</p>
+    </prereq>
+
+    <context>
+      <p>Oxygen XML Editor is the industry-standard authoring tool for DITA. It provides schema-aware editing, WYSIWYG Author mode, a visual DITA map editor, and built-in DITA-OT integration — everything a technical writer needs in a single application.</p>
+      <p>Oxygen comes in two editions:</p>
+      <ul>
+        <li><b>Oxygen XML Editor</b> — Full-featured edition with Text, Author, and Grid views plus XSLT/XQuery debugging. Ideal for developers and content engineers.</li>
+        <li><b>Oxygen XML Author</b> — Streamlined edition focused on Author (WYSIWYG) mode. Ideal for technical writers who prefer visual editing.</li>
+      </ul>
+    </context>
+
+    <steps>
+      <step id="step-oxygen-install">
+        <cmd>Download and install Oxygen XML Editor.</cmd>
+        <info>
+          <p>Go to <xref href="https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html" scope="external" format="html">oxygenxml.com</xref> and download the installer for your platform (Windows, macOS, or Linux). Run the installer and follow the prompts.</p>
+          <p>Oxygen includes a bundled JRE, so you do not need to install Java separately for the editor itself.</p>
+          <note type="tip">Oxygen offers a 30-day free trial. Academic and volume licenses are also available.</note>
+        </info>
+      </step>
+
+      <step id="step-oxygen-dita-preferences">
+        <cmd>Configure DITA preferences.</cmd>
+        <info>
+          <p>Open <b>Options → Preferences → DITA</b> and verify:</p>
+          <ul>
+            <li><b>DITA Open Toolkit:</b> Point to your installed DITA-OT directory (e.g., <filepath>~/dita-ot-4.2</filepath>). Oxygen bundles its own DITA-OT, but using your project's version ensures consistent output.</li>
+            <li><b>Default DITA-OT transtype:</b> Set to <codeph>html5</codeph> for quick preview builds.</li>
+            <li><b>Show DITA-OT console output:</b> Enable this to see build logs directly in Oxygen.</li>
+          </ul>
+        </info>
+      </step>
+
+      <step id="step-oxygen-author-mode">
+        <cmd>Switch to Author mode for visual DITA editing.</cmd>
+        <info>
+          <p>Open any DITA topic and click the <b>Author</b> tab at the bottom of the editor (next to <b>Text</b> and <b>Grid</b>).</p>
+          <p>Author mode renders your DITA content visually — similar to a word processor — while maintaining the underlying XML structure. Key features:</p>
+          <ul>
+            <li><b>Content Completion Assistant:</b> Press <codeph>Enter</codeph> inside an element to see valid child elements. Oxygen only offers elements allowed by the DITA DTD at the cursor position.</li>
+            <li><b>Inline validation:</b> Invalid structure is underlined in red with a description of the problem.</li>
+            <li><b>Reuse actions:</b> Right-click → <b>Reuse</b> to insert conrefs, keyrefs, or content key references.</li>
+            <li><b>Attribute editor:</b> The Attributes panel (right side) shows all valid attributes for the selected element.</li>
+          </ul>
+        </info>
+      </step>
+
+      <step id="step-oxygen-new-topic">
+        <cmd>Create a new DITA topic using Oxygen templates.</cmd>
+        <info>
+          <p>Select <b>File → New</b> (or press <codeph>Ctrl+N</codeph>). In the New Document wizard:</p>
+          <ol>
+            <li>Expand <b>Framework templates → DITA</b></li>
+            <li>Choose a topic type: <b>Concept</b>, <b>Task</b>, or <b>Reference</b></li>
+            <li>Enter the file name and click <b>Create</b></li>
+          </ol>
+          <p>Oxygen generates a valid skeleton with the correct DOCTYPE, root element, title, and body element — ready for you to fill in.</p>
+        </info>
+      </step>
+
+      <step id="step-oxygen-map-editor">
+        <cmd>Open your DITA map in the DITA Maps Manager.</cmd>
+        <info>
+          <p>Open your <codeph>.ditamap</codeph> file. Oxygen displays it in the <b>DITA Maps Manager</b> panel (usually on the left), showing the topic hierarchy as a tree.</p>
+          <p>From the Maps Manager you can:</p>
+          <ul>
+            <li><b>Drag and drop</b> topics to reorder them</li>
+            <li><b>Right-click → Insert Reference</b> to add new topicrefs</li>
+            <li><b>Double-click</b> any topic to open it for editing</li>
+            <li><b>Validate</b> the entire map (check for broken references, missing topics)</li>
+          </ul>
+        </info>
+      </step>
+
+      <step id="step-oxygen-transform">
+        <cmd>Set up a transformation scenario for publishing.</cmd>
+        <info>
+          <p>With your ditamap open, click the <b>Configure Transformation Scenario(s)</b> button (wrench icon) or press <codeph>Ctrl+Shift+T</codeph>.</p>
+          <ol>
+            <li>Click <b>New → DITA-OT Transformation</b></li>
+            <li>Set <b>Transtype:</b> <codeph>html5</codeph></li>
+            <li>Set <b>Output directory:</b> <filepath>${pd}/out/html5</filepath> (<codeph>${pd}</codeph> is the project directory)</li>
+            <li>Optionally add parameters: <codeph>nav-toc=full</codeph> for navigation</li>
+            <li>Click <b>OK</b>, then <b>Apply Associated</b> to run the build</li>
+          </ol>
+          <p>The output opens automatically in your browser. You can re-run the same scenario with <codeph>Ctrl+Shift+T → Apply Associated</codeph>.</p>
+        </info>
+      </step>
+
+      <step id="step-oxygen-validation">
+        <cmd>Validate your topics and map.</cmd>
+        <info>
+          <p>Oxygen validates DITA automatically as you type. You can also run manual validation:</p>
+          <ul>
+            <li><b>Single topic:</b> Press <codeph>Ctrl+Shift+V</codeph> to validate the current file against its DTD</li>
+            <li><b>Entire map:</b> In the DITA Maps Manager, click <b>Validate and Check for Completeness</b>. This checks all referenced topics for broken links, missing conrefs, and structural errors.</li>
+          </ul>
+        </info>
+      </step>
+
+      <step id="step-git-setup">
+        <cmd>Initialize Git version control for your DITA project.</cmd>
+        <info>
+          <p>Oxygen includes a Git client plugin. Alternatively, use the command line:</p>
+          <codeblock outputclass="language-bash">cd myproject
+git init
+
+# Create a .gitignore for DITA projects
+cat &gt; .gitignore &lt;&lt;'EOF'
+out/
+*.log
+.DS_Store
+temp/
+EOF
+
+git add .
+git commit -m "Initial DITA project structure"</codeblock>
+          <p>In Oxygen, enable the Git client from <b>Window → Show View → Git Staging</b> to commit, push, and pull directly from the editor.</p>
+        </info>
+      </step>
+    </steps>
+
+    <result>
+      <p>Your Oxygen XML authoring environment is configured. You have schema-aware DITA editing with Author mode, a visual map editor, transformation scenarios for publishing, validation, and Git version control.</p>
+    </result>
+
+    <postreq>
+      <p><b>Alternative editors:</b></p>
+      <ul>
+        <li><b>Visual Studio Code</b> — Free, open-source editor with XML support via the Red Hat XML extension. Good for developers who prefer lightweight tooling. Requires manual snippet setup for DITA templates.</li>
+        <li><b>Any text editor</b> — DITA is plain XML. Vim, Emacs, Sublime Text, and Notepad++ all work; you lose auto-complete, inline validation, and Author mode.</li>
+      </ul>
+      <p><b>Next step:</b> <xref href="../part03-author/dita-authoring.dita">Authoring DITA Topics</xref></p>
+    </postreq>
+
+  </taskbody>
+</task>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="phase2-first-topics">
+  <title>Phase 2 Exercise: Writing Your First DITA Topics</title>
+  <shortdesc>Practice DITA information typing by creating concept, task, and reference topics from scratch for a fictional product. Required for both technical writers and software engineers.</shortdesc>
+  <prolog>
+    <metadata>
+      <audience type="user" experiencelevel="novice"/>
+      <othermeta name="persona" content="Both"/>
+      <othermeta name="phase" content="2"/>
+      <othermeta name="estimated-time" content="60-90 minutes"/>
+    </metadata>
+  </prolog>
+  <taskbody>
+    <prereq>
+      <ul>
+        <li>Completed Phase 1 exercise (DITA-OT installed and working)</li>
+        <li>Read Part 3 topics: DITA Information Typing and DITA Authoring</li>
+      </ul>
+    </prereq>
+
+    <context>
+      <p>You will create documentation for a fictional tool called <b>TaskFlow</b> — a
+      command-line task manager. This gives you practice with all three core topic types.</p>
+      <p>Create a project folder: <filepath>taskflow-docs/</filepath></p>
+      <note type="note"><b>About fictional products:</b> The learner exercises use "TaskFlow"
+      throughout Phases 1–5. The Part 3 reading uses "WidgetPro" in its inline tutorial.
+      The XSLT labs in <filepath>exercises/</filepath> use "AcmeDoc" as lab content.
+      Each product gives you a fresh practice context for that segment of learning.</note>
+    </context>
+
+    <steps>
+      <!-- Exercise 2.1: Concept topic -->
+      <step>
+        <cmd>Create a concept topic: <filepath>taskflow-docs/what-is-taskflow.dita</filepath></cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Root element: <codeph>&lt;concept&gt;</codeph></li>
+            <li>Include a <codeph>&lt;shortdesc&gt;</codeph> (1-2 sentences)</li>
+            <li>Include at least two <codeph>&lt;section&gt;</codeph> elements with titles</li>
+            <li>Use a <codeph>&lt;ul&gt;</codeph> (unordered list) for features</li>
+            <li>Include one <codeph>&lt;note type="tip"&gt;</codeph></li>
+          </ul>
+          <p><b>Topic content idea:</b> Explain what TaskFlow is, list 4-5 key features,
+          and describe who should use it.</p>
+        </info>
+        <stepresult>
+          <p>Your file should validate as well-formed XML. Test by building:</p>
+          <codeblock>dita -i taskflow-docs/what-is-taskflow.dita -f html5 -o out/taskflow</codeblock>
+        </stepresult>
+      </step>
+
+      <!-- Exercise 2.2: Task topic -->
+      <step>
+        <cmd>Create a task topic: <filepath>taskflow-docs/installing-taskflow.dita</filepath></cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Root element: <codeph>&lt;task&gt;</codeph></li>
+            <li>Include <codeph>&lt;prereq&gt;</codeph> with system requirements</li>
+            <li>Include <codeph>&lt;context&gt;</codeph> explaining what the user will accomplish</li>
+            <li>Write 4-6 <codeph>&lt;step&gt;</codeph> elements inside <codeph>&lt;steps&gt;</codeph></li>
+            <li>At least one step must have <codeph>&lt;substeps&gt;</codeph></li>
+            <li>At least two steps must have <codeph>&lt;stepresult&gt;</codeph></li>
+            <li>Include a <codeph>&lt;result&gt;</codeph> section at the end</li>
+          </ul>
+          <p><b>Topic content idea:</b> Walk through downloading, extracting, configuring,
+          and verifying TaskFlow installation.</p>
+        </info>
+        <stepresult>
+          <p>Build and verify the steps render as a numbered procedure in HTML5.</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise 2.3: Reference topic -->
+      <step>
+        <cmd>Create a reference topic: <filepath>taskflow-docs/cli-commands.dita</filepath></cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Root element: <codeph>&lt;reference&gt;</codeph></li>
+            <li>Include a <codeph>&lt;refbody&gt;</codeph></li>
+            <li>Create a <codeph>&lt;table&gt;</codeph> with at least 3 columns (Command, Arguments, Description)</li>
+            <li>Include at least 5 rows of CLI commands</li>
+            <li>Add a <codeph>&lt;section&gt;</codeph> with <codeph>&lt;codeblock&gt;</codeph> showing usage examples</li>
+          </ul>
+          <p><b>Topic content idea:</b> Document TaskFlow commands like <codeph>add</codeph>,
+          <codeph>list</codeph>, <codeph>done</codeph>, <codeph>delete</codeph>, <codeph>export</codeph>.</p>
+        </info>
+      </step>
+
+      <!-- Exercise 2.4: Build all three -->
+      <step>
+        <cmd>Build all three topics together to verify they are well-formed.</cmd>
+        <info>
+          <codeblock># Build each individually to catch errors
+dita -i taskflow-docs/what-is-taskflow.dita -f html5 -o out/taskflow
+dita -i taskflow-docs/installing-taskflow.dita -f html5 -o out/taskflow
+dita -i taskflow-docs/cli-commands.dita -f html5 -o out/taskflow</codeblock>
+        </info>
+        <stepresult>
+          <p>All three files should build without errors. Open each HTML file and verify:</p>
+          <ul>
+            <li>Concept: sections, lists, and note render correctly</li>
+            <li>Task: steps appear as numbered list with substeps indented</li>
+            <li>Reference: table renders with proper columns and rows</li>
+          </ul>
+        </stepresult>
+      </step>
+
+      <!-- Exercise 2.5: Reflection -->
+      <step>
+        <cmd>Reflect on your topic type choices.</cmd>
+        <info>
+          <p>Answer these questions in a comment at the top of each file:</p>
+          <ul>
+            <li>Why is "What is TaskFlow?" a concept and not a reference?</li>
+            <li>Could the CLI commands topic be a task instead? Why or why not?</li>
+            <li>What would you add to the installation task if it had to support 3 operating systems?</li>
+          </ul>
+          <note type="tip"><b>Writer focus:</b> Pay attention to how each topic type
+          constrains your writing — this structure is what makes DITA content reusable.
+          <b>Engineer focus:</b> Notice how the DTD enforces element order — this is
+          the schema validation that enables automated processing.</note>
+        </info>
+      </step>
+    </steps>
+
+    <result>
+      <p><b>Self-Check — you should now be able to:</b></p>
+      <ul>
+        <li>✓ Create valid concept, task, and reference topics from scratch</li>
+        <li>✓ Use semantic elements: section, steps, substeps, table, codeblock, note</li>
+        <li>✓ Choose the right topic type for different content purposes</li>
+        <li>✓ Build and view individual DITA topics as HTML5</li>
+      </ul>
+    </result>
+  </taskbody>
+</task>

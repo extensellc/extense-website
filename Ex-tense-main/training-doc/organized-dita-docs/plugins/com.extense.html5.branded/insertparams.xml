@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paramslist xmlns:if="ant:if" xmlns:unless="ant:unless">
+  <param name="EXTENSE-BRAND-CSS"
+         expression="${dita.plugin.com.extense.html5.branded.dir}/css/brand.css"
+         unless:set="args.css"/>
+</paramslist>

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="migration-step-by-step" xml:lang="en-US">
+  <title>Migrating Content from Unstructured XML to AI-Ready DITA: Step by Step</title>
+  <shortdesc>A complete, repeatable process for converting unstructured XML files into semantically rich, AI-ready DITA topics with full prolog metadata.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-02-10"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Migration</indexterm>
+        <indexterm>Unstructured XML to DITA</indexterm>
+        <indexterm>Content conversion</indexterm>
+        <indexterm>Step by step</indexterm>
+      </keywords>
+      <category>taxonomy:intelligent-content</category>
+      <audience type="user" othertype="technical-writer"/>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="migration-step-by-step"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT30M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="how-to"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="content-migration"/>
+    <data name="prerequisites" value="dita-information-typing"/>
+  </prolog>
+  <taskbody>
+
+    <prereq>
+      <p>Before starting migration, ensure you have:</p>
+      <ul>
+        <li>DITA-OT 4.x installed and working (<codeph>dita --version</codeph>)</li>
+        <li>A taxonomy/subject scheme defining your controlled vocabulary (optional — if you do not have one yet, use the starter taxonomy below)</li>
+        <li>Your complete set of unstructured XML or HTML source files</li>
+        <li>A clear understanding of your target audience types</li>
+      </ul>
+      <note type="tip"><b>No taxonomy yet?</b> You can start with this minimal subject scheme and refine it as you migrate more content. Save this as <filepath>subjectScheme.ditamap</filepath> in your project:
+        <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE subjectScheme PUBLIC "-//OASIS//DTD DITA Subject Scheme Map//EN"
+  "subjectScheme.dtd"&gt;
+&lt;subjectScheme&gt;
+  &lt;subjectdef keys="difficulty"&gt;
+    &lt;subjectdef keys="beginner"/&gt;
+    &lt;subjectdef keys="intermediate"/&gt;
+    &lt;subjectdef keys="advanced"/&gt;
+  &lt;/subjectdef&gt;
+  &lt;subjectdef keys="content-intent"&gt;
+    &lt;subjectdef keys="explain"/&gt;
+    &lt;subjectdef keys="how-to"/&gt;
+    &lt;subjectdef keys="reference"/&gt;
+    &lt;subjectdef keys="troubleshoot"/&gt;
+  &lt;/subjectdef&gt;
+  &lt;subjectdef keys="audience-type"&gt;
+    &lt;subjectdef keys="technical-writer"/&gt;
+    &lt;subjectdef keys="developer"/&gt;
+    &lt;subjectdef keys="manager"/&gt;
+  &lt;/subjectdef&gt;
+&lt;/subjectScheme&gt;</codeblock>
+        <p>A subject scheme is simply a DITA map that defines <b>allowed values</b> — like a picklist. It ensures every author uses the same vocabulary for difficulty, intent, and audience metadata. You will learn more about subject schemes in <xref href="../part04-architect/ch09-taxonomy-controlled-vocabulary.dita">Taxonomy and Controlled Vocabulary</xref>.</p>
+      </note>
+    </prereq>
+
+    <context>
+      <p>This migration process was developed and refined while converting the Extense training content from 20+ unstructured XML files to 76 AI-ready DITA topics. Each step produces a measurable improvement in AI readiness. The steps are ordered from foundational (structure) to advanced (AI optimization) so that each step builds on the previous one.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>Audit your source content and classify each file by information type.</cmd>
+        <info>
+          <p>Read every source XML file and determine whether its primary purpose is to:</p>
+          <ul>
+            <li><b>Explain</b> a concept → will become a <codeph>&lt;concept&gt;</codeph></li>
+            <li><b>Teach</b> a procedure → will become a <codeph>&lt;task&gt;</codeph></li>
+            <li><b>Provide</b> lookup/reference data → will become a <codeph>&lt;reference&gt;</codeph></li>
+          </ul>
+          <p>Create a spreadsheet mapping each source file to its DITA type:</p>
+          <!-- Source files are unstructured XML, not markdown —
+               filenames must match samples/before/*.xml -->
+          <codeblock outputclass="language-text">dita_intro_guide.xml      → concept   (dita-intro-guide.dita)
+installing_dita_ot.xml    → task      (installing-dita-ot.dita)
+dita-ot-parameters.xml    → reference (dita-ot-parameters.dita)
+dita_reuse_variants.xml   → concept   (dita-reuse-variants.dita)</codeblock>
+        </info>
+        <stepresult>You have a complete mapping of source files to target DITA types.</stepresult>
+      </step>
+
+      <step>
+        <cmd>Convert the structural markup from source XML to DITA XML.</cmd>
+        <info>
+          <p>For each file, perform these structural conversions:</p>
+          <table>
+            <tgroup cols="2">
+              <colspec colname="md" colwidth="1*"/>
+              <colspec colname="dita" colwidth="1*"/>
+              <thead>
+                <row>
+                  <entry>Source XML / HTML</entry>
+                  <entry>DITA</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry><codeph>&lt;h1&gt;Title&lt;/h1&gt;</codeph></entry>
+                  <entry><codeph>&lt;title&gt;Title&lt;/title&gt;</codeph></entry>
+                </row>
+                <row>
+                  <entry><codeph>&lt;h2&gt;Section Heading&lt;/h2&gt;</codeph></entry>
+                  <entry><codeph>&lt;section id="..."&gt;&lt;title&gt;...&lt;/title&gt;</codeph></entry>
+                </row>
+                <row>
+                  <entry><codeph>&lt;p&gt;paragraph text&lt;/p&gt;</codeph></entry>
+                  <entry><codeph>&lt;p&gt;paragraph text&lt;/p&gt;</codeph></entry>
+                </row>
+                <row>
+                  <entry><codeph>&lt;ul&gt;&lt;li&gt;bullet item&lt;/li&gt;&lt;/ul&gt;</codeph></entry>
+                  <entry><codeph>&lt;ul&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ul&gt;</codeph></entry>
+                </row>
+                <row>
+                  <entry><codeph>&lt;ol&gt;&lt;li&gt;numbered item&lt;/li&gt;&lt;/ol&gt;</codeph></entry>
+                  <entry><codeph>&lt;ol&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ol&gt;</codeph> or <codeph>&lt;steps&gt;&lt;step&gt;...&lt;/step&gt;&lt;/steps&gt;</codeph></entry>
+                </row>
+                <row>
+                  <entry><codeph>&lt;pre&gt;code block&lt;/pre&gt;</codeph></entry>
+                  <entry><codeph>&lt;codeblock outputclass="language-*"&gt;...&lt;/codeblock&gt;</codeph></entry>
+                </row>
+                <row>
+                  <entry><codeph>&lt;code&gt;inline code&lt;/code&gt;</codeph></entry>
+                  <entry><codeph>&lt;codeph&gt;...&lt;/codeph&gt;</codeph></entry>
+                </row>
+                <row>
+                  <entry><codeph>&lt;b&gt;bold text&lt;/b&gt;</codeph></entry>
+                  <entry><codeph>&lt;b&gt;...&lt;/b&gt;</codeph></entry>
+                </row>
+                <row>
+                  <entry><codeph>&lt;a href="url"&gt;text&lt;/a&gt;</codeph></entry>
+                  <entry><codeph>&lt;xref href="..."&gt;text&lt;/xref&gt;</codeph></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </info>
+        <stepresult>Valid DITA XML files that pass structural validation (<codeph>dita --input file.dita -f html5</codeph>).</stepresult>
+      </step>
+
+      <step>
+        <cmd>Write a <codeph>&lt;shortdesc&gt;</codeph> for every topic.</cmd>
+        <info>
+          <p>The shortdesc is <b>critical for AI</b> — it is prepended to every chunk from that topic as a summary. A good shortdesc:</p>
+          <ul>
+            <li>Is one clear sentence (25-35 words)</li>
+            <li>Describes the topic's purpose, not just its title</li>
+            <li>Contains key search terms</li>
+            <li>Works as a standalone summary when shown in search results</li>
+          </ul>
+          <p><b>Before (no shortdesc):</b> Chunks from this topic have no summary context.</p>
+          <p><b>After (with shortdesc):</b></p>
+          <codeblock outputclass="language-xml">&lt;shortdesc&gt;How to write content once and assemble it into
+  multiple deliverables using conref, keyref, and DITAVAL
+  filtering.&lt;/shortdesc&gt;</codeblock>
+        </info>
+        <stepresult>Every topic has a shortdesc that functions as a chunk summary.</stepresult>
+      </step>
+
+      <step>
+        <cmd>Add <codeph>xml:lang="en-US"</codeph> to every root element.</cmd>
+        <info>
+          <p>This attribute enables NLP language detection in the RAG pipeline. Without it, the embedding model cannot confirm the content language.</p>
+          <codeblock outputclass="language-xml">&lt;concept id="dita-intro-guide" xml:lang="en-US"&gt;</codeblock>
+        </info>
+      </step>
+
+      <step>
+        <cmd>Add the full AI-ready prolog metadata to every topic.</cmd>
+        <info>
+          <p>This is the most impactful step. Each topic needs this complete <codeph>&lt;prolog&gt;</codeph> block:</p>
+          <codeblock outputclass="language-xml">&lt;prolog&gt;
+  &lt;author&gt;Extense LLC&lt;/author&gt;
+  &lt;critdates&gt;
+    &lt;created date="2026-02-10"/&gt;
+  &lt;/critdates&gt;
+  &lt;metadata&gt;
+    &lt;keywords&gt;
+      &lt;indexterm&gt;Term 1&lt;/indexterm&gt;
+      &lt;indexterm&gt;Term 2&lt;/indexterm&gt;
+      &lt;indexterm&gt;Term 3&lt;/indexterm&gt;
+    &lt;/keywords&gt;
+    &lt;category&gt;taxonomy:content-domain&lt;/category&gt;
+    &lt;audience&gt;target-audience&lt;/audience&gt;
+  &lt;/metadata&gt;
+  &lt;resourceid appid="extense-training"
+    appname="chatbot" id="topic-id"/&gt;
+  &lt;data name="difficulty" value="intermediate"/&gt;
+  &lt;data name="duration" value="PT20M"/&gt;
+  &lt;data name="content-domain" value="publishing"/&gt;
+  &lt;data name="content-intent" value="explain"/&gt;
+  &lt;data name="chatbot-priority" value="high"/&gt;
+  &lt;data name="service-line" value="publishing-engineering"/&gt;
+  &lt;data name="prerequisites" value="previous-topic-id"/&gt;
+&lt;/prolog&gt;</codeblock>
+          <p>Choose metadata values from the controlled vocabulary defined in the subject scheme taxonomy. Each field has a specific purpose for AI:</p>
+          <ul>
+            <li><b>difficulty:</b> beginner | intermediate | advanced | expert — enables level-appropriate retrieval</li>
+            <li><b>duration:</b> ISO 8601 format (PT15M = 15 minutes) — helps users plan learning time</li>
+            <li><b>content-domain:</b> subject area for domain-filtered retrieval</li>
+            <li><b>content-intent:</b> explain | how-to | reference | troubleshoot | best-practice | tutorial — enables intent routing</li>
+            <li><b>chatbot-priority:</b> high | medium | low — weights retrieval ranking</li>
+            <li><b>service-line:</b> links content to business service offerings</li>
+            <li><b>prerequisites:</b> topic-id of prerequisite content — enables learning path sequencing</li>
+          </ul>
+        </info>
+        <stepresult>Every topic has complete, taxonomy-aligned metadata that the RAG pipeline can filter on.</stepresult>
+      </step>
+
+      <step>
+        <cmd>Ensure every <codeph>&lt;section&gt;</codeph> has both an <codeph>@id</codeph> and a <codeph>&lt;title&gt;</codeph>.</cmd>
+        <info>
+          <p>The chunking pipeline splits content at section boundaries. Each section becomes a separately retrievable chunk. Sections without IDs cannot be deep-linked. Sections without titles produce chunks that lack context labels.</p>
+          <codeblock outputclass="language-xml">&lt;!-- BAD: No id, no title --&gt;
+&lt;section&gt;
+  &lt;p&gt;Conref allows you to...&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;!-- GOOD: id + title --&gt;
+&lt;section id="conref-mechanism"&gt;
+  &lt;title&gt;How does the conref mechanism work?&lt;/title&gt;
+  &lt;p&gt;Conref allows you to...&lt;/p&gt;
+&lt;/section&gt;</codeblock>
+        </info>
+        <stepresult>Every section is addressable, titled, and produces a well-labeled chunk.</stepresult>
+      </step>
+
+      <step>
+        <cmd>Add <codeph>outputclass="language-*"</codeph> to all codeblocks.</cmd>
+        <info>
+          <p>This enables syntax highlighting in HTML output and language detection in RAG chunks:</p>
+          <codeblock outputclass="language-xml">&lt;codeblock outputclass="language-bash"&gt;dita --input map.ditamap -f html5&lt;/codeblock&gt;
+&lt;codeblock outputclass="language-xml"&gt;&amp;lt;concept id="..."&amp;gt;&lt;/codeblock&gt;
+&lt;codeblock outputclass="language-xslt"&gt;&amp;lt;xsl:template match="..."&amp;gt;&lt;/codeblock&gt;</codeblock>
+        </info>
+      </step>
+
+      <step>
+        <cmd>Build the DITA map that defines topic organization and learning paths.</cmd>
+        <info>
+          <p>Create a bookmap or map that organizes topics into a progressive learning sequence:</p>
+          <codeblock outputclass="language-xml">&lt;bookmap id="training-guide"&gt;
+  &lt;chapter href="getting-started/dita-intro-guide.dita"&gt;
+    &lt;topicref href="getting-started/installing-dita-ot.dita"/&gt;
+    &lt;topicref href="getting-started/setting-up-tools.dita"/&gt;
+  &lt;/chapter&gt;
+  &lt;chapter href="core-topics/dita-authoring.dita"&gt;
+    &lt;topicref href="core-topics/dita-reuse-variants.dita"/&gt;
+    &lt;topicref href="core-topics/dita-publishing.dita"/&gt;
+  &lt;/chapter&gt;
+  ...
+&lt;/bookmap&gt;</codeblock>
+          <p>The map hierarchy tells the chatbot about content relationships — which topics belong together and in what order they should be learned.</p>
+        </info>
+        <stepresult>A complete DITA map defining the information architecture and learning path.</stepresult>
+      </step>
+
+      <step>
+        <cmd>Validate by building HTML5 output and testing the chatbot ingestion pipeline.</cmd>
+        <info>
+          <p>Run two validations:</p>
+          <ol>
+            <li>Build HTML5 to verify structural validity: <codeph>dita -i map.ditamap -f html5 -o output/</codeph></li>
+            <li>Run the chatbot ingestion script to verify metadata extraction and chunking: <codeph>python3 dita-to-chatbot-json.py --input dita-topics --output chatbot-data</codeph></li>
+          </ol>
+          <p>Inspect the <codeph>ingestion-report.json</codeph> for chunks missing metadata, short chunks, or other quality issues.</p>
+        </info>
+        <stepresult>All topics build without errors and produce metadata-rich chunks in the chatbot pipeline.</stepresult>
+      </step>
+    </steps>
+
+    <result>
+      <p>After completing these steps, your content has been transformed from unstructured XML into AI-ready DITA topics. Every topic is:</p>
+      <ul>
+        <li>Semantically typed (concept, task, or reference)</li>
+        <li>Metadata-enriched with audience, difficulty, domain, intent, and priority</li>
+        <li>Section-structured for optimal RAG chunking</li>
+        <li>Organized into maps for learning path sequencing</li>
+        <li>Validated for both HTML output and chatbot ingestion</li>
+      </ul>
+    </result>
+
+    <postreq>
+      <p>Once migration is complete, establish ongoing governance:</p>
+      <ul>
+        <li>Create a topic template with the full prolog metadata as a starting point for new topics</li>
+        <li>Add metadata validation to your CI/CD pipeline to prevent metadata-lean topics from being published</li>
+        <li>Schedule quarterly AI-readiness audits using the scoring framework from the maturity model</li>
+      </ul>
+    </postreq>
+
+  </taskbody>
+</task>

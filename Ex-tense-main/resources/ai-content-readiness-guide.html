@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="description" content="A practical guide to making your content AI-ready: structured markup, metadata enrichment, semantic chunking, controlled vocabulary, and RAG pipeline preparation.">
+ <meta name="robots" content="index, follow">
+ <title>AI Content Readiness Guide — Prepare Your Content for AI | Extense LLC</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Extense LLC">
+    <meta property="og:title" content="AI Content Readiness Guide — Prepare Your Content for AI | Extense LLC">
+    <meta property="og:description" content="A practical guide to making your content AI-ready: structured markup, metadata enrichment, semantic chunking, controlled vocabulary, and RAG pipeline preparation.">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://www.ex-tense.co/images/social/og-image.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Content Readiness Guide — Prepare Your Content for AI | Extense LLC">
+    <meta name="twitter:description" content="Practical guide to structured markup, metadata enrichment, semantic chunking, and RAG pipeline preparation for AI-ready content.">
+    <meta name="twitter:image" content="https://www.ex-tense.co/images/social/og-image.svg">
+ <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23003366'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Inter,sans-serif' font-weight='900' font-size='20' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+ <link rel="stylesheet" href="../style.css">
+ <link rel="canonical" href="https://www.ex-tense.co/resources/ai-content-readiness-guide.html">
+</head>
+<body>
+ <header>
+ <div class="header-container">
+ <a href="../index.html" class="logo"><img src="../logo.svg" alt="Ex-tense"></a>
+ <nav>
+ <ul>
+ <li>
+ <a href="../solutions/index.html">Solutions</a>
+ <ul class="dropdown-content">
+ <li><a href="../solutions/technical-documentation-publishing.html">Tech Docs & Publishing</a></li>
+ <li><a href="../solutions/ccms-implementation-integration.html">CCMS Implementation</a></li>
+ <li><a href="../solutions/content-migration-modernization.html">Content Migration</a></li>
+ <li><a href="../solutions/xml-data-interoperability.html">XML Data Interoperability</a></li>
+ </ul>
+ </li>
+ <li>
+ <a href="../services/index.html">Services</a>
+ <ul class="dropdown-content">
+ <li><a href="../services/technical-writing-content-development.html">Technical Writing</a></li>
+ <li><a href="../services/structured-content-strategy.html">Content Strategy</a></li>
+ <li><a href="../services/dita-engineering.html">DITA Engineering</a></li>
+ <li><a href="../services/publishing-engineering.html">Publishing Engineering</a></li>
+ <li><a href="../services/ccms-services.html">CCMS Services</a></li>
+ <li><a href="../services/system-integration.html">System Integration</a></li>
+ <li><a href="../services/xml-engineering.html">XML Engineering</a></li>
+ </ul>
+ </li>
+ <li>
+ <a href="../industries/index.html">Industries</a>
+ <ul class="dropdown-content">
+ <li><a href="../industries/government.html">Government & Defense</a></li>
+ <li><a href="../industries/financial-services.html">Financial Services</a></li>
+ <li><a href="../industries/insurance.html">Insurance</a></li>
+ <li><a href="../industries/automotive.html">Automotive</a></li>
+ <li><a href="../industries/life-sciences.html">Life Sciences</a></li>
+ </ul>
+ </li>
+ <li>
+ <a href="../resources/index.html">Resources</a>
+ <ul class="dropdown-content">
+ <li><a href="../work/case-studies.html">Case Studies</a></li>
+ <li><a href="../resources/ai-content-readiness-guide.html">AI Readiness</a></li>
+ <li><a href="../resources/dita-migration-playbook.html">Migration Playbook</a></li>
+ <li><a href="../resources/publishing-automation-guide.html">Automation Guide</a></li>
+ <li><a href="../resources/faqs.html">FAQs</a></li>
+ </ul>
+ </li>
+ <li>
+ <a href="../about.html">Company</a>
+ <ul class="dropdown-content">
+ <li><a href="../about.html">About Us</a></li>
+ <li><a href="../our-process.html">Our Process</a></li>
+ <li><a href="../careers.html">Careers</a></li>
+ <li><a href="../contact.html">Contact</a></li>
+ </ul>
+ </li>
+ <li><a href="../contact.html" class="cta-button">Get in Touch</a></li>
+ </ul>
+ </nav>
+ <button class="hamburger" aria-label="Open menu">
+ <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="24" y2="7"/><line x1="4" y1="14" x2="24" y2="14"/><line x1="4" y1="21" x2="24" y2="21"/></svg>
+ </button>
+ </div>
+ </header>
+
+ <!-- Mobile Overlay -->
+ <div class="nav-overlay"></div>
+
+ <!-- Mobile Slide-out Nav -->
+ <nav class="mobile-nav" aria-label="Mobile navigation">
+ <button class="mobile-nav-close" aria-label="Close menu">
+ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+ </button>
+ <ul>
+ <li>
+ <button class="mob-trigger">Solutions <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../solutions/technical-documentation-publishing.html">Tech Docs &amp; Publishing</a></li>
+ <li><a href="../solutions/ccms-implementation-integration.html">CCMS Implementation</a></li>
+ <li><a href="../solutions/content-migration-modernization.html">Content Migration</a></li>
+ <li><a href="../solutions/xml-data-interoperability.html">XML Data Interoperability</a></li>
+ </ul>
+ </li>
+ <li>
+ <button class="mob-trigger">Services <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../services/technical-writing-content-development.html">Technical Writing</a></li>
+ <li><a href="../services/structured-content-strategy.html">Content Strategy</a></li>
+ <li><a href="../services/dita-engineering.html">DITA Engineering</a></li>
+ <li><a href="../services/publishing-engineering.html">Publishing Engineering</a></li>
+ <li><a href="../services/ccms-services.html">CCMS Services</a></li>
+ <li><a href="../services/system-integration.html">System Integration</a></li>
+ <li><a href="../services/xml-engineering.html">XML Engineering</a></li>
+ </ul>
+ </li>
+ <li>
+ <button class="mob-trigger">Industries <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../industries/government.html">Government &amp; Defense</a></li>
+ <li><a href="../industries/financial-services.html">Financial Services</a></li>
+ <li><a href="../industries/insurance.html">Insurance</a></li>
+ <li><a href="../industries/automotive.html">Automotive</a></li>
+ <li><a href="../industries/life-sciences.html">Life Sciences</a></li>
+ </ul>
+ </li>
+ <li>
+ <button class="mob-trigger">Resources <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../work/case-studies.html">Case Studies</a></li>
+ <li><a href="../resources/ai-content-readiness-guide.html">AI Readiness</a></li>
+ <li><a href="../resources/dita-migration-playbook.html">Migration Playbook</a></li>
+ <li><a href="../resources/publishing-automation-guide.html">Automation Guide</a></li>
+ <li><a href="../resources/faqs.html">FAQs</a></li>
+ </ul>
+ </li>
+ <li>
+ <button class="mob-trigger">Company <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../about.html">About Us</a></li>
+ <li><a href="../our-process.html">Our Process</a></li>
+ <li><a href="../careers.html">Careers</a></li>
+ <li><a href="../contact.html">Contact</a></li>
+ </ul>
+ </li>
+ </ul>
+ <div class="mobile-nav-cta">
+ <a href="../contact.html" class="cta-button">Get in Touch</a>
+ </div>
+ </nav>
+
+
+
+ <nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+   <ol><li><a href="../index.html">Home</a></li><li><a href="../resources/index.html">Resources</a></li><li>AI Content Readiness Guide</li></ol>
+  </div>
+ </nav>
+ <main>
+ <section class="hero"><div class="container">
+ <h1>How to Make Your Content AI-Ready</h1>
+ <p>A practical guide to preparing structured content for chatbots, RAG pipelines, and intelligent retrieval.</p>
+ </div></section>
+
+
+ <!-- ============================================================ -->
+ <!-- WHY AI-READINESS MATTERS -->
+ <!-- ============================================================ -->
+ <section class="section section-white">
+ <div class="container">
+ <div class="section-title">
+ <h2>Why AI-Readiness Matters Now</h2>
+ <p>AI systems don't magically understand your documentation. They need structure, metadata, and semantic boundaries to retrieve the right answer — not just the closest keyword match.</p>
+ </div>
+
+ <div class="grid-3">
+ <div class="card">
+ <h3>The Problem</h3>
+ <p>Most enterprise content sits in unstructured formats — Word, PDF, wiki pages, Markdown. When you feed this into an LLM or vector store, the AI treats every paragraph as undifferentiated text. It can't distinguish a safety warning from a marketing blurb, a step-by-step procedure from a concept explanation, or a beginner topic from an expert reference.</p>
+ </div>
+ <div class="card">
+ <h3>The Cost of Inaction</h3>
+ <p>Organizations that deploy chatbots on unstructured content see <strong>retrieval precision around 25–35%</strong>. Users get wrong answers, lose trust, and escalate to human support — defeating the purpose. Worse, AI hallucinations fill gaps where metadata should have guided the system.</p>
+ </div>
+ <div class="card">
+ <h3>The Opportunity</h3>
+ <p>Content that is semantically typed, metadata-enriched, and section-addressable delivers <strong>85%+ retrieval precision</strong>. The AI knows what each piece of content is, who it's for, and when to surface it. That's the difference between a chatbot that guesses and one that answers.</p>
+ </div>
+ </div>
+ </div>
+ </section>
+
+
+ <!-- ============================================================ -->
+ <!-- AI-READINESS SCORECARD -->
+ <!-- ============================================================ -->
+ <section class="section">
+ <div class="container">
+ <div class="section-title">
+ <h2>AI-Readiness Scorecard</h2>
+ <p>Rate your content on these 7 dimensions. Each adds roughly 1–1.5 points to your AI-readiness score (out of 10).</p>
+ </div>
+
+ <div class="grid-2" style="gap: 32px;">
+
+ <div class="card">
+ <h3>1. Content Typing</h3>
+ <p><strong>Question:</strong> Is every document formally typed — concept, task, reference, troubleshooting — or is everything a generic "page"?</p>
+ <p><strong>Why it matters:</strong> AI intent routing depends on type. "What is X?" → concept. "How do I X?" → task. "List of X" → reference. Without types, the AI cannot match question intent to answer format.</p>
+ <p><strong>Score 0:</strong> Everything is a generic document<br>
+ <strong>Score 1:</strong> Some documents have informal categories<br>
+ <strong>Score 2:</strong> Every topic is formally typed with semantic structure</p>
+ </div>
+
+ <div class="card">
+ <h3>2. Metadata Coverage</h3>
+ <p><strong>Question:</strong> Does every topic have machine-readable metadata — audience, difficulty, domain, intent, duration?</p>
+ <p><strong>Why it matters:</strong> Metadata enables filtering. Without it, the AI retrieves beginner content for experts, developer docs for writers, and overview content when the user needs a step-by-step procedure.</p>
+ <p><strong>Score 0:</strong> No metadata (or only title/date)<br>
+ <strong>Score 1:</strong> Some topics have partial metadata<br>
+ <strong>Score 2:</strong> Every topic has 5+ controlled metadata fields</p>
+ </div>
+
+ <div class="card">
+ <h3>3. Section Addressability</h3>
+ <p><strong>Question:</strong> Does every major section have a stable, unique ID?</p>
+ <p><strong>Why it matters:</strong> Vector stores chunk content at section boundaries. Without IDs, chunks break at arbitrary points — mid-sentence, mid-procedure, mid-table. The AI retrieves fragments instead of complete answers.</p>
+ <p><strong>Score 0:</strong> No section IDs<br>
+ <strong>Score 1:</strong> Some sections have IDs<br>
+ <strong>Score 2:</strong> Every section has a stable, meaningful ID</p>
+ </div>
+
+ <div class="card">
+ <h3>4. Vocabulary Control</h3>
+ <p><strong>Question:</strong> Are metadata values drawn from a controlled vocabulary, or is it free-text tagging?</p>
+ <p><strong>Why it matters:</strong> Free-text tags produce inconsistency: "dev", "developer", "software engineer", "eng" all mean the same thing. AI filters break when vocabulary is uncontrolled. A subject scheme or taxonomy enforces consistency.</p>
+ <p><strong>Score 0:</strong> Free-text or no tagging<br>
+ <strong>Score 1:</strong> Informal guidelines for tagging<br>
+ <strong>Score 2:</strong> Formal taxonomy enforced by schema</p>
+ </div>
+
+ <div class="card">
+ <h3>5. Semantic Markup Richness</h3>
+ <p><strong>Question:</strong> Do your topics use semantic elements — shortdesc, prerequisites, steps, result, tables, notes — or is everything paragraphs?</p>
+ <p><strong>Why it matters:</strong> Semantic elements tell the AI the role of each block. A &lt;shortdesc&gt; becomes the chatbot's one-line answer. &lt;steps&gt; become numbered instructions. &lt;prereq&gt; tells the AI what the user needs before starting.</p>
+ <p><strong>Score 0:</strong> Paragraphs only<br>
+ <strong>Score 1:</strong> Some semantic elements used<br>
+ <strong>Score 2:</strong> Full semantic markup throughout</p>
+ </div>
+
+ <div class="card">
+ <h3>6. Reuse Architecture</h3>
+ <p><strong>Question:</strong> Is content reused via conref/keyref/transclusion, or duplicated by copy-paste?</p>
+ <p><strong>Why it matters:</strong> Copy-paste duplication means the AI retrieves multiple slightly-different versions of the same content. Users see conflicting answers. Proper reuse means one authoritative source — one answer.</p>
+ <p><strong>Score 0:</strong> Copy-paste duplication<br>
+ <strong>Score 1:</strong> Some shared components<br>
+ <strong>Score 2:</strong> Systematic reuse via conref/keyref</p>
+ </div>
+
+ </div>
+
+ <div class="card" style="margin-top: 32px;">
+ <h3>7. Output Pipeline Maturity</h3>
+ <p><strong>Question:</strong> Can you produce HTML, PDF, JSON, and chatbot-ready JSONL from a single source automatically?</p>
+ <p><strong>Why it matters:</strong> AI pipelines consume JSON/JSONL — not PDF. If your publishing pipeline only produces PDF and HTML, you need a separate export step for AI ingestion. A mature pipeline includes chatbot-ready output as a first-class format.</p>
+ <p><strong>Score 0:</strong> Manual export to 1–2 formats<br>
+ <strong>Score 1:</strong> Automated build to HTML + PDF<br>
+ <strong>Score 2:</strong> Automated multi-format including JSON/JSONL for AI</p>
+ </div>
+
+ <div class="callout-box" style="margin-top: 40px;">
+ <h4>Interpreting Your Score</h4>
+ <p><strong>0–4:</strong> AI will treat your content as plain text. Chatbot answers will be imprecise, often wrong. This is where most organizations start.<br>
+ <strong>5–7:</strong> Partial readiness. Some AI features work, but gaps in metadata or structure cause retrieval failures for edge cases.<br>
+ <strong>8–10:</strong> Production-ready. AI can filter, route, chunk, and cite your content precisely. This is where our clients end up.<br>
+ <strong>12–14:</strong> Best-in-class. Full semantic markup, enforced taxonomy, multi-format output including JSONL — your content is an organizational asset, not just documentation.</p>
+ </div>
+ </div>
+ </section>
+
+
+ <!-- ============================================================ -->
+ <!-- PREPARATION ROADMAP -->
+ <!-- ============================================================ -->
+ <section class="section section-white">
+ <div class="container">
+ <div class="section-title">
+ <h2>The Preparation Roadmap</h2>
+ <p>Five phases to take your content from unstructured to AI-ready. Each phase builds on the previous one.</p>
+ </div>
+
+ <div class="flow-chart">
+ <div class="flow-step">
+ <div class="flow-number">1</div>
+ <h4>Audit &amp; Baseline</h4>
+ <p>Score your current content on the 7 dimensions above. Identify the biggest gaps. Inventory your content by type, volume, language, and update frequency. This baseline is what every improvement will be measured against.</p>
+ <p><strong>Deliverable:</strong> Content audit report with AI-readiness score and gap analysis.</p>
+ </div>
+ <div class="flow-step">
+ <div class="flow-number">2</div>
+ <h4>Structure &amp; Type</h4>
+ <p>Convert content to a typed format (DITA concept/task/reference or equivalent). Split monolithic documents into focused, single-purpose topics. Add section IDs to every major block. This is the foundation — without it, nothing downstream works.</p>
+ <p><strong>Deliverable:</strong> Typed, modular topics with section-level addressability.</p>
+ </div>
+ <div class="flow-step">
+ <div class="flow-number">3</div>
+ <h4>Enrich Metadata</h4>
+ <p>Define a controlled vocabulary (subject scheme or taxonomy) with facets for audience, difficulty, content domain, content intent, and any organization-specific dimensions. Apply metadata to every topic using batch tooling — not manual entry.</p>
+ <p><strong>Deliverable:</strong> 100% metadata coverage with enforced vocabulary.</p>
+ </div>
+ <div class="flow-step">
+ <div class="flow-number">4</div>
+ <h4>Build the Pipeline</h4>
+ <p>Configure your publishing toolchain to produce chatbot-ready output alongside traditional formats. This means JSONL export with section-aware chunking, metadata inheritance, and glossary extraction. Test the chunks against sample queries.</p>
+ <p><strong>Deliverable:</strong> Automated build producing HTML5, PDF, and JSONL from single source.</p>
+ </div>
+ <div class="flow-step">
+ <div class="flow-number">5</div>
+ <h4>Integrate &amp; Validate</h4>
+ <p>Connect the JSONL output to your vector store and chatbot. Configure metadata filters for intent routing and audience matching. Run retrieval tests with real user queries. Measure precision and iterate on the vocabulary and chunking strategy.</p>
+ <p><strong>Deliverable:</strong> Working AI retrieval with measured precision rate.</p>
+ </div>
+ </div>
+
+ <div class="callout-box" style="margin-top: 40px;">
+ <h4>Typical Timeline</h4>
+ <p><strong>Small corpus (50–200 topics):</strong> 4–8 weeks through all 5 phases.<br>
+ <strong>Medium corpus (200–1,000 topics):</strong> 8–16 weeks, often with Phase 2 and 3 running in parallel batches.<br>
+ <strong>Large corpus (1,000+ topics):</strong> 3–6 months, phased rollout by product line or content domain. Automation tooling (enrich-metadata.py, dita-to-chatbot-json.py) is critical at this scale.</p>
+ </div>
+ </div>
+ </section>
+
+
+ <!-- ============================================================ -->
+ <!-- TECHNICAL IMPLEMENTATION -->
+ <!-- ============================================================ -->
+ <section class="section">
+ <div class="container">
+ <div class="section-title">
+ <h2>What AI-Ready Content Looks Like</h2>
+ <p>Concrete examples of the transformation from unstructured to AI-optimized.</p>
+ </div>
+
+ <h3 class="text-red">Metadata That AI Systems Can Filter</h3>
+ <div class="grid-3" style="margin-bottom: 40px;">
+ <div class="card">
+ <h4>Audience Filtering</h4>
+ <p>A developer asks "How do I create a custom plugin?" — the AI filters for <code>audience=developer</code> and <code>intent=how-to</code>, skipping the manager-level overview of the same feature. Without metadata, both would be returned with equal rank.</p>
+ </div>
+ <div class="card">
+ <h4>Difficulty Matching</h4>
+ <p>A beginner asks "What is DITA?" — the AI returns the <code>difficulty=beginner</code> concept topic, not the advanced architecture reference. The right answer at the right level prevents overwhelm and helpdesk escalation.</p>
+ </div>
+ <div class="card">
+ <h4>Intent Routing</h4>
+ <p>"What is X?" routes to concepts. "How do I X?" routes to tasks. "Show me the parameters" routes to reference tables. Topic typing + intent metadata makes this automatic — no prompt engineering required.</p>
+ </div>
+ </div>
+
+ <h3 class="text-red">Section-Aware Chunking</h3>
+ <div class="grid-2" style="gap: 32px; margin-bottom: 40px;">
+ <div class="card">
+ <h4>Without Section IDs</h4>
+ <p>A 2,000-word topic gets split into 3 chunks at ~667 words each. Chunk 2 starts mid-paragraph, references "the step above" (which is now in Chunk 1), and includes half a table. The AI retrieves Chunk 2 and the user sees a fragment that doesn't make sense.</p>
+ </div>
+ <div class="card">
+ <h4>With Section IDs</h4>
+ <p>The same topic has 5 sections, each with a stable ID and self-contained heading. Chunking happens at section boundaries. Each chunk is a complete, citable unit. The AI retrieves the exact section and the user sees a coherent answer with a deep-link back to the source.</p>
+ </div>
+ </div>
+
+ <h3 class="text-red">Controlled Vocabulary vs. Free-Text Tags</h3>
+ <div class="grid-2" style="gap: 32px; margin-bottom: 40px;">
+ <div class="card">
+ <h4>Free-Text Chaos</h4>
+ <p>Topic A is tagged "developer". Topic B is tagged "dev". Topic C is tagged "software engineer". Topic D has no audience tag. A filter for <code>audience=developer</code> returns only Topic A — missing 75% of relevant content. The chatbot appears to have knowledge gaps that don't actually exist.</p>
+ </div>
+ <div class="card">
+ <h4>Controlled Vocabulary</h4>
+ <p>A DITA subject scheme defines exactly 7 valid audience values: <em>technical-writer, developer, build-engineer, manager, localization-specialist, editor, all</em>. Validation rejects any other value. The same filter returns 100% of relevant content — zero false negatives.</p>
+ </div>
+ </div>
+
+ <h3 class="text-red">The Output: Chatbot-Ready JSONL</h3>
+ <div class="card" style="margin-bottom: 20px;">
+ <h4>What Gets Exported</h4>
+ <p>Each section becomes a JSONL record with: the text content, the topic title, section heading, topic type (concept/task/reference), all metadata fields (audience, difficulty, domain, intent, duration, chatbot-priority), the section ID for deep-linking, and the parent map path for breadcrumb context. A glossary index maps terms to definitions with synonyms. A content manifest provides a searchable index of all topics.</p>
+ </div>
+ <div class="grid-3">
+ <div class="card" style="text-align: center;">
+ <h4>chunks.jsonl</h4>
+ <p>One JSON object per section. Ready for vector store embedding. Metadata fields enable filtered retrieval.</p>
+ </div>
+ <div class="card" style="text-align: center;">
+ <h4>glossary-index.json</h4>
+ <p>Term definitions with synonyms. Enables the chatbot to resolve terminology and expand queries.</p>
+ </div>
+ <div class="card" style="text-align: center;">
+ <h4>content-manifest.json</h4>
+ <p>Topic inventory with metadata. Used for corpus validation, coverage analysis, and pipeline health checks.</p>
+ </div>
+ </div>
+ </div>
+ </section>
+
+
+ <!-- ============================================================ -->
+ <!-- CTA -->
+ <!-- ============================================================ -->
+ <section class="section section-white">
+ <div class="container">
+ <div class="floating-cta">
+ <div>
+ <h3>Free AI-Readiness Assessment</h3>
+ <p>Send us a 20-topic sample and we'll score it on all 7 dimensions — with a gap analysis and recommended next steps. No obligation.</p>
+ </div>
+ <a href="../contact.html" class="cta-button">Request Your Assessment</a>
+ </div>
+ </div>
+ </section>
+
+
+ <!-- Related Resources -->
+ <section class="related-section">
+ <div class="container">
+  <div class="section-title"><h2>Related Resources</h2></div>
+  <div class="related-grid">
+   <div class="related-card">
+    <div class="related-tag">Case Study</div>
+    <h4>AI-Ready Content Pipeline</h4>
+    <p>How we transformed unstructured XML into metadata-enriched DITA with 85%+ chatbot precision.</p>
+    <a href="../work/case-studies.html">Read more →</a>
+   </div>
+   <div class="related-card">
+    <div class="related-tag">Service</div>
+    <h4>DITA Engineering</h4>
+    <p>Topic modeling, metadata enrichment, AI-ready content architecture, and controlled vocabulary design.</p>
+    <a href="../services/dita-engineering.html">Read more →</a>
+   </div>
+   <div class="related-card">
+    <div class="related-tag">Solution</div>
+    <h4>Content Migration</h4>
+    <p>Proven methodology for converting unstructured content to structured, enriched DITA XML.</p>
+    <a href="../solutions/content-migration-modernization.html">Read more →</a>
+   </div>
+  </div>
+ </div>
+ </section>
+
+ <!-- Newsletter + Social — inspired by JANA/Heretto footer -->
+ </main>
+
+ <section class="footer-newsletter">
+ <div class="container">
+ <h3>Stay Connected with Extense</h3>
+ <p>Industry insights, DITA tips, and event invitations. No spam, unsubscribe anytime.</p>
+ <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+ <input type="email" placeholder="Enter your work email" required>
+ <button type="submit">Subscribe</button>
+ </form>
+ <div class="social-links">
+ <a href="https://www.linkedin.com/company/ex-tense" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+ </div>
+ </div>
+ </section>
+
+ <footer>
+ <div class="container">
+ <div class="footer-grid">
+ <div class="footer-col">
+ <h4>Extense LLC</h4>
+ <p>Strategic consulting, content engineering, and publishing solutions for government, commercial, and non-profit organizations.</p>
+ </div>
+ <div class="footer-col">
+ <h4>Solutions</h4>
+ <ul>
+ <li><a href="../solutions/technical-documentation-publishing.html">Tech Docs &amp; Publishing</a></li>
+ <li><a href="../solutions/ccms-implementation-integration.html">CCMS Integration</a></li>
+ <li><a href="../solutions/content-migration-modernization.html">Migration</a></li>
+ </ul>
+ </div>
+ <div class="footer-col">
+ <h4>Company</h4>
+ <ul>
+ <li><a href="../about.html">About Us</a></li>
+ <li><a href="../careers.html">Careers</a></li>
+ <li><a href="../contact.html">Contact</a></li>
+ </ul>
+ </div>
+ <div class="footer-col">
+ <h4>Legal</h4>
+ <ul>
+ <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+ <li><a href="../terms.html">Terms of Service</a></li>
+ </ul>
+ </div>
+ </div>
+ <div class="copyright">
+ <p>&copy; 2026 Extense LLC. All rights reserved.</p>
+ </div>
+ </div>
+ </footer>
+ <script src="../nav.js"></script>
+
+ <!-- Scroll to Top -->
+ <button class="scroll-to-top" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 10 4 3 11"/><line x1="10" y1="4" x2="10" y2="20"/></svg>
+ </button>
+ <script>
+ (function(){var b=document.querySelector('.scroll-to-top');if(b){window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>400)},{passive:true})}})();
+ </script>
+</body>
+</html>

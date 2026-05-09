@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="production-patterns" xml:lang="en-US">
+  <title>Production patterns for all topic types + common elements</title>
+  <shortdesc>A core set of XSLT override templates that scale across all DITA topic types and common elements using @class-based matching and xsl:next-match wrappers.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Production patterns</indexterm><indexterm>Topic wrapper</indexterm><indexterm>Paragraph hooks</indexterm><indexterm>Note callouts</indexterm><indexterm>Task steps</indexterm>
+      </keywords>
+      <category>taxonomy:customization</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="production-patterns"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT25M"/>
+    <data name="content-domain" value="xslt"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="xml-engineering"/>
+    <data name="prerequisites" value="first-override-xslt"/>
+  </prolog>
+  <refbody>
+<section id="scaling-approach">
+<title>Scaling approach</title>
+<p>To scale to "all topic types + common elements" without creating a fragile customization layer:</p>
+<ol>
+  <li>match topic roots using <codeph>topic/topic</codeph> ancestry</li>
+  <li>match common elements using <codeph>@class</codeph> ancestry</li>
+  <li>wrap default behavior with <codeph>xsl:next-match</codeph> wherever possible</li>
+  <li>apply consistent classes and <codeph>data-*</codeph> attributes for styling and instrumentation</li>
+</ol>
+</section>
+<section id="topic-wrapper">
+<title>Standardize the topic wrapper (applies to all topic types)</title>
+<codeblock outputclass="language-xslt">&lt;xsl:template match=&quot;*[contains(@class,&#x27; topic/topic &#x27;)]&quot;&gt;
+  &lt;article class=&quot;dita-topic&quot; data-topic-type=&quot;{local-name()}&quot;&gt;
+    &lt;xsl:apply-templates select=&quot;*[contains(@class,&#x27; topic/title &#x27;)]&quot;/&gt;
+    &lt;xsl:apply-templates select=&quot;*[contains(@class,&#x27; topic/shortdesc &#x27;)]&quot;/&gt;
+
+    &lt;main class=&quot;dita-body&quot;&gt;
+      &lt;xsl:apply-templates
+        select=&quot;*[contains(@class,&#x27; topic/body &#x27;)]
+              | *[contains(@class,&#x27; concept/conbody &#x27;)]
+              | *[contains(@class,&#x27; task/taskbody &#x27;)]
+              | *[contains(@class,&#x27; reference/refbody &#x27;)]&quot;/&gt;
+    &lt;/main&gt;
+
+    &lt;xsl:apply-templates select=&quot;*[contains(@class,&#x27; topic/related-links &#x27;)]&quot;/&gt;
+  &lt;/article&gt;
+&lt;/xsl:template&gt;</codeblock>
+</section>
+<section id="core-patterns">
+<title>Example patterns (core set)</title>
+<p>Paragraph hooks:</p>
+<codeblock outputclass="language-xslt">&lt;xsl:template match=&quot;*[contains(@class,&#x27; topic/p &#x27;)]&quot;&gt;
+  &lt;p class=&quot;dita-p&quot; data-dita-class=&quot;{normalize-space(@class)}&quot;&gt;
+    &lt;xsl:apply-templates/&gt;
+  &lt;/p&gt;
+&lt;/xsl:template&gt;</codeblock>
+<p>Notes as callouts:</p>
+<codeblock outputclass="language-xslt">&lt;xsl:template match=&quot;*[contains(@class,&#x27; topic/note &#x27;)]&quot;&gt;
+  &lt;aside class=&quot;callout{if (@type) then concat(&#x27; callout-&#x27;, @type) else &#x27;&#x27;}&quot;&gt;
+    &lt;xsl:if test=&quot;@type&quot;&gt;
+      &lt;div class=&quot;callout-title&quot;&gt;&lt;xsl:value-of select=&quot;upper-case(@type)&quot;/&gt;&lt;/div&gt;
+    &lt;/xsl:if&gt;
+    &lt;div class=&quot;callout-body&quot;&gt;&lt;xsl:apply-templates/&gt;&lt;/div&gt;
+  &lt;/aside&gt;
+&lt;/xsl:template&gt;</codeblock>
+<p>Task steps (anchors + step index):</p>
+<codeblock outputclass="language-xslt">&lt;xsl:template match=&quot;*[contains(@class,&#x27; task/step &#x27;)]&quot;&gt;
+  &lt;li class=&quot;task-step&quot;
+      data-step=&quot;{count(preceding-sibling::*[contains(@class,&#x27; task/step &#x27;)]) + 1}&quot;&gt;
+    &lt;xsl:if test=&quot;@id&quot;&gt;
+      &lt;xsl:attribute name=&quot;id&quot; select=&quot;@id&quot;/&gt;
+    &lt;/xsl:if&gt;
+    &lt;xsl:apply-templates/&gt;
+  &lt;/li&gt;
+&lt;/xsl:template&gt;</codeblock>
+<p>Tables (responsive wrappers using next-match):</p>
+<codeblock outputclass="language-xslt">&lt;xsl:template match=&quot;*[contains(@class,&#x27; topic/table &#x27;)]&quot;&gt;
+  &lt;div class=&quot;table-wrap&quot;&gt;&lt;xsl:next-match/&gt;&lt;/div&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match=&quot;*[contains(@class,&#x27; topic/simpletable &#x27;)]&quot;&gt;
+  &lt;div class=&quot;simpletable-wrap&quot;&gt;&lt;xsl:next-match/&gt;&lt;/div&gt;
+&lt;/xsl:template&gt;</codeblock>
+</section>
+  </refbody>
+</reference>

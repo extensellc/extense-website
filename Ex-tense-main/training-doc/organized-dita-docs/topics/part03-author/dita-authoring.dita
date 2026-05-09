@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="dita-authoring" xml:lang="en-US">
+  <title>Authoring DITA Topics</title>
+  <shortdesc>Writing DITA is not just writing in XML. It's writing with:</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-01-15"/>
+      <revised modified="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Authoring</indexterm><indexterm>Templates</indexterm><indexterm>Best Practices</indexterm>
+      </keywords>
+      <category>taxonomy:authoring</category>
+      <audience type="user" othertype="technical-writer"/>
+      <audience type="user" othertype="editor"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="dita-authoring"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT45M"/>
+    <data name="content-domain" value="authoring"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="dita-intro-guide,dita-overview"/>
+  </prolog>
+  <conbody>
+<section id="what-authoring-in-dita-really-means">
+<title>What “authoring in DITA” really means</title>
+<p>Writing DITA is not just writing in XML. It’s writing with:</p>
+<ul>
+  <li>a <b>content model</b> (what elements are allowed where),</li>
+  <li>a <b>purpose</b> (concept vs task vs reference),</li>
+  <li>a <b>reuse strategy</b> (what stays local vs shared),</li>
+  <li>a <b>publishing strategy</b> (HTML/PDF/portal),</li>
+  <li>a <b>governance strategy</b> (consistent attributes, IDs, terminology).</li>
+</ul>
+<p>When DITA authoring goes wrong, it’s usually not because XML is hard. It’s because the team never agreed on:</p>
+<ul>
+  <li>topic size,</li>
+  <li>naming conventions,</li>
+  <li>metadata patterns,</li>
+  <li>reuse boundaries,</li>
+  <li>filtering rules.</li>
+</ul>
+<p>This topic gives you a practical, “how real teams do it” guide.</p>
+</section>
+<section id="topic-design-picking-the-right-topic-type">
+<title>Topic design: picking the right topic type</title>
+<p><b>Concept topics (what/why)</b></p>
+<p>Use concept topics to explain:</p>
+<ul>
+  <li>definitions and mental models,</li>
+  <li>background and rationale,</li>
+  <li>architectural overview,</li>
+  <li>decisions and tradeoffs,</li>
+  <li>“when to use” and “when not to use.”</li>
+</ul>
+<p>A good concept topic:</p>
+<ul>
+  <li>answers a single question,</li>
+  <li>avoids procedural steps,</li>
+  <li>uses examples sparingly and purposefully.</li>
+</ul>
+<p>Common elements:</p>
+<ul>
+  <li><codeph>&lt;title&gt;</codeph></li>
+  <li><codeph>&lt;shortdesc&gt;</codeph> (optional but often valuable)</li>
+  <li><codeph>&lt;conbody&gt;</codeph> with <codeph>&lt;p&gt;</codeph>, lists, sections as needed</li>
+</ul>
+<p><b>Task topics (how)</b></p>
+<p>Use tasks to instruct:</p>
+<ul>
+  <li>installation steps,</li>
+  <li>configuration procedures,</li>
+  <li>workflows and checklists,</li>
+  <li>troubleshooting actions (when they are step-based).</li>
+</ul>
+<p>A good task topic:</p>
+<ul>
+  <li>begins with prerequisites and context,</li>
+  <li>has clear, testable steps,</li>
+  <li>distinguishes commands/UI actions,</li>
+  <li>ends with results or next steps.</li>
+</ul>
+<p>Common elements:</p>
+<ul>
+  <li><codeph>&lt;taskbody&gt;</codeph></li>
+  <li><codeph>&lt;prereq&gt;</codeph>, <codeph>&lt;context&gt;</codeph>, <codeph>&lt;steps&gt;</codeph>, <codeph>&lt;result&gt;</codeph>, <codeph>&lt;postreq&gt;</codeph></li>
+</ul>
+<p><b>Reference topics (facts/options)</b></p>
+<p>Use reference topics for:</p>
+<ul>
+  <li>command syntax,</li>
+  <li>configuration parameters,</li>
+  <li>API endpoint specs,</li>
+  <li>field definitions,</li>
+  <li>error code tables.</li>
+</ul>
+<p>A good reference topic:</p>
+<ul>
+  <li>is scannable,</li>
+  <li>uses tables consistently,</li>
+  <li>avoids long narrative explanations,</li>
+  <li>includes examples where needed.</li>
+</ul>
+</section>
+<section id="the-most-important-authoring-decision-topic-scope-chunking">
+<title>The most important authoring decision: topic scope (“chunking”)</title>
+<p><b>Why chunking matters</b></p>
+<p>Chunking is how you decide what is:</p>
+<ul>
+  <li>one topic,</li>
+  <li>a section inside a topic,</li>
+  <li>a set of topics assembled by a map.</li>
+</ul>
+<p>Chunking affects:</p>
+<ul>
+  <li>reuse,</li>
+  <li>translation cost,</li>
+  <li>search relevance,</li>
+  <li>link stability,</li>
+  <li>maintenance.</li>
+</ul>
+<p><b>Practical chunking guidelines</b></p>
+<p><b>Make a topic when:</b></p>
+<ul>
+  <li>the content solves one user goal,</li>
+  <li>the content can be reused elsewhere,</li>
+  <li>the content could appear in search results on its own.</li>
+</ul>
+<p><b>Make a section (not a new topic) when:</b></p>
+<ul>
+  <li>the content is only meaningful in the same context,</li>
+  <li>splitting would create “orphan topics” with unclear purpose.</li>
+</ul>
+<p><b>Split a topic if:</b></p>
+<ul>
+  <li>it has multiple distinct goals,</li>
+  <li>it becomes too long to scan,</li>
+  <li>it mixes concept and procedure heavily,</li>
+  <li>it gets reused partially (a sign you need smaller building blocks).</li>
+</ul>
+<p><b>A simple heuristic</b></p>
+<p>If a topic title needs “and” or “then” often, consider splitting:</p>
+<ul>
+  <li>“Install and Configure the System” → likely two tasks or a concept + task.</li>
+  <li>“What It Is and How to Use It” → concept + task.</li>
+</ul>
+</section>
+<section id="ids-filenames-and-stability-treat-your-content-like-an-api">
+<title>IDs, filenames, and stability (treat your content like an API)</title>
+<p><b>Why IDs matter more than you think</b></p>
+<p>DITA references rely on IDs:</p>
+<ul>
+  <li>conref targets,</li>
+  <li>xrefs,</li>
+  <li>map references,</li>
+  <li>CCMS reuse references.</li>
+</ul>
+<p>If IDs change frequently, you break:</p>
+<ul>
+  <li>reuse,</li>
+  <li>links,</li>
+  <li>downstream systems and portals.</li>
+</ul>
+<p><b>Recommended patterns</b></p>
+<p><b>File names</b></p>
+<ul>
+  <li>Use lowercase with hyphens: <codeph>install-windows.dita</codeph></li>
+  <li>Keep names stable over time</li>
+  <li>Avoid “v2” or dates unless truly necessary</li>
+</ul>
+<p><b>Topic IDs</b></p>
+<ul>
+  <li>Match the filename or a stable semantic label:</li>
+</ul>
+<p>  - file: <codeph>install.dita</codeph>   - topic id: <codeph>install</codeph></p>
+<ul>
+  <li>Avoid auto-generated IDs like <codeph>topic_1234</codeph> if you can</li>
+</ul>
+<p><b>Element IDs for reuse targets</b></p>
+<ul>
+  <li>Use meaningful IDs for reusable blocks:</li>
+</ul>
+<p>  - <codeph>install-note</codeph>   - <codeph>admin-warning</codeph>   - <codeph>prereq-java</codeph></p>
+<p><b>Stability rule</b></p>
+<ul>
+  <li>Treat changing an ID like changing a public API:</li>
+</ul>
+<p>  - do it rarely,   - communicate it,   - update dependent references,   - validate builds.</p>
+</section>
+<section id="writing-style-in-dita-structure-first-prose-second">
+<title>Writing style in DITA (structure first, prose second)</title>
+<p>DITA is not a prose-first system. It’s structure-first:</p>
+<ul>
+  <li>the structure communicates intent to both humans and machines,</li>
+  <li>the prose fills in the details.</li>
+</ul>
+<p><b>Task writing best practices</b></p>
+<ul>
+  <li>Use imperative verbs: “Click”, “Select”, “Run”, “Verify”.</li>
+  <li>One action per step.</li>
+  <li>Put expected results in <codeph>&lt;result&gt;</codeph> or a final step.</li>
+  <li>Separate UI and command line procedures if they diverge significantly.</li>
+  <li>Use <codeph>&lt;uicontrol&gt;</codeph>, <codeph>&lt;menucascade&gt;</codeph>, <codeph>&lt;filepath&gt;</codeph>, <codeph>&lt;cmdname&gt;</codeph> when available (domain-dependent).</li>
+</ul>
+<p><b>Concept writing best practices</b></p>
+<ul>
+  <li>Start with a crisp definition or summary.</li>
+  <li>Use short paragraphs.</li>
+  <li>Use examples and diagrams deliberately.</li>
+  <li>Avoid hidden tasks (“Do X, do Y”) unless it’s truly conceptual.</li>
+</ul>
+<p><b>Reference writing best practices</b></p>
+<ul>
+  <li>Use consistent tables for parameters/options.</li>
+  <li>Use stable ordering (alphabetical or logical grouping).</li>
+  <li>Provide defaults, constraints, and examples.</li>
+</ul>
+</section>
+<section id="practical-authoring-templates-copypaste-patterns">
+<title>Practical authoring templates (copy/paste patterns)</title>
+<p><b>Concept template</b></p>
+<codeblock outputclass="language-xml">&lt;concept id=&quot;...&quot;&gt;
+  &lt;title&gt;...&lt;/title&gt;
+  &lt;shortdesc&gt;One-sentence summary for search and previews.&lt;/shortdesc&gt;
+  &lt;conbody&gt;
+    &lt;p&gt;Definition and context.&lt;/p&gt;
+    &lt;p&gt;Key idea #1.&lt;/p&gt;
+    &lt;p&gt;Key idea #2.&lt;/p&gt;
+    &lt;section&gt;
+      &lt;title&gt;Example&lt;/title&gt;
+      &lt;p&gt;Use an example to clarify.&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/conbody&gt;
+&lt;/concept&gt;</codeblock>
+<p><b>Task template</b></p>
+<codeblock outputclass="language-xml">&lt;task id=&quot;...&quot;&gt;
+  &lt;title&gt;...&lt;/title&gt;
+  &lt;shortdesc&gt;What this procedure achieves.&lt;/shortdesc&gt;
+  &lt;taskbody&gt;
+    &lt;prereq&gt;
+      &lt;p&gt;Conditions and required permissions.&lt;/p&gt;
+    &lt;/prereq&gt;
+    &lt;context&gt;
+      &lt;p&gt;When and why you do this.&lt;/p&gt;
+    &lt;/context&gt;
+    &lt;steps&gt;
+      &lt;step&gt;&lt;cmd&gt;Do step 1.&lt;/cmd&gt;&lt;/step&gt;
+      &lt;step&gt;&lt;cmd&gt;Do step 2.&lt;/cmd&gt;&lt;/step&gt;
+      &lt;step&gt;&lt;cmd&gt;Verify the result.&lt;/cmd&gt;&lt;/step&gt;
+    &lt;/steps&gt;
+    &lt;result&gt;
+      &lt;p&gt;What success looks like.&lt;/p&gt;
+    &lt;/result&gt;
+  &lt;/taskbody&gt;
+&lt;/task&gt;</codeblock>
+<p><b>Reference template</b></p>
+<codeblock outputclass="language-xml">&lt;reference id=&quot;...&quot;&gt;
+  &lt;title&gt;...&lt;/title&gt;
+  &lt;shortdesc&gt;What this reference covers.&lt;/shortdesc&gt;
+  &lt;refbody&gt;
+    &lt;section&gt;
+      &lt;title&gt;Syntax&lt;/title&gt;
+      &lt;codeblock&gt;command --option value&lt;/codeblock&gt;
+    &lt;/section&gt;
+    &lt;section&gt;
+      &lt;title&gt;Options&lt;/title&gt;
+      &lt;simpletable&gt;
+        &lt;sthead&gt;
+          &lt;stentry&gt;Option&lt;/stentry&gt;
+          &lt;stentry&gt;Description&lt;/stentry&gt;
+        &lt;/sthead&gt;
+        &lt;strow&gt;
+          &lt;stentry&gt;&lt;codeph&gt;--help&lt;/codeph&gt;&lt;/stentry&gt;
+          &lt;stentry&gt;Displays help text.&lt;/stentry&gt;
+        &lt;/strow&gt;
+      &lt;/simpletable&gt;
+    &lt;/section&gt;
+  &lt;/refbody&gt;
+&lt;/reference&gt;</codeblock>
+</section>
+<section id="authoring-for-reuse-designing-reusable-chunks">
+<title>Authoring for reuse: designing “reusable chunks”</title>
+<p>Reuse is not free. It requires deliberate boundaries.</p>
+<p><b>What should be reusable?</b></p>
+<ul>
+  <li>warnings, cautions, safety notes,</li>
+  <li>prerequisites and environment statements,</li>
+  <li>legal/compliance text,</li>
+  <li>UI labels and product naming,</li>
+  <li>standard procedures used across many tasks,</li>
+  <li>shared troubleshooting steps,</li>
+  <li>consistent definitions.</li>
+</ul>
+<p><b>What should usually NOT be reused?</b></p>
+<ul>
+  <li>highly contextual narrative,</li>
+  <li>content that changes often,</li>
+  <li>content that’s meaningful only in one location,</li>
+  <li>deep cross-referenced paragraphs that assume surrounding text.</li>
+</ul>
+<p><b>“Reusable chunk” rules</b></p>
+<p>A reusable chunk should:</p>
+<ul>
+  <li>make sense when read alone,</li>
+  <li>avoid “above/below” references,</li>
+  <li>avoid map-specific context,</li>
+  <li>be stable over time.</li>
+</ul>
+<p>If it depends on context, keep it local.</p>
+</section>
+<section id="metadata-the-overlooked-authoring-power-tool">
+<title>Metadata: the overlooked authoring power tool</title>
+<p>Metadata improves:</p>
+<ul>
+  <li>search relevance,</li>
+  <li>portal navigation,</li>
+  <li>translation handling,</li>
+  <li>analytics and reporting,</li>
+  <li>content governance.</li>
+</ul>
+<p><b>Useful metadata patterns</b></p>
+<ul>
+  <li><codeph>&lt;shortdesc&gt;</codeph> for topic previews.</li>
+  <li><codeph>&lt;prolog&gt;</codeph> for author, version, review status.</li>
+  <li><codeph>&lt;keywords&gt;</codeph> for taxonomy and search.</li>
+  <li>product/platform attributes for filtering.</li>
+</ul>
+<p><b>Governance tip</b></p>
+<p>Create a “metadata minimum standard”:</p>
+<ul>
+  <li>every topic must have <codeph>&lt;shortdesc&gt;</codeph> and at least one keyword,</li>
+  <li>every task must include prerequisites if relevant,</li>
+  <li>every reference must include syntax and examples.</li>
+</ul>
+<p>These standards reduce variability.</p>
+</section>
+<section id="images-ui-screenshots-and-media-management">
+<title>Images, UI screenshots, and media management</title>
+<p><b>Image authoring best practices</b></p>
+<ul>
+  <li>Keep images in a dedicated folder: <codeph>media/images/</codeph>.</li>
+  <li>Use consistent naming: <codeph>ui-settings-panel.png</codeph>.</li>
+  <li>Use alt text and/or text equivalents where required.</li>
+  <li>Prefer vector (SVG) where your pipeline supports it and where clarity matters.</li>
+</ul>
+<p><b>Screenshot governance</b></p>
+<p>Screenshots are expensive to maintain. DITA doesn’t solve that automatically. To reduce screenshot maintenance:</p>
+<ul>
+  <li>minimize screenshot dependence,</li>
+  <li>use callouts sparingly,</li>
+  <li>document UI actions in text with <codeph>&lt;uicontrol&gt;</codeph> elements,</li>
+  <li>standardize screenshot production workflow.</li>
+</ul>
+</section>
+<section id="translation-and-localization-implications">
+<title>Translation and localization implications</title>
+<p>DITA’s structure can reduce translation cost, but only if you:</p>
+<ul>
+  <li>reuse content instead of duplicating it,</li>
+  <li>keep topics stable,</li>
+  <li>avoid rewriting shared snippets frequently,</li>
+  <li>keep IDs stable (for reuse references).</li>
+</ul>
+<p><b>Practical localization tips</b></p>
+<ul>
+  <li>Don’t embed locale-specific text in shared snippets unless that’s intentional.</li>
+  <li>Use keys for product names and terms that differ by region.</li>
+  <li>Avoid hard-coded date formats and culturally specific examples in globally reused topics.</li>
+</ul>
+</section>
+<section id="common-authoring-mistakes-and-how-to-fix-them">
+<title>Common authoring mistakes (and how to fix them)</title>
+<p><b>Mistake 1: “Generic topics everywhere”</b></p>
+<p>Fix: adopt information typing (concept/task/reference) and enforce it via review.</p>
+<p><b>Mistake 2: “Giant topics”</b></p>
+<p>Fix: split into smaller topics and assemble with maps.</p>
+<p><b>Mistake 3: “Conref everywhere”</b></p>
+<p>Fix: reuse only stable, context-independent chunks; document ownership and change control.</p>
+<p><b>Mistake 4: “Uncontrolled attributes”</b></p>
+<p>Fix: define a controlled vocabulary and enforce it (subject scheme + process).</p>
+<p><b>Mistake 5: “IDs keep changing”</b></p>
+<p>Fix: treat IDs as stable contracts; manage renames with care.</p>
+</section>
+<section id="a-practical-authoring-workflow-for-teams">
+<title>A practical authoring workflow for teams</title>
+<p>Here’s a workflow that works for both file-based and CCMS environments:</p>
+<ol>
+  <li><b>Plan</b>: create map skeleton (TOC) and topic list.</li>
+  <li><b>Draft</b>: create topic stubs with titles and shortdesc.</li>
+  <li><b>Fill</b>: author content following templates.</li>
+  <li><b>Review</b>: SME + editorial; check structure and semantics.</li>
+  <li><b>Reuse pass</b>: consolidate repeated content into reuse library.</li>
+  <li><b>Metadata pass</b>: keywords, attributes, taxonomy.</li>
+  <li><b>Validate</b>: run builds and resolve warnings/errors.</li>
+  <li><b>Publish</b>: produce HTML/PDF; confirm navigation and search behavior.</li>
+  <li><b>Maintain</b>: version and update with stable IDs and reuse targets.</li>
+</ol>
+</section>
+<section id="action-checklist-do-this-to-get-productive-quickly">
+<title>Action checklist (do this to get productive quickly)</title>
+<ul>
+  <li>[ ] Choose topic types you will use (start with concept/task/reference).</li>
+  <li>[ ] Define naming conventions for files and IDs.</li>
+  <li>[ ] Create templates and enforce them (even if informally at first).</li>
+  <li>[ ] Establish reuse boundaries and a reuse folder.</li>
+  <li>[ ] Define attribute vocabulary for platform/audience/product.</li>
+  <li>[ ] Run validation on every change (locally or in CI).</li>
+  <li>[ ] Keep topics small and stable; assemble with maps.</li>
+</ul>
+</section>
+<section id="analytics-instrumentation">
+<title>Analytics and Instrumentation</title>
+<p>Track authoring patterns and template usage with analytics. Monitor which templates are most used and where authors encounter issues. Use this data to improve authoring workflows and training.</p>
+</section>
+<section id="personalization-conditional-processing">
+<title>Personalization and Conditional Processing</title>
+<p>Use DITA conditional attributes to tailor authoring guidance for different roles or workflows. Example:</p>
+<codeblock outputclass="language-xml">&lt;section audience="editor"&gt;Editor-specific guidance here.&lt;/section&gt;</codeblock>
+</section>
+<section id="chatbot-nlp-integration">
+<title>Integrating with Conversational AI and NLP</title>
+<p>Expose authoring best practices to chatbots or virtual assistants. Enable users to ask for authoring help and receive context-aware answers from this topic.</p>
+</section>
+<section id="continuous-improvement-feedback">
+<title>Continuous Improvement and Feedback Loops</title>
+<p>Collect feedback from authors and editors on templates and workflows. Use analytics and feedback to refine authoring guidance and improve documentation quality.</p>
+</section>
+  </conbody>
+</concept>

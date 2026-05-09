@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="information-typing-basics" xml:lang="en-US">
+  <title>Information Typing: Matching Content to Purpose</title>
+  <shortdesc>DITA's three core topic types — concept, task, and reference — give each piece of content a clear purpose, making it easier to write, review, and maintain.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-02-10"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Information typing</indexterm>
+        <indexterm>Concept topic</indexterm>
+        <indexterm>Task topic</indexterm>
+        <indexterm>Reference topic</indexterm>
+      </keywords>
+      <category>taxonomy:dita-authoring</category>
+      <audience type="user" othertype="technical-writer"/>
+      <audience type="user" othertype="beginner"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="information-typing-basics"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT10M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="dita-authoring"/>
+  </prolog>
+  <conbody>
+
+    <section id="why-typing-matters">
+      <title>Why does information typing matter?</title>
+      <p>When you write content, every piece has a primary purpose. You are either:</p>
+      <ul>
+        <li><b>Explaining</b> what something is or why it matters</li>
+        <li><b>Teaching</b> how to do something step by step</li>
+        <li><b>Providing</b> facts, specs, or options for lookup</li>
+      </ul>
+      <p>DITA makes this purpose explicit by giving each topic type its own XML structure. This matters because:</p>
+      <ul>
+        <li><b>Writers</b> get a template that guides what to include (prerequisites, steps, results) instead of guessing</li>
+        <li><b>Reviewers</b> can check that a task has all required steps, or that a concept actually explains the "why"</li>
+        <li><b>Readers</b> always know what to expect — a task topic always has steps, a reference topic always has lookup data</li>
+        <li><b>Tools</b> can validate, format, and filter content because the type is machine-readable</li>
+      </ul>
+    </section>
+
+    <section id="concept-type">
+      <title>Concept topics: Explaining ideas</title>
+      <p>Use a concept topic when you need to answer <b>"what is..."</b> or <b>"why does..."</b> questions. Concepts use prose organized into sections.</p>
+      <p><b>Structure:</b> <codeph>&lt;concept&gt;</codeph> → <codeph>&lt;conbody&gt;</codeph> → <codeph>&lt;section&gt;</codeph> elements with paragraphs, lists, and tables.</p>
+      <p><b>Example:</b></p>
+      <codeblock outputclass="language-xml">&lt;concept id="what-is-reuse"&gt;
+  &lt;title&gt;What is content reuse?&lt;/title&gt;
+  &lt;shortdesc&gt;Content reuse means writing a piece of content
+    once and referencing it from multiple locations.&lt;/shortdesc&gt;
+  &lt;conbody&gt;
+    &lt;section id="why-reuse-matters"&gt;
+      &lt;title&gt;Why does reuse matter?&lt;/title&gt;
+      &lt;p&gt;When the same safety warning appears in 12 manuals,
+        a single-source approach ensures all 12 stay
+        in sync when the warning changes.&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/conbody&gt;
+&lt;/concept&gt;</codeblock>
+      <p><b>When to use it:</b> Background information, definitions, explanations of architecture or design decisions, "why we do it this way" content.</p>
+    </section>
+
+    <section id="task-type">
+      <title>Task topics: Teaching procedures</title>
+      <p>Use a task topic when you need to answer <b>"how do I..."</b> questions. DITA tasks enforce a consistent structure so readers always know where to find prerequisites, steps, and expected results.</p>
+      <p><b>Structure:</b> <codeph>&lt;task&gt;</codeph> → <codeph>&lt;taskbody&gt;</codeph> → <codeph>&lt;prereq&gt;</codeph> → <codeph>&lt;context&gt;</codeph> → <codeph>&lt;steps&gt;</codeph> → <codeph>&lt;result&gt;</codeph></p>
+      <p><b>Example:</b></p>
+      <codeblock outputclass="language-xml">&lt;task id="install-dita-ot"&gt;
+  &lt;title&gt;Installing DITA-OT&lt;/title&gt;
+  &lt;shortdesc&gt;Download and verify DITA Open Toolkit.&lt;/shortdesc&gt;
+  &lt;taskbody&gt;
+    &lt;prereq&gt;
+      &lt;ul&gt;&lt;li&gt;Java 17 or later installed&lt;/li&gt;&lt;/ul&gt;
+    &lt;/prereq&gt;
+    &lt;steps&gt;
+      &lt;step&gt;&lt;cmd&gt;Download from dita-ot.org.&lt;/cmd&gt;&lt;/step&gt;
+      &lt;step&gt;&lt;cmd&gt;Unzip to your preferred location.&lt;/cmd&gt;&lt;/step&gt;
+      &lt;step&gt;&lt;cmd&gt;Add bin/ to your PATH.&lt;/cmd&gt;&lt;/step&gt;
+    &lt;/steps&gt;
+    &lt;result&gt;
+      &lt;p&gt;Run &lt;codeph&gt;dita --version&lt;/codeph&gt; to
+        confirm installation.&lt;/p&gt;
+    &lt;/result&gt;
+  &lt;/taskbody&gt;
+&lt;/task&gt;</codeblock>
+      <p><b>When to use it:</b> Installation guides, configuration procedures, workflows, any "do these steps" content.</p>
+    </section>
+
+    <section id="reference-type">
+      <title>Reference topics: Lookup information</title>
+      <p>Use a reference topic when readers need to <b>look up</b> specific facts — parameter values, CLI options, error codes, configuration settings.</p>
+      <p><b>Structure:</b> <codeph>&lt;reference&gt;</codeph> → <codeph>&lt;refbody&gt;</codeph> → tables, property lists, or syntax definitions.</p>
+      <p><b>Example:</b></p>
+      <codeblock outputclass="language-xml">&lt;reference id="cli-options"&gt;
+  &lt;title&gt;CLI Options Reference&lt;/title&gt;
+  &lt;shortdesc&gt;Command-line options and flags.&lt;/shortdesc&gt;
+  &lt;refbody&gt;
+    &lt;simpletable&gt;
+      &lt;sthead&gt;
+        &lt;stentry&gt;Option&lt;/stentry&gt;
+        &lt;stentry&gt;Description&lt;/stentry&gt;
+      &lt;/sthead&gt;
+      &lt;strow&gt;
+        &lt;stentry&gt;&lt;codeph&gt;--version&lt;/codeph&gt;&lt;/stentry&gt;
+        &lt;stentry&gt;Display version information&lt;/stentry&gt;
+      &lt;/strow&gt;
+    &lt;/simpletable&gt;
+  &lt;/refbody&gt;
+&lt;/reference&gt;</codeblock>
+      <p><b>When to use it:</b> API references, parameter tables, error code lists, glossaries, any "look this up" content.</p>
+    </section>
+
+    <section id="choosing-the-right-type">
+      <title>Quick decision guide</title>
+      <p>When creating a new topic, ask yourself:</p>
+      <ul>
+        <li>Am I explaining <b>what</b> something is or <b>why</b> it matters? → <b>Concept</b></li>
+        <li>Am I teaching someone <b>how</b> to do something? → <b>Task</b></li>
+        <li>Am I providing <b>facts</b> for someone to look up? → <b>Reference</b></li>
+      </ul>
+      <p>If a single source file contains all three, split it into separate DITA topics — one for each purpose. This is how DITA achieves modularity.</p>
+    </section>
+
+    <section id="ai-dimension">
+      <title>Beyond authoring: How AI uses information typing</title>
+      <p>Information typing is valuable for writing and reviewing even without AI. But when your content feeds a chatbot or search system, the topic type becomes a machine-readable signal that lets the AI format answers appropriately — showing numbered steps for tasks, prose for concepts, and tables for references. This dimension is explored in depth in <xref href="ch05-dita-information-typing.dita">Information Typing for AI</xref>.</p>
+    </section>
+
+  </conbody>
+</concept>

@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="dita-reuse-variants" xml:lang="en-US">
+  <title>Reuse, Keys, and Variant Management</title>
+  <shortdesc>For many organizations, multi-format output is helpful—but reuse is what changes the economics of documentation. Reuse reduces:</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-01-15"/>
+      <revised modified="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Reuse</indexterm><indexterm>Conref</indexterm><indexterm>Keyref</indexterm><indexterm>Conkeyref</indexterm><indexterm>DITAVAL</indexterm><indexterm>Filtering</indexterm>
+      </keywords>
+      <category>taxonomy:content-reuse</category>
+      <audience type="user" othertype="technical-writer"/>
+      <audience type="user" othertype="localization"/>
+      <audience type="user" othertype="automation"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="dita-reuse-variants"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT40M"/>
+    <data name="content-domain" value="content-reuse"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="dita-authoring"/>
+  </prolog>
+  <conbody>
+<section id="why-reuse-is-the-real-reason-many-teams-adopt-dita">
+<title>Why reuse is the “real reason” many teams adopt DITA</title>
+<p>For many organizations, multi-format output is helpful—but <b>reuse</b> is what changes the economics of documentation. Reuse reduces:</p>
+<ul>
+  <li>duplicated editing effort,</li>
+  <li>inconsistent content,</li>
+  <li>translation cost,</li>
+  <li>review cycles,</li>
+  <li>release risk.</li>
+</ul>
+<p>But reuse only works when it’s designed, governed, and validated. This topic explains the core reuse mechanisms and how to use them without creating maintenance pain.</p>
+</section>
+<section id="reuse-types-topic-reuse-vs-content-reuse-vs-reference-reuse">
+<title>Reuse types: topic reuse vs content reuse vs reference reuse</title>
+<p><b>Topic reuse</b></p>
+<p>You reuse a whole topic by including it in multiple maps. This is the cleanest form:</p>
+<ul>
+  <li>least fragile,</li>
+  <li>easiest to understand,</li>
+  <li>best for long-term maintenance.</li>
+</ul>
+<p><b>Example use cases</b></p>
+<ul>
+  <li>a “Safety overview” concept used in multiple manuals,</li>
+  <li>a “Reset password” task reused across product editions,</li>
+  <li>a “CLI options” reference topic used in both admin and developer docs.</li>
+</ul>
+<p><b>Content reuse (partial reuse)</b></p>
+<p>You reuse parts of topics:</p>
+<ul>
+  <li>warnings,</li>
+  <li>short paragraphs,</li>
+  <li>shared steps,</li>
+  <li>reusable tables.</li>
+</ul>
+<p>This is powerful but can create complexity if overused.</p>
+<p><b>Reference reuse (keys)</b></p>
+<p>You reuse <i>references</i> (links, product names, terms) using keys so the same topic can adapt to different contexts without editing.</p>
+</section>
+<section id="conref-direct-content-reuse">
+<title>Conref: direct content reuse</title>
+<p><b>What conref does</b></p>
+<p><codeph>conref</codeph> allows an element to pull content from another location. Think of it as “include this snippet here.”</p>
+<p><b>Example</b></p>
+<codeblock outputclass="language-xml">&lt;p conref=&quot;reuse/common-notes.dita#common-notes/install-note&quot;/&gt;</codeblock>
+<p>This pulls the element with <codeph>id=&quot;install-note&quot;</codeph> from the topic with <codeph>id=&quot;common-notes&quot;</codeph> in <codeph>common-notes.dita</codeph>.</p>
+<p><b>When conref is a great choice</b></p>
+<ul>
+  <li>stable legal text,</li>
+  <li>standardized safety notes,</li>
+  <li>common prerequisites,</li>
+  <li>consistent step fragments.</li>
+</ul>
+<p><b>When conref causes problems</b></p>
+<ul>
+  <li>when the reused content depends on local context,</li>
+  <li>when authors “fix” shared snippets without coordinating,</li>
+  <li>when the referenced snippet changes structure often,</li>
+  <li>when the conref chain becomes too deep to understand.</li>
+</ul>
+<p><b>Conref governance patterns (what professional teams do)</b></p>
+<p><b>Pattern A: Shared library ownership</b></p>
+<ul>
+  <li>Create a <codeph>reuse/</codeph> folder (or CCMS equivalent).</li>
+  <li>Assign ownership to a small group.</li>
+  <li>Use review requirements for changes to shared snippets.</li>
+</ul>
+<p><b>Pattern B: “Reusable API” approach</b> Treat each shared snippet like an API:</p>
+<ul>
+  <li>stable ID,</li>
+  <li>stable purpose,</li>
+  <li>change logs,</li>
+  <li>backwards compatibility mindset.</li>
+</ul>
+<p><b>Pattern C: Shallow reuse</b> Avoid deep conref chains:</p>
+<ul>
+  <li>don’t conref a snippet that contains conrefs that contain conrefs…</li>
+  <li>shallow reuse is easier to debug and maintain.</li>
+</ul>
+</section>
+<section id="keys-and-keyref-the-late-binding-superpower">
+<title>Keys and keyref: the late-binding superpower</title>
+<p><b>What keys are</b></p>
+<p>Keys are map-defined labels that resolve to:</p>
+<ul>
+  <li>links (hrefs),</li>
+  <li>text,</li>
+  <li>images,</li>
+  <li>or other resources (depending on usage).</li>
+</ul>
+<p>A topic uses <codeph>keyref</codeph> to point to a key, and the actual target is resolved based on the map at build time.</p>
+<p><b>Why this matters in real life</b></p>
+<p>Keys enable:</p>
+<ul>
+  <li>brand-specific product naming,</li>
+  <li>different support URLs per region,</li>
+  <li>partner editions where links change,</li>
+  <li>reuse of topics across multiple deliverables without editing.</li>
+</ul>
+<p><b>Example: product name and support URL</b></p>
+<p><b>In the map</b></p>
+<codeblock outputclass="language-xml">&lt;keydef keys=&quot;product-name&quot;&gt;
+  &lt;topicmeta&gt;
+    &lt;keywords&gt;&lt;keyword&gt;Acme Writer Pro&lt;/keyword&gt;&lt;/keywords&gt;
+  &lt;/topicmeta&gt;
+&lt;/keydef&gt;
+
+&lt;keydef keys=&quot;support-url&quot; href=&quot;https://example.com/support&quot;/&gt;</codeblock>
+<p><b>In the topic</b></p>
+<codeblock outputclass="language-xml">&lt;p&gt;For help with &lt;ph keyref=&quot;product-name&quot;/&gt;, see &lt;xref keyref=&quot;support-url&quot;/&gt;.&lt;/p&gt;</codeblock>
+<p>Change the key definition in the map, and the same topic publishes differently—without editing the topic.</p>
+<p><b>Key design principles</b></p>
+<ol>
+  <li><b>Use keys for anything that varies by deliverable</b></li>
+</ol>
+<p>   - product name,    - URLs,    - partner branding,    - company names,    - legal disclaimers by region (sometimes).</p>
+<ol>
+  <li><b>Keep key names stable</b></li>
+</ol>
+<p>   - Treat key names like public identifiers.</p>
+<ol>
+  <li><b>Group keys logically</b></li>
+</ol>
+<ul>
+  <li><codeph>product-*</codeph> keys</li>
+  <li><codeph>link-*</codeph> keys</li>
+  <li><codeph>img-*</codeph> keys</li>
+</ul>
+<ol>
+  <li><b>Document key ownership</b></li>
+</ol>
+<p>   - who can change keys,    - how changes are reviewed.</p>
+</section>
+<section id="conkeyref-content-reuse-through-keys">
+<title>Conkeyref: content reuse through keys</title>
+<p><b>What conkeyref is</b></p>
+<p><codeph>conkeyref</codeph> lets you pull content via a key instead of a direct file#id reference. This is powerful when:</p>
+<ul>
+  <li>the <i>source</i> of reusable content varies by deliverable,</li>
+  <li>the same topic must pull different snippets depending on map context.</li>
+</ul>
+<p><b>Example scenario</b></p>
+<p>You publish the same “Install” topic for:</p>
+<ul>
+  <li>Product A,</li>
+  <li>Product B,</li>
+  <li>Partner Edition.</li>
+</ul>
+<p>Each needs a slightly different legal notice. Instead of editing the topic or maintaining three variants, you define:</p>
+<ul>
+  <li><codeph>legal-install-note</codeph> key in each map,</li>
+  <li>the topic uses <codeph>conkeyref=&quot;legal-install-note&quot;</codeph>.</li>
+</ul>
+<p>This is advanced, but it scales well when managed correctly.</p>
+<p><b>Conkeyref example (complete)</b></p>
+<p><b>Step 1 — Define the key in each map</b> to point to a different snippet source:</p>
+<codeblock outputclass="language-xml">&lt;!-- product-a.ditamap --&gt;
+&lt;keydef keys=&quot;legal-install-note&quot; href=&quot;reuse/product-a-legal.dita&quot;/&gt;
+
+&lt;!-- product-b.ditamap --&gt;
+&lt;keydef keys=&quot;legal-install-note&quot; href=&quot;reuse/product-b-legal.dita&quot;/&gt;</codeblock>
+<p><b>Step 2 — Create the snippet sources</b> with matching IDs:</p>
+<codeblock outputclass="language-xml">&lt;!-- reuse/product-a-legal.dita --&gt;
+&lt;topic id=&quot;legal-notices&quot;&gt;
+  &lt;title&gt;Legal&lt;/title&gt;
+  &lt;body&gt;
+    &lt;note id=&quot;install-legal&quot;&gt;
+      Product A is licensed under the Acme Standard License.
+      See https://acme.example.com/license-a for details.
+    &lt;/note&gt;
+  &lt;/body&gt;
+&lt;/topic&gt;</codeblock>
+<codeblock outputclass="language-xml">&lt;!-- reuse/product-b-legal.dita --&gt;
+&lt;topic id=&quot;legal-notices&quot;&gt;
+  &lt;title&gt;Legal&lt;/title&gt;
+  &lt;body&gt;
+    &lt;note id=&quot;install-legal&quot;&gt;
+      Product B is licensed under the Acme Enterprise License.
+      Contact your account manager for terms.
+    &lt;/note&gt;
+  &lt;/body&gt;
+&lt;/topic&gt;</codeblock>
+<p><b>Step 3 — Use conkeyref in the shared topic:</b></p>
+<codeblock outputclass="language-xml">&lt;!-- topics/install.dita (shared across both maps) --&gt;
+&lt;task id=&quot;install-task&quot;&gt;
+  &lt;title&gt;Installation&lt;/title&gt;
+  &lt;taskbody&gt;
+    &lt;prereq&gt;
+      &lt;note conkeyref=&quot;legal-install-note/install-legal&quot;/&gt;
+    &lt;/prereq&gt;
+    &lt;!-- ... steps ... --&gt;
+  &lt;/taskbody&gt;
+&lt;/task&gt;</codeblock>
+<p>When you build with <codeph>product-a.ditamap</codeph>, the <codeph>conkeyref</codeph> resolves to the Product A legal note. Build with <codeph>product-b.ditamap</codeph>, and the same topic automatically shows the Product B text — no editing required.</p>
+<p><b>When conkeyref is worth the effort</b></p>
+<ul>
+  <li>many branded deliverables,</li>
+  <li>partner ecosystems,</li>
+  <li>product families with shared content but different key spaces.</li>
+</ul>
+</section>
+<section id="filtering-and-variant-management-one-source-many-outputs">
+<title>Filtering and variant management: one source, many outputs</title>
+<p>DITA filtering is often called <b>profiling</b> or <b>conditional processing</b>.</p>
+<p><b>How filtering works</b></p>
+<ol>
+  <li>You tag content with attributes:</li>
+</ol>
+<p>   - <codeph>platform=&quot;windows&quot;</codeph>    - <codeph>audience=&quot;admin&quot;</codeph>    - <codeph>product=&quot;pro&quot;</codeph></p>
+<ol>
+  <li>Your build rules include/exclude based on those attributes.</li>
+</ol>
+<p><b>Choosing attribute strategy (a big decision)</b></p>
+<p><b>Common attribute dimensions</b></p>
+<ul>
+  <li>platform: windows/linux/mac</li>
+  <li>audience: user/admin/developer</li>
+  <li>product/edition: standard/pro/enterprise</li>
+  <li>region: us/eu/apac</li>
+  <li>delivery: internal/external</li>
+</ul>
+<p><b>Don’t use everything</b> Pick only the dimensions you truly need. Each added dimension multiplies complexity.</p>
+<p><b>Controlled vocabulary (non-negotiable at scale)</b></p>
+<p>If authors invent values freely, filtering becomes unreliable:</p>
+<ul>
+  <li><codeph>windows</codeph>, <codeph>Windows</codeph>, <codeph>win</codeph>, <codeph>win32</codeph> (all different!)</li>
+</ul>
+<p>Professional programs define allowed values and enforce them.</p>
+<p><b>Subject scheme maps (governance tool)</b></p>
+<p>Many DITA ecosystems use subject scheme maps to:</p>
+<ul>
+  <li>define allowed attribute values,</li>
+  <li>provide taxonomy and classification,</li>
+  <li>support consistent filtering.</li>
+</ul>
+<p>Even if you don’t implement subject scheme immediately, write down your vocabulary and enforce it in reviews.</p>
+</section>
+<section id="designing-reusable-and-filterable-content-without-chaos">
+<title>Designing reusable and filterable content without chaos</title>
+<p>Here are strategies that prevent “variant spaghetti.”</p>
+<p><b>Strategy A: Separate by topic when variants are large</b></p>
+<p>If Windows and Linux procedures differ significantly:</p>
+<ul>
+  <li>create separate task topics,</li>
+  <li>assemble them differently per deliverable.</li>
+</ul>
+<p>Use filtering only for minor differences, not completely different workflows.</p>
+<p><b>Strategy B: Use filtering for small differences only</b></p>
+<p>Filtering works well for:</p>
+<ul>
+  <li>a few steps that differ,</li>
+  <li>a paragraph that differs,</li>
+  <li>a note that applies only to one platform.</li>
+</ul>
+<p>If half the topic is conditional, split the topic.</p>
+<p><b>Strategy C: Keep conditional blocks coarse</b></p>
+<p>Instead of tagging every sentence:</p>
+<ul>
+  <li>tag whole paragraphs,</li>
+  <li>tag whole steps,</li>
+  <li>tag whole sections.</li>
+</ul>
+<p>This reduces maintenance.</p>
+<p><b>Strategy D: Combine keys + filtering intelligently</b></p>
+<p>Keys handle “context changes” (names/links). Filtering handles “content inclusion changes” (platform-specific steps). Use both; don’t force one mechanism to do everything.</p>
+</section>
+<section id="reuse-translation-how-to-save-money-and-time">
+<title>Reuse + translation: how to save money and time</title>
+<p>Reusable content reduces translation effort only if:</p>
+<ul>
+  <li>you actually reuse (conref/topic reuse),</li>
+  <li>content doesn’t change frequently,</li>
+  <li>IDs remain stable,</li>
+  <li>you avoid minor rewrites in shared snippets.</li>
+</ul>
+<p><b>Translation best practices for reuse</b></p>
+<ul>
+  <li>Keep shared snippets stable.</li>
+  <li>Avoid embedding variable product names in shared snippets; use keys.</li>
+  <li>Don’t conditionalize tiny phrases across many languages—use topic-level variants when needed.</li>
+</ul>
+</section>
+<section id="validation-how-you-keep-reuse-and-variants-reliable">
+<title>Validation: how you keep reuse and variants reliable</title>
+<p>A DITA program needs automated checks:</p>
+<ul>
+  <li>broken conrefs,</li>
+  <li>missing targets,</li>
+  <li>unresolved keys,</li>
+  <li>invalid attribute values (where possible),</li>
+  <li>build warnings treated as failures in CI.</li>
+</ul>
+<p><b>Practical quality gates</b></p>
+<ul>
+  <li>Build must complete with zero unresolved references.</li>
+  <li>Key space must resolve without ambiguity.</li>
+  <li>Filtering must produce non-empty outputs for required deliverables.</li>
+  <li>Link checking must pass for internal references (external link checking is optional, but useful).</li>
+</ul>
+</section>
+<section id="a-realistic-reuse-plan-for-a-growing-doc-set">
+<title>A realistic “reuse plan” for a growing doc set</title>
+<p>Start simple:</p>
+<ol>
+  <li><b>Topic reuse first</b></li>
+</ol>
+<p>   - Build a library of reusable concepts and tasks.</p>
+<ol>
+  <li><b>Conref for stable snippets</b></li>
+</ol>
+<p>   - Add a <codeph>reuse/common-notes.dita</codeph> library.</p>
+<ol>
+  <li><b>Keys for product names + URLs</b></li>
+</ol>
+<p>   - Keep topics portable across maps.</p>
+<ol>
+  <li><b>Filtering for platform/audience</b></li>
+</ol>
+<p>   - Choose 1–2 dimensions; don’t overcomplicate.</p>
+<p>Then scale:</p>
+<ul>
+  <li>introduce key scopes if needed,</li>
+  <li>introduce conkeyref for partner ecosystems,</li>
+  <li>formalize subject schemes and vocabulary enforcement.</li>
+</ul>
+</section>
+<section id="common-reuse-and-variant-mistakes">
+<title>Common reuse and variant mistakes</title>
+<p><b>Mistake: Conref everything</b></p>
+<p>Fix: prefer topic reuse; conref only stable, context-independent snippets.</p>
+<p><b>Mistake: Filtering every sentence</b></p>
+<p>Fix: use topic splitting; conditionalize only where differences are small.</p>
+<p><b>Mistake: No controlled vocabulary</b></p>
+<p>Fix: define allowed values and enforce them.</p>
+<p><b>Mistake: Hard-coded product names and URLs</b></p>
+<p>Fix: use keys and <codeph>keyref</codeph>.</p>
+<p><b>Mistake: Shared snippets without ownership</b></p>
+<p>Fix: assign owners and add review rules.</p>
+</section>
+<section id="analytics-instrumentation">
+<title>Analytics and Instrumentation</title>
+<p>To measure the impact of reuse, instrument your output with analytics. Track conref and keyref usage, and monitor which topics are reused most. Use analytics dashboards to identify content that could benefit from further reuse or consolidation.</p>
+</section>
+<section id="personalization-conditional-processing">
+<title>Personalization and Conditional Processing</title>
+<p>Use DITA conditional attributes (such as audience, product, platform) and DITAVAL files to personalize content for different users or outputs. Example:</p>
+<codeblock outputclass="language-xml">&lt;section audience="developer"&gt;Developer-specific content here.&lt;/section&gt;</codeblock>
+</section>
+<section id="chatbot-nlp-integration">
+<title>Integrating with Conversational AI and NLP</title>
+<p>Expose this topic's content to chatbots or virtual assistants by making it available via API or structured export. Use semantic markup and metadata to help NLP systems extract relevant answers for user queries.</p>
+</section>
+<section id="continuous-improvement-feedback">
+<title>Continuous Improvement and Feedback Loops</title>
+<p>Add feedback widgets to your published documentation and use analytics to monitor user suggestions. Regularly review feedback to refine reuse strategies and update content for clarity and effectiveness.</p>
+</section>
+
+<section id="whats-next">
+<title>What's next?</title>
+<p>You can now write typed topics, build projects, and apply reuse patterns. In <b>Part 4: Information Architecture</b>, you will learn how to organize topics at scale — designing map hierarchies, defining taxonomy and controlled vocabulary, and structuring content so it can grow from 10 topics to 1,000 without losing consistency.</p>
+</section>
+  </conbody>
+</concept>

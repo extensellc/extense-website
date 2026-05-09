@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="what-is-acmedoc">
+  <title>What Is AcmeDoc?</title>
+  <shortdesc>AcmeDoc is a fictional documentation platform used throughout these labs to practice DITA-OT customization.</shortdesc>
+  <conbody>
+    <p><keyword keyref="product-name"/> helps teams create, manage, and publish structured documentation. It supports multiple output formats including HTML5, PDF, and EPUB.</p>
+
+    <note type="note">This is a <b>note</b> element. In Lab 1, you will style this as a blue callout box.</note>
+
+    <note type="tip" platform="web">This is a <b>tip</b> element. Tips should appear with a green left border after your customization.</note>
+
+    <note type="warning">This is a <b>warning</b> element. Warnings should appear with an orange left border.</note>
+
+    <note type="caution" platform="print">This is a <b>caution</b> element. Cautions should appear with a red left border.</note>
+
+    <section id="key-features">
+      <title>Key features</title>
+      <ul>
+        <li>Structured authoring with DITA XML</li>
+        <li>Multi-channel publishing (HTML5, PDF, EPUB)</li>
+        <li>Content reuse via conref and keyref</li>
+        <li>Conditional filtering with DITAVAL</li>
+        <li>Plugin-based customization</li>
+      </ul>
+    </section>
+
+    <section id="architecture">
+      <title>How it works</title>
+      <p><keyword keyref="product-name"/> uses a pipeline architecture:</p>
+      <ol>
+        <li><b>Author</b> — write topics in DITA XML</li>
+        <li><b>Organize</b> — assemble topics into maps</li>
+        <li><b>Build</b> — run DITA-OT to produce output</li>
+        <li><b>Publish</b> — deploy to web, print, or help system</li>
+      </ol>
+    </section>
+  </conbody>
+</concept>

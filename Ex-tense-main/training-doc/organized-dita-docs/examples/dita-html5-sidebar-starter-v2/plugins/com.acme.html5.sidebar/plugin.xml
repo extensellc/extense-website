@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="com.acme.html5.sidebar" version="1.0.0">
+  <require plugin="org.dita.html5"/>
+  <feature extension="dita.xsl.html5" file="xsl/html5/override.xsl"/>
+  <feature extension="dita.xsl.html5.toc" file="xsl/toc/toc-override.xsl"/>
+</plugin>

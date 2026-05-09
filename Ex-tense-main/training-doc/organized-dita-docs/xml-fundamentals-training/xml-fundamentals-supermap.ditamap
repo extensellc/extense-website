@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "bookmap.dtd">
+<bookmap id="xml-fundamentals-training" xml:lang="en-US">
+
+  <!-- ========================= BOOK TITLE ========================= -->
+  <booktitle>
+    <mainbooktitle>XML Fundamentals Training Guide</mainbooktitle>
+    <booktitlealt>From XML Basics to Your First DITA Project</booktitlealt>
+  </booktitle>
+
+  <!-- ========================= BOOK METADATA ========================= -->
+  <bookmeta>
+    <authorinformation>
+      <organizationinfo>
+        <namedetails>
+          <organizationnamedetails>
+            <organizationname>Extense LLC</organizationname>
+          </organizationnamedetails>
+        </namedetails>
+      </organizationinfo>
+    </authorinformation>
+    <critdates>
+      <created date="2026-01-15"/>
+      <revised modified="2026-01-15"/>
+    </critdates>
+    <bookrights>
+      <copyrfirst><year>2026</year></copyrfirst>
+      <bookowner>
+        <organization>Extense LLC</organization>
+      </bookowner>
+    </bookrights>
+  </bookmeta>
+
+  <!-- ========================= FRONT MATTER ========================= -->
+  <frontmatter>
+    <booklists>
+      <toc/>
+    </booklists>
+    <topicref href="topics/frontmatter/preface.dita"/>
+  </frontmatter>
+
+  <!-- ========================= PART 1: XML FUNDAMENTALS ========================= -->
+  <part navtitle="XML Fundamentals">
+    <topicmeta>
+      <shortdesc>Core XML concepts: syntax rules, elements, attributes, namespaces, and the document tree.</shortdesc>
+    </topicmeta>
+    <mapref href="submaps/part01-xml-fundamentals.ditamap"/>
+  </part>
+
+  <!-- ========================= PART 2: DTD ========================= -->
+  <part navtitle="Document Type Definitions (DTD)">
+    <topicmeta>
+      <shortdesc>Schema validation with DTDs: element declarations, attribute definitions, entities, and the difference between well-formed and valid XML.</shortdesc>
+    </topicmeta>
+    <mapref href="submaps/part02-dtd-validation.ditamap"/>
+  </part>
+
+  <!-- ========================= PART 3: XSD ========================= -->
+  <part navtitle="XML Schema Definition (XSD)">
+    <topicmeta>
+      <shortdesc>Modern schema validation: data types, restrictions, complex types, inheritance, and when to choose XSD over DTD.</shortdesc>
+    </topicmeta>
+    <mapref href="submaps/part03-xsd-schemas.ditamap"/>
+  </part>
+
+  <!-- ========================= PART 4: DITA INTRODUCTION ========================= -->
+  <part navtitle="Introduction to DITA">
+    <topicmeta>
+      <shortdesc>Applying XML knowledge to DITA: information typing, topic types, maps, content reuse, and publishing.</shortdesc>
+    </topicmeta>
+    <mapref href="submaps/part04-dita-introduction.ditamap"/>
+  </part>
+
+  <!-- ========================= APPENDIX: EXERCISES ========================= -->
+  <appendix navtitle="Learner Exercises">
+    <topicmeta>
+      <shortdesc>Hands-on exercises that progressively build XML, DTD, XSD, and DITA skills.</shortdesc>
+    </topicmeta>
+    <mapref href="learner-exercises/exercises.ditamap"/>
+  </appendix>
+
+</bookmap>

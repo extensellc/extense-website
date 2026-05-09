@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="what-is-xml" xml:lang="en-US">
+  <title>What Is XML?</title>
+  <shortdesc>XML (Extensible Markup Language) is a text-based format for representing structured data — designed to be both human-readable and machine-processable.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-04-05"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>XML</indexterm>
+        <indexterm>Extensible Markup Language</indexterm>
+        <indexterm>Markup language</indexterm>
+        <indexterm>Structured data</indexterm>
+      </keywords>
+      <category>taxonomy:xml-fundamentals</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="xml-training" appname="chatbot" id="what-is-xml"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="xml-fundamentals"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="none"/>
+  </prolog>
+  <conbody>
+
+    <section id="definition">
+      <title>What does XML stand for and why does it exist?</title>
+      <p>XML stands for <b>Extensible Markup Language</b>. It was developed by the World Wide Web Consortium (W3C) and became a recommendation in 1998. XML was created to solve a fundamental problem: how to represent structured data in a way that is:</p>
+      <ul>
+        <li><b>Self-describing:</b> The data carries its own labels (element names), so you can understand what each piece means without external documentation.</li>
+        <li><b>Platform-independent:</b> XML is plain text — any programming language, operating system, or tool can read and write it.</li>
+        <li><b>Extensible:</b> Unlike HTML, which has a fixed set of tags, XML lets you define your own elements and attributes for any domain.</li>
+        <li><b>Validatable:</b> You can define rules (DTD, XSD) that specify what structure is allowed, and tools can check compliance automatically.</li>
+      </ul>
+      <p>XML is not a programming language and it does not do anything by itself. It is a format for carrying data between systems, storing configuration, and defining document structures.</p>
+    </section>
+
+    <section id="xml-vs-html">
+      <title>How is XML different from HTML?</title>
+      <p>HTML and XML are both markup languages with angle-bracket syntax, but they serve fundamentally different purposes:</p>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="feature" colwidth="1*"/>
+          <colspec colname="html" colwidth="2*"/>
+          <colspec colname="xml" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Feature</entry>
+              <entry>HTML</entry>
+              <entry>XML</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Purpose</entry>
+              <entry>Display content in web browsers</entry>
+              <entry>Store and transport structured data</entry>
+            </row>
+            <row>
+              <entry>Tag set</entry>
+              <entry>Fixed set of predefined tags (<codeph>&lt;div&gt;</codeph>, <codeph>&lt;p&gt;</codeph>, <codeph>&lt;h1&gt;</codeph>)</entry>
+              <entry>You define your own tags (<codeph>&lt;invoice&gt;</codeph>, <codeph>&lt;patient&gt;</codeph>)</entry>
+            </row>
+            <row>
+              <entry>Strictness</entry>
+              <entry>Browsers forgive errors — unclosed tags, missing quotes</entry>
+              <entry>Parsers reject malformed documents — strict syntax required</entry>
+            </row>
+            <row>
+              <entry>Semantics</entry>
+              <entry>Tags describe presentation (<codeph>&lt;b&gt;</codeph> = bold)</entry>
+              <entry>Tags describe meaning (<codeph>&lt;price&gt;</codeph> = a price value)</entry>
+            </row>
+            <row>
+              <entry>Case sensitivity</entry>
+              <entry>Case-insensitive (<codeph>&lt;DIV&gt;</codeph> = <codeph>&lt;div&gt;</codeph>)</entry>
+              <entry>Case-sensitive (<codeph>&lt;Item&gt;</codeph> ≠ <codeph>&lt;item&gt;</codeph>)</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <note type="tip">Think of HTML as a language for <b>showing</b> data to humans, and XML as a language for <b>carrying</b> data between systems.</note>
+    </section>
+
+    <section id="where-xml-is-used">
+      <title>Where is XML used in the real world?</title>
+      <p>XML is everywhere — even if you do not see it directly:</p>
+      <ul>
+        <li><b>Configuration files:</b> Maven (<codeph>pom.xml</codeph>), Android (<codeph>AndroidManifest.xml</codeph>), Spring Framework, and many build tools use XML for configuration.</li>
+        <li><b>Document formats:</b> Microsoft Office (.docx, .xlsx, .pptx) are ZIP archives containing XML files. LibreOffice uses ODF, also XML-based.</li>
+        <li><b>Data exchange:</b> SOAP web services, banking (ISO 20022), healthcare (HL7 CDA), and government filing systems use XML for data interchange.</li>
+        <li><b>Publishing:</b> DITA, DocBook, and JATS (scientific journals) are XML-based standards for structured documentation.</li>
+        <li><b>Web technologies:</b> SVG (vector graphics), RSS/Atom (feeds), XHTML, and XSLT (transformations) are all XML applications.</li>
+      </ul>
+    </section>
+
+    <section id="a-first-look">
+      <title>Your first look at XML</title>
+      <p>Here is a minimal XML document:</p>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;bookstore&gt;
+  &lt;book category="programming"&gt;
+    &lt;title&gt;Learning XML&lt;/title&gt;
+    &lt;author&gt;Jane Smith&lt;/author&gt;
+    &lt;year&gt;2024&lt;/year&gt;
+    &lt;price currency="USD"&gt;29.95&lt;/price&gt;
+  &lt;/book&gt;
+  &lt;book category="fiction"&gt;
+    &lt;title&gt;The Great Adventure&lt;/title&gt;
+    &lt;author&gt;John Doe&lt;/author&gt;
+    &lt;year&gt;2023&lt;/year&gt;
+    &lt;price currency="USD"&gt;14.99&lt;/price&gt;
+  &lt;/book&gt;
+&lt;/bookstore&gt;</codeblock>
+      <p>Notice how every piece of data is labeled by elements (<codeph>&lt;title&gt;</codeph>, <codeph>&lt;author&gt;</codeph>) and qualified by attributes (<codeph>category="programming"</codeph>, <codeph>currency="USD"</codeph>). The structure is a tree — <codeph>&lt;bookstore&gt;</codeph> contains <codeph>&lt;book&gt;</codeph> elements, which contain child elements.</p>
+    </section>
+
+    <section id="why-learn-xml">
+      <title>Why learn XML today?</title>
+      <p>Despite the rise of JSON for web APIs, XML remains essential because:</p>
+      <ul>
+        <li><b>Schema validation</b> — XML has mature, powerful schema languages (DTD, XSD, RELAX NG) that JSON Schema cannot match for complex document structures.</li>
+        <li><b>Document processing</b> — XSLT and XPath provide a complete transformation ecosystem that has no equivalent in JSON.</li>
+        <li><b>Industry standards</b> — DITA, DocBook, HL7, XBRL, and dozens of critical industry standards are XML-based and will remain so for decades.</li>
+        <li><b>Mixed content</b> — XML handles text intermixed with markup naturally (<codeph>&lt;p&gt;Click &lt;b&gt;Save&lt;/b&gt; to continue.&lt;/p&gt;</codeph>), while JSON cannot.</li>
+      </ul>
+    </section>
+
+  </conbody>
+</concept>

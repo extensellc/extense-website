@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="dita-overview" xml:lang="en-US">
+  <title>DITA Deep Dive</title>
+  <shortdesc>If you've ever seen a documentation program struggle with:</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-01-15"/>
+      <revised modified="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>DITA</indexterm><indexterm>Overview</indexterm><indexterm>Specialization</indexterm><indexterm>Information typing</indexterm>
+      </keywords>
+      <category>taxonomy:introduction</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="dita-overview"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="training"/>
+    <data name="prerequisites" value="dita-intro-guide"/>
+  </prolog>
+  <conbody>
+<section id="what-dita-is-in-practical-terms">
+<title>What DITA is (in practical terms)</title>
+<p><b>Darwin Information Typing Architecture (DITA)</b> is a standard for writing content as <b>structured XML topics</b> that can be <b>reused</b>, <b>assembled</b>, and <b>published</b> to multiple formats (HTML, PDF, help portals, etc.). The “architecture” part is important: DITA is not just a tag set. It is a way to design content so it can evolve and scale.</p>
+<p>If you’ve ever seen a documentation program struggle with:</p>
+<ul>
+  <li>repeated copy‑paste content,</li>
+  <li>inconsistent terminology,</li>
+  <li>many products/variants,</li>
+  <li>many output formats,</li>
+  <li>frequent releases and updates,</li>
+  <li>multiple teams editing at once,</li>
+</ul>
+<p>…DITA exists to reduce those problems by shifting from “write a big document” to “author modular components and assemble them.”</p>
+</section>
+<section id="the-dita-mindset-topics-maps-reuse-publishing">
+<title>The DITA mindset: topics + maps + reuse + publishing</title>
+<p>Almost everything in DITA makes sense if you keep this mental picture:</p>
+<ol>
+  <li>You author <b>topics</b> (small, reusable information units).</li>
+  <li>You assemble topics into deliverables using <b>maps</b> (a map is the publishing “spine”).</li>
+  <li>You reuse content using <b>references</b> (conref, keyref, conkeyref, etc.).</li>
+  <li>You publish through a toolchain (often DITA‑OT, sometimes a CCMS with its own engine).</li>
+  <li>You can evolve the model through <b>specialization</b> (the “Darwin” aspect).</li>
+</ol>
+<p>DITA is designed for teams who want their content to behave like well‑engineered software:</p>
+<ul>
+  <li>stable interfaces (IDs and reuse targets),</li>
+  <li>modular design,</li>
+  <li>controlled vocabulary,</li>
+  <li>repeatable builds,</li>
+  <li>automated validation.</li>
+</ul>
+</section>
+<section id="why-darwin-is-in-the-name">
+<title>Why “Darwin” is in the name</title>
+<p>“Darwin” signals <b>adaptation</b>. You can extend DITA to match your domain without abandoning the ecosystem. In practice, this means you can:</p>
+<ul>
+  <li>specialize elements to represent domain concepts,</li>
+  <li>create constraints that enforce standards,</li>
+  <li>keep the base semantics recognizable so tools can still process it.</li>
+</ul>
+<p>This is not “invent your own XML from scratch.” It’s “extend a known model safely.”</p>
+</section>
+<section id="information-typing-concept-task-reference">
+<title>Information typing: concept, task, reference</title>
+<p>DITA popularized the idea that different user intents deserve different structures:</p>
+<ul>
+  <li><b>Concept</b> topics: explain what something is and why it matters.</li>
+  <li><b>Task</b> topics: explain how to do something step‑by‑step.</li>
+  <li><b>Reference</b> topics: list facts, fields, values, APIs, commands, parameters, tables.</li>
+</ul>
+<p>Why this matters:</p>
+<ul>
+  <li>It drives consistency (every task has prerequisites, steps, results).</li>
+  <li>It helps readers find information faster (users know what to expect).</li>
+  <li>It improves automation (transforms can format tasks differently than reference).</li>
+</ul>
+<p>A DITA program that ignores information typing usually ends up with “generic topics” that are hard to maintain and publish consistently.</p>
+</section>
+<section id="core-components-youll-see-in-real-dita-programs">
+<title>Core components you’ll see in real DITA programs</title>
+<p><b>Topics</b></p>
+<p>Topics are files like:</p>
+<ul>
+  <li><codeph>install.dita</codeph> (task)</li>
+  <li><codeph>what-is-dita.dita</codeph> (concept)</li>
+  <li><codeph>cli-options.dita</codeph> (reference)</li>
+</ul>
+<p>A topic typically includes:</p>
+<ul>
+  <li>a stable <codeph>id</codeph>,</li>
+  <li>a <codeph>&lt;title&gt;</codeph>,</li>
+  <li>a body (taskbody/conbody/refbody),</li>
+  <li>optional metadata in <codeph>&lt;prolog&gt;</codeph>.</li>
+</ul>
+<p><b>Maps</b></p>
+<p>Maps are files like:</p>
+<ul>
+  <li><codeph>getting-started.ditamap</codeph></li>
+  <li><codeph>admin-guide.ditamap</codeph></li>
+  <li><codeph>api-reference.ditamap</codeph></li>
+</ul>
+<p>A map:</p>
+<ul>
+  <li>defines the publication structure (TOC),</li>
+  <li>defines keys and sometimes scope,</li>
+  <li>can define relationships,</li>
+  <li>can define conditional processing rules indirectly (via build config).</li>
+</ul>
+<p><b>Metadata</b></p>
+<p>DITA supports structured metadata:</p>
+<ul>
+  <li>authorship and versioning,</li>
+  <li>product/platform/audience attributes,</li>
+  <li>keywords and taxonomy,</li>
+  <li>short descriptions and abstracts.</li>
+</ul>
+<p>Metadata is not decoration. In an enterprise environment it drives:</p>
+<ul>
+  <li>search relevance,</li>
+  <li>portal faceting,</li>
+  <li>translation segmentation,</li>
+  <li>governance and review workflows.</li>
+</ul>
+<p><b>Reuse mechanisms</b></p>
+<p>DITA’s reuse is not just “copy content.” It includes:</p>
+<ul>
+  <li><b>conref</b>: reuse content by referencing a source element.</li>
+  <li><b>keyref</b>: refer to keys defined in a map (late binding).</li>
+  <li><b>conkeyref</b>: pull content via keys (flexible reuse across contexts).</li>
+  <li><b>content references via maps</b> (topic reuse by including the same topic in multiple maps).</li>
+</ul>
+<p><b>Conditional processing (filtering)</b></p>
+<p>DITA supports publishing different variants:</p>
+<ul>
+  <li>Windows vs Linux,</li>
+  <li>Basic vs Pro,</li>
+  <li>Internal vs External,</li>
+  <li>Region‑specific or customer‑specific.</li>
+</ul>
+<p>This is typically done using:</p>
+<ul>
+  <li>attributes in the source (e.g., <codeph>platform=&quot;windows&quot;</codeph>),</li>
+  <li>filtering rules in build config (e.g., DITAVAL in DITA‑OT).</li>
+</ul>
+<p><b>Specialization and constraints</b></p>
+<p>Advanced programs define:</p>
+<ul>
+  <li>specialization to represent domain semantics,</li>
+  <li>constraints to restrict the model and reduce variability.</li>
+</ul>
+<p>Constraints are often more important than specialization because they control author behavior.</p>
+</section>
+<section id="when-dita-is-a-great-fit">
+<title>When DITA is a great fit</title>
+<p>DITA shines when you have at least one of these:</p>
+<ul>
+  <li><b>Multiple deliverables</b> from a single source (HTML + PDF + portal).</li>
+  <li><b>High reuse</b> (warnings, procedures, UI strings, legal statements).</li>
+  <li><b>Complex products</b> with many settings and options.</li>
+  <li><b>Rapid releases</b> with continuous updates.</li>
+  <li><b>Multiple product variants</b> requiring conditional content.</li>
+  <li><b>Large author teams</b> where structure reduces inconsistency.</li>
+</ul>
+<p>If you have a single small doc set with minimal reuse and only HTML output, DITA can be more effort than it’s worth—unless your organization already runs a DITA platform and needs standardization.</p>
+</section>
+<section id="dita-vs-alternatives-practical-comparison">
+<title>DITA vs. alternatives (practical comparison)</title>
+<p><b>DITA vs Unstructured Formats</b></p>
+<p>Lightweight formats like Markdown or flat HTML are fast to write. DITA is structured and scalable.</p>
+<p>Unstructured formats are often ideal for:</p>
+<ul>
+  <li>developer docs close to code,</li>
+  <li>small teams,</li>
+  <li>fast iteration with minimal publishing complexity.</li>
+</ul>
+<p>DITA is often ideal for:</p>
+<ul>
+  <li>complex product documentation,</li>
+  <li>multi‑format deliverables,</li>
+  <li>controlled reuse and variants,</li>
+  <li>enterprise governance.</li>
+</ul>
+<p>A hybrid strategy is common:</p>
+<ul>
+  <li>engineers write in lightweight formats for dev-facing docs,</li>
+  <li>tech pubs writes in DITA for user-facing manuals and regulated outputs,</li>
+  <li>publishing pipelines unify the experience in a portal.</li>
+</ul>
+<p><b>DITA vs DocBook</b></p>
+<p>Both are XML-based publishing systems. DITA is topic-oriented and reuse-centric; DocBook is traditionally book/chapter oriented (though you can do modular structures). DITA’s key systems and specialization model are a differentiator for large reuse programs.</p>
+<p><b>DITA vs S1000D</b></p>
+<p>S1000D is a defense/aerospace standard with strict structures, data modules, and business rules. DITA is more flexible and widely used across industries. Organizations sometimes map between them, but they are not interchangeable.</p>
+</section>
+<section id="how-dita-programs-are-organized-the-content-system-view">
+<title>How DITA programs are organized (the “content system” view)</title>
+<p>A successful DITA adoption is as much <b>operational design</b> as it is technology. Typical components:</p>
+<ol>
+  <li><b>Content model</b></li>
+</ol>
+<p>   - which topic types you use,    - which domains are enabled,    - what constraints exist,    - how IDs and reuse targets are structured.</p>
+<ol>
+  <li><b>Information architecture</b></li>
+</ol>
+<p>   - map patterns,    - navigation approach,    - link strategy,    - modularization and reuse boundaries.</p>
+<ol>
+  <li><b>Toolchain</b></li>
+</ol>
+<p>   - authoring (XML editor, CCMS),    - validation and build automation,    - publishing engine and customization,    - review workflows.</p>
+<ol>
+  <li><b>Governance</b></li>
+</ol>
+<p>   - naming conventions,    - controlled vocabularies for filtering,    - content ownership for shared snippets,    - change control for keys and reuse targets.</p>
+<p>If you skip governance, DITA often becomes “XML chaos” instead of “structured content.”</p>
+</section>
+<section id="a-realistic-first-dita-project-what-success-looks-like">
+<title>A realistic first DITA project (what success looks like)</title>
+<p>A good initial DITA project is not “convert the entire manual.” Instead, aim for a small deliverable with clear reuse potential:</p>
+<ul>
+  <li>Build a <b>Getting Started</b> guide:</li>
+</ul>
+<p>  - 10–25 topics,   - a simple map,   - a small reuse library (warnings, standard steps),   - a key system for product names/URLs.</p>
+<p>Then add complexity gradually:</p>
+<ul>
+  <li>Introduce filtering for platform variants.</li>
+  <li>Introduce project files (repeatable builds).</li>
+  <li>Introduce PDF styling and HTML theming.</li>
+  <li>Introduce more formal taxonomy (subject scheme).</li>
+</ul>
+</section>
+<section id="common-misconceptions-and-the-reality">
+<title>Common misconceptions (and the reality)</title>
+<p><b>“DITA is just XML tags”</b></p>
+<p>DITA is an ecosystem: modeling, reuse, build pipelines, and specialization.</p>
+<p><b>“DITA automatically makes content reusable”</b></p>
+<p>DITA provides mechanisms, but reuse requires design:</p>
+<ul>
+  <li>stable IDs,</li>
+  <li>consistent chunking,</li>
+  <li>disciplined authoring,</li>
+  <li>governance.</li>
+</ul>
+<p><b>“You must use a CCMS to use DITA”</b></p>
+<p>You can start with files + Git + DITA‑OT. A CCMS becomes valuable at scale for workflow, translation management, reuse governance, and metadata enforcement.</p>
+<p><b>“Specialization is mandatory”</b></p>
+<p>Most teams succeed using base DITA plus constraints and controlled vocabularies. Specialization is powerful but best introduced after you can publish and maintain reliably.</p>
+</section>
+<section id="what-good-dita-looks-like">
+<title>What “good DITA” looks like</title>
+<p>Good DITA content is:</p>
+<ul>
+  <li>modular (each topic has a single purpose),</li>
+  <li>semantically consistent (use task for procedures),</li>
+  <li>reusable (common content is referenced, not copied),</li>
+  <li>publishable (builds are repeatable and validated),</li>
+  <li>governed (attributes and keys are controlled).</li>
+</ul>
+<p>A quick self-check:</p>
+<ul>
+  <li>Can you reuse the same topic in two different maps without editing it?</li>
+  <li>Can you publish two product variants using filtering?</li>
+  <li>Can you change a product name in one place (keys) and have it update everywhere?</li>
+  <li>Can your build fail fast when references are broken?</li>
+</ul>
+<p>If the answer is “yes,” you’re doing DITA the way it was designed.</p>
+</section>
+<section id="analytics-instrumentation">
+<title>Analytics and Instrumentation</title>
+<p>Track which overview topics are most viewed and where users drop off. Use analytics to improve the onboarding experience.</p>
+</section>
+<section id="personalization-conditional-processing">
+<title>Personalization and Conditional Processing</title>
+<p>Use conditional content to tailor the overview for different backgrounds (writer, developer, manager).</p>
+</section>
+<section id="chatbot-nlp-integration">
+<title>Integrating with Conversational AI and NLP</title>
+<p>Enable users to ask a chatbot “What is DITA?” and receive context-aware answers from this topic.</p>
+</section>
+<section id="continuous-improvement-feedback">
+<title>Continuous Improvement and Feedback Loops</title>
+<p>Add a prompt for users to rate the overview and suggest improvements. Use analytics and feedback to refine onboarding content.</p>
+</section>
+  </conbody>
+</concept>

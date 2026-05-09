@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="multi-channel-output-formats" xml:lang="en-US">
+  <title>Multi-Channel Output Formats</title>
+  <shortdesc>DITA-OT transforms structured source into HTML5, PDF, EPUB, Markdown, and custom formats — each from the same map with no content duplication.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Output formats</indexterm><indexterm>HTML5</indexterm><indexterm>PDF</indexterm>
+        <indexterm>EPUB</indexterm><indexterm>Multi-channel</indexterm>
+      </keywords>
+      <category>taxonomy:publishing</category>
+      <audience type="user" othertype="build-engineer"/>
+      <audience type="user" othertype="technical-writer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="multi-channel-output-formats"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT35M"/>
+    <data name="content-domain" value="publishing"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="dita-publishing"/>
+  </prolog>
+  <conbody>
+
+    <section id="one-source-many-outputs">
+      <title>One source, many outputs</title>
+      <p>The core value of DITA publishing is <b>single-source, multi-channel delivery</b>.
+        You author once in structured XML, then transform the same content into every format
+        your audience needs — without maintaining parallel copies.</p>
+      <p>DITA-OT ships with built-in transforms (called <term>transtypes</term>) and supports
+        additional formats through installable plugins.</p>
+    </section>
+
+    <section id="built-in-transtypes">
+      <title>Built-in transtypes</title>
+      <p>DITA-OT includes these transforms out of the box:</p>
+      <table id="transtype-table">
+        <title>Built-in DITA-OT transtypes</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="1*"/>
+          <colspec colname="c2" colwidth="2*"/>
+          <colspec colname="c3" colwidth="1.5*"/>
+          <thead>
+            <row>
+              <entry>Transtype</entry>
+              <entry>Description</entry>
+              <entry>Use case</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>html5</codeph></entry>
+              <entry>Modern HTML5 with responsive navigation, search index, and CSS hooks</entry>
+              <entry>Documentation portals, internal wikis</entry>
+            </row>
+            <row>
+              <entry><codeph>pdf</codeph></entry>
+              <entry>XSL-FO pipeline rendered via Apache FOP — produces print-ready PDFs</entry>
+              <entry>Regulatory filings, printed manuals</entry>
+            </row>
+            <row>
+              <entry><codeph>xhtml</codeph></entry>
+              <entry>Legacy XHTML 1.0 output for older systems</entry>
+              <entry>Embedding in legacy CMS platforms</entry>
+            </row>
+            <row>
+              <entry><codeph>markdown</codeph> / <codeph>markdown_github</codeph></entry>
+              <entry>Exports DITA content back to Markdown for developer workflows</entry>
+              <entry>GitHub READMEs, developer docs</entry>
+            </row>
+            <row>
+              <entry><codeph>tocjs</codeph></entry>
+              <entry>HTML with JavaScript-driven table of contents</entry>
+              <entry>Standalone doc bundles</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="plugin-based-formats">
+      <title>Plugin-based formats</title>
+      <p>The DITA-OT plugin registry and community provide additional transtypes:</p>
+      <ul>
+        <li><b>EPUB</b> — <codeph>org.dita.epub</codeph> generates EPUB 3 eBooks for e-readers
+          and mobile reading apps.</li>
+        <li><b>Normalized DITA</b> — <codeph>org.dita.normalize</codeph> resolves all conrefs
+          and keyrefs into flat, standalone topics for CMS import.</li>
+        <li><b>JSON / YAML</b> — Community plugins can export topic metadata and content as
+          structured data for API documentation or chatbot ingestion.</li>
+        <li><b>Custom HTML5</b> — Branded plugins (like <codeph>com.extense.html5.branded</codeph>)
+          extend the built-in HTML5 transform with custom CSS, headers, footers, and scripts.</li>
+        <li><b>Custom PDF</b> — Branded plugins (like <codeph>com.extense.pdf.branded</codeph>)
+          override FO templates for corporate fonts, logos, and page layouts.</li>
+      </ul>
+      <p>Install a plugin with:</p>
+      <codeblock outputclass="language-bash">dita --install &lt;plugin-zip-or-url&gt;</codeblock>
+    </section>
+
+    <section id="choosing-the-right-format">
+      <title>Choosing the right format</title>
+      <p>Match the output format to the delivery channel:</p>
+      <ul>
+        <li><b>Web portal</b> → HTML5 (with branded plugin for navigation and styling)</li>
+        <li><b>Printed manual or regulatory submission</b> → PDF</li>
+        <li><b>E-reader / offline mobile</b> → EPUB</li>
+        <li><b>Developer repository</b> → Markdown (GitHub-flavored)</li>
+        <li><b>AI / chatbot pipeline</b> → JSON export or normalized DITA for RAG ingestion</li>
+        <li><b>CMS migration</b> → Normalized DITA with all references resolved</li>
+      </ul>
+      <p>You can — and should — build multiple formats from the same map in a single CI pipeline.
+        This is the <b>write-once-publish-everywhere</b> promise of DITA.</p>
+    </section>
+
+    <section id="format-specific-considerations">
+      <title>Format-specific considerations</title>
+      <p><b>HTML5</b></p>
+      <ul>
+        <li>Use <codeph>args.cssroot</codeph> and <codeph>args.css</codeph> to inject custom stylesheets.</li>
+        <li>The <codeph>args.hdr</codeph> and <codeph>args.ftr</codeph> parameters add header/footer includes.</li>
+        <li>Search indexes are generated automatically — enable with <codeph>args.indexshow=yes</codeph>.</li>
+      </ul>
+      <p><b>PDF</b></p>
+      <ul>
+        <li>PDF generation uses Apache FOP by default. For higher fidelity, consider Antenna House or RenderX XEP.</li>
+        <li>Use <codeph>args.chapter.layout=MINITOC</codeph> to add mini table-of-contents at chapter starts.</li>
+        <li>Custom fonts require FOP configuration changes (see the XSLT customization part of this guide).</li>
+      </ul>
+      <p><b>EPUB</b></p>
+      <ul>
+        <li>Cover images: set via <codeph>args.epub.coverimage</codeph>.</li>
+        <li>EPUB 3 supports embedded video and audio — DITA <codeph>&lt;object&gt;</codeph> elements map automatically.</li>
+      </ul>
+      <p><b>Markdown</b></p>
+      <ul>
+        <li>Markdown export is lossy — DITA metadata, conrefs, and keys do not survive the round-trip.</li>
+        <li>Use markdown export for developer consumption, not as an authoring format.</li>
+      </ul>
+    </section>
+
+    <section id="building-multiple-formats">
+      <title>Building multiple formats from one map</title>
+      <p>Use a DITA-OT project file (<codeph>.xml</codeph>) to define multiple deliverables in a single build:</p>
+      <codeblock outputclass="language-xml">&lt;project xmlns="https://www.dita-ot.org/project"&gt;
+  &lt;context name="training-guide"&gt;
+    &lt;input href="extense-supermap.ditamap"/&gt;
+  &lt;/context&gt;
+  &lt;deliverable name="html5"&gt;
+    &lt;context idref="training-guide"/&gt;
+    &lt;output href="./output/html5"/&gt;
+    &lt;publication transtype="html5"&gt;
+      &lt;param name="args.css" value="brand.css"/&gt;
+    &lt;/publication&gt;
+  &lt;/deliverable&gt;
+  &lt;deliverable name="pdf"&gt;
+    &lt;context idref="training-guide"/&gt;
+    &lt;output href="./output/pdf"/&gt;
+    &lt;publication transtype="pdf"&gt;
+      &lt;param name="args.chapter.layout" value="MINITOC"/&gt;
+    &lt;/publication&gt;
+  &lt;/deliverable&gt;
+&lt;/project&gt;</codeblock>
+      <p>Run with: <codeph>dita --project=build.xml</codeph></p>
+    </section>
+
+  </conbody>
+</concept>

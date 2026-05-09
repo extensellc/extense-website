@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="dtd-attributes-entities" xml:lang="en-US">
+  <title>DTD Attribute Declarations and Entities</title>
+  <shortdesc>Attribute declarations in a DTD specify which attributes each element can carry, their data types, and whether they are required or optional — while entities provide reusable content shortcuts.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-04-05"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>ATTLIST</indexterm>
+        <indexterm>DTD attributes</indexterm>
+        <indexterm>XML entities</indexterm>
+        <indexterm>ENTITY declaration</indexterm>
+        <indexterm>Parameter entity</indexterm>
+      </keywords>
+      <category>taxonomy:xml-schema</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="xml-training" appname="chatbot" id="dtd-attributes-entities"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="xml-schema"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="dtd-element-declarations"/>
+  </prolog>
+  <conbody>
+
+    <section id="attlist-syntax">
+      <title>Attribute declaration syntax</title>
+      <p>Attributes are declared using <codeph>&lt;!ATTLIST&gt;</codeph>:</p>
+      <codeblock outputclass="language-xml">&lt;!ATTLIST element-name
+    attribute-name  type  default-behavior
+&gt;</codeblock>
+      <p>You can declare multiple attributes for the same element in a single ATTLIST declaration:</p>
+      <codeblock outputclass="language-xml">&lt;!ATTLIST book
+    isbn      CDATA     #REQUIRED
+    category  CDATA     #IMPLIED
+    format    (hardcover | paperback | ebook)  "paperback"
+&gt;</codeblock>
+    </section>
+
+    <section id="attribute-types">
+      <title>Attribute types</title>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="type" colwidth="1*"/>
+          <colspec colname="meaning" colwidth="2*"/>
+          <colspec colname="example" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Type</entry>
+              <entry>Meaning</entry>
+              <entry>Example</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>CDATA</codeph></entry>
+              <entry>Any character data (free text)</entry>
+              <entry><codeph>title CDATA #REQUIRED</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>ID</codeph></entry>
+              <entry>Unique identifier within the document</entry>
+              <entry><codeph>id ID #REQUIRED</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>IDREF</codeph></entry>
+              <entry>Reference to an ID in the same document</entry>
+              <entry><codeph>authorRef IDREF #IMPLIED</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>IDREFS</codeph></entry>
+              <entry>Space-separated list of ID references</entry>
+              <entry><codeph>relatedTo IDREFS #IMPLIED</codeph></entry>
+            </row>
+            <row>
+              <entry>Enumeration</entry>
+              <entry>One value from a fixed list</entry>
+              <entry><codeph>(small | medium | large)</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>NMTOKEN</codeph></entry>
+              <entry>A name token (letters, digits, hyphens, underscores, periods)</entry>
+              <entry><codeph>status NMTOKEN #IMPLIED</codeph></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="default-behaviors">
+      <title>Default behaviors</title>
+      <table>
+        <tgroup cols="2">
+          <colspec colname="behavior" colwidth="1*"/>
+          <colspec colname="meaning" colwidth="3*"/>
+          <thead>
+            <row>
+              <entry>Default</entry>
+              <entry>Meaning</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>#REQUIRED</codeph></entry>
+              <entry>The attribute must be present in every instance of the element</entry>
+            </row>
+            <row>
+              <entry><codeph>#IMPLIED</codeph></entry>
+              <entry>The attribute is optional — no default value if omitted</entry>
+            </row>
+            <row>
+              <entry><codeph>#FIXED "value"</codeph></entry>
+              <entry>The attribute always has this value (cannot be changed by the author)</entry>
+            </row>
+            <row>
+              <entry><codeph>"value"</codeph></entry>
+              <entry>Default value used when the attribute is not specified</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="attribute-example">
+      <title>Complete attribute example</title>
+      <codeblock outputclass="language-xml">&lt;!-- DTD declarations --&gt;
+&lt;!ELEMENT product (name, description?)&gt;
+&lt;!ATTLIST product
+    id        ID                              #REQUIRED
+    category  (electronics | clothing | food)  #REQUIRED
+    status    (active | discontinued)          "active"
+    sku       CDATA                           #IMPLIED
+&gt;
+
+&lt;!-- Valid XML instance --&gt;
+&lt;product id="p001" category="electronics" sku="EL-1234"&gt;
+  &lt;name&gt;Wireless Mouse&lt;/name&gt;
+  &lt;description&gt;Ergonomic design with long battery life.&lt;/description&gt;
+&lt;/product&gt;</codeblock>
+      <p>In this example, <codeph>status</codeph> defaults to <codeph>"active"</codeph> because it was not specified in the XML.</p>
+    </section>
+
+    <section id="general-entities">
+      <title>General entities: Reusable text shortcuts</title>
+      <p>A general entity defines a reusable text fragment that can be referenced by name in XML documents:</p>
+      <codeblock outputclass="language-xml">&lt;!-- DTD --&gt;
+&lt;!ENTITY company-name "Acme Corporation"&gt;
+&lt;!ENTITY copyright "Copyright 2026 Acme Corporation. All rights reserved."&gt;
+
+&lt;!-- Used in XML --&gt;
+&lt;footer&gt;&amp;copyright;&lt;/footer&gt;
+&lt;publisher&gt;&amp;company-name;&lt;/publisher&gt;</codeblock>
+      <p>When the parser processes the document, it replaces <codeph>&amp;company-name;</codeph> with the text <codeph>Acme Corporation</codeph>.</p>
+    </section>
+
+    <section id="parameter-entities">
+      <title>Parameter entities: Reusable DTD fragments</title>
+      <p>Parameter entities are used <b>within DTDs</b> (not in XML documents) to factor out repeated declarations. They use <codeph>%</codeph> instead of <codeph>&amp;</codeph>:</p>
+      <codeblock outputclass="language-xml">&lt;!-- Define a reusable content model --&gt;
+&lt;!ENTITY % inline-content "(#PCDATA | bold | italic | code)*"&gt;
+
+&lt;!-- Use it in multiple element declarations --&gt;
+&lt;!ELEMENT paragraph %inline-content;&gt;
+&lt;!ELEMENT note %inline-content;&gt;
+&lt;!ELEMENT warning %inline-content;&gt;</codeblock>
+      <p>DITA's DTD files make extensive use of parameter entities for modularity and specialization. This is how DITA allows new topic types to extend the base content models.</p>
+    </section>
+
+    <section id="external-entities">
+      <title>External entities</title>
+      <p>External entities reference content from another file:</p>
+      <codeblock outputclass="language-xml">&lt;!-- Include content from an external file --&gt;
+&lt;!ENTITY chapter1 SYSTEM "chapter1.xml"&gt;
+
+&lt;!-- Used in the document --&gt;
+&lt;book&gt;
+  &amp;chapter1;
+&lt;/book&gt;</codeblock>
+      <note type="warning">External entities can be a security risk (XML External Entity attacks — XXE). Modern XML processors often disable external entity resolution by default. When processing untrusted XML, always disable external entity loading.</note>
+    </section>
+
+    <section id="dtd-limitations">
+      <title>Limitations of DTDs</title>
+      <p>DTDs have served XML well since 1998, but they have significant limitations that led to the creation of XML Schema (XSD):</p>
+      <ul>
+        <li><b>No data types:</b> All text content is <codeph>#PCDATA</codeph> — you cannot specify that an element must contain a number, date, or email address.</li>
+        <li><b>No namespace support:</b> DTDs were designed before XML namespaces existed and have no way to validate namespace-qualified documents.</li>
+        <li><b>Non-XML syntax:</b> DTD declarations use their own syntax, not XML. This means you cannot use XML tools to process DTDs.</li>
+        <li><b>Limited occurrence control:</b> You can say "one or more" (<codeph>+</codeph>) but not "between 2 and 5".</li>
+        <li><b>No context-sensitive rules:</b> An element always has the same content model regardless of where it appears in the tree.</li>
+      </ul>
+      <p>Despite these limitations, DTDs remain widely used — DITA 1.x uses DTDs as its primary grammar, and many legacy XML systems depend on them.</p>
+    </section>
+
+  </conbody>
+</concept>

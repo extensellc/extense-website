@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="toc-grouping" xml:lang="en-US">
+  <title>TOC grouping with topichead/topicgroup (non-clickable headings)</title>
+  <shortdesc>Use topichead and topicgroup elements to create non-clickable navigation headings that organize the sidebar TOC without requiring landing pages.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>topichead</indexterm><indexterm>topicgroup</indexterm><indexterm>TOC grouping</indexterm><indexterm>Navigation</indexterm>
+      </keywords>
+      <category>taxonomy:publishing</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="technical-writer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="toc-grouping"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT10M"/>
+    <data name="content-domain" value="publishing"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="medium"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="sidebar-toc-chunking-baseline"/>
+  </prolog>
+  <conbody>
+<p>For clean navigation headings that are <b>non-clickable</b>, use:</p>
+<ul>
+  <li><codeph>&lt;topichead navtitle=&quot;...&quot;&gt; ... &lt;/topichead&gt;</codeph> for headings</li>
+  <li><codeph>&lt;topicgroup navtitle=&quot;...&quot;&gt; ... &lt;/topicgroup&gt;</codeph> for grouping containers</li>
+</ul>
+<p>Example:</p>
+<codeblock outputclass="language-xml">&lt;map&gt;
+  &lt;title&gt;Docs&lt;/title&gt;
+
+  &lt;topichead navtitle=&quot;Getting Started&quot;&gt;
+    &lt;topicref href=&quot;topics/intro.dita&quot;/&gt;
+    &lt;topicref href=&quot;topics/install.dita&quot;/&gt;
+  &lt;/topichead&gt;
+
+  &lt;topicgroup navtitle=&quot;Reference&quot;&gt;
+    &lt;topicref href=&quot;topics/cli.dita&quot;/&gt;
+    &lt;topicref href=&quot;topics/api.dita&quot;/&gt;
+  &lt;/topicgroup&gt;
+&lt;/map&gt;</codeblock>
+<p>This keeps the sidebar TOC tidy without forcing landing pages for every group.</p>
+  </conbody>
+</concept>

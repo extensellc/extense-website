@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="safe-customization-xslt-import" xml:lang="en-US">
+  <title>Safe Customization Strategy: XSLT-Import Overrides</title>
+  <shortdesc>The recommended customization approach uses XSLT-import extension points so plug-ins override only what they need while remaining upgrade-safe.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>XSLT import</indexterm><indexterm>customization</indexterm><indexterm>override</indexterm><indexterm>upgrade-safe</indexterm>
+      </keywords>
+      <category>taxonomy:customization</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="safe-customization-xslt-import"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="customization"/>
+    <data name="content-intent" value="best-practice"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="xml-engineering"/>
+    <data name="prerequisites" value="extension-points-fundamentals"/>
+  </prolog>
+  <conbody>
+
+    <section id="why-best-default">
+      <title>Why this is the best default strategy</title>
+      <p>DITA-OT supports <b>XSLT-import extension points</b>, where the plug-in installer adds an <codeph>xsl:import</codeph> statement to default code so your override becomes part of the normal build.</p>
+      <ul>
+        <li>No edits to toolkit core</li>
+        <li>Minimal overrides (only what you need)</li>
+        <li>Upgrade-safe: you import the shipped transform and override specific templates</li>
+      </ul>
+    </section>
+
+    <section id="minimal-plugin-xml">
+      <title>Minimal HTML5 XSLT override plugin.xml</title>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml-model href="https://www.dita-ot.org/rng/plugin.rnc" type="application/relax-ng-compact-syntax"?&gt;
+&lt;plugin id="com.yourco.html5.custom" version="1.0.0"&gt;
+  &lt;require plugin="org.dita.html5"/&gt;
+  &lt;feature extension="dita.xsl.html5" file="xsl/html5/override.xsl"/&gt;
+&lt;/plugin&gt;</codeblock>
+      <ul>
+        <li>The <codeph>plugin.xml</codeph> structure and validation method are described in the official docs.</li>
+        <li>The XSLT-import mechanism and how it is integrated are described in the XSLT-import extension point docs.</li>
+      </ul>
+    </section>
+
+    <section id="override-xsl-pattern">
+      <title>override.xsl pattern</title>
+      <codeblock outputclass="language-xml">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"&gt;
+  &lt;xsl:import href="plugin:org.dita.html5:xsl/dita2html5.xsl"/&gt;
+  &lt;!-- your overrides here --&gt;
+&lt;/xsl:stylesheet&gt;</codeblock>
+    </section>
+
+  </conbody>
+</concept>

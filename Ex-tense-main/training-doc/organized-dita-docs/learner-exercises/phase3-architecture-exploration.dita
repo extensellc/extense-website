@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="phase3-architecture-exploration">
+  <title>Phase 3E Exercise: DITA-OT Architecture Exploration</title>
+  <shortdesc>Trace the DITA-OT preprocessing pipeline, inspect temporary files, and map extension points. Primary track for software engineers.</shortdesc>
+  <prolog>
+    <metadata>
+      <audience type="user" experiencelevel="general"/>
+      <othermeta name="persona" content="Engineer"/>
+      <othermeta name="phase" content="3E"/>
+      <othermeta name="estimated-time" content="60-90 minutes"/>
+    </metadata>
+  </prolog>
+  <taskbody>
+    <prereq>
+      <ul>
+        <li>Completed Phase 2 exercises (TaskFlow docs with map and reuse)</li>
+        <li>Read Part 7 topics: DITA-OT Developer Handbook, OT Mental Model, Preprocessing Deep Dive</li>
+        <li>Familiarity with XML and command-line tools</li>
+      </ul>
+    </prereq>
+
+    <context>
+      <p>Before building plugins, you need to understand what DITA-OT does internally.
+      This exercise has you run builds with debug flags and inspect the intermediate
+      files that DITA-OT produces — the "temp" directory is where the magic happens.</p>
+    </context>
+
+    <steps>
+      <!-- Exercise 3E.1: Debug build -->
+      <step>
+        <cmd>Run a debug build to see the full processing log.</cmd>
+        <info>
+          <codeblock>dita -i taskflow-docs/taskflow.ditamap -f html5 \
+  -o out/taskflow-debug \
+  --debug \
+  --temp=temp/taskflow-debug 2>&amp;1 | tee build-debug.log</codeblock>
+          <p>Key flags:</p>
+          <ul>
+            <li><codeph>--debug</codeph> — maximum verbosity in the log</li>
+            <li><codeph>--temp</codeph> — preserves the temp directory (normally cleaned up)</li>
+          </ul>
+        </info>
+        <stepresult>
+          <p>The temp directory is preserved at <filepath>temp/taskflow-debug/</filepath> and
+          the full log is saved to <filepath>build-debug.log</filepath>.</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise 3E.2: Explore temp directory -->
+      <step>
+        <cmd>Explore the temp directory to understand preprocessing stages.</cmd>
+        <info>
+          <codeblock># List the temp directory structure
+find temp/taskflow-debug -type f | head -30
+
+# Look at the key files
+ls -la temp/taskflow-debug/</codeblock>
+          <p><b>Key files to examine:</b></p>
+          <ul>
+            <li><codeph>*.dita</codeph> files — preprocessed versions of your topics
+            (conrefs resolved, keys expanded)</li>
+            <li><codeph>job.xml</codeph> — the build configuration DITA-OT generated</li>
+            <li>Any <codeph>.list</codeph> files — track which files go where</li>
+          </ul>
+        </info>
+      </step>
+
+      <!-- Exercise 3E.3: Compare before/after preprocessing -->
+      <step>
+        <cmd>Compare your original topic with its preprocessed version in temp.</cmd>
+        <info>
+          <codeblock># Compare the original and preprocessed versions
+diff taskflow-docs/installing-taskflow.dita \
+     temp/taskflow-debug/installing-taskflow.dita</codeblock>
+          <p><b>What to look for:</b></p>
+          <ul>
+            <li>Conref elements replaced with actual content</li>
+            <li>Keyref elements resolved to their values</li>
+            <li>Added <codeph>xtrf</codeph> and <codeph>xtrc</codeph> tracing attributes</li>
+            <li>Class attributes normalized</li>
+          </ul>
+          <note type="tip">This is how DITA-OT separates concerns: preprocessing handles
+          content assembly (conref, keyref, filtering), then the transform only deals
+          with presentation. Understanding this split is essential for plugin development.</note>
+        </info>
+      </step>
+
+      <!-- Exercise 3E.4: Trace the preprocessing log -->
+      <step>
+        <cmd>Trace preprocessing stages in the debug log.</cmd>
+        <info>
+          <codeblock># Find preprocessing stage markers
+grep -n "preprocess\|keyref\|conref\|maplink\|chunk" build-debug.log | head -20
+
+# Find the transform stage
+grep -n "transform\|xslt\|html5" build-debug.log | head -20</codeblock>
+          <p><b>Document what you find:</b> List the preprocessing stages in order.
+          Typical stages include: gen-list, debug-filter, mapref, keyref, conref,
+          maplink, move-meta, chunk.</p>
+        </info>
+      </step>
+
+      <!-- Exercise 3E.5: Explore extension points -->
+      <step>
+        <cmd>List all available extension points for the HTML5 transform.</cmd>
+        <info>
+          <codeblock># List installed plugins
+dita plugins
+
+# Check what extension points exist
+# Look at the HTML5 plugin's plugin.xml
+find "$(dita --install-dir 2>/dev/null || echo $DITA_HOME)" \
+  -path "*/org.dita.html5/plugin.xml" -exec cat {} \;</codeblock>
+          <p><b>Key extension points to identify:</b></p>
+          <ul>
+            <li><codeph>dita.xsl.html5</codeph> — XSLT stylesheet override</li>
+            <li><codeph>dita.conductor.html5.param</codeph> — parameter injection</li>
+            <li><codeph>dita.xsl.html5.cover</codeph> — cover page override</li>
+            <li><codeph>dita.xsl.html5.toc</codeph> — TOC override</li>
+          </ul>
+          <note type="important">Extension points are the <b>only</b> safe way to customize
+          DITA-OT output. Direct modification of built-in plugin files will break on upgrade.</note>
+        </info>
+      </step>
+
+      <!-- Exercise 3E.6: Examine the HTML5 transform -->
+      <step>
+        <cmd>Read the main HTML5 XSLT stylesheet to understand the transform architecture.</cmd>
+        <info>
+          <codeblock># Find the main HTML5 XSLT file
+find "$(dita --install-dir 2>/dev/null || echo $DITA_HOME)" \
+  -path "*/org.dita.html5/xsl/dita2html5.xsl" -exec head -50 {} \;</codeblock>
+          <p>Note how it uses <codeph>&lt;xsl:import&gt;</codeph> to compose multiple
+          stylesheets. Your plugin overrides will use the same import mechanism.</p>
+        </info>
+      </step>
+
+      <!-- Exercise 3E.7: Build pipeline diagram -->
+      <step>
+        <cmd>Draw the DITA-OT processing pipeline from your observations.</cmd>
+        <info>
+          <p>Based on what you learned, sketch or write out the pipeline:</p>
+          <ol>
+            <li><b>Input:</b> .ditamap + .dita files</li>
+            <li><b>Preprocessing:</b> (list the stages you found)</li>
+            <li><b>Temp directory:</b> resolved, filtered content</li>
+            <li><b>Transform:</b> XSLT stylesheets convert to target format</li>
+            <li><b>Output:</b> HTML5/PDF/etc. files</li>
+          </ol>
+          <p>Compare your diagram with the architecture diagram in the training materials.</p>
+        </info>
+      </step>
+    </steps>
+
+    <result>
+      <p><b>Self-Check — you should now be able to:</b></p>
+      <ul>
+        <li>✓ Run a debug build and preserve temp files</li>
+        <li>✓ Explain what preprocessing does (conref, keyref, filtering resolution)</li>
+        <li>✓ Find and read preprocessed files in the temp directory</li>
+        <li>✓ Identify the key extension points for customization</li>
+        <li>✓ Trace the full pipeline from input map to output HTML</li>
+        <li>✓ Explain why extension points are the safe customization path</li>
+      </ul>
+    </result>
+  </taskbody>
+</task>

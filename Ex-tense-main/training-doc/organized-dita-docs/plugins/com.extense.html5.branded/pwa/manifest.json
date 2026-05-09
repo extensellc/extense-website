@@ -1,0 +1,17 @@
+{
+  "name": "Extense DITA Training Guide",
+  "short_name": "DITA Guide",
+  "description": "Complete DITA training — from intelligent content strategy through advanced XSLT customization and AI-ready pipelines.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8f9fb",
+  "theme_color": "#1D397C",
+  "categories": ["education", "books"],
+  "icons": [
+    { "src": "icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /training-doc/
+Disallow: /images/
+
+Sitemap: https://www.ex-tense.co/sitemap.xml

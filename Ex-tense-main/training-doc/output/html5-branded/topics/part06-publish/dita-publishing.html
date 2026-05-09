@@ -1,0 +1,1091 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en-us"><head><meta charset="UTF-8"><meta name="copyright" content="(C) Copyright 2026"><meta name="generator" content="DITA-OT"><meta name="description" content="DITA is a source format, not an output. Publishing is the process of:"><title>Publishing with DITA-OT</title><meta name="generator" content="Extense LLC — DITA-OT Branded Plugin v1.0"><meta name="theme-color" content="#1D397C"><link rel="manifest" href="../../manifest.json"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="DITA Guide"><link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><link rel="stylesheet" href="../../css/fonts.css"><script>
+      (function(){
+        try {
+          var w = localStorage.getItem('extense-sidebar-width');
+          if (w) { var n = parseInt(w,10); if (n >= 180 && n <= 600) document.documentElement.style.setProperty('--sidebar-w', n+'px'); }
+        } catch(e){}
+      })();
+    </script><script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('../../service-worker.js', { scope: '../../' })
+            .then(function(reg) { console.log('[PWA] SW registered, scope:', reg.scope); })
+            .catch(function(err) { console.warn('[PWA] SW registration failed:', err); });
+        });
+      }
+    </script><script src="../../js/site.js"></script><style>
+      /* ═══ Extense Brand Design Tokens ═══ */
+      :root {
+        --navy: #1D397C;
+        --blue: #4682B4;
+        --blue-mid: #81AFCB;
+        --gold: #E9AC15;
+        --green: #0ACB8B;
+        --bg: #f8f9fb;
+        --bg-card: #fff;
+        --bg-code: #1e1e2e;
+        --text: #23272f;
+        --text-sec: #5a6270;
+        --radius: 10px;
+        --shadow: 0 2px 12px rgba(29,57,124,.08);
+        --sidebar-w: 280px;
+        --topbar-h: 56px;
+        --font-body: 'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+        --font-mono: 'JetBrains Mono','Fira Code','Cascadia Code',monospace;
+        --right-sidebar-w: 220px;
+      }
+
+      /* ═══ Dark Mode ═══ */
+      body.dark {
+        --bg: #0f1117; --bg-card: #181c25; --bg-code: #12141c;
+        --text: #e0e4ec; --text-sec: #8b92a0;
+        --shadow: 0 2px 12px rgba(0,0,0,.3);
+      }
+      body.dark .extense-topbar { background: rgba(15,17,23,.95); border-color: #1e2330; }
+      body.dark pre { background: #12141c !important; }
+      body.dark th { background: #1a1e28; }
+      body.dark .callout { border-color: #2a2e3a; }
+      body.dark nav.toc { background: #12161f; border-color: #1e2330; }
+      body.dark .right-sidebar { border-color: #1e2330; }
+      body.dark .right-sidebar-title { color: #8b92a0; }
+      body.dark .right-sidebar-list a { color: #8b92a0; }
+      body.dark .right-sidebar-list a:hover { color: var(--blue-mid); }
+      body.dark .right-sidebar-list a.active { color: var(--gold); border-left-color: var(--gold); }
+      body.dark .toc-count-badge { background: rgba(129,175,203,.1); color: #8b92a0; }
+      body.dark nav.toc a { color: #c0c6d4; }
+      body.dark nav.toc a:hover { background: #1e2738; color: var(--gold); }
+      body.dark nav.toc .toc-active { background: #1a2235; border-left-color: var(--gold); }
+      body.dark nav.toc .toc-active > a { color: var(--gold); }
+      body.dark .page-nav { border-color: #1e2330; }
+      body.dark .page-nav a { color: var(--blue-mid); border-color: #2a2e3a; }
+      body.dark .page-nav a:hover { background: #1a2235; border-color: var(--gold); }
+      body.dark .extense-footer { background: #0d0f14; border-color: #1e2330; }
+      body.dark .toc-part-label { color: var(--blue-mid); border-color: #2a2e3a; }
+      body.dark .progress-bar { background: #1e2330; }
+
+      /* ═══ Base ═══ */
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; font-size: 16px; }
+      body {
+        font-family: var(--font-body); color: var(--text);
+        background: var(--bg); line-height: 1.65; margin: 0; padding: 0;
+      }
+
+      /* ═══ Topbar ═══ */
+      .extense-topbar {
+        position: fixed; top: 0; left: 0; right: 0;
+        height: var(--topbar-h); z-index: 200;
+        background: rgba(248,249,251,.95); backdrop-filter: blur(12px);
+        border-bottom: 1px solid #e5e7eb;
+        display: flex; align-items: center; padding: 0 1rem; gap: .75rem;
+      }
+      .extense-topbar .logo {
+        font-weight: 800; font-size: 1.1rem; color: var(--navy);
+        display: flex; align-items: baseline; gap: .5rem; text-decoration: none;
+      }
+      .extense-topbar .logo-sub {
+        font-weight: 400; font-size: .75rem; color: var(--text-sec);
+      }
+      .extense-topbar .spacer { flex: 1; }
+      .extense-topbar .topbar-btn {
+        background: none; border: 1px solid #d1d5db; border-radius: 8px;
+        padding: 5px 10px; cursor: pointer; font-size: .8rem; color: var(--text);
+        transition: border-color .15s;
+      }
+      .extense-topbar .topbar-btn:hover { border-color: var(--blue); }
+      #sidebarToggle {
+        display: none; background: none; border: none;
+        font-size: 1.4rem; cursor: pointer; color: var(--text);
+        padding: 4px 8px; line-height: 1;
+      }
+
+      /* ═══ Progress bar ═══ */
+      .progress-bar {
+        position: fixed; top: var(--topbar-h); left: 0; right: 0;
+        height: 3px; background: #e5e7eb; z-index: 199;
+      }
+      .progress-fill {
+        height: 100%; width: 0;
+        background: linear-gradient(90deg, var(--gold), var(--green));
+        transition: width .12s ease-out;
+      }
+
+      /* ═══ Two-column layout ═══ */
+      body {
+        display: flex; flex-direction: column; min-height: 100vh;
+      }
+      header[role="banner"] {
+        flex-shrink: 0;
+      }
+      .site-wrapper {
+        display: flex; flex: 1; margin-top: calc(var(--topbar-h) + 3px);
+      }
+
+      /* ═══ Sidebar ═══ */
+      nav.toc {
+        position: fixed !important;
+        top: calc(var(--topbar-h) + 3px);
+        left: 0; bottom: 0;
+        width: var(--sidebar-w);
+        background: var(--bg-card);
+        border-right: 1px solid #e5e7eb;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: .5rem .5rem 2rem .75rem;
+        z-index: 50;
+        transition: transform .25s ease;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(29,57,124,.15) transparent;
+      }
+      nav.toc::-webkit-scrollbar { width: 5px; }
+      nav.toc::-webkit-scrollbar-thumb { background: rgba(29,57,124,.15); border-radius: 3px; }
+      nav.toc ul { list-style: none; padding: 0; margin: 0; }
+      nav.toc li { margin: 0; }
+
+      /* Part headings (non-link spans) */
+      nav.toc > ul > li > span {
+        display: flex; align-items: center; gap: .25rem;
+        padding: .5rem 1rem .3rem;
+        font-weight: 800; font-size: .68rem; color: var(--navy);
+        text-transform: uppercase; letter-spacing: .06em;
+        border-bottom: 1px solid rgba(29,57,124,.08);
+        margin-top: .6rem; user-select: none;
+        cursor: pointer;
+      }
+      .toc-count-badge {
+        display: inline-flex; align-items: center; justify-content: center;
+        min-width: 18px; height: 16px; padding: 0 4px;
+        border-radius: 8px; background: rgba(29,57,124,.06);
+        color: var(--text-sec); font-size: .58rem; font-weight: 600;
+        margin-left: auto; text-transform: none; letter-spacing: 0;
+      }
+      nav.toc > ul > li > span::before {
+        content: '\25BE '; font-size: .7rem;
+      }
+      nav.toc > ul > li.collapsed > span::before {
+        content: '\25B8 ';
+      }
+      nav.toc > ul > li.collapsed > ul { display: none; }
+
+      /* Sub-group headings (chapter groups) */
+      nav.toc ul ul > li > span {
+        display: block; padding: .4rem 1rem .25rem 1.5rem;
+        font-weight: 700; font-size: .72rem; color: var(--text-sec);
+        text-transform: uppercase; letter-spacing: .04em;
+        cursor: pointer; user-select: none;
+      }
+      nav.toc ul ul > li > span::before {
+        content: '\25BE '; font-size: .65rem;
+      }
+      nav.toc ul ul > li.collapsed > span::before {
+        content: '\25B8 ';
+      }
+      nav.toc ul ul > li.collapsed > ul { display: none; }
+
+      /* Links */
+      nav.toc a {
+        display: block; padding: .32rem .75rem .32rem 2rem;
+        font-size: .82rem; color: var(--text); text-decoration: none;
+        border-left: 3px solid transparent;
+        transition: all .12s ease;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      nav.toc a:hover {
+        background: rgba(70,130,180,.06); color: var(--blue);
+        text-decoration: none;
+      }
+      .toc-active > a {
+        border-left-color: var(--gold) !important;
+        color: var(--navy) !important; font-weight: 600;
+        background: rgba(233,172,21,.08) !important;
+      }
+      /* Deeper nesting */
+      nav.toc ul ul ul a { padding-left: 2.75rem; font-size: .8rem; }
+      nav.toc ul ul ul ul a { padding-left: 3.5rem; font-size: .78rem; }
+
+      /* ═══ Main content area ═══ */
+      main[role="main"], main {
+        margin-left: var(--sidebar-w);
+        flex: 1;
+        padding: calc(var(--topbar-h) + 1.5rem) 2.5rem 3rem;
+        max-width: 900px;
+        min-height: calc(100vh - var(--topbar-h));
+      }
+
+      /* ═══ Right Sidebar — on-page outline ═══ */
+      .right-sidebar {
+        position: fixed;
+        top: calc(var(--topbar-h) + 3px);
+        right: 0; bottom: 0;
+        width: var(--right-sidebar-w);
+        overflow-y: auto;
+        padding: 1.25rem .75rem 2rem;
+        z-index: 40;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(29,57,124,.1) transparent;
+      }
+      .right-sidebar::-webkit-scrollbar { width: 4px; }
+      .right-sidebar::-webkit-scrollbar-thumb { background: rgba(29,57,124,.1); border-radius: 2px; }
+      .right-sidebar-title {
+        font-size: .7rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: .06em;
+        color: var(--text-sec); margin-bottom: .6rem; padding-left: .5rem;
+      }
+      .right-sidebar-list { list-style: none; padding: 0; margin: 0; }
+      .right-sidebar-list a {
+        display: block;
+        padding: .2rem .5rem .2rem .75rem;
+        font-size: .78rem; color: var(--text-sec);
+        text-decoration: none;
+        border-left: 2px solid transparent;
+        transition: all .15s; line-height: 1.4;
+      }
+      .right-sidebar-list a:hover {
+        color: var(--blue); border-left-color: var(--gold); text-decoration: none;
+      }
+      .right-sidebar-list a.active {
+        color: var(--navy); border-left-color: var(--gold); font-weight: 600;
+      }
+      .right-sidebar-list .rso-h3 a {
+        padding-left: 1.5rem; font-size: .75rem;
+      }
+      body.has-right-sidebar main[role="main"],
+      body.has-right-sidebar main {
+        margin-right: var(--right-sidebar-w);
+        max-width: none;
+      }
+      body.has-right-sidebar .extense-footer {
+        margin-right: var(--right-sidebar-w);
+      }
+
+      /* ═══ Headings ═══ */
+      h1, .topictitle1 {
+        font-size: 2rem; font-weight: 800; color: var(--navy);
+        margin: 0 0 .5rem; padding-bottom: .4rem;
+        border-bottom: 3px solid var(--gold);
+      }
+      h2, .sectiontitle {
+        font-size: 1.35rem; font-weight: 700; color: var(--navy);
+        margin: 2rem 0 .7rem; padding-bottom: .3rem;
+        border-bottom: 2px solid var(--gold);
+      }
+      h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 1.4rem 0 .5rem; }
+      h4 { font-size: .92rem; font-weight: 600; color: var(--text-sec); margin: 1rem 0 .4rem; }
+      p { margin-bottom: .7rem; }
+      a { color: var(--blue); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      /* ═══ Code ═══ */
+      code, .codeph {
+        font-family: var(--font-mono); font-size: .83em;
+        background: rgba(70,130,180,.08); padding: 1px 5px; border-radius: 4px;
+      }
+      pre, .codeblock {
+        background: var(--bg-code); color: #cdd6f4; border-radius: 8px;
+        padding: 1rem 1.25rem; margin: .8rem 0; overflow-x: auto;
+        font-family: var(--font-mono); font-size: .8rem; line-height: 1.55;
+        position: relative; border-left: 4px solid var(--gold);
+      }
+      pre code, .codeblock code {
+        background: none; color: inherit; padding: 0; font-size: .8rem;
+      }
+      .copy-btn {
+        position: absolute; top: 8px; right: 8px;
+        background: rgba(255,255,255,.1); color: #a0a8c0;
+        border: none; border-radius: 6px; padding: 4px 10px;
+        font-size: .7rem; cursor: pointer; opacity: 0; transition: opacity .2s;
+      }
+      pre:hover .copy-btn, .codeblock:hover .copy-btn { opacity: 1; }
+      .copy-btn:hover { background: rgba(255,255,255,.2); color: #fff; }
+      .copy-btn.copied { color: var(--green); }
+
+      /* ═══ Notes / Callouts ═══ */
+      .callout {
+        border-left: 4px solid; border-radius: 0 8px 8px 0;
+        padding: .85rem 1.1rem; margin: .8rem 0; background: var(--bg-card);
+      }
+      .callout-note { border-color: var(--blue); background: rgba(70,130,180,.06); }
+      .callout-tip { border-color: var(--green); background: rgba(10,203,139,.04); }
+      .callout-important { border-color: var(--navy); background: rgba(29,57,124,.04); }
+      .callout-warning, .callout-caution, .callout-danger {
+        border-color: var(--gold); background: rgba(233,172,21,.04);
+      }
+      .callout-label {
+        font-weight: 700; font-size: .8rem; text-transform: uppercase;
+        letter-spacing: .04em; margin-bottom: .3rem; display: block;
+      }
+      .callout-note .callout-label { color: var(--blue); }
+      .callout-tip .callout-label { color: var(--green); }
+      .callout-important .callout-label { color: var(--navy); }
+      .callout-warning .callout-label,
+      .callout-caution .callout-label,
+      .callout-danger .callout-label { color: #b8860b; }
+
+      /* ═══ Tables ═══ */
+      table { width: 100%; border-collapse: collapse; margin: .8rem 0; font-size: .85rem; }
+      th, td { padding: .55rem .75rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+      th {
+        font-weight: 700; background: #f3f4f6; color: var(--navy);
+        font-size: .78rem; text-transform: uppercase; letter-spacing: .03em;
+      }
+
+      /* ═══ Next / Previous Navigation ═══ */
+      .page-nav {
+        display: flex; justify-content: space-between; align-items: stretch;
+        margin-top: 3rem; padding-top: 1.5rem;
+        border-top: 1px solid #e5e7eb; gap: 1rem;
+      }
+      .page-nav a {
+        display: flex; flex-direction: column; flex: 1;
+        padding: .75rem 1rem; border: 1px solid #e5e7eb;
+        border-radius: 8px; text-decoration: none; color: var(--text);
+        transition: all .15s; max-width: 48%;
+      }
+      .page-nav a:hover {
+        border-color: var(--gold); background: rgba(233,172,21,.04);
+        text-decoration: none;
+      }
+      .page-nav a .nav-label {
+        font-size: .7rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: .04em; color: var(--text-sec); margin-bottom: .2rem;
+      }
+      .page-nav a .nav-title {
+        font-size: .88rem; font-weight: 600; color: var(--navy);
+      }
+      .page-nav .nav-next { text-align: right; margin-left: auto; }
+      .page-nav .nav-prev .nav-label::before { content: '\2190 '; }
+      .page-nav .nav-next .nav-label::after { content: ' \2192'; }
+
+      /* ═══ Related links ═══ */
+      nav.related-links {
+        margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee;
+      }
+      nav.related-links strong { font-size: .82rem; color: var(--navy); }
+      nav.related-links a { font-size: .85rem; }
+
+      /* ═══ Short description ═══ */
+      .shortdesc {
+        font-size: 1.02rem; color: var(--text-sec); margin-bottom: 1rem;
+        line-height: 1.6; font-style: italic;
+      }
+
+      /* ═══ Images ═══ */
+      .fig img, img { max-width: 100%; height: auto; border-radius: 6px; }
+
+      /* ═══ Footer ═══ */
+      .extense-footer {
+        margin-left: var(--sidebar-w);
+        border-top: 1px solid #e5e7eb; padding: 1.5rem 2rem;
+        text-align: center; color: var(--text-sec); font-size: .8rem;
+        background: var(--bg-card);
+      }
+      .extense-footer .footer-brand {
+        font-weight: 800; color: var(--navy); letter-spacing: 2px;
+      }
+
+      /* ═══ Progress Tracking ═══ */
+      .progress-check {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 14px; height: 14px; min-width: 14px; border-radius: 3px;
+        border: 1.5px solid #bbb; background: transparent; color: transparent;
+        font-size: 10px; font-weight: 700; cursor: pointer;
+        margin-right: 2px; vertical-align: middle;
+        transition: all .15s; padding: 0; line-height: 1; flex-shrink: 0;
+      }
+      .progress-check:hover { border-color: var(--gold); }
+      .progress-check.checked {
+        background: var(--green); border-color: var(--green); color: #fff;
+      }
+      .topic-completed > a { opacity: .55; text-decoration: line-through; }
+      body.dark .progress-check { border-color: #444; }
+      body.dark .progress-check.checked { background: var(--green); border-color: var(--green); }
+
+      /* Sidebar progress summary */
+      .toc-progress-summary {
+        padding: 10px 16px; border-bottom: 1px solid #e5e7eb;
+        background: rgba(29,57,124,.03);
+      }
+      .toc-progress-label {
+        display: flex; justify-content: space-between; align-items: center;
+        font-size: .72rem; font-weight: 700; color: var(--navy);
+        text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px;
+      }
+      .toc-progress-count { color: var(--green); }
+      .toc-progress-bar {
+        height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden;
+      }
+      .toc-progress-fill {
+        height: 100%; background: linear-gradient(90deg, var(--green), var(--blue));
+        border-radius: 2px; transition: width .3s;
+      }
+      body.dark .toc-progress-summary { background: rgba(29,57,124,.1); border-color: #1e2330; }
+      body.dark .toc-progress-bar { background: #1e2330; }
+
+      /* Sidebar link with checkbox alignment */
+      nav.toc li:has(.progress-check) {
+        position: relative;
+      }
+      nav.toc li:has(.progress-check) > .progress-check {
+        position: absolute;
+        left: .5rem;
+        top: .45rem;
+        z-index: 1;
+      }
+      nav.toc li:has(.progress-check) > a {
+        padding-left: 2rem;
+      }
+      nav.toc li:has(.progress-check) > ul {
+        margin-left: 0; padding-left: 0;
+      }
+
+      /* ═══ Index Dashboard ═══ */
+      .index-dashboard { padding: 0; }
+      .dash-welcome { margin-bottom: 1.5rem; }
+      .dash-intro {
+        font-size: 1rem; color: var(--text-sec); line-height: 1.65;
+      }
+      .dash-progress-card {
+        background: var(--bg-card); border-radius: 12px;
+        border: 1px solid #e5e7eb; padding: 1.5rem; margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+      }
+      .dash-card-title {
+        font-size: 1.1rem; font-weight: 700; color: var(--navy);
+        margin: 0 0 .75rem; padding: 0; border: none;
+      }
+      .dash-progress-bar {
+        height: 10px; background: #e5e7eb; border-radius: 5px;
+        overflow: hidden; margin-bottom: .5rem;
+      }
+      .dash-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--green), var(--blue));
+        border-radius: 5px; transition: width .4s;
+      }
+      .dash-progress-text {
+        font-size: .85rem; color: var(--text-sec); margin-bottom: 1rem;
+      }
+      .dash-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+      .dash-start-btn {
+        display: inline-block; padding: .6rem 1.5rem;
+        background: var(--navy); color: #fff; font-weight: 700;
+        border-radius: 8px; text-decoration: none; font-size: .88rem;
+        transition: background .15s;
+      }
+      .dash-start-btn:hover { background: #142B60; text-decoration: none; color: #fff; }
+      .dash-reset-btn {
+        padding: .6rem 1.2rem; background: transparent;
+        color: var(--text-sec); border: 1px solid #ccc;
+        border-radius: 8px; font-size: .85rem; cursor: pointer;
+        transition: all .15s;
+      }
+      .dash-reset-btn:hover { border-color: var(--gold); color: var(--text); }
+
+      .dash-parts { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+      .dash-part-item {
+        background: var(--bg-card); border-radius: 10px;
+        border: 1px solid #e5e7eb; padding: 1rem;
+        box-shadow: 0 1px 4px rgba(0,0,0,.04);
+      }
+      .dash-part-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: .5rem;
+      }
+      .dash-part-title { font-weight: 700; font-size: .82rem; color: var(--navy); }
+      .dash-part-stat { font-size: .78rem; color: var(--green); font-weight: 600; }
+      .dash-part-bar {
+        height: 5px; background: #e5e7eb; border-radius: 3px; overflow: hidden;
+      }
+      .dash-part-fill {
+        height: 100%; background: linear-gradient(90deg, var(--green), var(--blue));
+        border-radius: 3px; transition: width .3s;
+      }
+      body.dark .dash-progress-card,
+      body.dark .dash-part-item { background: #181c26; border-color: #1e2330; }
+      body.dark .dash-progress-bar,
+      body.dark .dash-part-bar { background: #1e2330; }
+      body.dark .dash-card-title { color: var(--blue-mid); }
+      /* ═══ Sidebar Resizer ═══ */
+      .sidebar-resizer {
+        position: fixed;
+        top: calc(var(--topbar-h) + 3px);
+        left: calc(var(--sidebar-w) - 3px);
+        bottom: 0;
+        width: 6px;
+        cursor: col-resize;
+        z-index: 51;
+        background: rgba(29,57,124,.08);
+        transition: background .15s;
+      }
+      .sidebar-resizer::after {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 2px; height: 32px;
+        border-radius: 2px;
+        background: rgba(29,57,124,.15);
+        transition: background .15s, height .15s;
+      }
+      .sidebar-resizer:hover {
+        background: rgba(233,172,21,.25);
+      }
+      .sidebar-resizer:hover::after {
+        background: var(--gold); height: 48px;
+      }
+      body.resizing .sidebar-resizer {
+        background: rgba(233,172,21,.3);
+      }
+      body.resizing .sidebar-resizer::after {
+        background: var(--gold); height: 48px;
+      }
+      body.resizing {
+        cursor: col-resize !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+      }
+      body.resizing * {
+        cursor: col-resize !important;
+      }
+      body.resizing iframe, body.resizing img {
+        pointer-events: none;
+      }
+      body.dark .sidebar-resizer {
+        background: rgba(129,175,203,.06);
+      }
+      body.dark .sidebar-resizer::after {
+        background: rgba(129,175,203,.15);
+      }
+      body.dark .sidebar-resizer:hover,
+      body.dark.resizing .sidebar-resizer {
+        background: rgba(129,175,203,.2);
+      }
+      body.dark .sidebar-resizer:hover::after,
+      body.dark.resizing .sidebar-resizer::after {
+        background: var(--blue-mid);
+      }
+
+      /* ═══ SPA Loading ═══ */
+      main.spa-loading {
+        opacity: .45;
+        transition: opacity .15s;
+        pointer-events: none;
+      }
+
+      /* ═══ Go to top button ═══ */
+      .go-top-btn {
+        position: fixed; bottom: 2rem; right: 2rem;
+        width: 42px; height: 42px;
+        background: var(--navy); color: #fff;
+        border: none; border-radius: 50%;
+        font-size: 1.2rem; line-height: 1;
+        cursor: pointer; z-index: 200;
+        opacity: 0; transform: translateY(10px);
+        transition: opacity .25s, transform .25s, background .15s;
+        box-shadow: 0 2px 10px rgba(0,0,0,.2);
+        display: flex; align-items: center; justify-content: center;
+      }
+      .go-top-btn.visible { opacity: 1; transform: translateY(0); }
+      .go-top-btn:hover { background: var(--blue); }
+      body.dark .go-top-btn { background: var(--gold); color: var(--navy); }
+      body.dark .go-top-btn:hover { background: #f0c040; }
+
+      /* ═══ Print ═══ */
+      @media print {
+        .extense-topbar, .copy-btn, nav.toc, .page-nav, .progress-bar,
+        .progress-check, .toc-progress-summary, .index-dashboard,
+        #sidebarToggle, .go-top-btn, .sidebar-resizer, .right-sidebar { display: none !important; }
+        main[role="main"], main { margin-left: 0; margin-right: 0; padding: 0; max-width: 100%; }
+        .extense-footer { margin-left: 0; margin-right: 0; }
+        body { font-size: 10pt; }
+        pre { white-space: pre-wrap; word-break: break-all; }
+        a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .75em; color: #666; }
+      }
+
+      /* ═══ Responsive ═══ */
+      @media (max-width: 1100px) {
+        .right-sidebar { display: none !important; }
+        body.has-right-sidebar main[role="main"],
+        body.has-right-sidebar main { margin-right: 0; max-width: 900px; }
+        body.has-right-sidebar .extense-footer { margin-right: 0; }
+      }
+      @media (max-width: 900px) {
+        :root { --sidebar-w: 260px; }
+        main[role="main"], main { padding: 1.5rem 1.5rem 2rem; }
+      }
+      @media (max-width: 768px) {
+        .sidebar-resizer { display: none !important; }
+        #sidebarToggle { display: block; }
+        nav.toc {
+          transform: translateX(-100%);
+          box-shadow: none;
+        }
+        nav.toc.open {
+          transform: translateX(0);
+          box-shadow: 4px 0 20px rgba(0,0,0,.15);
+        }
+        .sidebar-overlay {
+          display: none; position: fixed; inset: 0;
+          background: rgba(0,0,0,.3); z-index: 49;
+        }
+        .sidebar-overlay.open { display: block; }
+        main[role="main"], main {
+          margin-left: 0; padding: calc(var(--topbar-h) + 1rem) 1rem 2rem;
+        }
+        .extense-footer { margin-left: 0; }
+        .page-nav { flex-direction: column; }
+        .page-nav a { max-width: 100%; }
+        .go-top-btn { bottom: 1.2rem; right: 1.2rem; width: 38px; height: 38px; }
+      }
+    </style><link rel="stylesheet" type="text/css" href="../../commonltr.css"></head><body id="dita-publishing"><header role="banner"><div class="extense-topbar"><button id="sidebarToggle" onclick="extToggleSidebar()" title="Toggle navigation" aria-label="Toggle sidebar">☰</button><a class="logo" href="../../index.html"><span>Extense LLC</span><span class="logo-sub">DITA Training Guide</span></a><div class="spacer"></div><button class="topbar-btn" onclick="openSearch()" title="Search (Ctrl+K)" aria-label="Search topics">🔍 Search</button><button class="topbar-btn" onclick="window.print()" title="Print / Save as PDF">🖨 Print</button><button class="topbar-btn" id="themeBtn" onclick="toggleDark()" title="Toggle dark mode">◑ Dark</button></div><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div class="sidebar-overlay" id="sidebarOverlay" onclick="extToggleSidebar()"></div></header><nav class="toc" role="navigation"><ul><li><span>Why Intelligent Content Matters</span><ul><li><a href="../../topics/part01-why/ch01-what-is-intelligent-content.html">What Is Intelligent Content?</a></li><li><a href="../../topics/part01-why/ch02-problem-with-unstructured-content.html">The Problem with Unstructured Content</a></li><li><a href="../../topics/part01-why/ch03-ai-readiness-maturity-model.html">AI-Readiness Maturity Model for Content</a></li><li><a href="../../topics/part01-why/ch04-markdown-limitations.html">Why Markdown Is Not Enough: A Detailed Analysis</a></li></ul></li><li><span>Content Preparation</span><ul><li><a href="../../topics/part02-prepare/quick-start.html">Quick Start Guide</a></li><li><a href="../../topics/part02-prepare/dita-intro-guide.html">DITA at a Glance</a></li><li><a href="../../topics/part02-prepare/dita-overview.html">DITA Deep Dive</a></li><li><a href="../../topics/part02-prepare/installing-dita-ot.html">Installing DITA-OT</a></li><li><a href="../../topics/part02-prepare/setting-up-authoring-tools.html">Setting Up Authoring Tools</a></li></ul></li><li><span>Authoring DITA Content</span><ul><li><a href="../../topics/part03-author/dita-authoring.html">Authoring DITA Topics</a></li><li><a href="../../topics/part03-author/writing-first-dita-project.html">Writing Your First DITA Project</a></li><li><a href="../../topics/part03-author/ch05-information-typing-basics.html">Information Typing: Matching Content to Purpose</a></li><li><a href="../../topics/part03-author/ch05-dita-information-typing.html">Information Typing for AI: Intent Routing and Answer Formatting</a></li><li><a href="../../topics/part03-author/dita-reuse-variants.html">Reuse, Keys, and Variant Management</a></li></ul></li><li><span>Information Architecture</span><ul><li><a href="../../topics/part04-architect/ch08-topic-based-architecture.html">Topic-Based Information Architecture for Training</a></li><li><a href="../../topics/part04-architect/ch09-taxonomy-controlled-vocabulary.html">Taxonomy and Controlled Vocabulary for AI Classification</a></li></ul></li><li><span>Making Content Intelligent</span><ul><li><a href="../../topics/part05-enrich/ch06-migration-step-by-step.html">Migrating Content from Markdown to AI-Ready DITA: Step by Step</a></li><li><a href="../../topics/part05-enrich/ch07-before-after-examples.html">Before and After: Complete Transformation Examples</a></li><li><a href="../../topics/part05-enrich/ch10-metadata-enrichment.html">Metadata Enrichment: Adding the AI Layer to Every Topic</a></li><li><a href="../../topics/part05-enrich/ai-ready-authoring-guide.html">AI-Ready Content Authoring Guide</a></li><li><a href="../../topics/part05-enrich/schema-org-mapping.html">DITA to Schema.org Type Mapping</a></li></ul></li><li><span>Publishing &amp; Automation</span><ul><li><a href="../../topics/part06-publish/dita-publishing.html">Publishing with DITA-OT</a></li><li><a href="../../topics/part06-publish/multi-channel-output-formats.html">Multi-Channel Output Formats</a></li><li><a href="../../topics/part06-publish/dita-project-files.html">DITA Project Files</a></li><li><a href="../../topics/part06-publish/output-customization-without-plugins.html">Output Customization Without Plugins</a></li><li><a href="../../topics/part06-publish/cicd-publishing-pipelines.html">CI/CD Publishing Pipelines</a></li><li><a href="../../topics/part06-publish/troubleshooting-dita-builds.html">Troubleshooting DITA Builds</a></li></ul></li><li><span>DITA-OT Development</span><ul><li><a href="../../topics/part07-develop/dita-ot-developer-handbook.html">DITA-OT Architecture and DevOps</a></li><li><a href="../../topics/part07-develop/ot-mental-model.html">How DITA-OT Is Built and Its Core Architecture</a></li><li><a href="../../topics/part07-develop/preprocessing-deep-dive.html">Preprocessing Deep Dive</a></li><li><a href="../../topics/part07-develop/map-first-preprocessing.html">Map-First Preprocessing (preprocess2) in 4.x</a></li><li><a href="../../topics/part07-develop/extension-points-fundamentals.html">Extension Points and Plug-In Fundamentals</a></li><li><a href="../../topics/part07-develop/safe-customization-xslt-import.html">Safe Customization Strategy: XSLT-Import Overrides</a></li><li><a href="../../topics/part07-develop/robust-xslt-patterns.html">Writing Robust XSLT Customizations</a></li><li><a href="../../topics/part07-develop/adding-pipeline-steps.html">Adding Pipeline Steps: Pre/Post Preprocess and Legacy Hooks</a></li><li><a href="../../topics/part07-develop/plugin-template.html">A Minimal Developer Plug-In Template</a></li><li><a href="../../topics/part07-develop/developing-from-source.html">Developing DITA-OT from Source</a></li><li><a href="../../topics/part07-develop/docker-basics.html">Docker for DITA-OT: Local Builds and Reproducible Toolchains</a></li><li><a href="../../topics/part07-develop/custom-docker-images.html">Build a Custom Docker Image with Plug-Ins Pre-Installed</a></li><li><a href="../../topics/part07-develop/docker-compose-preview.html">docker-compose for Doc Builds and Local Preview</a></li><li><a href="../../topics/part07-develop/github-actions-cicd.html">GitHub Actions: CI/CD Publishing and Workflow Examples</a></li><li><a href="../../topics/part07-develop/debugging-playbook.html">Debugging Playbook</a></li><li><a href="../../topics/part07-develop/repo-layout-and-variants.html">Repository Layout and Build Variants</a></li><li><a href="../../topics/part07-develop/key-references.html">Key References</a></li></ul></li><li><span>Advanced XSLT Customization</span><ul><li><a href="../../topics/part08-customize/xslt-customization-tutorial.html">XSLT Customization Tutorial</a></li><li><a href="../../topics/part08-customize/html5-transform-architecture.html">What you're customizing (HTML5 transform architecture)</a></li><li><a href="../../topics/part08-customize/safe-customization-strategies.html">Two safe strategies for HTML5 customization</a></li><li><a href="../../topics/part08-customize/xslt-prerequisites.html">Prerequisites: what you need to know before overriding</a></li><li><a href="../../topics/part08-customize/sidebar-toc-chunking-baseline.html">DITA-OT 4.x setup: sidebar TOC + chunking baseline</a></li><li><a href="../../topics/part08-customize/ditaval-filtering-variants.html">Filtering with DITAVAL and build variants (audience/platform)</a></li><li><a href="../../topics/part08-customize/toc-grouping.html">TOC grouping with topichead/topicgroup (non-clickable headings)</a></li><li><a href="../../topics/part08-customize/create-html5-plugin.html">Create a minimal HTML5 customization plug-in</a></li><li><a href="../../topics/part08-customize/first-override-xslt.html">Write your first override XSLT correctly</a></li><li><a href="../../topics/part08-customize/production-patterns.html">Production patterns for all topic types + common elements</a></li><li><a href="../../topics/part08-customize/extended-element-overrides.html">Extended "common element" XSLT overrides (hooks + data-attributes)</a></li><li><a href="../../topics/part08-customize/sidebar-toc-customization.html">Sidebar TOC customization</a></li><li><a href="../../topics/part08-customize/passing-parameters.html">Passing parameters cleanly</a></li><li><a href="../../topics/part08-customize/debugging-workflow.html">Debugging workflow (iterate fast, safely)</a></li><li><a href="../../topics/part08-customize/production-hardening.html">Hardening for production (CI, quality gates, upgrade plan)</a></li><li><a href="../../topics/part08-customize/exercises-and-labs.html">Exercises and labs (hands-on)</a></li><li><a href="../../topics/part08-customize/xslt-troubleshooting.html">Troubleshooting</a></li><li><a href="../../topics/part08-customize/starter-repo-guide.html">Appendix: starter repo integration guide</a></li><li><a href="../../topics/part08-customize/quick-checklists.html">Appendix: quick checklists</a></li><li><a href="../../topics/part08-customize/dita-ot-technical-reference.html">Technical Reference: XSLT Patterns and Glossary</a></li></ul></li><li><span>AI Pipeline &amp; Chatbot Integration</span><ul><li><a href="../../topics/part09-integrate/ch11-rag-pipeline-architecture.html">RAG Pipeline Architecture: From DITA to Chatbot Answers</a></li><li><a href="../../topics/part09-integrate/ch12-chunking-and-embedding.html">Section-Aware Chunking and Embedding Strategy</a></li><li><a href="../../topics/part09-integrate/ch13-retrieval-and-generation.html">Retrieval, Reranking, and Answer Generation</a></li></ul></li><li><span>Benefits, Utilization &amp; Impact</span><ul><li><a href="../../topics/part10-measure/ch14-benefits-and-roi.html">Measurable Benefits and ROI of Intelligent Content</a></li><li><a href="../../topics/part10-measure/ch15-utilizing-intelligent-features.html">Utilizing Intelligent Content Features: A Practical Guide</a></li><li><a href="../../topics/part10-measure/ch16-impact-on-final-product.html">Impact on the Final Product: How Intelligence Changes Everything</a></li></ul></li><li><span>Appendices — Reference Material</span><ul><li><a href="../../topics/appendices/architecture-diagram.html">DITA-OT Architecture Diagram</a></li><li><a href="../../topics/appendices/glossary.html">Glossary</a></li><li><a href="../../topics/appendices/plugin-reference.html">Complete Plugin Reference</a></li><li><a href="../../topics/appendices/appendix-metadata-reference.html">Appendix: Complete AI-Ready Metadata Field Reference</a></li><li><a href="../../topics/appendices/markdown-to-dita-improvement-comparison.html">From Markdown to Intelligent DITA: Detailed Comparison and Improvements</a></li></ul></li></ul></nav><main role="main"><article role="article" aria-labelledby="ariaid-title1">
+  <h1 class="title topictitle1" id="ariaid-title1">Publishing with DITA-OT</h1>
+  
+  
+  
+<section class="section" id="dita-publishing__what-publishing-means-in-dita"><h2 class="title sectiontitle">What publishing means in DITA</h2>
+
+<p class="p">DITA is a <strong class="ph b">source format</strong>, not an output. Publishing is the process of:</p>
+<ul class="ul">
+  <li class="li">resolving references (conref/keyref),</li>
+  <li class="li">applying filtering rules,</li>
+  <li class="li">transforming XML into HTML/PDF/other formats,</li>
+  <li class="li">applying styling and navigation rules,</li>
+  <li class="li">producing deliverables that match your product and brand.</li>
+</ul>
+<p class="p">Many DITA programs use the <strong class="ph b">DITA Open Toolkit (DITA‑OT)</strong> as the publishing engine. Others use CCMS publishing services that may internally rely on DITA‑OT or custom pipelines.</p>
+<p class="p">This topic focuses on practical publishing with DITA‑OT because it is widely used and teaches you the core concepts that apply everywhere.</p>
+</section>
+<section class="section" id="dita-publishing__inputs-and-outputs-what-dita-ot-expects"><h2 class="title sectiontitle">Inputs and outputs: what DITA-OT expects</h2>
+
+<p class="p"><strong class="ph b">Input</strong></p>
+<p class="p">DITA‑OT publishes from a <strong class="ph b">map</strong> (most common) or a single topic. In professional workflows:</p>
+<ul class="ul">
+  <li class="li">maps are preferred because they define structure, keys, and context.</li>
+</ul>
+<p class="p"><strong class="ph b">Output formats (common)</strong></p>
+<ul class="ul">
+  <li class="li"><strong class="ph b">HTML5</strong>: website-like output with navigation</li>
+  <li class="li"><strong class="ph b">PDF</strong>: often XSL‑FO based (toolchain-dependent)</li>
+  <li class="li">Other outputs via plugins or extensions</li>
+</ul>
+<p class="p"><strong class="ph b">The key idea</strong></p>
+<p class="p">A map is not just a TOC; it is the <strong class="ph b">publication definition</strong>. If you publish the same topic under two different maps, you can get different results because:</p>
+<ul class="ul">
+  <li class="li">key definitions differ,</li>
+  <li class="li">filtering differs,</li>
+  <li class="li">navigation context differs.</li>
+</ul>
+</section>
+<section class="section" id="dita-publishing__the-build-pipeline-steps-what-happens-during-publishing"><h2 class="title sectiontitle">The “build pipeline” steps (what happens during publishing)</h2>
+
+<p class="p">Publishing is more than “transform XML to HTML.”</p>
+<p class="p">A typical pipeline includes:</p>
+<ol class="ol">
+  <li class="li"><strong class="ph b">Preprocess</strong> — parse the map, resolve topicrefs, collect key definitions, gather referenced topics and resources.</li>
+  <li class="li"><strong class="ph b">Reference resolution</strong> — apply conref pulls, resolve keyrefs, validate IDs and targets.</li>
+  <li class="li"><strong class="ph b">Filtering</strong> — include/exclude content based on rules, adjust link targets accordingly.</li>
+  <li class="li"><strong class="ph b">Transform</strong> — generate intermediate or final formats, apply templates and rules for HTML/PDF.</li>
+  <li class="li"><strong class="ph b">Postprocess</strong> — create navigation and search index assets, copy images/media, apply final styling.</li>
+</ol>
+<p class="p">Understanding these stages helps you debug issues:</p>
+<ul class="ul">
+  <li class="li">missing content (filtering),</li>
+  <li class="li">broken links (IDs, key spaces),</li>
+  <li class="li">wrong product name (keys),</li>
+  <li class="li">missing images (resource paths).</li>
+</ul>
+</section>
+<section class="section" id="dita-publishing__basic-dita-ot-commands-the-8020"><h2 class="title sectiontitle">Basic DITA-OT commands (the 80/20)</h2>
+
+<p class="p"><strong class="ph b">Publish HTML5</strong></p>
+<pre class="pre codeblock language-bash"><code>dita -i maps/guides/getting-started.ditamap -f html5 -o out/html</code></pre>
+<p class="p"><strong class="ph b">Publish PDF (if configured)</strong></p>
+<pre class="pre codeblock language-bash"><code>dita -i maps/guides/getting-started.ditamap -f pdf -o out/pdf</code></pre>
+<p class="p"><strong class="ph b">Practical tips</strong></p>
+<ul class="ul">
+  <li class="li">Always use an explicit output directory (<code class="ph codeph">-o</code>).</li>
+  <li class="li">Keep your build artifacts out of your source tree where possible.</li>
+  <li class="li">Use a consistent build script so builds are repeatable.</li>
+</ul>
+</section>
+<section class="section" id="dita-publishing__repeatable-builds-project-files-and-build-scripts"><h2 class="title sectiontitle">Repeatable builds: project files and build scripts</h2>
+
+<p class="p">As soon as you have:</p>
+<ul class="ul">
+  <li class="li">multiple deliverables,</li>
+  <li class="li">filtering variants,</li>
+  <li class="li">consistent parameters,</li>
+</ul>
+<p class="p">…you should formalize builds.</p>
+<p class="p"><strong class="ph b">Why repeatability matters</strong></p>
+<p class="p">Repeatable builds ensure:</p>
+<ul class="ul">
+  <li class="li">anyone can build the same output,</li>
+  <li class="li">CI builds match local builds,</li>
+  <li class="li">releases are reproducible.</li>
+</ul>
+<p class="p"><strong class="ph b">A typical approach</strong></p>
+<ul class="ul">
+  <li class="li">Create a build script (<code class="ph codeph">build.sh</code> or <code class="ph codeph">build.ps1</code>) that runs defined publications.</li>
+  <li class="li">Use DITA‑OT project files (where supported in your version) or a wrapper configuration.</li>
+</ul>
+<p class="p">Even without deep customization, a script with consistent parameters eliminates “works on my machine” issues.</p>
+</section>
+<section class="section" id="dita-publishing__parameters-controlling-output-behavior"><h2 class="title sectiontitle">Parameters: controlling output behavior</h2>
+
+<p class="p">DITA‑OT allows parameters to control:</p>
+<ul class="ul">
+  <li class="li">toc depth,</li>
+  <li class="li">chunking behavior,</li>
+  <li class="li">navigation,</li>
+  <li class="li">filtering integration,</li>
+  <li class="li">output artifacts.</li>
+</ul>
+<p class="p">In practice, you’ll maintain:</p>
+<ul class="ul">
+  <li class="li">a baseline parameter set for HTML,</li>
+  <li class="li">a baseline parameter set for PDF,</li>
+  <li class="li">variant overrides per product/platform.</li>
+</ul>
+<p class="p"><strong class="ph b">Common DITA-OT parameters (all transtypes)</strong></p>
+<p class="p">These parameters work across most output formats:</p>
+<table class="simpletable"><colgroup><col style="width:33.33333333333333%"><col style="width:33.33333333333333%"><col style="width:33.33333333333333%"></colgroup><thead><tr class="sthead">
+    <th class="stentry" scope="col" id="dita-publishing__parameters-controlling-output-behavior__stentry__1">Parameter</th>
+    <th class="stentry" scope="col" id="dita-publishing__parameters-controlling-output-behavior__stentry__2">Values / Example</th>
+    <th class="stentry" scope="col" id="dita-publishing__parameters-controlling-output-behavior__stentry__3">What it does</th>
+  </tr></thead><tbody><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__1"><code class="ph codeph">-i</code> / <code class="ph codeph">--input</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__2"><code class="ph codeph">maps/book.ditamap</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__3">Input map or topic file</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__1"><code class="ph codeph">-f</code> / <code class="ph codeph">--format</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__2"><code class="ph codeph">html5</code>, <code class="ph codeph">pdf</code>, <code class="ph codeph">xhtml</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__3">Output transtype</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__1"><code class="ph codeph">-o</code> / <code class="ph codeph">--output</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__2"><code class="ph codeph">out/html5</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__3">Output directory</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__1"><code class="ph codeph">--filter</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__2"><code class="ph codeph">build/ditaval/web.ditaval</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__3">DITAVAL filter file for conditional processing</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__1"><code class="ph codeph">--propertyfile</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__2"><code class="ph codeph">build/html5.properties</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__3">Load parameters from a properties file</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__1"><code class="ph codeph">--processing-mode</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__2"><code class="ph codeph">strict</code>, <code class="ph codeph">lax</code>, <code class="ph codeph">skip</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__3">How to handle errors (<code class="ph codeph">strict</code> = fail on warnings)</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__1"><code class="ph codeph">--temp</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__2"><code class="ph codeph">/tmp/dita-temp</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__3">Temporary directory (useful for debugging)</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__1"><code class="ph codeph">-v</code> / <code class="ph codeph">--verbose</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__2"><em class="ph i">(flag)</em></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__3">Enable verbose logging</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__1"><code class="ph codeph">--debug</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__2"><em class="ph i">(flag)</em></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__3">Enable debug logging (very detailed)</td>
+  </tr></tbody></table>
+<p class="p"><strong class="ph b">HTML5-specific parameters</strong></p>
+<table class="simpletable"><colgroup><col style="width:33.33333333333333%"><col style="width:33.33333333333333%"><col style="width:33.33333333333333%"></colgroup><thead><tr class="sthead">
+    <th class="stentry" scope="col" id="dita-publishing__parameters-controlling-output-behavior__stentry__31">Parameter</th>
+    <th class="stentry" scope="col" id="dita-publishing__parameters-controlling-output-behavior__stentry__32">Values / Example</th>
+    <th class="stentry" scope="col" id="dita-publishing__parameters-controlling-output-behavior__stentry__33">What it does</th>
+  </tr></thead><tbody><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--nav-toc</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">none</code>, <code class="ph codeph">partial</code>, <code class="ph codeph">full</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Table of contents generation in each page</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--args.copycss</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">yes</code>, <code class="ph codeph">no</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Copy custom CSS to output directory</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--args.css</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">brand.css</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Name of custom CSS file to link</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--args.cssroot</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">css/</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Source directory for CSS files</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--args.csspath</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">css</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Path in output where CSS is placed</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--args.hdr</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">header.xml</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Custom header file for every page</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--args.ftr</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">footer.xml</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Custom footer file for every page</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--args.gen.task.lbl</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">YES</code>, <code class="ph codeph">NO</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Generate step labels ("Step 1", "Step 2")</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--args.rellinks</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">none</code>, <code class="ph codeph">all</code>, <code class="ph codeph">nofamily</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Which related links to include</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__31"><code class="ph codeph">--args.outext</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__32"><code class="ph codeph">.html</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__33">Output file extension</td>
+  </tr></tbody></table>
+<p class="p"><strong class="ph b">PDF-specific parameters</strong></p>
+<table class="simpletable"><colgroup><col style="width:33.33333333333333%"><col style="width:33.33333333333333%"><col style="width:33.33333333333333%"></colgroup><thead><tr class="sthead">
+    <th class="stentry" scope="col" id="dita-publishing__parameters-controlling-output-behavior__stentry__64">Parameter</th>
+    <th class="stentry" scope="col" id="dita-publishing__parameters-controlling-output-behavior__stentry__65">Values / Example</th>
+    <th class="stentry" scope="col" id="dita-publishing__parameters-controlling-output-behavior__stentry__66">What it does</th>
+  </tr></thead><tbody><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__64"><code class="ph codeph">--args.bookmap-order</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__65"><code class="ph codeph">discard</code>, <code class="ph codeph">retain</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__66">Keep or discard bookmap element order</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__64"><code class="ph codeph">--args.chapter.layout</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__65"><code class="ph codeph">MINITOC</code>, <code class="ph codeph">BASIC</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__66">Chapter page layout style</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__64"><code class="ph codeph">--args.fo.userconfig</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__65"><code class="ph codeph">fop.xconf</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__66">FOP configuration file</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__64"><code class="ph codeph">--custom.xep.config</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__65"><code class="ph codeph">xep.xml</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__66">XEP formatter configuration</td>
+  </tr><tr class="strow">
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__64"><code class="ph codeph">--pdf.version</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__65"><code class="ph codeph">1.5</code>, <code class="ph codeph">1.7</code></td>
+    <td class="stentry" headers="dita-publishing__parameters-controlling-output-behavior__stentry__66">PDF version to generate</td>
+  </tr></tbody></table>
+<p class="p"><strong class="ph b">Using a properties file (recommended for teams)</strong></p>
+<p class="p">Instead of long command lines, put stable settings in a <code class="ph codeph">.properties</code> file:</p>
+<pre class="pre codeblock language-properties"><code># build/html5-sidebar.properties
+nav-toc           = full
+args.copycss      = yes
+args.cssroot      = css/
+args.css          = brand.css
+args.gen.task.lbl = YES
+args.rellinks     = nofamily</code></pre>
+<p class="p">Then build with:</p>
+<pre class="pre codeblock language-bash"><code>dita -i maps/book.ditamap -f html5 -o out/html5 \
+  --propertyfile=build/html5-sidebar.properties \
+  --filter=build/ditaval/web.ditaval</code></pre>
+<p class="p"><strong class="ph b">Example: passing parameters (Ant-style)</strong></p>
+<pre class="pre codeblock language-bash"><code>dita -i maps/guides/getting-started.ditamap -f html5 -o out/html \
+  -Dargs.gen.task.lbl=true \
+  -Dargs.rellinks=none</code></pre>
+<aside class="callout callout-note" role="note"><span class="callout-label">ℹ NOTE</span><div class="callout-body"><strong class="ph b">Note:</strong> The <code class="ph codeph">-D</code> prefix syntax is the Ant-style parameter passing. The <code class="ph codeph">--args.*</code> syntax is recommended for DITA-OT 3.x+.</div></aside>
+<p class="p">The exact parameters you use depend on your output requirements and your DITA-OT version.</p>
+</section>
+<section class="section" id="dita-publishing__filtering-in-the-build-ditaval-concept"><h2 class="title sectiontitle">Filtering in the build (DITAVAL concept)</h2>
+
+<p class="p">Filtering is usually applied at build time by providing filtering rules.</p>
+<p class="p">Typical workflow:</p>
+<ol class="ol">
+  <li class="li">Tag content with attributes (<code class="ph codeph">platform="windows"</code>).</li>
+  <li class="li">Create a filter file that includes/excludes values.</li>
+  <li class="li">Run separate builds for each variant.</li>
+</ol>
+<p class="p"><strong class="ph b">Example build strategy</strong></p>
+<ul class="ul">
+  <li class="li"><code class="ph codeph">build-windows-html</code></li>
+  <li class="li"><code class="ph codeph">build-linux-html</code></li>
+  <li class="li"><code class="ph codeph">build-windows-pdf</code></li>
+  <li class="li"><code class="ph codeph">build-linux-pdf</code></li>
+</ul>
+<p class="p">Even if you later automate this, it’s valuable to think of variants as explicit publications.</p>
+</section>
+<section class="section" id="dita-publishing__output-customization-where-to-change-what"><h2 class="title sectiontitle">Output customization: where to change what</h2>
+
+<p class="p"><strong class="ph b">HTML customization</strong></p>
+<p class="p">Common customization areas:</p>
+<ul class="ul">
+  <li class="li">CSS (theme),</li>
+  <li class="li">HTML templates and headers/footers,</li>
+  <li class="li">navigation behavior,</li>
+  <li class="li">search integration (depending on output).</li>
+</ul>
+<p class="p">A practical approach:</p>
+<ul class="ul">
+  <li class="li">start with CSS and minimal HTML template overrides,</li>
+  <li class="li">avoid deep XSLT changes until necessary.</li>
+</ul>
+<p class="p"><strong class="ph b">PDF customization</strong></p>
+<p class="p">PDF often requires:</p>
+<ul class="ul">
+  <li class="li">FO styling rules,</li>
+  <li class="li">page masters, headers/footers,</li>
+  <li class="li">tables and code block formatting,</li>
+  <li class="li">numbering and cross-references.</li>
+</ul>
+<p class="p">PDF customization can become a deep specialization area. Start small:</p>
+<ul class="ul">
+  <li class="li">change fonts, margins, headers,</li>
+  <li class="li">adjust table styles,</li>
+  <li class="li">make code blocks readable.</li>
+</ul>
+<p class="p">Then expand:</p>
+<ul class="ul">
+  <li class="li">custom cover pages,</li>
+  <li class="li">running headers and footers,</li>
+  <li class="li">index generation and glossaries (if your pipeline supports them).</li>
+</ul>
+<p class="p"><strong class="ph b">Plugin customization</strong></p>
+<p class="p">DITA‑OT supports plugins to:</p>
+<ul class="ul">
+  <li class="li">add new transforms,</li>
+  <li class="li">override templates,</li>
+  <li class="li">inject preprocessing steps,</li>
+  <li class="li">create reports.</li>
+</ul>
+<p class="p">Use plugins when:</p>
+<ul class="ul">
+  <li class="li">you need consistent custom behavior across builds,</li>
+  <li class="li">you want to package customization cleanly,</li>
+  <li class="li">parameter overrides aren’t enough.</li>
+</ul>
+</section>
+<section class="section" id="dita-publishing__debugging-build-problems-a-practical-checklist"><h2 class="title sectiontitle">Debugging build problems (a practical checklist)</h2>
+
+<p class="p"><strong class="ph b">Problem: Content missing</strong></p>
+<ul class="ul">
+  <li class="li">Check filtering rules.</li>
+  <li class="li">Check map inclusion (topicref points to correct file).</li>
+  <li class="li">Check if a topic is excluded by conditional processing attributes.</li>
+  <li class="li">Check if content is pulled via conref and the target is missing.</li>
+</ul>
+<p class="p"><strong class="ph b">Problem: Broken links or unresolved references</strong></p>
+<ul class="ul">
+  <li class="li">Validate IDs and references.</li>
+  <li class="li">Ensure topic IDs and element IDs exist.</li>
+  <li class="li">Check for renames that weren’t propagated.</li>
+</ul>
+<p class="p"><strong class="ph b">Problem: Wrong product name or wrong URL</strong></p>
+<ul class="ul">
+  <li class="li">Check keys in the map.</li>
+  <li class="li">Ensure you are building the correct map.</li>
+  <li class="li">Check key scopes if advanced map structures exist.</li>
+</ul>
+<p class="p"><strong class="ph b">Problem: Images missing</strong></p>
+<ul class="ul">
+  <li class="li">Ensure image paths are correct and copied into output.</li>
+  <li class="li">Ensure images are referenced with correct relative paths.</li>
+  <li class="li">Check whether filtering excludes topics that provide the images.</li>
+</ul>
+<p class="p"><strong class="ph b">Problem: PDF formatting issues</strong></p>
+<ul class="ul">
+  <li class="li">Inspect FO output if accessible.</li>
+  <li class="li">Identify whether the problem is content structure (tables, code blocks) or styling.</li>
+  <li class="li">Apply minimal overrides first.</li>
+</ul>
+</section>
+<section class="section" id="dita-publishing__ci-and-automation-publishing-like-software"><h2 class="title sectiontitle">CI and automation: publishing like software</h2>
+
+<p class="p">A mature DITA pipeline looks like software CI:</p>
+<ul class="ul">
+  <li class="li">builds are triggered by commits,</li>
+  <li class="li">validation runs automatically,</li>
+  <li class="li">outputs are versioned and deployed.</li>
+</ul>
+<p class="p"><strong class="ph b">Practical CI steps</strong></p>
+<ol class="ol">
+  <li class="li">Validate XML (well-formed + schema/DTD as applicable).</li>
+  <li class="li">Run DITA‑OT build for each required publication.</li>
+  <li class="li">Fail if warnings exceed a threshold (ideally fail on unresolved refs).</li>
+  <li class="li">Publish artifacts to:</li>
+</ol>
+<p class="p">   - documentation portal,    - release package,    - internal storage.</p>
+<p class="p"><strong class="ph b">Output deployment patterns</strong></p>
+<ul class="ul">
+  <li class="li">Static site hosting for HTML outputs,</li>
+  <li class="li">artifact repositories for PDFs,</li>
+  <li class="li">CCMS publishing service for enterprise portals.</li>
+</ul>
+</section>
+<section class="section" id="dita-publishing__professional-publishing-architecture-how-doc-teams-scale"><h2 class="title sectiontitle">Professional publishing architecture (how doc teams scale)</h2>
+
+<p class="p">As documentation grows, teams typically separate concerns:</p>
+<ul class="ul">
+  <li class="li"><strong class="ph b">Authoring repo</strong> (topics, maps, reuse, media)</li>
+  <li class="li"><strong class="ph b">Build system repo</strong> (pipeline scripts, configs)</li>
+  <li class="li"><strong class="ph b">Brand/theme repo</strong> (CSS, templates, PDF themes)</li>
+  <li class="li"><strong class="ph b">Deployment system</strong> (portal, CDN, internal hosting)</li>
+</ul>
+<p class="p">This separation:</p>
+<ul class="ul">
+  <li class="li">keeps authors focused,</li>
+  <li class="li">keeps customization controlled,</li>
+  <li class="li">supports multiple brands/products.</li>
+</ul>
+</section>
+<section class="section" id="dita-publishing__a-practical-starter-publishing-setup-copyable-blueprint"><h2 class="title sectiontitle">A practical “starter publishing setup” (copyable blueprint)</h2>
+
+<p class="p"><strong class="ph b">Suggested folder layout</strong></p>
+<pre class="pre codeblock"><code>dita/
+  maps/
+  topics/
+  reuse/
+  media/
+  ditaval/
+  build/
+    build.sh
+    build.ps1
+    params/
+      html.properties
+      pdf.properties</code></pre>
+<p class="p"><strong class="ph b">What goes where</strong></p>
+<ul class="ul">
+  <li class="li"><code class="ph codeph">maps/</code>: deliverable definitions</li>
+  <li class="li"><code class="ph codeph">topics/</code>: content</li>
+  <li class="li"><code class="ph codeph">reuse/</code>: shared snippets</li>
+  <li class="li"><code class="ph codeph">ditaval/</code>: filtering rules per variant</li>
+  <li class="li"><code class="ph codeph">build/</code>: scripts + parameters</li>
+</ul>
+<p class="p"><strong class="ph b">Build script responsibilities</strong></p>
+<ul class="ul">
+  <li class="li">pick input maps,</li>
+  <li class="li">pick output formats,</li>
+  <li class="li">apply filter rules,</li>
+  <li class="li">pass consistent parameters,</li>
+  <li class="li">place outputs in a clean directory.</li>
+</ul>
+</section>
+<section class="section" id="dita-publishing__common-publishing-mistakes-and-how-to-avoid-them"><h2 class="title sectiontitle">Common publishing mistakes (and how to avoid them)</h2>
+
+<p class="p"><strong class="ph b">Mistake: Publishing topics directly instead of maps</strong></p>
+<p class="p">Fix: publish maps so key spaces and navigation context are consistent.</p>
+<p class="p"><strong class="ph b">Mistake: Customizing too early</strong></p>
+<p class="p">Fix: start with minimal overrides; grow customization as requirements become clear.</p>
+<p class="p"><strong class="ph b">Mistake: Not treating build warnings as serious</strong></p>
+<p class="p">Fix: fail builds on unresolved references and broken conrefs; monitor warning counts.</p>
+<p class="p"><strong class="ph b">Mistake: No repeatability</strong></p>
+<p class="p">Fix: scripts/project files; document required DITA‑OT version and plugins.</p>
+<p class="p"><strong class="ph b">Mistake: Mixing build outputs into source</strong></p>
+<p class="p">Fix: separate <code class="ph codeph">out/</code> from source and keep it out of version control.</p>
+</section>
+<section class="section" id="dita-publishing__analytics-instrumentation"><h2 class="title sectiontitle">Analytics and Instrumentation</h2>
+
+<p class="p">Instrument publishing outputs to track which formats and outputs are most used. Use analytics to identify popular outputs and troubleshoot publishing issues.</p>
+</section>
+<section class="section" id="dita-publishing__personalization-conditional-processing"><h2 class="title sectiontitle">Personalization and Conditional Processing</h2>
+
+<p class="p">Use DITA conditional processing to generate branded or generic outputs. Example:</p>
+<pre class="pre codeblock language-xml"><code>&lt;section product="acme"&gt;Acme-branded output instructions.&lt;/section&gt;</code></pre>
+</section>
+<section class="section" id="dita-publishing__chatbot-nlp-integration"><h2 class="title sectiontitle">Integrating with Conversational AI and NLP</h2>
+
+<p class="p">Integrate publishing FAQs and troubleshooting steps with chatbots to provide instant support for publishing issues.</p>
+</section>
+<section class="section" id="dita-publishing__continuous-improvement-feedback"><h2 class="title sectiontitle">Continuous Improvement and Feedback Loops</h2>
+
+<p class="p">Add a feedback widget to publishing documentation. Use analytics and user feedback to improve publishing instructions and resolve common pain points.</p>
+</section>
+  
+<nav role="navigation" class="related-links"><div class="linklist reltasks"><strong>Related tasks</strong><br><ul class="linklist"><li class="linklist"><a class="link" href="../part07-develop/dita-ot-developer-handbook.html" title="This handbook is for engineers who want to develop DITA Open Toolkit—either by contributing to the core toolkit or by building production-grade transformations and pipelines with plug-ins, containers, and CI/CD.">DITA-OT Architecture and DevOps</a></li></ul></div><div class="linklist relref"><strong>Related reference</strong><br><ul class="linklist"><li class="linklist"><a class="link" href="../appendices/architecture-diagram.html" title="ASCII reference diagram showing the complete DITA-OT HTML5 processing pipeline from inputs through preprocessing, transformation, and output.">DITA-OT Architecture Diagram</a></li></ul></div></nav></article></main><footer role="contentinfo"><button class="go-top-btn" id="goTopBtn" onclick="window.scrollTo(0,0)" title="Back to top" aria-label="Scroll to top">↑</button><footer class="extense-footer"><div class="footer-brand">EXTENSE</div>© 2026 Extense LLC — DITA Training Guide — Built with DITA-OT</footer></footer></body></html>

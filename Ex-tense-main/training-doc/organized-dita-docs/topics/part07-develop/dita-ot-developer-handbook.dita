@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="dita-ot-developer-handbook" xml:lang="en-US">
+  <title>DITA-OT Architecture and DevOps</title>
+  <shortdesc>This handbook is for engineers who want to develop DITA Open Toolkit—either by contributing to the core toolkit or by building production-grade transformations and pipelines with plug-ins, containers, and CI/CD.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-01-15"/>
+      <revised modified="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>DITA-OT</indexterm><indexterm>Architecture</indexterm><indexterm>Preprocessing</indexterm><indexterm>Docker</indexterm><indexterm>CI/CD</indexterm><indexterm>GitHub Actions</indexterm>
+      </keywords>
+      <category>taxonomy:devops</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="build-engineer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="dita-ot-developer-handbook"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT60M"/>
+    <data name="content-domain" value="devops"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="medium"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="dita-publishing"/>
+  </prolog>
+  <conbody>
+    <p>This handbook covers the full DITA-OT development stack, from internal architecture through production deployment. It is based on the official DITA-OT development documentation and references.</p>
+    <p>Topics in this chapter include:</p>
+    <ul>
+      <li><b>Architecture and Preprocessing</b> — the multi-stage pipeline, temp directory, preprocessing deep dive, and map-first <codeph>preprocess2</codeph></li>
+      <li><b>Customization and Plug-Ins</b> — extension points, XSLT-import overrides, robust patterns, pipeline hooks, and a complete plug-in template</li>
+      <li><b>DevOps and Operations</b> — building from source, Docker workflows, GitHub Actions CI/CD, debugging, and repository layout</li>
+    </ul>
+    <note>Each topic in this chapter can be read independently. Start with the architecture topics if you are new to DITA-OT internals, or jump to the DevOps section for CI/CD recipes.</note>
+  </conbody>
+</concept>

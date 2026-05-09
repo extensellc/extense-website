@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="what-is-dtd" xml:lang="en-US">
+  <title>What Is a DTD?</title>
+  <shortdesc>A Document Type Definition (DTD) is the original XML schema language — it defines the allowed structure of an XML document by declaring which elements, attributes, and entities are permitted.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-04-05"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>DTD</indexterm>
+        <indexterm>Document Type Definition</indexterm>
+        <indexterm>XML validation</indexterm>
+        <indexterm>DOCTYPE</indexterm>
+      </keywords>
+      <category>taxonomy:xml-schema</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="xml-training" appname="chatbot" id="what-is-dtd"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="xml-schema"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="xml-elements-attributes"/>
+  </prolog>
+  <conbody>
+
+    <section id="purpose">
+      <title>Why do we need schemas?</title>
+      <p>A well-formed XML document has correct syntax, but that says nothing about whether its <b>content structure</b> makes sense. Consider:</p>
+      <codeblock outputclass="language-xml">&lt;!-- Well-formed, but is it correct? --&gt;
+&lt;book&gt;
+  &lt;price&gt;Learning XML&lt;/price&gt;     &lt;!-- Title in price? --&gt;
+  &lt;author&gt;29.95&lt;/author&gt;          &lt;!-- Number as author? --&gt;
+&lt;/book&gt;</codeblock>
+      <p>A schema defines the <b>rules</b> for what a valid document looks like: which elements can appear, in what order, how many times, and what attributes they can carry. A <b>validating parser</b> checks a document against its schema and reports any violations.</p>
+      <p>A DTD (Document Type Definition) is the oldest and simplest schema language for XML. It has been part of XML since the very beginning.</p>
+    </section>
+
+    <section id="well-formed-vs-valid">
+      <title>Well-formed vs. valid</title>
+      <table>
+        <tgroup cols="2">
+          <colspec colname="wf" colwidth="1*"/>
+          <colspec colname="valid" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Well-formed</entry>
+              <entry>Valid</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Follows XML syntax rules</entry>
+              <entry>Follows XML syntax rules AND conforms to a schema</entry>
+            </row>
+            <row>
+              <entry>Checked by any XML parser</entry>
+              <entry>Checked by a validating parser with a schema</entry>
+            </row>
+            <row>
+              <entry>Required for all XML</entry>
+              <entry>Optional — but strongly recommended for production content</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <p>All valid documents are well-formed, but not all well-formed documents are valid.</p>
+    </section>
+
+    <section id="internal-vs-external">
+      <title>Internal vs. external DTDs</title>
+      <p>A DTD can be declared in two places:</p>
+      <p><b>Internal DTD</b> — embedded directly in the XML document:</p>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE note [
+  &lt;!ELEMENT note (to, from, subject, body)&gt;
+  &lt;!ELEMENT to (#PCDATA)&gt;
+  &lt;!ELEMENT from (#PCDATA)&gt;
+  &lt;!ELEMENT subject (#PCDATA)&gt;
+  &lt;!ELEMENT body (#PCDATA)&gt;
+]&gt;
+&lt;note&gt;
+  &lt;to&gt;Student&lt;/to&gt;
+  &lt;from&gt;Instructor&lt;/from&gt;
+  &lt;subject&gt;Welcome&lt;/subject&gt;
+  &lt;body&gt;Welcome to XML training!&lt;/body&gt;
+&lt;/note&gt;</codeblock>
+      <p><b>External DTD</b> — stored in a separate file and referenced from the document:</p>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE note SYSTEM "note.dtd"&gt;
+&lt;note&gt;
+  &lt;to&gt;Student&lt;/to&gt;
+  &lt;from&gt;Instructor&lt;/from&gt;
+  &lt;subject&gt;Welcome&lt;/subject&gt;
+  &lt;body&gt;Welcome to XML training!&lt;/body&gt;
+&lt;/note&gt;</codeblock>
+      <p>In practice, external DTDs are much more common because they can be shared across multiple documents. DITA uses external DTDs — every DITA topic begins with a DOCTYPE declaration that references the DITA DTD files.</p>
+    </section>
+
+    <section id="system-vs-public">
+      <title>SYSTEM vs. PUBLIC identifiers</title>
+      <p>External DTDs use two forms of reference:</p>
+      <ul>
+        <li><b>SYSTEM</b> — points to a file by URI (path or URL): <codeph>&lt;!DOCTYPE note SYSTEM "note.dtd"&gt;</codeph></li>
+        <li><b>PUBLIC</b> — uses a formal public identifier (FPI) plus a fallback URI. This is how DITA DTDs are referenced:</li>
+      </ul>
+      <codeblock outputclass="language-xml">&lt;!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd"&gt;</codeblock>
+      <p>The PUBLIC identifier (<codeph>-//OASIS//DTD DITA Concept//EN</codeph>) allows XML catalogs to resolve the DTD location without depending on a specific file path.</p>
+    </section>
+
+    <section id="what-dtd-defines">
+      <title>What can a DTD define?</title>
+      <p>A DTD can declare four types of constructs:</p>
+      <ol>
+        <li><b>Elements</b> — which elements exist and what they can contain</li>
+        <li><b>Attributes</b> — which attributes each element can have, their types, and default values</li>
+        <li><b>Entities</b> — reusable text shortcuts and character references</li>
+        <li><b>Notations</b> — identifiers for non-XML data formats (rarely used today)</li>
+      </ol>
+      <p>The following chapters explore element and attribute declarations in detail.</p>
+    </section>
+
+  </conbody>
+</concept>

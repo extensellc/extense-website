@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="chunking-and-embedding" xml:lang="en-US">
+  <title>Section-Aware Chunking and Embedding Strategy</title>
+  <shortdesc>How DITA's section structure enables semantically coherent chunks that preserve metadata context, and how those chunks are transformed into high-dimensional vectors for similarity search.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-02-10"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Chunking strategy</indexterm>
+        <indexterm>Section-aware chunking</indexterm>
+        <indexterm>Embeddings</indexterm>
+        <indexterm>Text embedding</indexterm>
+        <indexterm>Vector representation</indexterm>
+      </keywords>
+      <category>taxonomy:intelligent-content</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="chunking-and-embedding"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="architecture"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="rag-pipeline-architecture"/>
+  </prolog>
+  <conbody>
+
+    <section id="problem-with-naive-chunking">
+      <title>Why does naive text splitting fail?</title>
+      <p>Most RAG systems split documents by character count — every 1000 characters, start a new chunk. This approach has critical problems:</p>
+      <ul>
+        <li><b>Broken context:</b> A chunk boundary splits a code example in half, making both halves meaningless</li>
+        <li><b>Mixed topics:</b> A chunk contains the end of one section and the beginning of another, conflating two unrelated subjects</li>
+        <li><b>Lost identity:</b> Plain text chunks have no metadata — the system cannot tell which chunk is about installation vs. troubleshooting</li>
+        <li><b>No hierarchy:</b> All chunks appear equal, with no way to prioritize or filter</li>
+      </ul>
+      <p>DITA solves all four problems because the XML structure explicitly marks section boundaries, topic types, and metadata.</p>
+    </section>
+
+    <section id="section-aware-chunking">
+      <title>How does section-aware chunking work?</title>
+      <p>Section-aware chunking uses DITA's XML structure as the chunk boundary instead of arbitrary character counts:</p>
+      <codeblock outputclass="language-text">DITA Topic: "Content Reuse Strategies"
+├── shortdesc (inherited by all chunks)
+├── prolog metadata (inherited by all chunks)
+├── section[@id="why-reuse"]
+│   └── CHUNK 1: title + paragraphs (380 tokens)
+├── section[@id="conref-mechanism"]
+│   └── CHUNK 2: title + paragraphs + codeblock (920 tokens)
+├── section[@id="keyref-mechanism"]
+│   └── CHUNK 3: title + paragraphs + table (1100 tokens)
+└── section[@id="when-to-use-which"]
+    └── CHUNK 4: title + paragraphs + table (780 tokens)</codeblock>
+      <p>Each chunk is produced by one rule: <b>one section = one chunk</b>. The chatbot configuration specifies boundaries:</p>
+      <ul>
+        <li><b>Minimum:</b> 100 tokens — sections smaller than this are merged with the next section</li>
+        <li><b>Maximum:</b> 1500 tokens — sections larger than this are split at paragraph boundaries</li>
+        <li><b>Overlap:</b> 2 sentences from the end of the previous chunk are prepended for continuity</li>
+      </ul>
+    </section>
+
+    <section id="metadata-inheritance">
+      <title>How does metadata attach to each chunk?</title>
+      <p>Every chunk inherits the full prolog metadata from its parent topic. The chunking process creates a JSON payload for each chunk:</p>
+      <codeblock outputclass="language-json">{
+  "chunk_id": "content-reuse__conref-mechanism",
+  "topic_id": "content-reuse",
+  "topic_type": "concept",
+  "section_id": "conref-mechanism",
+  "section_title": "How does conref work?",
+  "shortdesc": "Techniques for reusing content ...",
+  "text": "A conref (content reference) pulls ...",
+  "metadata": {
+    "audience": "technical-writer",
+    "difficulty": "intermediate",
+    "content-domain": "content-reuse",
+    "content-intent": "explain",
+    "chatbot-priority": "high",
+    "service-line": "dita-engineering",
+    "xml:lang": "en-US",
+    "created": "2026-01-15"
+  },
+  "token_count": 920
+}</codeblock>
+      <p>This metadata is stored alongside the vector in the database, enabling filtered search (e.g., "show me only beginner content about publishing").</p>
+    </section>
+
+    <section id="embedding-model">
+      <title>How are chunks converted to vectors?</title>
+      <p>Each chunk's text is passed through an embedding model that produces a high-dimensional vector representation:</p>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="param" colwidth="1*"/>
+          <colspec colname="value" colwidth="1*"/>
+          <colspec colname="reason" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Parameter</entry>
+              <entry>Value</entry>
+              <entry>Rationale</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Model</entry>
+              <entry>text-embedding-3-large</entry>
+              <entry>Best performance on technical content retrieval benchmarks</entry>
+            </row>
+            <row>
+              <entry>Dimensions</entry>
+              <entry>3072</entry>
+              <entry>Full dimensionality preserves fine-grained semantic distinctions between technical concepts</entry>
+            </row>
+            <row>
+              <entry>Similarity metric</entry>
+              <entry>Cosine similarity</entry>
+              <entry>Scale-invariant; works well with normalized embeddings</entry>
+            </row>
+            <row>
+              <entry>Input format</entry>
+              <entry>shortdesc + section title + text</entry>
+              <entry>Prepending the shortdesc gives each chunk topic-level context</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <p>The embedding input is constructed as: <codeph>[shortdesc] [section_title]: [chunk_text]</codeph>. This ensures the embedding captures both the topic-level context and the section-level detail.</p>
+    </section>
+
+    <section id="before-after-chunk-quality">
+      <title>Before and after: chunk quality comparison</title>
+      <p><b>Before (naive chunking of unstructured content):</b></p>
+      <codeblock outputclass="language-text">Chunk: "...to install the toolkit. ## Setting Up
+You can configure the toolkit by editing the
+conf/configuration.properties file. The key settings
+are: - temp.dir: The temporary directory..."
+
+Metadata: { source: "guide.xml", page: 12 }
+Embedding quality: LOW (mixed topics, no context)</codeblock>
+      <p><b>After (section-aware chunking of DITA):</b></p>
+      <codeblock outputclass="language-text">Chunk: "How to configure the DITA Open Toolkit:
+You can configure the toolkit by editing the
+conf/configuration.properties file. The key settings
+are: temp.dir (the temporary directory)..."
+
+<ph outputclass="hi-yellow">Metadata: {
+  topic_type: "task",
+  audience: "build-engineer",
+  difficulty: "intermediate",
+  content-domain: "publishing",
+  content-intent: "how-to",
+  chatbot-priority: "high"
+}</ph>
+<ph outputclass="hi-yellow">Embedding quality: HIGH (focused, typed, metadata-rich)</ph></codeblock>
+    </section>
+
+  </conbody>
+</concept>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="preface" xml:lang="en-US">
+  <title>Preface: Who This Guide Is For</title>
+  <shortdesc>A progressive training guide that takes you from first DITA topic to production publishing and AI-powered delivery — with hands-on tutorials, real examples, and measurable outcomes for both technical writers and software engineers.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-02-10"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Intelligent content</indexterm>
+        <indexterm>AI readiness</indexterm>
+        <indexterm>Content transformation</indexterm>
+      </keywords>
+      <category>taxonomy:intelligent-content</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="preface"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT5M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="overview"/>
+    <data name="chatbot-priority" value="medium"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="none"/>
+  </prolog>
+  <conbody>
+
+    <section id="who-is-this-for">
+      <title>Who should read this guide?</title>
+      <p>This guide serves two primary learning tracks — you can follow one or both:</p>
+      <ul>
+        <li><b>Technical writers</b> — Master DITA authoring, information typing, reuse, metadata, and publishing workflows. You will write real topics, build maps, and publish multi-channel output.</li>
+        <li><b>Software engineers</b> — Master DITA-OT architecture, plugin development, XSLT customization, CI/CD pipelines, Docker builds, and AI integration. You will build plugins, automate publishing, and connect content to RAG pipelines.</li>
+      </ul>
+      <p>The guide is also valuable for content strategists planning modernization initiatives, documentation managers evaluating structured content ROI, and information architects designing content models.</p>
+    </section>
+
+    <section id="what-you-will-learn">
+      <title>What you will learn</title>
+      <p>The guide follows a progressive learning path — each part builds on the previous one. By the end, you will be able to:</p>
+      <ol>
+        <li><b>Explain</b> why unstructured content creates real problems for your team — duplication, inconsistency, scaling failure — and how structured content solves them</li>
+        <li><b>Set up</b> a DITA authoring environment with DITA-OT, an XML editor, and project scaffolding</li>
+        <li><b>Author</b> concept, task, and reference topics using proper information typing, and apply reuse patterns (conref, keyref, conkeyref)</li>
+        <li><b>Design</b> topic hierarchies, controlled vocabulary, and maps that scale</li>
+        <li><b>Enrich</b> content with metadata, taxonomy, and Schema.org markup for both human findability and AI readability</li>
+        <li><b>Publish</b> HTML5, PDF, and multi-channel output with DITAVAL filtering and automated pipelines</li>
+        <li><b>Develop</b> DITA-OT plugins, customize HTML5 transforms with XSLT, and deploy via Docker and CI/CD</li>
+        <li><b>Connect</b> enriched DITA content to RAG pipelines, vector stores, and chatbot delivery</li>
+        <li><b>Measure</b> the ROI and impact of intelligent content across your organization</li>
+      </ol>
+    </section>
+
+    <section id="how-to-read">
+      <title>How this guide is organized</title>
+      <p>The guide has 10 parts organized in a progressive learning path. Parts build on each other, so work through them in order. XML basics and inline explanations are provided where needed — no prior DITA or XML experience is required.</p>
+      <table>
+        <tgroup cols="4">
+          <colspec colname="part" colwidth="1.5*"/>
+          <colspec colname="covers" colwidth="3*"/>
+          <colspec colname="level" colwidth="1*"/>
+          <colspec colname="audience" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Part</entry>
+              <entry>Covers</entry>
+              <entry>Level</entry>
+              <entry>Best for</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>I — Why Intelligent Content</entry>
+              <entry>Problems your team faces today with unstructured content; what intelligent content is; AI readiness maturity model; unstructured format limitations</entry>
+              <entry>Beginner</entry>
+              <entry>Everyone</entry>
+            </row>
+            <row>
+              <entry>II — Content Preparation</entry>
+              <entry>DITA fundamentals and XML syntax primer; install DITA-OT; configure your editor; project setup and quick start</entry>
+              <entry>Beginner</entry>
+              <entry>Everyone</entry>
+            </row>
+            <row>
+              <entry>III — Authoring DITA Content</entry>
+              <entry>Topic types and authoring foundations; hands-on WidgetPro tutorial with inline tips; information typing basics; information typing for AI; reuse and variant management</entry>
+              <entry>Intermediate</entry>
+              <entry>Everyone</entry>
+            </row>
+            <row>
+              <entry>IV — Information Architecture</entry>
+              <entry>Topic-based architecture; taxonomy and controlled vocabulary; progressive map design</entry>
+              <entry>Intermediate</entry>
+              <entry>Writers, Architects</entry>
+            </row>
+            <row>
+              <entry>V — Making Content Intelligent</entry>
+              <entry>Metadata enrichment; Schema.org integration; migration from unstructured XML (step-by-step); AI-ready authoring guide; before-and-after examples</entry>
+              <entry>Intermediate</entry>
+              <entry>Everyone</entry>
+            </row>
+            <row>
+              <entry>VI — Publishing &amp; Automation</entry>
+              <entry>HTML5 and PDF builds; multi-channel output; DITA project files; CI/CD publishing pipelines; troubleshooting</entry>
+              <entry>Intermediate</entry>
+              <entry>Everyone</entry>
+            </row>
+            <row>
+              <entry>VII — DITA-OT Development</entry>
+              <entry>OT mental model and preprocessing pipeline; plugin creation; Docker containers; GitHub Actions CI/CD; debugging</entry>
+              <entry>Advanced</entry>
+              <entry>Engineers</entry>
+            </row>
+            <row>
+              <entry>VIII — XSLT Customization</entry>
+              <entry>Hands-on labs: XSLT overrides, sidebar TOC, element styling, production patterns, plugin packaging</entry>
+              <entry>Advanced</entry>
+              <entry>Engineers</entry>
+            </row>
+            <row>
+              <entry>IX — AI Pipeline Integration</entry>
+              <entry>RAG pipeline architecture; chunking and embedding; retrieval and generation</entry>
+              <entry>Advanced</entry>
+              <entry>Engineers</entry>
+            </row>
+            <row>
+              <entry>X — Benefits &amp; Impact</entry>
+              <entry>ROI measurement; utilizing intelligent features; impact on final products</entry>
+              <entry>Beginner</entry>
+              <entry>Everyone</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <p>Each part includes transition sections ("What's Next") that explain how the current material connects to what follows, so you always know where you are in the learning path.</p>
+    </section>
+
+  </conbody>
+</concept>

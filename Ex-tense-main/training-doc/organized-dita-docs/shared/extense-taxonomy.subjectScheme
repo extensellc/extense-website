@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE subjectScheme PUBLIC "-//OASIS//DTD DITA Subject Scheme Map//EN" "subjectScheme.dtd">
+<!--
+  Extense LLC — Controlled Vocabulary for DITA Training Content
+  Purpose: Machine-readable taxonomy for chatbot/RAG classification,
+           content filtering, and AI-driven content recommendation.
+  Usage:  Referenced from the main bookmap via <mapref>.
+-->
+<subjectScheme id="extense-taxonomy">
+  <title>Extense Content Taxonomy</title>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       AUDIENCE TYPES — who the content targets
+       ═══════════════════════════════════════════════════════════════ -->
+  <subjectdef keys="audience-type">
+    <subjectdef keys="aud-technical-writer">
+      <topicmeta><navtitle>Technical Writer</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="aud-content-strategist">
+      <topicmeta><navtitle>Content Strategist</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="aud-developer">
+      <topicmeta><navtitle>Developer / Engineer</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="aud-build-engineer">
+      <topicmeta><navtitle>Build / DevOps Engineer</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="aud-editor">
+      <topicmeta><navtitle>Editor / Reviewer</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="aud-localization">
+      <topicmeta><navtitle>Localization Specialist</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="aud-manager">
+      <topicmeta><navtitle>Documentation Manager</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="aud-all">
+      <topicmeta><navtitle>All Audiences</navtitle></topicmeta>
+    </subjectdef>
+  </subjectdef>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DIFFICULTY LEVELS — for chatbot context and learning paths
+       ═══════════════════════════════════════════════════════════════ -->
+  <subjectdef keys="difficulty-level">
+    <subjectdef keys="beginner">
+      <topicmeta><navtitle>Beginner</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="intermediate">
+      <topicmeta><navtitle>Intermediate</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="advanced">
+      <topicmeta><navtitle>Advanced</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="expert">
+      <topicmeta><navtitle>Expert</navtitle></topicmeta>
+    </subjectdef>
+  </subjectdef>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CONTENT DOMAINS — what subject area the content covers
+       ═══════════════════════════════════════════════════════════════ -->
+  <subjectdef keys="content-domain">
+    <subjectdef keys="dom-dita-fundamentals">
+      <topicmeta><navtitle>DITA Fundamentals</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="dom-authoring">
+      <topicmeta><navtitle>DITA Authoring</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="dom-content-reuse">
+      <topicmeta><navtitle>Content Reuse &amp; Variants</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="dom-publishing">
+      <topicmeta><navtitle>Publishing &amp; Output</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="dom-customization">
+      <topicmeta><navtitle>Customization &amp; Plugins</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="dom-xslt">
+      <topicmeta><navtitle>XSLT Development</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="dom-devops">
+      <topicmeta><navtitle>DevOps &amp; CI/CD</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="dom-architecture">
+      <topicmeta><navtitle>DITA-OT Architecture</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="dom-ccms">
+      <topicmeta><navtitle>CCMS &amp; Content Management</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="dom-localization">
+      <topicmeta><navtitle>Localization &amp; Translation</navtitle></topicmeta>
+    </subjectdef>
+  </subjectdef>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CONTENT INTENT — the purpose/type of content for RAG routing
+       ═══════════════════════════════════════════════════════════════ -->
+  <subjectdef keys="content-intent">
+    <subjectdef keys="intent-explain">
+      <topicmeta><navtitle>Explanation / Concept</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="intent-how-to">
+      <topicmeta><navtitle>How-To / Procedure</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="intent-reference">
+      <topicmeta><navtitle>Reference / Lookup</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="intent-troubleshoot">
+      <topicmeta><navtitle>Troubleshooting</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="intent-best-practice">
+      <topicmeta><navtitle>Best Practice / Pattern</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="intent-tutorial">
+      <topicmeta><navtitle>Tutorial / Lab</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="intent-overview">
+      <topicmeta><navtitle>Overview / Introduction</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="intent-definition">
+      <topicmeta><navtitle>Definition / Glossary</navtitle></topicmeta>
+    </subjectdef>
+  </subjectdef>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       EXTENSE SERVICE LINES — maps content to company offerings
+       ═══════════════════════════════════════════════════════════════ -->
+  <subjectdef keys="extense-service">
+    <subjectdef keys="svc-dita-engineering">
+      <topicmeta><navtitle>DITA Engineering</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="svc-publishing-engineering">
+      <topicmeta><navtitle>Publishing Engineering</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="svc-ccms-services">
+      <topicmeta><navtitle>CCMS Services</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="svc-content-migration">
+      <topicmeta><navtitle>Content Migration</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="svc-training">
+      <topicmeta><navtitle>Training &amp; Enablement</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="svc-xml-engineering">
+      <topicmeta><navtitle>XML Engineering</navtitle></topicmeta>
+    </subjectdef>
+    <subjectdef keys="svc-structured-content-strategy">
+      <topicmeta><navtitle>Structured Content Strategy</navtitle></topicmeta>
+    </subjectdef>
+  </subjectdef>
+</subjectScheme>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="part02-content-preparation">
+  <title>Content Preparation</title>
+  <topicmeta>
+    <shortdesc>Install the toolkit, configure your editor, and understand DITA fundamentals before writing your first topic</shortdesc>
+    <metadata>
+      <othermeta name="difficulty" content="beginner"/>
+      <othermeta name="learningObjectives" content="Set up a complete DITA authoring environment and understand the core mental model."/>
+    </metadata>
+  </topicmeta>
+  <topicref href="../topics/part02-prepare/quick-start.dita" navtitle="Quick Start Guide">
+    <topicmeta><shortdesc>Get oriented in 30 minutes — role-based learning paths</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part02-prepare/dita-intro-guide.dita" navtitle="DITA at a Glance">
+    <topicmeta><shortdesc>The mental model — topics, maps, reuse, and publishing</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part02-prepare/dita-overview.dita" navtitle="DITA Deep Dive">
+    <topicmeta><shortdesc>Information typing, specialization, the Darwin philosophy, and when DITA is the right fit</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part02-prepare/installing-dita-ot.dita" navtitle="Installing DITA-OT">
+    <topicmeta><shortdesc>Download, install, and verify the DITA Open Toolkit</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part02-prepare/setting-up-authoring-tools.dita" navtitle="Setting Up Authoring Tools">
+    <topicmeta><shortdesc>Configure VS Code, Oxygen, or other editors for DITA authoring</shortdesc></topicmeta>
+  </topicref>
+</map>

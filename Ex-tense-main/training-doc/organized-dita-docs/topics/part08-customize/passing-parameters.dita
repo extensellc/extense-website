@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="passing-parameters" xml:lang="en-US">
+  <title>Passing parameters cleanly</title>
+  <shortdesc>Three ways to pass parameters to DITA-OT builds: command-line flags, properties files (recommended for teams), and plug-in parameter injection for advanced setups.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Parameters</indexterm><indexterm>Properties file</indexterm><indexterm>Command line</indexterm><indexterm>Conductor param</indexterm>
+      </keywords>
+      <category>taxonomy:publishing</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="build-engineer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="passing-parameters"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT10M"/>
+    <data name="content-domain" value="publishing"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="medium"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="dita-publishing"/>
+  </prolog>
+  <refbody>
+<section id="cli-params">
+<title>Command line parameters (quick)</title>
+<codeblock outputclass="language-bash">dita -i map.ditamap -f html5 -o out/html   --nav-toc=full   --args.copycss=yes   --args.cssroot=css/   --args.css=brand.css</codeblock>
+</section>
+<section id="properties-file">
+<title>Properties file (recommended for teams)</title>
+<p>Put stable settings in a properties file and check it into source control.</p>
+</section>
+<section id="plugin-param-injection">
+<title>Plug-in parameter injection (advanced)</title>
+<p>For complex plug-ins, define parameter bindings via conductor param extension points (main HTML5 step and TOC step).</p>
+</section>
+  </refbody>
+</reference>

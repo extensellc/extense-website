@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="exercise-xml-basics">
+  <title>Exercise 1: Writing Well-Formed XML Documents</title>
+  <shortdesc>Practice XML syntax rules by creating well-formed XML documents from scratch, fixing broken documents, and understanding the XML tree structure.</shortdesc>
+  <prolog>
+    <metadata>
+      <audience type="user" experiencelevel="novice"/>
+      <othermeta name="persona" content="Both"/>
+      <othermeta name="phase" content="1"/>
+      <othermeta name="estimated-time" content="45-60 minutes"/>
+    </metadata>
+  </prolog>
+  <taskbody>
+    <prereq>
+      <ul>
+        <li>A text editor with XML support (VS Code with the XML extension, or any XML-aware editor)</li>
+        <li>Read Part 1: Chapters 1-4 (What Is XML, Syntax Rules, Elements and Attributes, Namespaces)</li>
+      </ul>
+    </prereq>
+
+    <context>
+      <p>In this exercise, you will practice core XML skills by creating documents for a fictional online library system called <b>BookVault</b>. You will write XML from scratch, identify and fix syntax errors, and explore the document tree.</p>
+      <p>Create a working folder: <filepath>xml-exercises/</filepath></p>
+    </context>
+
+    <steps>
+      <!-- Exercise 1.1: Create a basic XML document -->
+      <step>
+        <cmd>Create a well-formed XML document: <filepath>xml-exercises/catalog.xml</filepath></cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Include the XML declaration with version and encoding</li>
+            <li>Root element: <codeph>&lt;catalog&gt;</codeph></li>
+            <li>Include at least 3 <codeph>&lt;book&gt;</codeph> child elements</li>
+            <li>Each book must have: <codeph>&lt;title&gt;</codeph>, <codeph>&lt;author&gt;</codeph>, <codeph>&lt;year&gt;</codeph>, and <codeph>&lt;price&gt;</codeph> children</li>
+            <li>Each <codeph>&lt;book&gt;</codeph> must have a <codeph>category</codeph> attribute (fiction, non-fiction, or technical)</li>
+            <li>Each <codeph>&lt;price&gt;</codeph> must have a <codeph>currency</codeph> attribute</li>
+            <li>Include at least one XML comment</li>
+          </ul>
+        </info>
+        <stepresult>
+          <p>Open the file in your XML editor — it should show no syntax errors (green/valid indicator).</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise 1.2: Fix broken XML -->
+      <step>
+        <cmd>Create a file <filepath>xml-exercises/broken.xml</filepath> with the following content, then find and fix all 6 errors:</cmd>
+        <info>
+          <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;Library&gt;
+  &lt;book category=fiction&gt;
+    &lt;Title&gt;The Great Adventure&lt;/title&gt;
+    &lt;author&gt;Jane &amp; John Doe&lt;/author&gt;
+    &lt;year&gt;2024
+    &lt;price currency="USD"&gt;14.99&lt;/price&gt;
+  &lt;/book&gt;
+  &lt;book category="technical"&gt;
+    &lt;title&gt;Learning XML&lt;/title&gt;
+    &lt;author&gt;Bob Smith&lt;/author&gt;
+    &lt;year&gt;2025&lt;/year&gt;
+    &lt;price currency="USD"&gt;29.95&lt;/price&gt;
+  &lt;/book&gt;
+&lt;/library&gt;</codeblock>
+          <p><b>Hint:</b> The errors involve case sensitivity, quoting, closing tags, and entity references. Write down each error and its fix.</p>
+        </info>
+        <stepresult>
+          <p>After fixing all errors, the document should pass well-formedness checking in your XML editor.</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise 1.3: Mixed content -->
+      <step>
+        <cmd>Create a document with mixed content: <filepath>xml-exercises/article.xml</filepath></cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Root element: <codeph>&lt;article&gt;</codeph></li>
+            <li>Include a <codeph>&lt;title&gt;</codeph> and at least 2 <codeph>&lt;paragraph&gt;</codeph> elements</li>
+            <li>Paragraphs must contain mixed content: text mixed with <codeph>&lt;bold&gt;</codeph>, <codeph>&lt;italic&gt;</codeph>, and <codeph>&lt;code&gt;</codeph> inline elements</li>
+            <li>Include one <codeph>&lt;code-listing&gt;</codeph> element that uses a CDATA section to contain XML code as text</li>
+            <li>Use at least two entity references (<codeph>&amp;lt;</codeph>, <codeph>&amp;amp;</codeph>, etc.) where appropriate</li>
+          </ul>
+        </info>
+      </step>
+
+      <!-- Exercise 1.4: Namespaces -->
+      <step>
+        <cmd>Create a document with namespaces: <filepath>xml-exercises/report.xml</filepath></cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Root element: <codeph>&lt;report&gt;</codeph> with a default namespace of <codeph>http://example.com/reports</codeph></li>
+            <li>Add a prefixed namespace <codeph>meta:</codeph> for <codeph>http://example.com/metadata</codeph></li>
+            <li>Include <codeph>&lt;title&gt;</codeph> and <codeph>&lt;content&gt;</codeph> in the default namespace</li>
+            <li>Include <codeph>&lt;meta:author&gt;</codeph> and <codeph>&lt;meta:date&gt;</codeph> in the metadata namespace</li>
+          </ul>
+        </info>
+      </step>
+
+      <!-- Exercise 1.5: Tree analysis -->
+      <step>
+        <cmd>Analyze the tree structure of your <filepath>catalog.xml</filepath> file.</cmd>
+        <info>
+          <p>Write down (on paper or in a text file):</p>
+          <ul>
+            <li>What is the root element?</li>
+            <li>What are the children of the root?</li>
+            <li>What are the children of the first <codeph>&lt;book&gt;</codeph>?</li>
+            <li>Which elements are siblings?</li>
+            <li>What is the parent of <codeph>&lt;price&gt;</codeph>?</li>
+            <li>Name all ancestors of <codeph>&lt;author&gt;</codeph></li>
+          </ul>
+          <note type="tip">Understanding the tree structure is critical for XPath (used in XSLT and XSD) and for navigating DITA topic structures.</note>
+        </info>
+      </step>
+    </steps>
+
+    <result>
+      <p><b>Self-Check — you should now be able to:</b></p>
+      <ul>
+        <li>✓ Write well-formed XML documents from scratch</li>
+        <li>✓ Identify and fix common XML syntax errors</li>
+        <li>✓ Use entity references for special characters</li>
+        <li>✓ Write mixed content with inline markup</li>
+        <li>✓ Use CDATA sections for verbatim text</li>
+        <li>✓ Declare and use XML namespaces</li>
+        <li>✓ Describe parent, child, sibling, and ancestor relationships in an XML tree</li>
+      </ul>
+    </result>
+  </taskbody>
+</task>

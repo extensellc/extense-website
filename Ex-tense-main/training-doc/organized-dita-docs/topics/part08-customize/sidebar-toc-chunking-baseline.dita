@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="sidebar-toc-chunking-baseline" xml:lang="en-US">
+  <title>DITA-OT 4.x setup: sidebar TOC + chunking baseline</title>
+  <shortdesc>Before writing XSLT, establish a baseline build that gives you chunked pages, a sidebar TOC on every page, and repeatable builds via properties files.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Sidebar TOC</indexterm><indexterm>nav-toc</indexterm><indexterm>Chunking</indexterm><indexterm>Properties file</indexterm>
+      </keywords>
+      <category>taxonomy:publishing</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="build-engineer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="sidebar-toc-chunking-baseline"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="publishing"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="dita-publishing"/>
+  </prolog>
+  <conbody>
+<p><b>Sidebar TOC embedded in every page: <codeph>nav-toc=full</codeph></b></p>
+<p>In DITA-OT HTML5 builds, <codeph>nav-toc=full</codeph> embeds a TOC <codeph>&lt;nav&gt;</codeph> in each topic page:</p>
+<codeblock outputclass="language-bash">dita -i path/to/map.ditamap -f html5 -o out/html5 --nav-toc=full</codeblock>
+<p><b>Repeatable builds: use a <codeph>.properties</codeph> file</b></p>
+<p>Create <codeph>build/html5-sidebar.properties</codeph>:</p>
+<codeblock outputclass="language-properties"># Sidebar TOC embedded in every topic page
+nav-toc=full
+
+# Generate an index TOC file
+html5.toc.generate=yes
+
+# Include DITA @class in output to aid debugging and CSS hooks
+args.html5.classattr=yes
+
+# Brand CSS
+args.copycss=yes
+args.cssroot=css/
+args.css=brand.css</codeblock>
+<p>Build with:</p>
+<codeblock outputclass="language-bash">dita -i path/to/map.ditamap -f html5 -o out/html5 --propertyfile=build/html5-sidebar.properties</codeblock>
+<p><b>Chunking: map-driven, scalable</b></p>
+<p>Chunking is usually controlled in the map using <codeph>@chunk</codeph>. A common pattern:</p>
+<codeblock outputclass="language-xml">&lt;topicref href=&quot;topics/intro.dita&quot; chunk=&quot;to-content&quot;&gt;
+  &lt;topicref href=&quot;topics/install.dita&quot;/&gt;
+  &lt;topicref href=&quot;topics/configure.dita&quot;/&gt;
+&lt;/topicref&gt;</codeblock>
+<p>That yields separate HTML pages per child topic, with a TOC that links to those pages.</p>
+  </conbody>
+</concept>

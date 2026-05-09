@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="docker-compose-preview" xml:lang="en-US">
+  <title>docker-compose for Doc Builds and Local Preview</title>
+  <shortdesc>Set up a docker-compose configuration that builds HTML output and serves it locally with nginx for instant preview.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>docker-compose</indexterm><indexterm>nginx</indexterm><indexterm>local preview</indexterm>
+      </keywords>
+      <category>taxonomy:devops</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="build-engineer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="docker-compose-preview"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="devops"/>
+    <data name="content-intent" value="how-to"/>
+    <data name="chatbot-priority" value="medium"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="docker-basics"/>
+  </prolog>
+  <taskbody>
+
+    <context>
+      <p>A good "developer experience" setup builds HTML output into <codeph>out/html5</codeph> and serves it locally with a lightweight web server container.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>Create a <codeph>docker-compose.yml</codeph> file.</cmd>
+        <info>
+          <codeblock outputclass="language-yaml">services:
+  build:
+    image: ghcr.io/dita-ot/dita-ot:4.4
+    working_dir: /src
+    volumes:
+      - ./:/src
+    command: >
+      -i /src/dita/maps/book.ditamap
+      -o /src/out/html5
+      -f html5
+      --propertyfile=/src/build/html5.properties
+
+  serve:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./out/html5:/usr/share/nginx/html:ro</codeblock>
+        </info>
+      </step>
+      <step>
+        <cmd>Run the build service.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">docker compose run --rm build</codeblock>
+        </info>
+      </step>
+      <step>
+        <cmd>Start the preview server and open <codeph>http://localhost:8080</codeph>.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">docker compose up serve</codeblock>
+        </info>
+      </step>
+    </steps>
+
+  </taskbody>
+</task>

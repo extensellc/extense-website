@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="xml-syntax-reference" xml:lang="en-US">
+  <title>XML Syntax Quick Reference</title>
+  <shortdesc>A compact reference card for XML syntax, entity references, naming rules, and common patterns — keep this open while writing your first XML documents.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-04-05"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>XML reference</indexterm>
+        <indexterm>Entity references</indexterm>
+        <indexterm>XML cheat sheet</indexterm>
+      </keywords>
+      <category>taxonomy:xml-fundamentals</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="xml-training" appname="chatbot" id="xml-syntax-reference"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT5M"/>
+    <data name="content-domain" value="xml-fundamentals"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="xml-syntax-rules"/>
+  </prolog>
+  <refbody>
+
+    <section id="document-structure">
+      <title>Document structure template</title>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- Optional: DOCTYPE declaration for DTD validation --&gt;
+&lt;!DOCTYPE rootElement SYSTEM "schema.dtd"&gt;
+
+&lt;rootElement attribute="value"&gt;
+  &lt;childElement&gt;Text content&lt;/childElement&gt;
+  &lt;emptyElement/&gt;
+  &lt;!-- Comment --&gt;
+  &lt;![CDATA[Unescaped text with &lt; and &amp; characters]]&gt;
+&lt;/rootElement&gt;</codeblock>
+    </section>
+
+    <section id="entity-reference-table">
+      <title>Built-in entity references</title>
+      <simpletable>
+        <sthead>
+          <stentry>Character</stentry>
+          <stentry>Entity</stentry>
+          <stentry>Usage</stentry>
+        </sthead>
+        <strow>
+          <stentry><codeph>&lt;</codeph></stentry>
+          <stentry><codeph>&amp;lt;</codeph></stentry>
+          <stentry>Required in text and attributes</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>&gt;</codeph></stentry>
+          <stentry><codeph>&amp;gt;</codeph></stentry>
+          <stentry>Recommended in text for clarity</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>&amp;</codeph></stentry>
+          <stentry><codeph>&amp;amp;</codeph></stentry>
+          <stentry>Required in text and attributes</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>"</codeph></stentry>
+          <stentry><codeph>&amp;quot;</codeph></stentry>
+          <stentry>Required in double-quoted attributes</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>'</codeph></stentry>
+          <stentry><codeph>&amp;apos;</codeph></stentry>
+          <stentry>Required in single-quoted attributes</stentry>
+        </strow>
+      </simpletable>
+    </section>
+
+    <section id="naming-rules">
+      <title>Element and attribute naming rules</title>
+      <simpletable>
+        <sthead>
+          <stentry>Rule</stentry>
+          <stentry>Valid</stentry>
+          <stentry>Invalid</stentry>
+        </sthead>
+        <strow>
+          <stentry>Must start with letter or _</stentry>
+          <stentry><codeph>item</codeph>, <codeph>_temp</codeph></stentry>
+          <stentry><codeph>1item</codeph>, <codeph>-item</codeph></stentry>
+        </strow>
+        <strow>
+          <stentry>Can contain letters, digits, -, _, .</stentry>
+          <stentry><codeph>item-2</codeph>, <codeph>item.v1</codeph></stentry>
+          <stentry><codeph>item 2</codeph>, <codeph>item@v1</codeph></stentry>
+        </strow>
+        <strow>
+          <stentry>Cannot start with "xml"</stentry>
+          <stentry><codeph>myxml</codeph></stentry>
+          <stentry><codeph>xmlData</codeph></stentry>
+        </strow>
+        <strow>
+          <stentry>Case-sensitive</stentry>
+          <stentry><codeph>Item</codeph> ≠ <codeph>item</codeph></stentry>
+          <stentry>N/A</stentry>
+        </strow>
+      </simpletable>
+    </section>
+
+    <section id="well-formedness-checklist">
+      <title>Well-formedness checklist</title>
+      <ul>
+        <li>✓ XML declaration at the very start of the file</li>
+        <li>✓ Exactly one root element</li>
+        <li>✓ Every start tag has a matching end tag (or is self-closing)</li>
+        <li>✓ Elements are properly nested (no overlapping)</li>
+        <li>✓ Attribute values are quoted</li>
+        <li>✓ No duplicate attributes on the same element</li>
+        <li>✓ Special characters are escaped with entity references</li>
+        <li>✓ Element names follow naming rules</li>
+      </ul>
+    </section>
+
+  </refbody>
+</reference>

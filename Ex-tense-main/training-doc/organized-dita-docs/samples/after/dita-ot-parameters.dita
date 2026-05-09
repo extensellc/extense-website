@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<!--
+  SAMPLE: AI-Ready DITA Reference — DITA-OT Build Parameters
+  
+  This is the "after" version of samples/before/dita-ot-parameters.xml.
+  Compare the two files to see the transformation.
+  
+  Key changes:
+    1. Typed as <reference> — AI knows this is lookup data
+    2. Structured <tgroup> table — columns are spec'd and semantic
+    3. <shortdesc> — context for vector search ("build parameters")
+    4. content-intent="reference" — routes "what parameters..." queries here
+    5. Audience and difficulty targeting for developer content
+-->
+<reference id="dita-ot-parameters" xml:lang="en-US">
+  <title>DITA-OT Build Parameters Reference</title>
+  <shortdesc>Complete reference of DITA-OT command-line parameters for the HTML5 and PDF transforms, including input, output, and styling options.</shortdesc>
+
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>DITA-OT parameters</indexterm>
+        <indexterm>Build parameters</indexterm>
+        <indexterm>args.input</indexterm>
+        <indexterm>transtype</indexterm>
+      </keywords>
+      <category>taxonomy:publishing</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="build-engineer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="dita-ot-parameters"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT10M"/>
+    <data name="content-domain" value="publishing"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="installing-dita-ot"/>
+  </prolog>
+
+  <refbody>
+    <section id="core-parameters">
+      <title>Core parameters</title>
+      <table>
+        <tgroup cols="4">
+          <colspec colname="param" colwidth="1.5*"/>
+          <colspec colname="desc" colwidth="2*"/>
+          <colspec colname="default" colwidth="1*"/>
+          <colspec colname="required" colwidth="0.5*"/>
+          <thead>
+            <row>
+              <entry>Parameter</entry>
+              <entry>Description</entry>
+              <entry>Default</entry>
+              <entry>Required</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>args.input</codeph></entry>
+              <entry>Path to the input DITA map or topic file</entry>
+              <entry>—</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry><codeph>output.dir</codeph></entry>
+              <entry>Directory for generated output files</entry>
+              <entry><codeph>out/</codeph></entry>
+              <entry>No</entry>
+            </row>
+            <row>
+              <entry><codeph>transtype</codeph></entry>
+              <entry>Output format: <codeph>html5</codeph>, <codeph>pdf</codeph>, <codeph>xhtml</codeph>, etc.</entry>
+              <entry><codeph>html5</codeph></entry>
+              <entry>Yes</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="html5-styling-parameters">
+      <title>HTML5 styling parameters</title>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="param" colwidth="1.5*"/>
+          <colspec colname="desc" colwidth="2.5*"/>
+          <colspec colname="default" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Parameter</entry>
+              <entry>Description</entry>
+              <entry>Default</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>args.cssroot</codeph></entry>
+              <entry>Root directory for CSS files to include in the output</entry>
+              <entry>—</entry>
+            </row>
+            <row>
+              <entry><codeph>args.css</codeph></entry>
+              <entry>Custom CSS file to apply to the HTML5 output</entry>
+              <entry>—</entry>
+            </row>
+            <row>
+              <entry><codeph>args.copycss</codeph></entry>
+              <entry>Whether to copy the CSS file to the output directory</entry>
+              <entry><codeph>no</codeph></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="usage-example">
+      <title>Usage example</title>
+      <codeblock outputclass="language-bash">dita -i my-project.ditamap \
+     -f html5 \
+     -o output/html \
+     --args.css=custom/brand.css \
+     --args.copycss=yes</codeblock>
+    </section>
+  </refbody>
+</reference>

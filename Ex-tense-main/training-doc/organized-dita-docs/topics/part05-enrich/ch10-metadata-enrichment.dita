@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="metadata-enrichment" xml:lang="en-US">
+  <title>Metadata Enrichment: Adding the AI Layer to Every Topic</title>
+  <shortdesc>Step-by-step process for adding the complete AI-ready prolog metadata to DITA topics — the single highest-impact action for improving chatbot retrieval quality.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-02-10"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Metadata enrichment</indexterm>
+        <indexterm>Prolog metadata</indexterm>
+        <indexterm>AI metadata</indexterm>
+        <indexterm>Batch enrichment</indexterm>
+      </keywords>
+      <category>taxonomy:intelligent-content</category>
+      <audience type="user" othertype="technical-writer"/>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="metadata-enrichment"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="how-to"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="taxonomy-controlled-vocabulary"/>
+  </prolog>
+  <taskbody>
+
+    <context>
+      <p>Metadata enrichment is the process of adding classification, audience, difficulty, intent, and priority metadata to every topic in your DITA corpus. This metadata is what transforms DITA from a structured document format into an <b>AI-addressable content system</b>.</p>
+      <p>In the Extense training guide, enriching 34 sub-topics with full metadata raised the AI-readiness score from 7.2/10 to 9.2/10 and increased metadata coverage from 24% to 100%.</p>
+    </context>
+
+    <steps>
+      <step>
+        <cmd>Audit every topic and document the current metadata state.</cmd>
+        <info>
+          <p>Use grep or a script to check each file for the required metadata fields:</p>
+          <codeblock outputclass="language-bash"># Count files with full metadata
+grep -rl 'chatbot-priority' dita-topics/ | wc -l
+
+# Count files missing metadata
+grep -rL 'chatbot-priority' dita-topics/ --include="*.dita" | wc -l</codeblock>
+          <p>Create a spreadsheet documenting each file's current metadata state and the values that need to be assigned.</p>
+        </info>
+        <stepresult>A complete inventory of which topics have metadata and which need enrichment.</stepresult>
+      </step>
+
+      <step>
+        <cmd>Read each topic and determine contextually appropriate metadata values.</cmd>
+        <info>
+          <p>For each topic, decide:</p>
+          <ul>
+            <li><b>Audience:</b> Who is this written for? Developer? Technical writer? All?</li>
+            <li><b>Difficulty:</b> What knowledge level is required? Beginner? Advanced?</li>
+            <li><b>Content domain:</b> What subject area? Publishing? Customization? DevOps?</li>
+            <li><b>Content intent:</b> What does this content do? Explain? Instruct? Reference?</li>
+            <li><b>Chatbot priority:</b> How likely are users to ask about this? High? Medium? Low?</li>
+            <li><b>Service line:</b> Which business service does this relate to?</li>
+            <li><b>Prerequisites:</b> What should the reader know before reading this?</li>
+            <li><b>Duration:</b> How long does it take to read/complete this content?</li>
+          </ul>
+          <p>All values must come from the controlled vocabulary defined in the subject scheme.</p>
+        </info>
+      </step>
+
+      <step>
+        <cmd>Apply metadata to each topic, either manually or using an enrichment script.</cmd>
+        <info>
+          <p><b>Manual approach:</b> Open each file and add the full prolog block. Best for small batches (under 10 topics).</p>
+          <p><b>Scripted approach:</b> For larger batches, create a Python script that reads each file, determines the topic type, and replaces the lean prolog with the full AI-ready prolog. Example:</p>
+          <codeblock outputclass="language-python">import re
+
+def enrich_topic(filepath, metadata):
+    with open(filepath, 'r') as f:
+        content = f.read()
+
+    # Extract topic ID from root element
+    topic_id = re.search(
+        r'id="([^"]+)"', content
+    ).group(1)
+
+    # Add xml:lang if missing
+    if 'xml:lang=' not in content:
+        content = re.sub(
+            r'(id="[^"]+")',
+            r'\1 xml:lang="en-US"',
+            content, count=1
+        )
+
+    # Build new prolog and replace existing
+    new_prolog = build_prolog(topic_id, metadata)
+    content = re.sub(
+        r'&lt;prolog&gt;.*?&lt;/prolog&gt;',
+        new_prolog,
+        content, flags=re.DOTALL
+    )
+
+    with open(filepath, 'w') as f:
+        f.write(content)</codeblock>
+          <p>This scripted approach was used to enrich all 34 sub-topics in the Extense training guide in a single batch operation.</p>
+        </info>
+        <stepresult>Every topic has the complete AI-ready prolog metadata.</stepresult>
+      </step>
+
+      <step>
+        <cmd>Verify the enrichment by checking that all required fields are present.</cmd>
+        <info>
+          <codeblock outputclass="language-bash"># Verify all 7 key fields across all topics
+for field in xml:lang chatbot-priority resourceid \
+  content-domain critdates category audience; do
+  echo "=== $field ==="
+  grep -rl "$field" dita-topics/ --include="*.dita" | wc -l
+done</codeblock>
+          <p>The count for each field should match the total number of topic files.</p>
+        </info>
+        <stepresult>Confirmed 100% metadata coverage across the entire corpus.</stepresult>
+      </step>
+    </steps>
+
+    <result>
+      <p>After enrichment, every topic in the corpus produces <b>metadata-rich chunks</b> in the RAG pipeline. The chatbot can now:</p>
+      <ul>
+        <li>Filter by audience, difficulty, and domain in every query</li>
+        <li>Route user intent to the correct content type</li>
+        <li>Apply priority weighting to rank the most useful content first</li>
+        <li>Suggest prerequisites and next steps in learning paths</li>
+        <li>Use freshness dates to prefer newer content</li>
+      </ul>
+    </result>
+
+  </taskbody>
+</task>

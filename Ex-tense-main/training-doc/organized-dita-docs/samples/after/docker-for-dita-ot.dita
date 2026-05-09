@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<!--
+  SAMPLE: AI-Ready DITA Concept — Docker for DITA-OT
+  
+  This is the "after" version of samples/before/docker-for-dita-ot.xml.
+  Shows the full metadata enrichment for audience filtering and AI routing.
+  
+  Key changes:
+    1. Full AI-ready metadata (audience, difficulty, domain, intent, priority)
+    2. <shortdesc> optimized for search and vector embedding
+    3. Section IDs for deep-linking
+    4. Question-phrased titles for chatbot query matching
+    5. audience=developer — only shown to developer personas
+    6. content-domain=devops — routed for DevOps-related queries
+    7. prerequisites=dita-publishing — chatbot suggests learning order
+-->
+<concept id="docker-basics" xml:lang="en-US">
+  <title>Docker for DITA-OT: Local Builds and Reproducible Toolchains</title>
+  <shortdesc>Using the official DITA-OT Docker image for consistent, reproducible builds that eliminate environment differences across developer machines and CI pipelines.</shortdesc>
+
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Docker</indexterm>
+        <indexterm>Container</indexterm>
+        <indexterm>Reproducible builds</indexterm>
+        <indexterm>CI/CD</indexterm>
+      </keywords>
+      <category>taxonomy:devops</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="build-engineer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="docker-basics"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="devops"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="dita-publishing"/>
+  </prolog>
+
+  <conbody>
+    <section id="why-use-docker">
+      <title>Why use Docker for DITA-OT builds?</title>
+      <p>The official DITA-OT Docker image ensures every build runs in the same environment, regardless of the host machine. This eliminates "it works on my machine" problems and simplifies CI/CD integration.</p>
+      <p>Benefits include:</p>
+      <ul>
+        <li><b>No local Java required:</b> The container includes the correct JDK version</li>
+        <li><b>Consistent across machines:</b> Same build environment for every developer</li>
+        <li><b>Version pinning:</b> Lock your builds to a specific DITA-OT version</li>
+        <li><b>Easy CI/CD:</b> Drop into any container-based pipeline</li>
+      </ul>
+    </section>
+
+    <section id="getting-started-docker">
+      <title>How do I get started with Docker builds?</title>
+      <p>Pull the official image:</p>
+      <codeblock outputclass="language-bash">docker pull ghcr.io/dita-ot/dita-ot:4.2</codeblock>
+      <p>Run a build by mounting your source directory:</p>
+      <codeblock outputclass="language-bash">docker run -v /path/to/src:/src ghcr.io/dita-ot/dita-ot:4.2 \
+  -i /src/my.ditamap -f html5 -o /src/out</codeblock>
+    </section>
+
+    <section id="ci-cd-integration">
+      <title>How do I integrate Docker builds into CI/CD?</title>
+      <p>Add the Docker build to your GitHub Actions or Jenkins pipeline. The container handles all dependencies automatically — no Java, no plugin installation, no environment setup required on the build agent.</p>
+      <codeblock outputclass="language-yaml"># GitHub Actions example
+- name: Build DITA docs
+  run: |
+    docker run -v ${{ github.workspace }}/docs:/src \
+      ghcr.io/dita-ot/dita-ot:4.2 \
+      -i /src/training.ditamap \
+      -f html5 \
+      -o /src/output</codeblock>
+    </section>
+
+    <section id="troubleshooting-tips">
+      <title>What are common issues and tips?</title>
+      <ul>
+        <li><b>Permission errors:</b> Ensure the mounted directory is readable and writable by the container user. On Linux, use <codeph>--user $(id -u):$(id -g)</codeph> to match file ownership.</li>
+        <li><b>Plugin installation:</b> The base image includes only the default plugins. To add custom plugins, extend the image with a Dockerfile that runs <codeph>dita install</codeph> at build time.</li>
+        <li><b>Pin versions:</b> Always use a specific tag (e.g., <codeph>4.2</codeph>) rather than <codeph>latest</codeph> to ensure reproducible builds.</li>
+        <li><b>Build performance:</b> Mount only the source directory, not the entire workspace. Use <codeph>.dockerignore</codeph> if building a custom image to reduce context size.</li>
+      </ul>
+    </section>
+  </conbody>
+</concept>

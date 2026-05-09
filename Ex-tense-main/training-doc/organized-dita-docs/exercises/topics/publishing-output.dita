@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="publishing-output">
+  <title>Publishing Output</title>
+  <shortdesc>Build and publish AcmeDoc content in multiple formats using DITA-OT and build properties.</shortdesc>
+  <taskbody>
+
+    <context>
+      <p><keyword keyref="product-name"/> supports several output formats. Each format may use a different properties file for format-specific settings.</p>
+      <note type="caution">Always build to an <codeph>out/</codeph> directory that is gitignored. Never build into your source tree.</note>
+    </context>
+
+    <steps>
+      <step platform="web">
+        <cmd>Build HTML5 with sidebar navigation.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">dita -i maps/guide.ditamap -f html5 -o out/html5 \
+  --nav-toc=full \
+  --args.copycss=yes \
+  --args.css=brand.css</codeblock>
+        </info>
+      </step>
+      <step>
+        <cmd>Build with a properties file for repeatable settings.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">dita -i maps/guide.ditamap -f html5 -o out/html5 \
+  --propertyfile=build/html5.properties</codeblock>
+        </info>
+      </step>
+      <step>
+        <cmd>Build a filtered variant using DITAVAL.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">dita -i maps/guide.ditamap -f html5 -o out/html5-web \
+  --propertyfile=build/html5.properties \
+  --args.filter=build/ditaval/web.ditaval</codeblock>
+          <note type="tip">Use separate output directories for each variant to avoid overwriting.</note>
+        </info>
+      </step>
+    </steps>
+
+    <result>
+      <p>Your output is in the <codeph>out/</codeph> directory, ready for review or deployment.</p>
+    </result>
+
+  </taskbody>
+</task>

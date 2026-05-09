@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="xsd-syntax-reference" xml:lang="en-US">
+  <title>XSD Syntax Quick Reference</title>
+  <shortdesc>A compact reference for XSD element declarations, data types, facets, and common schema patterns — use this while writing and reading XSD files.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-04-05"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>XSD reference</indexterm>
+        <indexterm>XSD cheat sheet</indexterm>
+        <indexterm>XSD data types reference</indexterm>
+      </keywords>
+      <category>taxonomy:xml-schema</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="xml-training" appname="chatbot" id="xsd-syntax-reference"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT5M"/>
+    <data name="content-domain" value="xml-schema"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="xsd-restrictions-patterns"/>
+  </prolog>
+  <refbody>
+
+    <section id="schema-template">
+      <title>XSD schema template</title>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+  &lt;!-- Simple type with restriction --&gt;
+  &lt;xs:simpleType name="myType"&gt;
+    &lt;xs:restriction base="xs:string"&gt;
+      &lt;xs:maxLength value="100"/&gt;
+    &lt;/xs:restriction&gt;
+  &lt;/xs:simpleType&gt;
+
+  &lt;!-- Named complex type --&gt;
+  &lt;xs:complexType name="myComplexType"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="child" type="xs:string"/&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attribute name="id" type="xs:ID" use="required"/&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;!-- Root element --&gt;
+  &lt;xs:element name="root" type="myComplexType"/&gt;
+
+&lt;/xs:schema&gt;</codeblock>
+    </section>
+
+    <section id="type-reference">
+      <title>Built-in data types (most common)</title>
+      <simpletable>
+        <sthead>
+          <stentry>Type</stentry>
+          <stentry>Description</stentry>
+          <stentry>Example value</stentry>
+        </sthead>
+        <strow>
+          <stentry><codeph>xs:string</codeph></stentry>
+          <stentry>Character string</stentry>
+          <stentry>Hello</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:integer</codeph></stentry>
+          <stentry>Whole number</stentry>
+          <stentry>42</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:decimal</codeph></stentry>
+          <stentry>Decimal number</stentry>
+          <stentry>3.14</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:boolean</codeph></stentry>
+          <stentry>true/false</stentry>
+          <stentry>true</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:date</codeph></stentry>
+          <stentry>Calendar date</stentry>
+          <stentry>2026-04-05</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:dateTime</codeph></stentry>
+          <stentry>Date and time</stentry>
+          <stentry>2026-04-05T14:30:00</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:time</codeph></stentry>
+          <stentry>Time of day</stentry>
+          <stentry>14:30:00</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:anyURI</codeph></stentry>
+          <stentry>URI/URL</stentry>
+          <stentry>https://example.com</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:float</codeph></stentry>
+          <stentry>32-bit floating point</stentry>
+          <stentry>1.5E2</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:positiveInteger</codeph></stentry>
+          <stentry>Integer > 0</stentry>
+          <stentry>1</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:nonNegativeInteger</codeph></stentry>
+          <stentry>Integer >= 0</stentry>
+          <stentry>0</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:ID</codeph></stentry>
+          <stentry>Unique identifier</stentry>
+          <stentry>item-001</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>xs:IDREF</codeph></stentry>
+          <stentry>Reference to an ID</stentry>
+          <stentry>item-001</stentry>
+        </strow>
+      </simpletable>
+    </section>
+
+    <section id="compositor-reference">
+      <title>Content model compositors</title>
+      <simpletable>
+        <sthead>
+          <stentry>Compositor</stentry>
+          <stentry>Meaning</stentry>
+          <stentry>DTD equivalent</stentry>
+        </sthead>
+        <strow>
+          <stentry><codeph>&lt;xs:sequence&gt;</codeph></stentry>
+          <stentry>Children must appear in order</stentry>
+          <stentry><codeph>(a, b, c)</codeph></stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>&lt;xs:choice&gt;</codeph></stentry>
+          <stentry>Exactly one child appears</stentry>
+          <stentry><codeph>(a | b | c)</codeph></stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>&lt;xs:all&gt;</codeph></stentry>
+          <stentry>Children appear in any order, each at most once</stentry>
+          <stentry>No DTD equivalent</stentry>
+        </strow>
+      </simpletable>
+    </section>
+
+    <section id="occurrence-reference">
+      <title>Occurrence constraints</title>
+      <simpletable>
+        <sthead>
+          <stentry>XSD attribute</stentry>
+          <stentry>Default</stentry>
+          <stentry>DTD equivalent</stentry>
+        </sthead>
+        <strow>
+          <stentry><codeph>minOccurs="0"</codeph></stentry>
+          <stentry>1</stentry>
+          <stentry><codeph>?</codeph> or <codeph>*</codeph></stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>maxOccurs="unbounded"</codeph></stentry>
+          <stentry>1</stentry>
+          <stentry><codeph>*</codeph> or <codeph>+</codeph></stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>minOccurs="1" maxOccurs="1"</codeph></stentry>
+          <stentry>These are defaults</stentry>
+          <stentry>(none) — exactly once</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>minOccurs="3" maxOccurs="10"</codeph></stentry>
+          <stentry>N/A</stentry>
+          <stentry>No DTD equivalent</stentry>
+        </strow>
+      </simpletable>
+    </section>
+
+    <section id="facet-reference">
+      <title>Restriction facets</title>
+      <simpletable>
+        <sthead>
+          <stentry>Facet</stentry>
+          <stentry>Applies to</stentry>
+        </sthead>
+        <strow>
+          <stentry><codeph>minInclusive</codeph> / <codeph>maxInclusive</codeph></stentry>
+          <stentry>Numbers, dates (value included)</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>minExclusive</codeph> / <codeph>maxExclusive</codeph></stentry>
+          <stentry>Numbers, dates (value excluded)</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>minLength</codeph> / <codeph>maxLength</codeph> / <codeph>length</codeph></stentry>
+          <stentry>Strings</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>pattern</codeph></stentry>
+          <stentry>Strings (regex)</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>enumeration</codeph></stentry>
+          <stentry>Any type</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>totalDigits</codeph> / <codeph>fractionDigits</codeph></stentry>
+          <stentry>Decimals</stentry>
+        </strow>
+        <strow>
+          <stentry><codeph>whiteSpace</codeph></stentry>
+          <stentry>Strings (preserve/replace/collapse)</stentry>
+        </strow>
+      </simpletable>
+    </section>
+
+    <section id="attribute-use-reference">
+      <title>Attribute declarations</title>
+      <codeblock outputclass="language-xml">&lt;xs:attribute name="id"       type="xs:ID"     use="required"/&gt;
+&lt;xs:attribute name="lang"     type="xs:string"  use="optional"/&gt;
+&lt;xs:attribute name="version"  type="xs:string"  fixed="1.0"/&gt;
+&lt;xs:attribute name="status"   type="xs:string"  default="draft"/&gt;</codeblock>
+    </section>
+
+  </refbody>
+</reference>

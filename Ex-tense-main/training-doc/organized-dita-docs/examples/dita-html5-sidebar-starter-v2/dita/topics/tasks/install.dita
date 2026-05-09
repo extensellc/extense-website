@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="install">
+  <title>Build the HTML5 output with sidebar TOC</title>
+  <shortdesc>Run a local HTML5 build and verify chunking, navigation, filtering (DITAVAL variants), and customization hooks.</shortdesc>
+
+  <taskbody>
+    <prereq>
+      <p>You need DITA-OT 4.x installed and accessible as <cmdname>dita</cmdname>.</p>
+      <p conref="../shared/reuse-snippets.dita#reuse-snippets/install-note"/>
+      <p conref="../shared/reuse-snippets.dita#reuse-snippets/safety-warning"/>
+    </prereq>
+
+    <context>
+      <p>This task exercises common task structures and shows how steps can be anchored for deep-linking and interactive UI.</p>
+      <p audience="admin">Admin note: use a properties file checked into source control, and build in strict mode in CI.</p>
+      <p audience="novice">Novice note: start with the default build, then try one variant at a time so you can verify filtering.</p>
+    </context>
+
+    <steps>
+      <step id="step-install-plugin">
+        <cmd>Install the plug-in into your DITA-OT instance.</cmd>
+        <info>
+          <p>Copy or symlink <filepath>plugins/com.acme.html5.sidebar</filepath> into your DITA-OT <filepath>plugins/</filepath> directory, then run:</p>
+          <codeblock>dita --install</codeblock>
+        </info>
+      </step>
+
+      <step id="step-run-default">
+        <cmd>Run the default build (no filtering).</cmd>
+        <info>
+          <codeblock>dita -i dita/maps/guides/getting-started.ditamap -f html5 -o out/html5 --propertyfile=build/html5-sidebar.properties</codeblock>
+          <p platform="web">Web hint: confirm the TOC is embedded in each page and the current page is highlighted in the sidebar.</p>
+        </info>
+      </step>
+
+      <step id="step-run-variants">
+        <cmd>Build one or more filtered variants using DITAVAL.</cmd>
+        <info>
+          <p>This repo includes example DITAVAL files for <codeph>platform</codeph> and <codeph>audience</codeph>. Each variant is a separate properties file.</p>
+          <choices>
+            <choice><p><ph outputclass="kbd">WEB</ph> variant (exclude <codeph>platform="print"</codeph>): <codeph>build/html5-sidebar-web.properties</codeph></p></choice>
+            <choice><p><ph outputclass="kbd">PRINT</ph> variant (exclude <codeph>platform="web"</codeph>): <codeph>build/html5-sidebar-print.properties</codeph></p></choice>
+            <choice><p><ph outputclass="kbd">ADMIN</ph> audience (exclude <codeph>audience="novice"</codeph>): <codeph>build/html5-sidebar-admin.properties</codeph></p></choice>
+            <choice><p><ph outputclass="kbd">NOVICE</ph> audience (exclude <codeph>audience="admin"</codeph>): <codeph>build/html5-sidebar-novice.properties</codeph></p></choice>
+          </choices>
+          <p>Example:</p>
+          <codeblock>dita -i dita/maps/guides/getting-started.ditamap -f html5 -o out/html5-web --propertyfile=build/html5-sidebar-web.properties</codeblock>
+        </info>
+      </step>
+
+      <step id="step-verify-output">
+        <cmd>Verify the output structure and navigation.</cmd>
+        <substeps>
+          <substep><cmd>Open <filepath>out/html5/index.html</filepath> and confirm the TOC is present.</cmd></substep>
+          <substep><cmd>Open a topic page and confirm a sidebar TOC is embedded and sticky.</cmd></substep>
+          <substep><cmd>Confirm the current page is highlighted in the TOC.</cmd></substep>
+          <substep><cmd>Compare WEB vs PRINT outputs to confirm filtering is working.</cmd></substep>
+        </substeps>
+      </step>
+    </steps>
+
+    <result>
+      <p>You have a chunked HTML5 output with an embedded sidebar TOC, filtering variants, and starter customization hooks.</p>
+    </result>
+
+  </taskbody>
+</task>

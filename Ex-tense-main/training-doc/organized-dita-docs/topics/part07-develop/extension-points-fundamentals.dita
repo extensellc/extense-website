@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="extension-points-fundamentals" xml:lang="en-US">
+  <title>Extension Points and Plug-In Fundamentals</title>
+  <shortdesc>DITA-OT plug-ins use extension points declared in <codeph>plugin.xml</codeph> to integrate changes into the toolkit without modifying core code.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>extension points</indexterm><indexterm>plugin.xml</indexterm><indexterm>plug-in</indexterm>
+      </keywords>
+      <category>taxonomy:customization</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="extension-points-fundamentals"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="customization"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="xml-engineering"/>
+    <data name="prerequisites" value="dita-publishing"/>
+  </prolog>
+  <conbody>
+
+    <section id="plugin-xml-contract">
+      <title>plugin.xml is the contract</title>
+      <p>DITA-OT provides a series of <b>extension points</b> used to integrate changes into core code. Extension points are defined in <codeph>plugin.xml</codeph>; when plug-ins are installed, the toolkit makes those extensions visible to the rest of the toolkit.</p>
+      <p>DITA-OT explains that <codeph>plugin.xml</codeph> controls all aspects of a plug-in, using predefined extension points to locate changes and integrate them into DITA-OT.</p>
+      <p>Also important for teams: DITA-OT provides a RELAX NG schema and describes validating <codeph>plugin.xml</codeph> with an <codeph>xml-model</codeph> processing instruction.</p>
+    </section>
+
+    <section id="naming-and-dependencies">
+      <title>Plug-in naming and dependencies</title>
+      <ul>
+        <li>Plug-in IDs must be unique dot-delimited tokens (reverse-domain convention recommended).</li>
+        <li>Dependencies are declared with <codeph>&lt;require plugin="..."/&gt;</codeph> (critical for correct load order in XSLT and Ant integration).</li>
+      </ul>
+    </section>
+
+  </conbody>
+</concept>

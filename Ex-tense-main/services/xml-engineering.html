@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="description" content="Custom XML schema design, XSLT/XQuery transformation, Schematron validation, and XML pipeline development for enterprise content systems.">
+ <meta name="robots" content="index, follow">
+ <title>XML Engineering — Schema Design & Transformation | Extense LLC</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Extense LLC">
+    <meta property="og:title" content="XML Engineering — Schema Design & Transformation | Extense LLC">
+    <meta property="og:description" content="Custom XML schema design, XSLT/XQuery transformation, Schematron validation, and XML pipeline development for enterprise content systems.">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://www.ex-tense.co/images/social/og-image.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="XML Engineering — Schema Design & Transformation | Extense LLC">
+    <meta name="twitter:description" content="Custom XML schema design, XSLT/XQuery transformation, Schematron validation, and XML pipeline development for enterprise content systems.">
+    <meta name="twitter:image" content="https://www.ex-tense.co/images/social/og-image.svg">
+ <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23003366'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Inter,sans-serif' font-weight='900' font-size='20' fill='white'%3EE%3C/text%3E%3C/svg%3E">
+ <link rel="stylesheet" href="../style.css">
+ <link rel="canonical" href="https://www.ex-tense.co/services/xml-engineering.html">
+</head>
+<body>
+ <header>
+ <div class="header-container">
+ <a href="../index.html" class="logo"><img src="../logo.svg" alt="Ex-tense"></a>
+ <nav>
+ <ul>
+ <li>
+ <a href="../solutions/index.html">Solutions</a>
+ <ul class="dropdown-content">
+ <li><a href="../solutions/technical-documentation-publishing.html">Tech Docs & Publishing</a></li>
+ <li><a href="../solutions/ccms-implementation-integration.html">CCMS Implementation</a></li>
+ <li><a href="../solutions/content-migration-modernization.html">Content Migration</a></li>
+ <li><a href="../solutions/xml-data-interoperability.html">XML Data Interoperability</a></li>
+ </ul>
+ </li>
+ <li>
+ <a href="../services/index.html">Services</a>
+ <ul class="dropdown-content">
+ <li><a href="../services/technical-writing-content-development.html">Technical Writing</a></li>
+ <li><a href="../services/structured-content-strategy.html">Content Strategy</a></li>
+ <li><a href="../services/dita-engineering.html">DITA Engineering</a></li>
+ <li><a href="../services/publishing-engineering.html">Publishing Engineering</a></li>
+ <li><a href="../services/ccms-services.html">CCMS Services</a></li>
+ <li><a href="../services/system-integration.html">System Integration</a></li>
+ <li><a href="../services/xml-engineering.html">XML Engineering</a></li>
+ </ul>
+ </li>
+ <li>
+ <a href="../industries/index.html">Industries</a>
+ <ul class="dropdown-content">
+ <li><a href="../industries/government.html">Government & Defense</a></li>
+ <li><a href="../industries/financial-services.html">Financial Services</a></li>
+ <li><a href="../industries/insurance.html">Insurance</a></li>
+ <li><a href="../industries/automotive.html">Automotive</a></li>
+ <li><a href="../industries/life-sciences.html">Life Sciences</a></li>
+ </ul>
+ </li>
+ <li>
+ <a href="../resources/index.html">Resources</a>
+ <ul class="dropdown-content">
+ <li><a href="../work/case-studies.html">Case Studies</a></li>
+ <li><a href="../resources/ai-content-readiness-guide.html">AI Readiness</a></li>
+ <li><a href="../resources/dita-migration-playbook.html">Migration Playbook</a></li>
+ <li><a href="../resources/publishing-automation-guide.html">Automation Guide</a></li>
+ <li><a href="../resources/faqs.html">FAQs</a></li>
+ </ul>
+ </li>
+ <li>
+ <a href="../about.html">Company</a>
+ <ul class="dropdown-content">
+ <li><a href="../about.html">About Us</a></li>
+ <li><a href="../our-process.html">Our Process</a></li>
+ <li><a href="../careers.html">Careers</a></li>
+ <li><a href="../contact.html">Contact</a></li>
+ </ul>
+ </li>
+ <li><a href="../contact.html" class="cta-button">Get in Touch</a></li>
+ </ul>
+ </nav>
+ <button class="hamburger" aria-label="Open menu">
+ <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="24" y2="7"/><line x1="4" y1="14" x2="24" y2="14"/><line x1="4" y1="21" x2="24" y2="21"/></svg>
+ </button>
+ </div>
+ </header>
+
+ <!-- Mobile Overlay -->
+ <div class="nav-overlay"></div>
+
+ <!-- Mobile Slide-out Nav -->
+ <nav class="mobile-nav" aria-label="Mobile navigation">
+ <button class="mobile-nav-close" aria-label="Close menu">
+ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+ </button>
+ <ul>
+ <li>
+ <button class="mob-trigger">Solutions <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../solutions/technical-documentation-publishing.html">Tech Docs &amp; Publishing</a></li>
+ <li><a href="../solutions/ccms-implementation-integration.html">CCMS Implementation</a></li>
+ <li><a href="../solutions/content-migration-modernization.html">Content Migration</a></li>
+ <li><a href="../solutions/xml-data-interoperability.html">XML Data Interoperability</a></li>
+ </ul>
+ </li>
+ <li>
+ <button class="mob-trigger">Services <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../services/technical-writing-content-development.html">Technical Writing</a></li>
+ <li><a href="../services/structured-content-strategy.html">Content Strategy</a></li>
+ <li><a href="../services/dita-engineering.html">DITA Engineering</a></li>
+ <li><a href="../services/publishing-engineering.html">Publishing Engineering</a></li>
+ <li><a href="../services/ccms-services.html">CCMS Services</a></li>
+ <li><a href="../services/system-integration.html">System Integration</a></li>
+ <li><a href="../services/xml-engineering.html">XML Engineering</a></li>
+ </ul>
+ </li>
+ <li>
+ <button class="mob-trigger">Industries <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../industries/government.html">Government &amp; Defense</a></li>
+ <li><a href="../industries/financial-services.html">Financial Services</a></li>
+ <li><a href="../industries/insurance.html">Insurance</a></li>
+ <li><a href="../industries/automotive.html">Automotive</a></li>
+ <li><a href="../industries/life-sciences.html">Life Sciences</a></li>
+ </ul>
+ </li>
+ <li>
+ <button class="mob-trigger">Resources <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../work/case-studies.html">Case Studies</a></li>
+ <li><a href="../resources/ai-content-readiness-guide.html">AI Readiness</a></li>
+ <li><a href="../resources/dita-migration-playbook.html">Migration Playbook</a></li>
+ <li><a href="../resources/publishing-automation-guide.html">Automation Guide</a></li>
+ <li><a href="../resources/faqs.html">FAQs</a></li>
+ </ul>
+ </li>
+ <li>
+ <button class="mob-trigger">Company <svg class="mob-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+ <ul class="mob-dropdown">
+ <li><a href="../about.html">About Us</a></li>
+ <li><a href="../our-process.html">Our Process</a></li>
+ <li><a href="../careers.html">Careers</a></li>
+ <li><a href="../contact.html">Contact</a></li>
+ </ul>
+ </li>
+ </ul>
+ <div class="mobile-nav-cta">
+ <a href="../contact.html" class="cta-button">Get in Touch</a>
+ </div>
+ </nav>
+
+
+ 
+ <nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+   <ol><li><a href="../index.html">Home</a></li><li><a href="../services/index.html">Services</a></li><li>XML Engineering</li></ol>
+  </div>
+ </nav>
+ <main>
+
+ <section class="hero"><div class="container">
+ <h1>XML &amp; Schematron Engineering</h1>
+ <p>Schema design, transformation pipelines, and validation frameworks that enforce quality at the structural level — before content ever reaches a reviewer.</p>
+ </div></section>
+
+ <section class="section section-white">
+ <div class="container">
+ <div class="section-title">
+ <h2>Beyond Well-Formedness</h2>
+ <p>XML is just text until you enforce the rules. We design and implement the schema layers, transformation pipelines, and business-rule validation that turn raw markup into governed, publishable content.</p>
+ </div>
+ 
+ <div class="grid-3">
+ <div class="card">
+ <div class="icon-circle icon-navy"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+ <h3>XSLT 3.0 Development</h3>
+ <p>Complex multi-source transformations — merging XML streams, generating JSON, SQL, or EPUB output, and handling million-node datasets with XSLT 3.0 streaming. We write production-grade stylesheets with full unit test coverage using Saxon.</p>
+ </div>
+ <div class="card">
+ <div class="icon-circle icon-navy"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+ <h3>Schematron Business Rules</h3>
+ <p>DTD and XSD check structure. Schematron checks <em>business logic</em>: "If classification is 'Internal', then distribution must be 'Restricted'." We author ISO Schematron rule sets that catch semantic violations before they reach production.</p>
+ </div>
+ <div class="card">
+ <div class="icon-circle icon-navy"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+ <h3>Schema Design &amp; Specialization</h3>
+ <p>Custom XSD, RelaxNG, and DITA specializations that model your product data without breaking standards compliance. We extend element models, add domain-specific attributes, and maintain backward compatibility with existing toolchains.</p>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <section class="section">
+ <div class="container">
+ <div class="section-title">
+ <h2>The Validation Stack</h2>
+ <p>Production-grade content governance requires multiple validation layers — each catching a different class of defect.</p>
+ </div>
+ <div class="flow-chart">
+ <div class="flow-step">
+ <h4>Structure</h4>
+ <p>DTD / XSD / RelaxNG — Parent-child rules</p>
+ </div>
+ <div class="flow-step">
+ <h4>Business Logic</h4>
+ <p>Schematron — Semantic constraints</p>
+ </div>
+ <div class="flow-step">
+ <h4>Style &amp; Naming</h4>
+ <p>Checkstyles — Conventions &amp; terminology</p>
+ </div>
+ <div class="flow-step">
+ <h4>Link Integrity</h4>
+ <p>Cross-reference &amp; conref validation</p>
+ </div>
+ <div class="flow-step">
+ <h4>Clean Output</h4>
+ <p>Validated, build-ready XML</p>
+ </div>
+ </div>
+
+ <div class="grid-3" style="margin-top: 40px;">
+ <div class="card">
+ <div class="icon-circle icon-navy"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+ <h3>XQuery &amp; XPath</h3>
+ <p>Full-text queries, content audits, and cross-collection analytics in BaseX, MarkLogic, or eXist-db. We build reporting dashboards that surface reuse metrics, orphaned topics, and metadata gaps.</p>
+ </div>
+ <div class="card">
+ <div class="icon-circle icon-navy"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+ <h3>CI-Integrated Validation</h3>
+ <p>We embed validation into Jenkins, GitHub Actions, and Azure DevOps pipelines. Every commit triggers schema validation, Schematron checks, and broken-link detection — blocking bad content before it merges.</p>
+ </div>
+ <div class="card">
+ <div class="icon-circle icon-navy"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+ <h3>Migration Schema Mapping</h3>
+ <p>Mapping legacy schemas (DocBook, custom DTDs, FrameMaker EDD) to DITA or S1000D. We document every mapping decision and produce automated XSLT converters for repeatable batch migration.</p>
+ </div>
+ </div>
+
+ <div class="floating-cta">
+ <div>
+ <h3>Free Schema Health Check</h3>
+ <p>Send us your DTD, XSD, or Schematron rules. We'll audit for completeness, identify unvalidated business rules, and recommend the validation layers you're missing. No commitment required.</p>
+ </div>
+ <a href="../contact.html" class="cta-button">Request Your Free Assessment</a>
+ </div>
+ </div>
+ </section>
+
+ <!-- Modern XML Processing -->
+ <section class="section section-white">
+ <div class="container">
+ <div class="section-title">
+ <h2>Modern XML Processing</h2>
+ <p>XSLT is powerful, but it's not always the right tool. We build with the full spectrum of modern technologies for XML transformation and delivery.</p>
+ </div>
+ <div class="grid-3">
+ <div class="card">
+ <h3>Programmatic Transforms (Java &amp; C#)</h3>
+ <p>Saxon API, JAXB, StAX, and LINQ to XML for transformations that require database lookups, API calls, or complex business logic mid-transform. Testable, debuggable, and CI/CD-native — unlike monolithic XSLT stylesheets.</p>
+ </div>
+ <div class="card">
+ <h3>Python &amp; Node.js Pipelines</h3>
+ <p>lxml, Beautiful Soup, and fast-xml-parser for rapid automation — content migration scripts, metadata enrichment, batch validation, and glue code between XML systems and modern APIs. Ideal when speed of development matters more than raw throughput.</p>
+ </div>
+ <div class="card">
+ <h3>JSON &amp; YAML Interoperability</h3>
+ <p>Modern systems speak JSON, not XML. We build bidirectional bridges that preserve semantic structure across formats — XML ↔ JSON for REST APIs, XML ↔ YAML for configuration pipelines, and XML → GraphQL schemas for flexible content queries.</p>
+ </div>
+ <div class="card">
+ <h3>GraphQL Content Layers</h3>
+ <p>Expose XML repositories through GraphQL endpoints where consumers request exactly the elements, attributes, and metadata they need. We build the schema, resolvers, and caching layer — turning your XML store into a queryable content API.</p>
+ </div>
+ <div class="card">
+ <h3>CSS Paged Media → PDF</h3>
+ <p>Replace XSL-FO with CSS Paged Media for print-quality PDF generation from XML. Using Prince XML, Antenna House, or WeasyPrint — your web team's CSS skills now produce regulated-grade PDFs. One styling language for web and print.</p>
+ </div>
+ <div class="card">
+ <h3>XML Databases &amp; Search</h3>
+ <p>Native XML storage in MarkLogic, BaseX, or eXist-db combined with Elasticsearch or Algolia for full-text search. We architect the storage and retrieval layer for content repositories that need fine-grained access, versioning, and faceted navigation.</p>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- AI-Ready XML -->
+ <section class="section">
+ <div class="container">
+ <div class="section-title">
+ <h2>AI-Ready Content Engineering</h2>
+ <p>Structured XML is the ideal input for AI systems. We engineer the additional layers that make your content retrievable, embeddable, and citable by machines.</p>
+ </div>
+ <div class="grid-3">
+ <div class="card">
+ <h3>RAG Chunking &amp; Embedding Prep</h3>
+ <p>We transform XML content into right-sized chunks for vector embedding — respecting topic boundaries, semantic context, and token limits. Each chunk carries its metadata lineage so the retrieval system knows what it's returning and why.</p>
+ </div>
+ <div class="card">
+ <h3>Semantic Labeling for LLMs</h3>
+ <p>Every XML element can carry machine-readable context — content type, product version, audience, domain. When an LLM retrieves a chunk, it understands whether it's citing a procedure, a concept, a warning, or a specification. We engineer those labels into your schema.</p>
+ </div>
+ <div class="card">
+ <h3>JSON-LD &amp; Schema.org Mapping</h3>
+ <p>Transform XML metadata into Schema.org structured data and JSON-LD — enabling rich search results, knowledge panel eligibility, and semantic web interoperability. Your content becomes discoverable by Google, AI assistants, and enterprise search platforms.</p>
+ </div>
+ <div class="card">
+ <h3>Knowledge Graph Generation</h3>
+ <p>Map XML taxonomies, cross-references, and relationship tables to RDF triples and OWL ontologies. Your documentation becomes a queryable knowledge graph — answering complex cross-system questions that flat search cannot.</p>
+ </div>
+ <div class="card">
+ <h3>Embedding-Friendly Transforms</h3>
+ <p>Custom XSLT/Python pipelines that output clean plain text or Markdown from XML — stripped of markup noise but preserving structural context as metadata. Optimized for OpenAI, Cohere, or open-source embedding models.</p>
+ </div>
+ <div class="card">
+ <h3>Content API for AI Pipelines</h3>
+ <p>REST and GraphQL endpoints that serve XML-sourced content to LangChain, LlamaIndex, or custom RAG frameworks. We build the retrieval layer — with filtering by metadata, version, audience, and content type — so your AI gets the right content, not just any content.</p>
+ </div>
+ </div>
+ <div class="callout-box" style="margin-top: 40px;">
+ <h4>Why Structured XML Is an AI Advantage</h4>
+ <p>Organizations trying to feed unstructured Word and PDF content to AI systems spend most of their effort on parsing, chunking, and metadata extraction. If your content is already in structured XML, you've solved the hardest part. We build the transform layer that bridges XML governance with AI consumption — so your existing content investment compounds into AI readiness.</p>
+ </div>
+ </div>
+ </section>
+
+ <!-- Related Services -->
+ <section class="related-section">
+ <div class="container">
+  <div class="section-title"><h2>Related Services</h2></div>
+  <div class="related-grid">
+   <div class="related-card">
+    <div class="related-tag">Service</div>
+    <h4>DITA Engineering</h4>
+    <p>Topic modeling, specialization, and constraint modules for scalable content architectures.</p>
+    <a href="dita-engineering.html">Explore →</a>
+   </div>
+   <div class="related-card">
+    <div class="related-tag">Service</div>
+    <h4>System Integration</h4>
+    <p>Connecting CCMS, CMS, and enterprise platforms via APIs and middleware.</p>
+    <a href="system-integration.html">Explore →</a>
+   </div>
+   <div class="related-card">
+    <div class="related-tag">Service</div>
+    <h4>Publishing Engineering</h4>
+    <p>Custom multi-channel publishing pipelines for PDF, HTML5, EPUB, and API documentation.</p>
+    <a href="publishing-engineering.html">Explore →</a>
+   </div>
+  </div>
+ </div>
+ </section>
+
+ </main>
+
+
+ <footer>
+ <div class="container">
+ <div class="footer-grid">
+ <div class="footer-col">
+ <h4>Extense LLC</h4>
+ <p>Strategic consulting, content engineering, and publishing solutions for government, commercial, and non-profit organizations.</p>
+ </div>
+ <div class="footer-col">
+ <h4>Solutions</h4>
+ <ul>
+ <li><a href="../solutions/technical-documentation-publishing.html">Tech Docs &amp; Publishing</a></li>
+ <li><a href="../solutions/ccms-implementation-integration.html">CCMS Integration</a></li>
+ <li><a href="../solutions/content-migration-modernization.html">Migration</a></li>
+ </ul>
+ </div>
+ <div class="footer-col">
+ <h4>Company</h4>
+ <ul>
+ <li><a href="../about.html">About Us</a></li>
+ <li><a href="../careers.html">Careers</a></li>
+ <li><a href="../contact.html">Contact</a></li>
+ </ul>
+ </div>
+ <div class="footer-col">
+ <h4>Legal</h4>
+ <ul>
+ <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+ <li><a href="../terms.html">Terms of Service</a></li>
+ </ul>
+ </div>
+ </div>
+ <div class="copyright">
+ <p>&copy; 2026 Extense LLC. All rights reserved.</p>
+ </div>
+ </div>
+ </footer>
+ <script src="../nav.js"></script>
+
+ <!-- Scroll to Top -->
+ <button class="scroll-to-top" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 10 4 3 11"/><line x1="10" y1="4" x2="10" y2="20"/></svg>
+ </button>
+ <script>
+ (function(){var b=document.querySelector('.scroll-to-top');if(b){window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>400)},{passive:true})}})();
+ </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="utilizing-intelligent-features" xml:lang="en-US">
+  <title>Utilizing Intelligent Content Features: A Practical Guide</title>
+  <shortdesc>How to leverage every metadata field, taxonomy facet, and structural element to maximize chatbot accuracy, search precision, and multi-channel delivery.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-02-10"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Feature utilization</indexterm>
+        <indexterm>Metadata filtering</indexterm>
+        <indexterm>Intent routing</indexterm>
+        <indexterm>Learning paths</indexterm>
+      </keywords>
+      <category>taxonomy:intelligent-content</category>
+      <audience type="user" othertype="content-strategist"/>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="utilizing-intelligent-features"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="architecture"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="benefits-and-roi"/>
+  </prolog>
+  <refbody>
+
+    <section id="metadata-filtering">
+      <title>Feature 1: Metadata-filtered retrieval</title>
+      <p><b>What it does:</b> Narrows the vector search space before similarity scoring begins, ensuring only relevant content is considered.</p>
+      <p><b>Metadata fields used:</b> audience, difficulty, content-domain, content-intent</p>
+      <p><b>How to utilize it:</b></p>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="scenario" colwidth="2*"/>
+          <colspec colname="filter" colwidth="2*"/>
+          <colspec colname="result" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>User scenario</entry>
+              <entry>Metadata filter applied</entry>
+              <entry>Retrieval result</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>"I'm a technical writer learning DITA"</entry>
+              <entry>audience=technical-writer AND difficulty IN (beginner, intermediate)</entry>
+              <entry>Excludes advanced developer content; surfaces authoring guides</entry>
+            </row>
+            <row>
+              <entry>"How do I create an XSLT plugin?"</entry>
+              <entry>content-intent=how-to AND content-domain=xslt</entry>
+              <entry>Returns only step-by-step XSLT task topics</entry>
+            </row>
+            <row>
+              <entry>"What is a conkeyref?"</entry>
+              <entry>content-intent IN (explain, definition)</entry>
+              <entry>Returns concept topics and glossary definitions, not task topics</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="intent-routing">
+      <title>Feature 2: Intent-to-type routing</title>
+      <p><b>What it does:</b> Matches the type of question the user is asking to the type of content most likely to answer it.</p>
+      <p><b>Metadata fields used:</b> content-intent, topic type (concept/task/reference)</p>
+      <p><b>How to utilize it:</b></p>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="pattern" colwidth="1*"/>
+          <colspec colname="intent" colwidth="1*"/>
+          <colspec colname="target" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Query pattern</entry>
+              <entry>Detected intent</entry>
+              <entry>Preferred content type</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>"What is X?"</entry>
+              <entry>explain / definition</entry>
+              <entry>Concept topics + glossary entries</entry>
+            </row>
+            <row>
+              <entry>"How do I X?"</entry>
+              <entry>how-to</entry>
+              <entry>Task topics with step-by-step instructions</entry>
+            </row>
+            <row>
+              <entry>"X is not working"</entry>
+              <entry>troubleshoot</entry>
+              <entry>Troubleshooting sections + task topics</entry>
+            </row>
+            <row>
+              <entry>"List of X" / "Parameters for X"</entry>
+              <entry>reference</entry>
+              <entry>Reference topics with tables and parameter lists</entry>
+            </row>
+            <row>
+              <entry>"Best way to X"</entry>
+              <entry>best-practice</entry>
+              <entry>Best practice sections + concept topics</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="learning-paths">
+      <title>Feature 3: Prerequisite-based learning paths</title>
+      <p><b>What it does:</b> Uses the <codeph>prerequisites</codeph> metadata and map hierarchy to suggest a learning sequence when a user encounters unfamiliar concepts.</p>
+      <p><b>Metadata fields used:</b> prerequisites, difficulty, map nesting order</p>
+      <p><b>How to utilize it:</b></p>
+      <ul>
+        <li>When a user asks about an advanced topic, the chatbot checks the prerequisite chain and offers foundational content first</li>
+        <li>After answering a question, the chatbot suggests the next topic in the progression</li>
+        <li>The difficulty metadata ensures the suggested path matches the user's level</li>
+      </ul>
+      <p><b>Example:</b> User asks about XSLT customization. Prerequisite chain: DITA fundamentals → publishing → XSLT customization → custom plugins. The chatbot asks: "Would you like to start with DITA publishing fundamentals first?"</p>
+    </section>
+
+    <section id="priority-weighting">
+      <title>Feature 4: Priority-weighted ranking</title>
+      <p><b>What it does:</b> Ensures the most important content surfaces first, even when multiple chunks have similar relevance scores.</p>
+      <p><b>Metadata field used:</b> chatbot-priority (high / medium / low)</p>
+      <p><b>How to utilize it:</b></p>
+      <ul>
+        <li>Mark core user-facing content (installation, first project, key concepts) as <codeph>high</codeph></li>
+        <li>Mark supporting content (best practices, advanced techniques) as <codeph>medium</codeph></li>
+        <li>Mark peripheral content (history, edge cases, deprecated features) as <codeph>low</codeph></li>
+      </ul>
+    </section>
+
+    <section id="schema-org-output">
+      <title>Feature 5: Schema.org-enhanced web output</title>
+      <p><b>What it does:</b> Transforms DITA type semantics and metadata into schema.org structured data in the HTML5 output, improving search engine understanding.</p>
+      <p><b>Schema.org mappings:</b></p>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="dita" colwidth="1*"/>
+          <colspec colname="schema" colwidth="1*"/>
+          <colspec colname="benefit" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>DITA type</entry>
+              <entry>Schema.org type</entry>
+              <entry>SEO benefit</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>concept</entry>
+              <entry>TechArticle</entry>
+              <entry>Rich snippet with expertise level and dependencies</entry>
+            </row>
+            <row>
+              <entry>task</entry>
+              <entry>HowTo</entry>
+              <entry>Step-by-step rich snippet in search results</entry>
+            </row>
+            <row>
+              <entry>glossentry</entry>
+              <entry>DefinedTerm</entry>
+              <entry>Definition cards in search results</entry>
+            </row>
+            <row>
+              <entry>reference</entry>
+              <entry>TechArticle</entry>
+              <entry>Structured technical reference with proficiency level</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="multi-channel-delivery">
+      <title>Feature 6: Single-source multi-channel delivery</title>
+      <p><b>What it does:</b> The same DITA source produces multiple output formats, each inheriting the intelligent content features.</p>
+      <ul>
+        <li><b>Branded HTML5:</b> Web documentation with responsive design, navigation, and search</li>
+        <li><b>Branded PDF:</b> Print-ready documentation with professional formatting</li>
+        <li><b>Chatbot knowledge base:</b> Section-aware chunks with metadata for RAG retrieval</li>
+        <li><b>Schema.org web pages:</b> SEO-optimized pages with structured data</li>
+        <li><b>Localized versions:</b> Translation-ready content with xml:lang and structural consistency</li>
+      </ul>
+      <p>A single source change (fixing a typo, updating a version number, adding a new topic) propagates to all channels on the next build cycle.</p>
+    </section>
+
+  </refbody>
+</reference>

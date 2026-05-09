@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="dita-maps-publishing" xml:lang="en-US">
+  <title>DITA Maps, Reuse, and Publishing</title>
+  <shortdesc>DITA maps assemble topics into publications, reuse mechanisms eliminate duplication, and the DITA Open Toolkit transforms content into HTML5, PDF, and other formats.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-04-05"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>DITA map</indexterm>
+        <indexterm>Bookmap</indexterm>
+        <indexterm>Content reuse</indexterm>
+        <indexterm>Conref</indexterm>
+        <indexterm>Keyref</indexterm>
+        <indexterm>DITA-OT</indexterm>
+        <indexterm>DITA Open Toolkit</indexterm>
+      </keywords>
+      <category>taxonomy:dita-fundamentals</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="xml-training" appname="chatbot" id="dita-maps-publishing"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="dita-topic-types"/>
+  </prolog>
+  <conbody>
+
+    <section id="what-are-maps">
+      <title>What are DITA maps?</title>
+      <p>A DITA map is an XML file that organizes topics into a publication structure — like a table of contents that defines what topics appear, in what order, and in what hierarchy.</p>
+      <p>Topics are <b>not</b> embedded inside maps. Maps contain <codeph>&lt;topicref&gt;</codeph> elements that point to topic files. This separation means the same topic can be reused in multiple maps.</p>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd"&gt;
+&lt;map id="user-guide"&gt;
+  &lt;title&gt;Product User Guide&lt;/title&gt;
+  &lt;topicref href="topics/overview.dita"&gt;
+    &lt;topicref href="topics/installation.dita"/&gt;
+    &lt;topicref href="topics/configuration.dita"/&gt;
+  &lt;/topicref&gt;
+  &lt;topicref href="topics/troubleshooting.dita"/&gt;
+  &lt;topicref href="topics/cli-reference.dita"/&gt;
+&lt;/map&gt;</codeblock>
+      <p>Nesting <codeph>&lt;topicref&gt;</codeph> elements creates a hierarchy — here, "installation" and "configuration" are children of "overview."</p>
+    </section>
+
+    <section id="bookmaps">
+      <title>Bookmaps: For book-like publications</title>
+      <p>A <codeph>&lt;bookmap&gt;</codeph> extends the basic map with book-specific structure — parts, chapters, prefaces, and appendices:</p>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "bookmap.dtd"&gt;
+&lt;bookmap id="training-guide"&gt;
+  &lt;booktitle&gt;
+    &lt;mainbooktitle&gt;XML Fundamentals Training&lt;/mainbooktitle&gt;
+  &lt;/booktitle&gt;
+  &lt;frontmatter&gt;
+    &lt;topicref href="topics/preface.dita"/&gt;
+    &lt;booklists&gt;&lt;toc/&gt;&lt;/booklists&gt;
+  &lt;/frontmatter&gt;
+  &lt;part navtitle="XML Basics"&gt;
+    &lt;topicref href="topics/what-is-xml.dita"/&gt;
+    &lt;topicref href="topics/xml-syntax.dita"/&gt;
+  &lt;/part&gt;
+&lt;/bookmap&gt;</codeblock>
+    </section>
+
+    <section id="reuse-mechanisms">
+      <title>Content reuse: Write once, use everywhere</title>
+      <p>DITA provides several mechanisms to reuse content without copying:</p>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="mechanism" colwidth="1*"/>
+          <colspec colname="what" colwidth="2*"/>
+          <colspec colname="example" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Mechanism</entry>
+              <entry>What it does</entry>
+              <entry>Use case</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><b>Topic reuse</b></entry>
+              <entry>Same topic included in multiple maps</entry>
+              <entry>A "Getting Started" topic appears in both the Quick Start Guide and the full User Guide</entry>
+            </row>
+            <row>
+              <entry><b>Conref</b></entry>
+              <entry>Pull content from another topic at the element level</entry>
+              <entry>A standard warning note reused across 20 task topics</entry>
+            </row>
+            <row>
+              <entry><b>Keyref</b></entry>
+              <entry>Indirect references resolved at build time via keys defined in the map</entry>
+              <entry>Product name defined once in the map, referenced everywhere via a key</entry>
+            </row>
+            <row>
+              <entry><b>Conditional processing</b></entry>
+              <entry>Include or exclude content based on attributes (audience, platform, product)</entry>
+              <entry>Show Windows steps for Windows users, Linux steps for Linux users</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <p><b>Conref example:</b></p>
+      <codeblock outputclass="language-xml">&lt;!-- Source file: shared/warnings.dita --&gt;
+&lt;note type="warning" id="backup-warning"&gt;
+  Always back up your data before proceeding.
+&lt;/note&gt;
+
+&lt;!-- Reuse in any topic --&gt;
+&lt;note conref="shared/warnings.dita#warnings/backup-warning"/&gt;</codeblock>
+      <p><b>Keyref example:</b></p>
+      <codeblock outputclass="language-xml">&lt;!-- In the map --&gt;
+&lt;keydef keys="product-name"&gt;
+  &lt;topicmeta&gt;&lt;keywords&gt;&lt;keyword&gt;WidgetPro&lt;/keyword&gt;&lt;/keywords&gt;&lt;/topicmeta&gt;
+&lt;/keydef&gt;
+
+&lt;!-- In any topic --&gt;
+&lt;p&gt;Welcome to &lt;keyword keyref="product-name"/&gt;!&lt;/p&gt;
+&lt;!-- Renders as: Welcome to WidgetPro! --&gt;</codeblock>
+    </section>
+
+    <section id="conditional-processing">
+      <title>Conditional processing with DITAVAL</title>
+      <p>DITA elements can carry filtering attributes — <codeph>audience</codeph>, <codeph>platform</codeph>, <codeph>product</codeph>, <codeph>otherprops</codeph>. A DITAVAL file controls which values to include or exclude at build time:</p>
+      <codeblock outputclass="language-xml">&lt;!-- In a topic --&gt;
+&lt;step audience="admin"&gt;
+  &lt;cmd&gt;Configure the firewall settings.&lt;/cmd&gt;
+&lt;/step&gt;
+&lt;step audience="user"&gt;
+  &lt;cmd&gt;Contact your administrator for firewall access.&lt;/cmd&gt;
+&lt;/step&gt;
+
+&lt;!-- admin.ditaval --&gt;
+&lt;val&gt;
+  &lt;prop att="audience" val="admin" action="include"/&gt;
+  &lt;prop att="audience" val="user" action="exclude"/&gt;
+&lt;/val&gt;</codeblock>
+      <p>This enables single-source authoring — one set of DITA files produces different outputs for different audiences.</p>
+    </section>
+
+    <section id="publishing">
+      <title>Publishing with DITA Open Toolkit</title>
+      <p>The <b>DITA Open Toolkit</b> (DITA-OT) is the primary open-source tool for transforming DITA content into deliverable formats:</p>
+      <ul>
+        <li><b>HTML5:</b> Web pages with responsive design</li>
+        <li><b>PDF:</b> Print-ready documents via XSL-FO</li>
+        <li><b>EPUB:</b> E-book format</li>
+        <li><b>Markdown:</b> For platforms that consume Markdown</li>
+      </ul>
+      <p>A basic build command:</p>
+      <codeblock outputclass="language-bash">dita --input=userguide.ditamap --format=html5 --output=out/html</codeblock>
+      <p>The toolkit reads the map, resolves all topic references, applies conditional processing (if a DITAVAL is specified), and transforms the result into the target format using XSLT stylesheets.</p>
+    </section>
+
+    <section id="xml-connection">
+      <title>How XML, DTD, and XSD connect to DITA</title>
+      <p>Everything you have learned in this manual applies directly to DITA:</p>
+      <ul>
+        <li><b>XML:</b> Every DITA topic and map is an XML document that must be well-formed</li>
+        <li><b>DTD:</b> DITA topics begin with a DOCTYPE that references DITA DTDs — the DTD enforces the allowed elements and structure for each topic type</li>
+        <li><b>XSD:</b> DITA also provides XSD grammars for validation in tools that prefer XSD over DTD</li>
+        <li><b>Namespaces:</b> XSLT transforms that process DITA use namespaces extensively</li>
+      </ul>
+      <p>Learning XML, DTD, and XSD first gives you the foundation to understand <b>why</b> DITA works the way it does — and how to troubleshoot when things go wrong.</p>
+    </section>
+
+  </conbody>
+</concept>

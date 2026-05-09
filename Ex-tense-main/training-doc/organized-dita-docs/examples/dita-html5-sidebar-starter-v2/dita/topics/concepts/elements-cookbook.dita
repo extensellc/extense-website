@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="elements-cookbook">
+  <title>Elements cookbook for HTML customization</title>
+  <shortdesc>This topic intentionally uses a wide range of common DITA elements so you can validate your HTML5 XSLT overrides and CSS hooks across real structures.</shortdesc>
+
+  <conbody>
+
+    <section id="phrasing">
+      <title>Phrasing content: ph, keyword-like spans, and inline semantics</title>
+      <p>Use <ph>ph</ph> for generic phrasing content. For styling, use attributes like <codeph>outputclass</codeph> to add stable CSS hooks.</p>
+      <p>Example: <ph outputclass="badge">BETA</ph> label and <ph outputclass="kbd">Ctrl+C</ph> shortcut.</p>
+      <p audience="novice">Novice note: focus on a minimal set of elements first (p, note, xref, codeblock, table) and expand later.</p>
+      <p audience="admin">Admin note: keep a changelog for your customization plug-in and test upgrades in CI.</p>
+    </section>
+
+    <section id="links">
+      <title>Links: xref internal and external</title>
+      <p>Internal xref:</p>
+      <p><xref href="../reference/cli-reference.dita">Build command reference</xref></p>
+      <p>External xref:</p>
+      <p><xref href="https://www.oasis-open.org/" scope="external">OASIS</xref></p>
+    </section>
+
+    <section id="lists">
+      <title>Lists: ul/ol/li with nested content</title>
+      <ul>
+        <li>Simple list item</li>
+        <li>List item with <ph outputclass="inline-tag">inline ph</ph> and a <xref href="https://www.dita-ot.org" scope="external">link</xref>.</li>
+        <li>
+          List item with nested list:
+          <ol>
+            <li>First nested step</li>
+            <li platform="web">Second nested step (web-only)</li>
+            <li platform="print">Second nested step (print-only)</li>
+          </ol>
+        </li>
+      </ul>
+    </section>
+
+    <section id="dl">
+      <title>Definition list (dl)</title>
+      <dl>
+        <dlentry>
+          <dt>DITA-OT</dt>
+          <dd>DITA Open Toolkit. A publishing engine that transforms DITA to outputs like HTML5 and PDF (via plug-ins).</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Plug-in</dt>
+          <dd>A package that extends DITA-OT with transforms, parameters, templates, and resources.</dd>
+        </dlentry>
+      </dl>
+    </section>
+
+    <section id="draft">
+      <title>Draft comments (draft-comment)</title>
+      <p>Draft comments are commonly filtered out in production but are useful during review.</p>
+      <draft-comment>TODO: Confirm whether we want to show step labels by default in HTML output.</draft-comment>
+    </section>
+
+    <section id="hazards">
+      <title>Hazard statements (hazardstatement)</title>
+      <p>Hazard statements are used heavily in safety-critical documentation. They may be filtered or styled prominently.</p>
+      <hazardstatement>
+        <hazardtype>WARNING</hazardtype>
+        <consequence>Electric shock can cause serious injury or death.</consequence>
+        <howtoavoid>Disconnect power before servicing and verify with a meter.</howtoavoid>
+      </hazardstatement>
+    </section>
+
+    <section id="figures">
+      <title>Figures and images</title>
+      <fig>
+        <title>Diagram reused across topics</title>
+        <image href="../../media/images/sample-diagram.svg" alt="Placeholder diagram for testing image rendering."/>
+      </fig>
+    </section>
+
+  </conbody>
+</concept>

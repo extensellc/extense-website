@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="install-v1">
+  <title>Installing <keyword keyref="product-name"/></title>
+  <shortdesc>Download and install <keyword keyref="product-name"/> on your machine.</shortdesc>
+  <taskbody>
+    <prereq>
+      <ul>
+        <li>Java 17 or later installed</li>
+        <li>500 MB free disk space</li>
+      </ul>
+    </prereq>
+    <steps>
+      <step id="step-download">
+        <cmd>Download the latest release.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">curl -LO https://example.com/acmedoc/latest/acmedoc.tar.gz</codeblock>
+        </info>
+      </step>
+      <step id="step-extract">
+        <cmd>Extract the archive.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">tar xzf acmedoc.tar.gz
+cd acmedoc</codeblock>
+        </info>
+      </step>
+      <step id="step-install">
+        <cmd>Run the installer.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">./install.sh</codeblock>
+        </info>
+      </step>
+      <step id="step-verify">
+        <cmd>Verify the installation.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">acmedoc --version</codeblock>
+          <p>Expected output: <codeph>AcmeDoc 3.0.0</codeph></p>
+        </info>
+      </step>
+    </steps>
+    <result>
+      <p><keyword keyref="product-name"/> is installed and ready to use.</p>
+    </result>
+  </taskbody>
+</task>

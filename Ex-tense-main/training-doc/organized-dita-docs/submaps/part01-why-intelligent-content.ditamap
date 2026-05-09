@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="part01-why-intelligent-content">
+  <title>Why Intelligent Content Matters</title>
+  <topicmeta>
+    <shortdesc>Understand why unstructured content fails AI, what intelligent content is, and how to measure readiness</shortdesc>
+    <metadata>
+      <othermeta name="difficulty" content="beginner"/>
+      <othermeta name="learningObjectives" content="Understand the case for structured, AI-ready content before learning the tools."/>
+    </metadata>
+  </topicmeta>
+  <topicref href="../topics/part01-why/ch01-what-is-intelligent-content.dita" navtitle="What Is Intelligent Content?">
+    <topicmeta><shortdesc>Five defining characteristics and why DITA is the ideal foundation</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part01-why/ch02-problem-with-unstructured-content.dita" navtitle="The Problem with Unstructured Content">
+    <topicmeta><shortdesc>What AI needs from content and why markdown and Word fail to deliver it</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part01-why/ch03-ai-readiness-maturity-model.dita" navtitle="AI-Readiness Maturity Model">
+    <topicmeta><shortdesc>Five maturity levels: Unstructured, Structured, Enriched, Connected, Intelligent</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part01-why/ch04-markdown-limitations.dita" navtitle="Markdown: Strengths and Semantic Limitations">
+    <topicmeta><shortdesc>Where markdown succeeds, where it fails, and real before-and-after examples</shortdesc></topicmeta>
+  </topicref>
+</map>

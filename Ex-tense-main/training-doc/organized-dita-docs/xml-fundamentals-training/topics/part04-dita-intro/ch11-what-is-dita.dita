@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="what-is-dita" xml:lang="en-US">
+  <title>What Is DITA?</title>
+  <shortdesc>DITA (Darwin Information Typing Architecture) is an XML-based standard for authoring, organizing, and publishing modular technical content — designed for reuse, conditional delivery, and multi-channel output.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-04-05"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>DITA</indexterm>
+        <indexterm>Darwin Information Typing Architecture</indexterm>
+        <indexterm>Structured authoring</indexterm>
+        <indexterm>Topic-based authoring</indexterm>
+      </keywords>
+      <category>taxonomy:dita-fundamentals</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="xml-training" appname="chatbot" id="what-is-dita"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="what-is-xsd"/>
+  </prolog>
+  <conbody>
+
+    <section id="dita-definition">
+      <title>What does DITA stand for?</title>
+      <p><b>DITA</b> stands for <b>Darwin Information Typing Architecture</b>:</p>
+      <ul>
+        <li><b>Darwin</b> — Named after Charles Darwin, because DITA uses an evolutionary model of specialization where new content types inherit from base types.</li>
+        <li><b>Information Typing</b> — Every topic has a specific purpose: explaining a concept, teaching a procedure, or providing reference data.</li>
+        <li><b>Architecture</b> — DITA is a complete system — not just a tag set, but an organizing framework with maps, keys, reuse mechanisms, and conditional processing.</li>
+      </ul>
+      <p>DITA was originally developed at IBM in the early 2000s and became an OASIS open standard in 2005. The current version is DITA 1.3, with DITA 2.0 in development.</p>
+    </section>
+
+    <section id="core-principles">
+      <title>Core principles of DITA</title>
+      <p>DITA is built on four foundational principles:</p>
+      <ol>
+        <li><b>Topic-based authoring:</b> Content is written in self-contained topics, not long documents. Each topic addresses a single subject and can stand on its own.</li>
+        <li><b>Information typing:</b> Each topic has a designated type (concept, task, reference) that determines its structure and purpose.</li>
+        <li><b>Separation of content and presentation:</b> DITA topics contain only semantic markup. Formatting is applied at publish time through stylesheets and transforms.</li>
+        <li><b>Content reuse:</b> Topics can be assembled into multiple publications, and content fragments can be shared across topics using conref, keyref, and other mechanisms.</li>
+      </ol>
+    </section>
+
+    <section id="dita-vs-other-xml">
+      <title>How is DITA different from other XML standards?</title>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="feature" colwidth="1*"/>
+          <colspec colname="dita" colwidth="2*"/>
+          <colspec colname="other" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Feature</entry>
+              <entry>DITA</entry>
+              <entry>DocBook / Custom XML</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Unit of authoring</entry>
+              <entry>Topic (one subject per file)</entry>
+              <entry>Chapter or section (can be any size)</entry>
+            </row>
+            <row>
+              <entry>Information typing</entry>
+              <entry>Built-in: concept, task, reference, plus specialization</entry>
+              <entry>No built-in typing (some have chapter/appendix)</entry>
+            </row>
+            <row>
+              <entry>Organization</entry>
+              <entry>Maps assemble topics into publications</entry>
+              <entry>Book includes chapters directly</entry>
+            </row>
+            <row>
+              <entry>Reuse</entry>
+              <entry>Conref, keyref, conkeyref, content key references</entry>
+              <entry>XInclude or custom mechanisms</entry>
+            </row>
+            <row>
+              <entry>Conditional processing</entry>
+              <entry>Built-in with audience, platform, product attributes + DITAVAL</entry>
+              <entry>Custom profiling (if any)</entry>
+            </row>
+            <row>
+              <entry>Publishing</entry>
+              <entry>DITA Open Toolkit (DITA-OT) — free, extensible</entry>
+              <entry>Custom XSLT or commercial tools</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="who-uses-dita">
+      <title>Who uses DITA?</title>
+      <p>DITA is used by organizations that produce large volumes of technical content:</p>
+      <ul>
+        <li><b>Software companies:</b> IBM, Microsoft, SAP, Oracle — user guides, API documentation, release notes</li>
+        <li><b>Hardware manufacturers:</b> Cisco, Nokia, Honeywell — product manuals, installation guides</li>
+        <li><b>Medical device companies:</b> Regulatory documentation that must be filtered by product variant and locale</li>
+        <li><b>Aerospace and defense:</b> Maintenance manuals with strict content reuse requirements (S1000D is a related standard)</li>
+        <li><b>Financial services:</b> Policy documents, compliance materials with conditional delivery by audience</li>
+      </ul>
+    </section>
+
+    <section id="dita-ecosystem">
+      <title>The DITA ecosystem</title>
+      <p>DITA is more than a file format — it is an ecosystem of tools::</p>
+      <ul>
+        <li><b>Authoring:</b> Oxygen XML Editor, Adobe FrameMaker, Arbortext, XMetaL, or any XML editor</li>
+        <li><b>Publishing:</b> DITA Open Toolkit (DITA-OT) — transforms DITA to HTML5, PDF, EPUB, and more</li>
+        <li><b>Content Management:</b> CCMS tools like SDL Tridion Docs, Vasont, Ixiasoft DITA CMS</li>
+        <li><b>Validation:</b> DITA DTDs, XSDs, and RELAX NG grammars for schema validation</li>
+      </ul>
+    </section>
+
+  </conbody>
+</concept>

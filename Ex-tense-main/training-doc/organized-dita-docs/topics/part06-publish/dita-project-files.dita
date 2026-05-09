@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="dita-project-files" xml:lang="en-US">
+  <title>DITA Project Files</title>
+  <shortdesc>Project files define reusable, shareable build configurations that replace long command-line arguments with declarative XML — enabling consistent, repeatable builds across teams and CI systems.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Project files</indexterm><indexterm>Build configuration</indexterm>
+        <indexterm>Deliverables</indexterm><indexterm>Contexts</indexterm>
+      </keywords>
+      <category>taxonomy:publishing</category>
+      <audience type="user" othertype="build-engineer"/>
+      <audience type="user" othertype="technical-writer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="dita-project-files"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT30M"/>
+    <data name="content-domain" value="publishing"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="dita-publishing"/>
+  </prolog>
+  <conbody>
+
+    <section id="why-project-files">
+      <title>Why project files?</title>
+      <p>Without project files, every build requires a long command line:</p>
+      <codeblock outputclass="language-bash">dita -i maps/guide.ditamap -f html5 -o out/html5 \
+  --args.css=brand.css --args.cssroot=css \
+  --args.hdr=includes/header.xml \
+  --args.indexshow=yes -v</codeblock>
+      <p>This is error-prone, hard to share, and impossible to version-control meaningfully.
+        Project files solve all three problems by capturing the entire build definition in XML.</p>
+    </section>
+
+    <section id="project-file-anatomy">
+      <title>Project file anatomy</title>
+      <p>A DITA-OT project file uses the <codeph>https://www.dita-ot.org/project</codeph> namespace
+        and contains three core elements:</p>
+      <dl>
+        <dlentry>
+          <dt><codeph>&lt;context&gt;</codeph></dt>
+          <dd>Names the input map and any shared settings. Multiple deliverables can reference the
+            same context, ensuring consistency.</dd>
+        </dlentry>
+        <dlentry>
+          <dt><codeph>&lt;deliverable&gt;</codeph></dt>
+          <dd>Defines one output — its transtype, output directory, and parameters. A project can
+            contain many deliverables.</dd>
+        </dlentry>
+        <dlentry>
+          <dt><codeph>&lt;publication&gt;</codeph></dt>
+          <dd>Nested inside a deliverable — specifies the transtype and its parameter overrides.</dd>
+        </dlentry>
+      </dl>
+    </section>
+
+    <section id="minimal-example">
+      <title>Minimal example</title>
+      <p>A project file that builds both HTML5 and PDF from the same map:</p>
+      <codeblock outputclass="language-xml">&lt;project xmlns="https://www.dita-ot.org/project"&gt;
+
+  &lt;context name="training-guide" id="ctx-training"&gt;
+    &lt;input href="extense-supermap.ditamap"/&gt;
+  &lt;/context&gt;
+
+  &lt;deliverable name="Web Site"&gt;
+    &lt;context idref="ctx-training"/&gt;
+    &lt;output href="./output/html5"/&gt;
+    &lt;publication transtype="html5"&gt;
+      &lt;param name="args.css"     value="brand.css"/&gt;
+      &lt;param name="args.cssroot" value="css"/&gt;
+      &lt;param name="nav-toc"      value="full"/&gt;
+    &lt;/publication&gt;
+  &lt;/deliverable&gt;
+
+  &lt;deliverable name="Print Manual"&gt;
+    &lt;context idref="ctx-training"/&gt;
+    &lt;output href="./output/pdf"/&gt;
+    &lt;publication transtype="pdf"&gt;
+      &lt;param name="args.chapter.layout" value="MINITOC"/&gt;
+      &lt;param name="args.bookmap-order"  value="retain"/&gt;
+    &lt;/publication&gt;
+  &lt;/deliverable&gt;
+
+&lt;/project&gt;</codeblock>
+      <p>Run with a single command:</p>
+      <codeblock outputclass="language-bash">dita --project=build-project.xml</codeblock>
+      <p>DITA-OT builds every deliverable in sequence, reusing the shared context.</p>
+    </section>
+
+    <section id="advanced-patterns">
+      <title>Advanced patterns</title>
+      <p><b>Profile-specific deliverables</b></p>
+      <p>Use DITAVAL profiles inside a context to produce filtered variants:</p>
+      <codeblock outputclass="language-xml">&lt;context name="admin-guide" id="ctx-admin"&gt;
+  &lt;input href="guide.ditamap"/&gt;
+  &lt;profile&gt;
+    &lt;ditaval href="filters/admin-only.ditaval"/&gt;
+  &lt;/profile&gt;
+&lt;/context&gt;</codeblock>
+
+      <p><b>Multiple maps, one project</b></p>
+      <p>Define separate contexts for different maps and build them all together:</p>
+      <codeblock outputclass="language-xml">&lt;context name="user-guide" id="ctx-user"&gt;
+  &lt;input href="maps/user-guide.ditamap"/&gt;
+&lt;/context&gt;
+&lt;context name="api-reference" id="ctx-api"&gt;
+  &lt;input href="maps/api-ref.ditamap"/&gt;
+&lt;/context&gt;</codeblock>
+
+      <p><b>Including other project files</b></p>
+      <p>Project files can include other project files for modular build definitions:</p>
+      <codeblock outputclass="language-xml">&lt;project xmlns="https://www.dita-ot.org/project"&gt;
+  &lt;include href="html5-deliverables.xml"/&gt;
+  &lt;include href="pdf-deliverables.xml"/&gt;
+&lt;/project&gt;</codeblock>
+    </section>
+
+    <section id="properties-files-comparison">
+      <title>Properties files vs. project files</title>
+      <p>DITA-OT also supports <codeph>.properties</codeph> files — simple key=value pairs loaded
+        with <codeph>--propertyfile</codeph>. Choose the right tool:</p>
+      <table id="comparison-table">
+        <title>Properties files vs. project files</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="1.5*"/>
+          <colspec colname="c2" colwidth="1*"/>
+          <colspec colname="c3" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Capability</entry>
+              <entry>Properties file</entry>
+              <entry>Project file</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Multiple deliverables in one file</entry>
+              <entry>No</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Shared contexts</entry>
+              <entry>No</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Include/compose other files</entry>
+              <entry>No</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>DITAVAL profiles</entry>
+              <entry>Via args.filter</entry>
+              <entry>Native &lt;profile&gt;</entry>
+            </row>
+            <row>
+              <entry>Simplicity</entry>
+              <entry>Very simple</entry>
+              <entry>More verbose</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <p>Use properties files for quick, single-transtype builds. Use project files when you
+        manage multiple deliverables, filtered variants, or CI pipelines.</p>
+    </section>
+
+    <section id="best-practices">
+      <title>Best practices</title>
+      <ul>
+        <li><b>Version-control your project files</b> alongside your DITA source — they are part
+          of your publication definition.</li>
+        <li><b>Name deliverables clearly</b> — <codeph>name="Admin PDF (v3.2)"</codeph> makes
+          build logs easy to scan.</li>
+        <li><b>Use relative paths</b> for input maps and output directories so the project works
+          across machines.</li>
+        <li><b>Keep one project file per product</b> — include shared definitions from a common
+          file to avoid duplication.</li>
+        <li><b>Test locally before CI</b> — run <codeph>dita --project=build.xml</codeph> on your
+          machine to catch configuration errors early.</li>
+      </ul>
+    </section>
+
+  </conbody>
+</concept>

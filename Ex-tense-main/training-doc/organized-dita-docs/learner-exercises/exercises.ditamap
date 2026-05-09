@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="learner-exercises-map">
+  <title>DITA Learner Exercises</title>
+
+  <topichead navtitle="Phase 1: Foundation [Both]">
+    <topicref href="phase1-setup-verification.dita"/>
+  </topichead>
+
+  <topichead navtitle="Phase 2: Authoring [Both]">
+    <topicref href="phase2-first-topics.dita"/>
+    <topicref href="phase2-maps-and-reuse.dita"/>
+  </topichead>
+
+  <topichead navtitle="Phase 3W: Publishing [Writer]">
+    <topicref href="phase3-publishing-builds.dita"/>
+  </topichead>
+
+  <topichead navtitle="Phase 3E: Architecture [Engineer]">
+    <topicref href="phase3-architecture-exploration.dita"/>
+  </topichead>
+
+  <topichead navtitle="Phase 4: Developer Mastery [Engineer]">
+    <topicref href="phase4-plugin-development.dita"/>
+  </topichead>
+
+  <topichead navtitle="Phase 5: Capstone [Both]">
+    <topicref href="phase5-capstone-project.dita"/>
+  </topichead>
+
+</map>

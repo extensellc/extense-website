@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="none"/>
+  <g transform="translate(25,18)">
+    <text x="0" y="38" font-family="sans-serif" font-weight="900" font-size="40" fill="#4d148c" letter-spacing="-2">Fed</text>
+    <text x="74" y="38" font-family="sans-serif" font-weight="900" font-size="40" fill="#ff6600" letter-spacing="-2">Ex</text>
+  </g>
+</svg>

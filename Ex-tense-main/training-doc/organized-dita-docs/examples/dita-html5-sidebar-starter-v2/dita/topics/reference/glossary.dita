@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="glossary">
+  <title>Glossary</title>
+  <shortdesc>Small glossary to test dl/dt/dd rendering and filtering behavior.</shortdesc>
+
+  <refbody>
+    <section>
+      <title>Terms</title>
+      <dl>
+        <dlentry>
+          <dt>Audience filtering</dt>
+          <dd>Using attributes like <codeph>audience</codeph> and a DITAVAL file to exclude or include content for different readers.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Platform filtering</dt>
+          <dd>Using <codeph>platform</codeph> to publish different outputs for web, print, or device targets.</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Chunking</dt>
+          <dd>Publishing strategy that splits content into multiple HTML files based on map rules.</dd>
+        </dlentry>
+      </dl>
+    </section>
+
+    <section platform="web">
+      <title>Web-only term</title>
+      <p>This section appears only in the WEB variant build.</p>
+    </section>
+
+    <section platform="print">
+      <title>Print-only term</title>
+      <p>This section appears only in the PRINT variant build.</p>
+    </section>
+  </refbody>
+</reference>

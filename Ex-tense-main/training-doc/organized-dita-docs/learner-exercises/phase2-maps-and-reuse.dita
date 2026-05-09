@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="phase2-maps-and-reuse">
+  <title>Phase 2 Exercise: Maps, Keys, and Content Reuse</title>
+  <shortdesc>Build a DITA map to organize your TaskFlow topics, then practice conref and keyref reuse patterns. Required for both technical writers and software engineers.</shortdesc>
+  <prolog>
+    <metadata>
+      <audience type="user" experiencelevel="novice"/>
+      <othermeta name="persona" content="Both"/>
+      <othermeta name="phase" content="2"/>
+      <othermeta name="estimated-time" content="60-90 minutes"/>
+    </metadata>
+  </prolog>
+  <taskbody>
+    <prereq>
+      <ul>
+        <li>Completed Phase 2 Exercise: Writing Your First DITA Topics</li>
+        <li>Read Part 3 topic: Reuse, Keys, and Variant Management</li>
+        <li>Three TaskFlow topics from the previous exercise</li>
+      </ul>
+    </prereq>
+
+    <context>
+      <p>You will assemble your TaskFlow topics into a navigable project, define reusable
+      keys, and create a conref library — the fundamental patterns that make DITA powerful
+      for content reuse at scale.</p>
+    </context>
+
+    <steps>
+      <!-- Exercise: Create a DITA map -->
+      <step>
+        <cmd>Create a DITA map: <filepath>taskflow-docs/taskflow.ditamap</filepath></cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Define a <codeph>&lt;keydef&gt;</codeph> for the product name "TaskFlow"</li>
+            <li>Organize topics under <codeph>&lt;topichead&gt;</codeph> groups:
+            "Getting Started" and "Reference"</li>
+            <li>Reference all three topics with <codeph>&lt;topicref&gt;</codeph></li>
+          </ul>
+          <p><b>Starter template:</b></p>
+          <codeblock>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd"&gt;
+&lt;map id="taskflow-map"&gt;
+  &lt;title&gt;TaskFlow Documentation&lt;/title&gt;
+
+  &lt;!-- Key definitions --&gt;
+  &lt;keydef keys="product-name"&gt;
+    &lt;topicmeta&gt;&lt;keywords&gt;&lt;keyword&gt;TaskFlow&lt;/keyword&gt;&lt;/keywords&gt;&lt;/topicmeta&gt;
+  &lt;/keydef&gt;
+
+  &lt;!-- TODO: Add topichead groups and topicrefs --&gt;
+
+&lt;/map&gt;</codeblock>
+        </info>
+      </step>
+
+      <!-- Exercise: Use keyref in topics -->
+      <step>
+        <cmd>Replace hardcoded product names with <codeph>&lt;keyword keyref="product-name"/&gt;</codeph> in your topics.</cmd>
+        <info>
+          <p>Find every instance of the word "TaskFlow" in your three topic files and
+          replace them with a key reference:</p>
+          <codeblock>&lt;keyword keyref="product-name"/&gt;</codeblock>
+          <p>This means if the product is renamed, you only change the keydef in the map.</p>
+          <note type="tip"><b>Writer focus:</b> This is how enterprise teams manage product
+          rebranding across thousands of topics — one change propagates everywhere.
+          <b>Engineer focus:</b> Key resolution happens during DITA-OT preprocessing.
+          The <codeph>keyref</codeph> module resolves these before the transform runs.</note>
+        </info>
+      </step>
+
+      <!-- Exercise: Build the map -->
+      <step>
+        <cmd>Build the complete map to HTML5.</cmd>
+        <info>
+          <codeblock>dita -i taskflow-docs/taskflow.ditamap -f html5 -o out/taskflow-site</codeblock>
+        </info>
+        <stepresult>
+          <p>You should get a multi-page HTML5 site with navigation. Every "TaskFlow" reference
+          should render correctly from the keydef. Open <filepath>out/taskflow-site/index.html</filepath>.</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise: Conref library -->
+      <step>
+        <cmd>Create a conref warehouse: <filepath>taskflow-docs/shared/reusable-content.dita</filepath></cmd>
+        <info>
+          <p>A conref warehouse is a topic that holds reusable content fragments.
+          Create one with:</p>
+          <ul>
+            <li>A reusable <codeph>&lt;note&gt;</codeph> for system requirements (give it an <codeph>id</codeph>)</li>
+            <li>A reusable <codeph>&lt;p&gt;</codeph> for the support contact (give it an <codeph>id</codeph>)</li>
+            <li>A reusable <codeph>&lt;step&gt;</codeph> for "Verify installation" (give it an <codeph>id</codeph>)</li>
+          </ul>
+          <codeblock>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd"&gt;
+&lt;concept id="reusable-content"&gt;
+  &lt;title&gt;Reusable Content Library&lt;/title&gt;
+  &lt;conbody&gt;
+    &lt;note id="system-requirements" type="note"&gt;
+      Requires Java 17+ and 512 MB available disk space.
+    &lt;/note&gt;
+    &lt;p id="support-contact"&gt;Contact support at support@taskflow.example.com.&lt;/p&gt;
+  &lt;/conbody&gt;
+&lt;/concept&gt;</codeblock>
+        </info>
+      </step>
+
+      <!-- Exercise: Use conref -->
+      <step>
+        <cmd>Use <codeph>conref</codeph> to pull the system requirements note into your installation task.</cmd>
+        <info>
+          <p>In <filepath>installing-taskflow.dita</filepath>, add inside the <codeph>&lt;prereq&gt;</codeph>:</p>
+          <codeblock>&lt;note conref="shared/reusable-content.dita#reusable-content/system-requirements"/&gt;</codeblock>
+          <p>Rebuild and verify the note appears in the output.</p>
+        </info>
+        <stepresult>
+          <p>The system requirements note should appear in the installation task,
+          pulled from the warehouse. Edit the warehouse text and rebuild — the change
+          should propagate automatically.</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise: Add a new topic using reuse -->
+      <step>
+        <cmd>Create a new task topic <filepath>taskflow-docs/upgrading-taskflow.dita</filepath> that reuses content.</cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Use <codeph>conref</codeph> for system requirements (same note as install topic)</li>
+            <li>Use <codeph>&lt;keyword keyref="product-name"/&gt;</codeph> for the product name</li>
+            <li>Write 3-4 upgrade steps</li>
+            <li>Add this new topic to your map</li>
+          </ul>
+        </info>
+        <stepresult>
+          <p>Rebuild the map. The new topic should appear in navigation and show the same
+          reusable content as the install topic.</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise: Verify reuse works -->
+      <step>
+        <cmd>Test that reuse is working: change the product name in the keydef and rebuild.</cmd>
+        <info>
+          <p>In your map, change the keydef keyword from "TaskFlow" to "TaskFlow Pro".
+          Rebuild and verify that <b>every topic</b> now shows "TaskFlow Pro" without
+          editing any topic files.</p>
+        </info>
+        <stepresult>
+          <p>All topics should display "TaskFlow Pro". Change it back to "TaskFlow" when done.</p>
+        </stepresult>
+      </step>
+    </steps>
+
+    <result>
+      <p><b>Self-Check — you should now be able to:</b></p>
+      <ul>
+        <li>✓ Create a DITA map with topichead groups and topicrefs</li>
+        <li>✓ Define and use keydefs for product names</li>
+        <li>✓ Create a conref warehouse with reusable fragments</li>
+        <li>✓ Pull content via conref into multiple topics</li>
+        <li>✓ Build a multi-topic site from a map</li>
+        <li>✓ Understand how reuse enables single-source publishing</li>
+      </ul>
+    </result>
+  </taskbody>
+</task>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="xml-syntax-rules" xml:lang="en-US">
+  <title>XML Syntax Rules: Well-Formedness</title>
+  <shortdesc>Every XML document must follow strict syntax rules to be considered well-formed — a parser will reject any document that violates them.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-04-05"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Well-formed XML</indexterm>
+        <indexterm>XML syntax</indexterm>
+        <indexterm>XML rules</indexterm>
+        <indexterm>XML declaration</indexterm>
+      </keywords>
+      <category>taxonomy:xml-fundamentals</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="xml-training" appname="chatbot" id="xml-syntax-rules"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="xml-fundamentals"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="what-is-xml"/>
+  </prolog>
+  <conbody>
+
+    <section id="well-formedness">
+      <title>What does "well-formed" mean?</title>
+      <p>A well-formed XML document is one that follows all the syntax rules of the XML specification. This is the <b>minimum requirement</b> for any XML parser to accept a document. A document that is not well-formed is not XML at all — parsers will refuse to process it.</p>
+      <p>Well-formedness is different from <b>validity</b>. A well-formed document has correct syntax; a valid document also conforms to a schema (DTD or XSD). You will learn about validity in later chapters.</p>
+    </section>
+
+    <section id="xml-declaration">
+      <title>Rule 1: The XML declaration</title>
+      <p>Every XML document should begin with an XML declaration:</p>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</codeblock>
+      <ul>
+        <li><codeph>version="1.0"</codeph> — The XML version. Almost all XML in production uses version 1.0.</li>
+        <li><codeph>encoding="UTF-8"</codeph> — The character encoding. UTF-8 is the default and recommended encoding.</li>
+      </ul>
+      <note type="important">The XML declaration must be the very first thing in the file — no blank lines, no spaces, no comments before it.</note>
+    </section>
+
+    <section id="root-element">
+      <title>Rule 2: Exactly one root element</title>
+      <p>Every XML document must have exactly one root element that contains all other elements:</p>
+      <codeblock outputclass="language-xml">&lt;!-- CORRECT: single root element --&gt;
+&lt;catalog&gt;
+  &lt;product&gt;Widget&lt;/product&gt;
+  &lt;product&gt;Gadget&lt;/product&gt;
+&lt;/catalog&gt;
+
+&lt;!-- WRONG: two root elements --&gt;
+&lt;product&gt;Widget&lt;/product&gt;
+&lt;product&gt;Gadget&lt;/product&gt;</codeblock>
+    </section>
+
+    <section id="closing-tags">
+      <title>Rule 3: Every element must be closed</title>
+      <p>Unlike HTML, XML requires every opening tag to have a matching closing tag:</p>
+      <codeblock outputclass="language-xml">&lt;!-- CORRECT --&gt;
+&lt;paragraph&gt;Hello, world.&lt;/paragraph&gt;
+
+&lt;!-- WRONG: unclosed element --&gt;
+&lt;paragraph&gt;Hello, world.</codeblock>
+      <p>Empty elements (elements with no content) can be written in two ways:</p>
+      <codeblock outputclass="language-xml">&lt;!-- Both are valid --&gt;
+&lt;linebreak&gt;&lt;/linebreak&gt;
+&lt;linebreak/&gt;</codeblock>
+    </section>
+
+    <section id="proper-nesting">
+      <title>Rule 4: Elements must be properly nested</title>
+      <p>Child elements must be completely contained within their parent. Overlapping tags are not allowed:</p>
+      <codeblock outputclass="language-xml">&lt;!-- CORRECT: proper nesting --&gt;
+&lt;bold&gt;&lt;italic&gt;important text&lt;/italic&gt;&lt;/bold&gt;
+
+&lt;!-- WRONG: overlapping elements --&gt;
+&lt;bold&gt;&lt;italic&gt;important text&lt;/bold&gt;&lt;/italic&gt;</codeblock>
+    </section>
+
+    <section id="case-sensitivity">
+      <title>Rule 5: XML is case-sensitive</title>
+      <p>Element and attribute names are case-sensitive. The opening and closing tags must use identical casing:</p>
+      <codeblock outputclass="language-xml">&lt;!-- CORRECT --&gt;
+&lt;Title&gt;My Book&lt;/Title&gt;
+
+&lt;!-- WRONG: case mismatch --&gt;
+&lt;Title&gt;My Book&lt;/title&gt;</codeblock>
+      <note type="tip">Convention: Use lowercase for element names and attributes in your own XML vocabularies. This is consistent with DITA, HTML5, and most modern XML standards.</note>
+    </section>
+
+    <section id="attribute-rules">
+      <title>Rule 6: Attribute values must be quoted</title>
+      <p>All attribute values must be enclosed in quotes — either single or double:</p>
+      <codeblock outputclass="language-xml">&lt;!-- CORRECT --&gt;
+&lt;book category="fiction"&gt;
+&lt;book category='fiction'&gt;
+
+&lt;!-- WRONG: unquoted attribute --&gt;
+&lt;book category=fiction&gt;</codeblock>
+      <p>Additional attribute rules:</p>
+      <ul>
+        <li>An element cannot have two attributes with the same name.</li>
+        <li>Attribute values cannot contain the <codeph>&lt;</codeph> character directly — use <codeph>&amp;lt;</codeph> instead.</li>
+      </ul>
+    </section>
+
+    <section id="special-characters">
+      <title>Rule 7: Special characters require entity references</title>
+      <p>Five characters have special meaning in XML and must be escaped when they appear in text content or attribute values:</p>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="char" colwidth="1*"/>
+          <colspec colname="entity" colwidth="1*"/>
+          <colspec colname="meaning" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Character</entry>
+              <entry>Entity Reference</entry>
+              <entry>Meaning</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>&lt;</codeph></entry>
+              <entry><codeph>&amp;lt;</codeph></entry>
+              <entry>Less-than — starts a tag</entry>
+            </row>
+            <row>
+              <entry><codeph>&gt;</codeph></entry>
+              <entry><codeph>&amp;gt;</codeph></entry>
+              <entry>Greater-than — ends a tag</entry>
+            </row>
+            <row>
+              <entry><codeph>&amp;</codeph></entry>
+              <entry><codeph>&amp;amp;</codeph></entry>
+              <entry>Ampersand — starts an entity reference</entry>
+            </row>
+            <row>
+              <entry><codeph>"</codeph></entry>
+              <entry><codeph>&amp;quot;</codeph></entry>
+              <entry>Double quote — used in attribute values</entry>
+            </row>
+            <row>
+              <entry><codeph>'</codeph></entry>
+              <entry><codeph>&amp;apos;</codeph></entry>
+              <entry>Apostrophe — used in attribute values</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="comments-and-pi">
+      <title>Comments and processing instructions</title>
+      <p>XML supports comments and processing instructions:</p>
+      <codeblock outputclass="language-xml">&lt;!-- This is a comment. It is ignored by parsers. --&gt;
+
+&lt;?xml-stylesheet type="text/xsl" href="transform.xsl"?&gt;</codeblock>
+      <p>Comments cannot contain the double-hyphen sequence (<codeph>--</codeph>) inside the comment body, and they cannot be nested.</p>
+    </section>
+
+    <section id="cdata-sections">
+      <title>CDATA sections: Escaping blocks of text</title>
+      <p>When you need to include a large block of text that contains many special characters (such as code examples), use a CDATA section:</p>
+      <codeblock outputclass="language-xml">&lt;script&gt;&lt;![CDATA[
+  if (x &lt; 10 &amp;&amp; y > 5) {
+    alert("Valid range");
+  }
+]]&gt;&lt;/script&gt;</codeblock>
+      <p>Everything inside <codeph>&lt;![CDATA[</codeph> ... <codeph>]]&gt;</codeph> is treated as plain text — no entity escaping is needed.</p>
+    </section>
+
+    <section id="common-errors">
+      <title>Common well-formedness errors</title>
+      <p>When you are starting out, watch for these frequent mistakes:</p>
+      <ol>
+        <li>Forgetting to close a tag</li>
+        <li>Mismatched case between opening and closing tags</li>
+        <li>Using <codeph>&amp;</codeph> without escaping it as <codeph>&amp;amp;</codeph></li>
+        <li>Putting two root elements in one document</li>
+        <li>Missing quotes around attribute values</li>
+      </ol>
+      <note type="tip">Use an XML-aware editor (VS Code with the XML extension, or Oxygen XML) — it will highlight well-formedness errors in real time as you type.</note>
+    </section>
+
+  </conbody>
+</concept>

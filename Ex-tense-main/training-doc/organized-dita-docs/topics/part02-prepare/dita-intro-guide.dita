@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="dita-intro-guide" xml:lang="en-US">
+  <title>DITA at a Glance</title>
+  <shortdesc>DITA is designed for teams that need:</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-01-15"/>
+      <revised modified="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>DITA</indexterm><indexterm>Introduction</indexterm><indexterm>Information typing</indexterm><indexterm>Topics</indexterm><indexterm>Maps</indexterm>
+      </keywords>
+      <category>taxonomy:introduction</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="dita-intro-guide"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="training"/>
+    <data name="prerequisites" value="none"/>
+  </prolog>
+  <conbody>
+<p><b>Darwin Information Typing Architecture (DITA)</b> is an <b>XML-based</b> standard for writing <b>topic-oriented</b>, <b>reusable</b> technical content and publishing it to multiple outputs (HTML, PDF, help systems, portals, etc.). It’s maintained as an open standard by the <b>OASIS DITA Technical Committee</b>.</p>
+<section id="why-dita-exists-the-problems-it-solves">
+<title>Why DITA exists (the problems it solves)</title>
+<p>DITA is designed for teams that need:</p>
+<ul>
+  <li><b>Reuse at scale</b> (the same warning/procedure used across products and manuals)</li>
+  <li><b>Multiple deliverables from one source</b> (HTML + PDF + embedded help)</li>
+  <li><b>Product variants</b> (editions, platforms, regions, customer-specific builds)</li>
+  <li><b>Long-lived documentation</b> with frequent updates</li>
+  <li><b>Large teams</b> needing structure, consistency, and governance</li>
+</ul>
+<p>The core idea: write small, semantically meaningful modules (topics), assemble them with maps, and publish through a repeatable pipeline.</p>
+</section>
+<section id="the-dita-mental-model">
+<title>The DITA mental model</title>
+<p><b>Topics: small, typed units of information</b></p>
+<p>DITA encourages authors to write content as <b>topics</b>: self-contained units that answer a user need. The most common base topic types are:</p>
+<ul>
+  <li><b>Concept</b> — explain “what/why”</li>
+  <li><b>Task</b> — explain “how”</li>
+  <li><b>Reference</b> — provide “facts/specs/options”</li>
+</ul>
+<p>This style is called <b>information typing</b>: using different structures depending on the user intent.</p>
+<p><b>Maps: assemble topics into deliverables</b></p>
+<p>A <b>DITA map</b> is how you organize and publish:</p>
+<ul>
+  <li>Defines the <b>table of contents</b></li>
+  <li>Controls <b>navigation structure</b></li>
+  <li>Can define <b>relationships/links</b></li>
+  <li>Defines <b>keys</b> (late-bound references)</li>
+  <li>Often defines <b>publishing context</b> (for filtering/branding)</li>
+</ul>
+<p><b>“Darwin”: specialization and evolution</b></p>
+<p>DITA is built to <b>evolve</b> without breaking. You can extend (specialize) elements and constraints to fit your domain while keeping compatibility with tooling.</p>
+</section>
+<section id="xml-basics-for-dita-authors">
+<title>XML basics for DITA authors</title>
+<p>DITA files are written in XML. If you have never worked with XML before, here are the five things you need to know before reading any DITA code:</p>
+<ol>
+  <li><b>Elements</b> are the building blocks. They have an opening tag and a closing tag:
+    <codeblock outputclass="language-xml">&lt;p&gt;This is a paragraph.&lt;/p&gt;
+&lt;title&gt;My Topic Title&lt;/title&gt;</codeblock>
+    The text between the tags is the element's content. The tag name (like <codeph>p</codeph> or <codeph>title</codeph>) tells the processor what kind of content this is.</li>
+  <li><b>Attributes</b> add extra information to an element. They go inside the opening tag as <codeph>name="value"</codeph> pairs:
+    <codeblock outputclass="language-xml">&lt;concept id="my-topic" xml:lang="en-US"&gt;</codeblock>
+    Here <codeph>id</codeph> and <codeph>xml:lang</codeph> are attributes of the <codeph>concept</codeph> element.</li>
+  <li><b>Nesting</b> means putting elements inside other elements. Indentation shows the hierarchy:
+    <codeblock outputclass="language-xml">&lt;ul&gt;
+  &lt;li&gt;First item&lt;/li&gt;
+  &lt;li&gt;Second item&lt;/li&gt;
+&lt;/ul&gt;</codeblock>
+    The <codeph>li</codeph> elements are nested inside the <codeph>ul</codeph> element. Not every element can go inside every other element — DITA's rules (defined by its DTD or schema) control what nesting is allowed.</li>
+  <li><b>Self-closing tags</b> are for elements with no text content. Instead of <codeph>&lt;tag&gt;&lt;/tag&gt;</codeph>, write <codeph>&lt;tag/&gt;</codeph>:
+    <codeblock outputclass="language-xml">&lt;data name="difficulty" value="beginner"/&gt;
+&lt;indexterm&gt;DITA&lt;/indexterm&gt;  &lt;!-- has content, so NOT self-closing --&gt;</codeblock></li>
+  <li><b>The DOCTYPE declaration</b> at the top of every DITA file tells the processor which topic type this file uses:
+    <codeblock outputclass="language-xml">&lt;!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd"&gt;</codeblock>
+    You do not need to memorize this — copy it from a template. The key part is the word after <codeph>DOCTYPE</codeph> (concept, task, reference) which must match your root element.</li>
+</ol>
+<p>That is all the XML you need to start reading and writing DITA. Every code example in this guide uses these five patterns.</p>
+</section>
+<section id="key-building-blocks-in-the-spec-what-youll-see-in-real-proje">
+<title>Key building blocks in the spec (what you’ll see in real projects)</title>
+<p><b>Topic anatomy (common elements)</b></p>
+<p>Most topics include:</p>
+<ul>
+  <li><codeph>&lt;title&gt;</codeph>: topic title</li>
+  <li>Body element depends on type: <codeph>&lt;conbody&gt;</codeph>, <codeph>&lt;taskbody&gt;</codeph>, <codeph>&lt;refbody&gt;</codeph></li>
+  <li>Common inline structures: <codeph>&lt;p&gt;</codeph>, <codeph>&lt;ph&gt;</codeph>, <codeph>&lt;uicontrol&gt;</codeph>, <codeph>&lt;codeph&gt;</codeph>, etc.</li>
+  <li>Lists/tables: <codeph>&lt;ul&gt;</codeph>, <codeph>&lt;ol&gt;</codeph>, <codeph>&lt;simpletable&gt;</codeph>, <codeph>&lt;table&gt;</codeph></li>
+</ul>
+<p><b>Task topics</b> add specialized structure:</p>
+<ul>
+  <li><codeph>&lt;prereq&gt;</codeph> (before you start)</li>
+  <li><codeph>&lt;context&gt;</codeph> (why/when)</li>
+  <li><codeph>&lt;steps&gt;</codeph> with <codeph>&lt;step&gt;&lt;cmd&gt;...&lt;/cmd&gt;&lt;/step&gt;</codeph></li>
+  <li><codeph>&lt;result&gt;</codeph> / <codeph>&lt;postreq&gt;</codeph></li>
+</ul>
+<p><b>Reference topics</b> commonly use:</p>
+<ul>
+  <li><codeph>&lt;refbody&gt;</codeph> with sections or a reference table-like structure</li>
+  <li><codeph>&lt;properties&gt;</codeph> (property/value definitions) in some models</li>
+</ul>
+<p><b>Maps: topicref and hierarchy</b></p>
+<p>The map primarily uses <codeph>&lt;topicref&gt;</codeph> to point to topics:</p>
+<codeblock outputclass="language-xml">&lt;map&gt;
+  &lt;title&gt;Getting Started&lt;/title&gt;
+  &lt;topicref href=&quot;concepts/what-is-dita.dita&quot;/&gt;
+  &lt;topicref href=&quot;tasks/install.dita&quot;/&gt;
+&lt;/map&gt;</codeblock>
+<p>DITA maps can also use:</p>
+<ul>
+  <li><codeph>&lt;topichead&gt;</codeph>: a heading without a linked topic</li>
+  <li><codeph>&lt;topicgroup&gt;</codeph>: grouping without appearing in TOC (tool-dependent behavior)</li>
+  <li>Relationship tables (advanced linking)</li>
+</ul>
+<p><b>Domains, constraints, and specialization (practical view)</b></p>
+<p>In real implementations you may see:</p>
+<ul>
+  <li><b>Domains</b>: add sets of elements (e.g., UI domain, highlighting domain)</li>
+  <li><b>Constraints</b>: restrict what’s allowed for a certain doc set</li>
+  <li><b>Specialization</b>: define new elements as specializations of existing ones</li>
+</ul>
+<p><b>Rule of thumb:</b> specialize only when you have a strong semantic or validation need and you can support it in publishing + authoring tools.</p>
+</section>
+<section id="the-most-important-dita-features-youll-actually-use">
+<title>The most important DITA features you’ll actually use</title>
+<p><b>Reuse with <codeph>conref</codeph> (content reference)</b></p>
+<p><codeph>conref</codeph> pulls content from another location.</p>
+<p><b>Use cases</b></p>
+<ul>
+  <li>Shared warnings, notes, prerequisites</li>
+  <li>Shared UI labels</li>
+  <li>Shared steps or step fragments</li>
+</ul>
+<p>Example (reuse a note):</p>
+<codeblock outputclass="language-xml">&lt;p conref=&quot;shared/common-notes.dita#common-notes/install-note&quot;/&gt;</codeblock>
+<p><b>Best practice</b></p>
+<ul>
+  <li>Keep conref targets stable and well-named</li>
+  <li>Treat shared snippets as “mini APIs” (don’t casually restructure them)</li>
+</ul>
+<p><b>Keys + <codeph>keyref</codeph> (late-bound reuse and linking)</b></p>
+<p><b>Keys</b> are defined in the map; topics reference them with <codeph>keyref</codeph>.</p>
+<p>Why keys matter:</p>
+<ul>
+  <li>Change a URL/product name once in the map → updates everywhere</li>
+  <li>Reuse topics in different publications with different key definitions</li>
+  <li>Avoid hard-coding product names and links in topics</li>
+</ul>
+<p>Example (in map):</p>
+<codeblock outputclass="language-xml">&lt;keydef keys=&quot;product-name&quot;&gt;
+  &lt;topicmeta&gt;
+    &lt;keywords&gt;&lt;keyword&gt;Acme Writer Pro&lt;/keyword&gt;&lt;/keywords&gt;
+  &lt;/topicmeta&gt;
+&lt;/keydef&gt;
+
+&lt;keydef keys=&quot;support-url&quot; href=&quot;https://example.com/support&quot;/&gt;</codeblock>
+<p>In a topic:</p>
+<codeblock outputclass="language-xml">&lt;p&gt;For help with &lt;ph keyref=&quot;product-name&quot;/&gt;, see &lt;xref keyref=&quot;support-url&quot;/&gt;.&lt;/p&gt;</codeblock>
+<p><b>Conditional processing (profiling / filtering)</b></p>
+<p>DITA supports filtering content based on attributes. Common attributes include:</p>
+<ul>
+  <li><codeph>audience</codeph></li>
+  <li><codeph>platform</codeph></li>
+  <li><codeph>product</codeph></li>
+  <li><codeph>props</codeph> (generic)</li>
+  <li><codeph>otherprops</codeph> (legacy-ish patterns; depends on governance)</li>
+</ul>
+<p>Typical use case: <i>one source, multiple editions</i> (e.g., Windows vs Linux).</p>
+<p>In topics:</p>
+<codeblock outputclass="language-xml">&lt;p platform=&quot;windows&quot;&gt;Click Start &gt; Settings.&lt;/p&gt;
+&lt;p platform=&quot;linux&quot;&gt;Open the system settings panel.&lt;/p&gt;</codeblock>
+<p>Then apply a filter (often using a <b>DITAVAL</b> file in DITA-OT) to include/exclude.</p>
+<p><b>Governance tip:</b> Define a controlled vocabulary early (what values are allowed) and enforce it.</p>
+</section>
+<section id="a-tiny-working-example-topics-map">
+<title>A tiny working example (topics + map)</title>
+<p><b>Concept topic (<codeph>concepts/what-is-dita.dita</codeph>)</b></p>
+<codeblock outputclass="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE concept PUBLIC &quot;-//OASIS//DTD DITA Concept//EN&quot; &quot;concept.dtd&quot;&gt;
+&lt;concept id=&quot;what-is-dita&quot;&gt;
+  &lt;title&gt;What is DITA?&lt;/title&gt;
+  &lt;conbody&gt;
+    &lt;p&gt;DITA is an XML-based standard for writing topic-oriented content that can be reused and published to multiple formats.&lt;/p&gt;
+  &lt;/conbody&gt;
+&lt;/concept&gt;</codeblock>
+<p><b>Task topic (<codeph>tasks/install.dita</codeph>)</b></p>
+<codeblock outputclass="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE task PUBLIC &quot;-//OASIS//DTD DITA Task//EN&quot; &quot;task.dtd&quot;&gt;
+&lt;task id=&quot;install&quot;&gt;
+  &lt;title&gt;Install the product&lt;/title&gt;
+  &lt;taskbody&gt;
+    &lt;prereq&gt;
+      &lt;p&gt;Make sure you have administrator access.&lt;/p&gt;
+    &lt;/prereq&gt;
+    &lt;steps&gt;
+      &lt;step&gt;&lt;cmd&gt;Download the installer.&lt;/cmd&gt;&lt;/step&gt;
+      &lt;step&gt;&lt;cmd&gt;Run the installer and follow the prompts.&lt;/cmd&gt;&lt;/step&gt;
+      &lt;step&gt;&lt;cmd&gt;Verify installation by launching the application.&lt;/cmd&gt;&lt;/step&gt;
+    &lt;/steps&gt;
+  &lt;/taskbody&gt;
+&lt;/task&gt;</codeblock>
+<p><b>Map (<codeph>guides/getting-started.ditamap</codeph>)</b></p>
+<codeblock outputclass="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE map PUBLIC &quot;-//OASIS//DTD DITA Map//EN&quot; &quot;map.dtd&quot;&gt;
+&lt;map&gt;
+  &lt;title&gt;Getting Started&lt;/title&gt;
+  &lt;topicref href=&quot;../concepts/what-is-dita.dita&quot; type=&quot;concept&quot;/&gt;
+  &lt;topicref href=&quot;../tasks/install.dita&quot; type=&quot;task&quot;/&gt;
+&lt;/map&gt;</codeblock>
+</section>
+<section id="publishing-with-dita-open-toolkit-dita-ot-common-approach">
+<title>Publishing with DITA Open Toolkit (DITA-OT) (common approach)</title>
+<p>DITA-OT is the most widely used open-source engine for publishing DITA.</p>
+<p><b>Basic commands (typical)</b></p>
+<p>Generate HTML5:</p>
+<codeblock outputclass="language-bash">dita -i guides/getting-started.ditamap -f html5 -o out/html</codeblock>
+<p>Generate PDF (toolchain dependent—usually FO-based):</p>
+<codeblock outputclass="language-bash">dita -i guides/getting-started.ditamap -f pdf -o out/pdf</codeblock>
+<p><b>Repeatable builds with project files (recommended)</b></p>
+<p>As doc sets grow, use project files to store:</p>
+<ul>
+  <li>inputs</li>
+  <li>outputs</li>
+  <li>filters</li>
+  <li>parameters</li>
+</ul>
+<p>This makes builds consistent across machines/CI.</p>
+<p><b>Where customization lives</b></p>
+<p>Common customization layers include:</p>
+<ul>
+  <li>Parameters (simple switches)</li>
+  <li>CSS/HTML templates (HTML output)</li>
+  <li>PDF plugins/themes (PDF output)</li>
+  <li>Custom XSLT and DITA-OT plugins (advanced)</li>
+</ul>
+<p><b>Practical advice:</b> start with configuration + small overrides, then grow into plugins only when needed.</p>
+</section>
+<section id="authoring-workflow-how-teams-actually-work-with-dita">
+<title>Authoring workflow: how teams actually work with DITA</title>
+<p><b>Folder structure (simple and scalable)</b></p>
+<p>A common approach:</p>
+<codeblock>dita/
+  maps/
+    guides/
+      getting-started.ditamap
+  topics/
+    concepts/
+      what-is-dita.dita
+    tasks/
+      install.dita
+    reference/
+  reuse/
+    common-notes.dita
+  media/
+    images/
+  ditaval/
+    windows.ditaval
+    linux.ditaval
+  out/</codeblock>
+<p><b>Content development lifecycle (CDLC)</b></p>
+<p>Many teams use a lifecycle like:</p>
+<ol>
+  <li>Plan IA (maps, deliverables, variants)</li>
+  <li>Author topics (semantics and structure)</li>
+  <li>Reuse and link (conref, keys)</li>
+  <li>Validate (XML validity + broken refs)</li>
+  <li>Publish (local + CI)</li>
+  <li>Review (SME + editorial)</li>
+  <li>Release and maintain</li>
+</ol>
+<p><b>CCMS vs file-based DITA</b></p>
+<ul>
+  <li><b>File-based</b>: Git + DITA files, fast for engineers/DevOps-heavy teams</li>
+  <li><b>CCMS</b>: workflow, reuse management, metadata, translations, governance at enterprise scale</li>
+</ul>
+<p>DITA works in both models; the difference is management tooling.</p>
+</section>
+<section id="best-practices-what-prevents-pain-later">
+<title>Best practices (what prevents pain later)</title>
+<p><b>Write small topics with a single purpose</b></p>
+<ul>
+  <li>Don’t write “chapters” as a single topic</li>
+  <li>Prefer “one user goal = one topic”</li>
+</ul>
+<p><b>Use keys for anything that changes across deliverables</b></p>
+<ul>
+  <li>Product names, external URLs, reused references</li>
+  <li>This keeps topics clean and portable</li>
+</ul>
+<p><b>Be deliberate about conref</b></p>
+<ul>
+  <li>Great for stable reusable fragments</li>
+  <li>Overuse can make content hard to read and maintain</li>
+  <li>Consider “reuse boundaries”: warnings, UI strings, legal text, standard steps</li>
+</ul>
+<p><b>Standardize attribute vocabularies</b></p>
+<ul>
+  <li>Define allowed values for platform/audience/product</li>
+  <li>Enforce via review and/or constraints</li>
+</ul>
+<p><b>Establish naming conventions</b></p>
+<ul>
+  <li>Topic IDs and file names should be stable</li>
+  <li>Use predictable IDs for conref targets</li>
+</ul>
+<p><b>Validation and build hygiene</b></p>
+<ul>
+  <li>Always validate during CI:</li>
+</ul>
+<p>  - well-formed XML   - schema/DTD validation (as applicable)   - broken links/conrefs/keys</p>
+</section>
+<section id="common-pitfalls-and-how-to-avoid-them">
+<title>Common pitfalls (and how to avoid them)</title>
+<ul>
+  <li><b>Giant topics</b> → split into focused topics; assemble via maps</li>
+  <li><b>Hard-coded product names/URLs</b> → use keys (<codeph>keyref</codeph>)</li>
+  <li><b>Conref spaghetti</b> → limit conref usage; centralize shared content; document ownership</li>
+  <li><b>Uncontrolled filtering values</b> → standardize and govern values</li>
+  <li><b>Specialization too early</b> → start with base DITA; specialize only with clear requirements</li>
+</ul>
+</section>
+<section id="quick-start-checklist">
+<title>Quick-start checklist</title>
+<ol>
+  <li>Decide your deliverables (HTML? PDF? both?)</li>
+  <li>Define a starter map set (Getting Started, User Tasks, Reference)</li>
+  <li>Author 5–10 topics using concept/task/reference</li>
+  <li>Introduce keys for product name + URLs</li>
+  <li>Add one reuse file (<codeph>reuse/common-notes.dita</codeph>) and use a couple of conrefs</li>
+  <li>Set up one filtering example (platform=windows/linux) + build it both ways</li>
+  <li>Automate publishing via a script or CI</li>
+</ol>
+</section>
+<section id="next-steps-if-you-want-to-go-deeper">
+<title>Next steps (if you want to go deeper)</title>
+<p>If you’re aiming for “professional-level DITA” adoption, the next major skills are:</p>
+<ul>
+  <li>Map architecture patterns (navigation, reuse strategy)</li>
+  <li>Keys + key scopes for multi-publication reuse</li>
+  <li>DITAVAL profiling strategy and governance</li>
+  <li>Output customization (HTML/CSS, PDF theming, plugins)</li>
+  <li>Translation workflows (conref/keyref stability matters a lot)</li>
+</ul>
+</section>
+<section id="analytics-instrumentation">
+<title>Analytics and Instrumentation</title>
+<p>Track which introduction topics are most viewed and where users drop off. Use analytics to improve the onboarding experience.</p>
+</section>
+<section id="personalization-conditional-processing">
+<title>Personalization and Conditional Processing</title>
+<p>Use conditional content to tailor the introduction for different backgrounds (writer, developer, manager).</p>
+</section>
+<section id="chatbot-nlp-integration">
+<title>Integrating with Conversational AI and NLP</title>
+<p>Enable users to ask a chatbot “What is DITA?” and receive context-aware answers from this topic.</p>
+</section>
+<section id="continuous-improvement-feedback">
+<title>Continuous Improvement and Feedback Loops</title>
+<p>Add a prompt for users to rate the introduction and suggest improvements. Use analytics and feedback to refine onboarding content.</p>
+</section>
+  </conbody>
+</concept>

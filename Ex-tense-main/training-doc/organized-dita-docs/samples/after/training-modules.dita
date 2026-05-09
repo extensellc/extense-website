@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<!--
+  SAMPLE: AI-Ready DITA Reference — Training Modules
+  
+  This is ANOTHER topic split from samples/before/training-overview.xml.
+  The training modules table was reference/lookup data embedded in
+  a mixed-content file. Now it's a standalone reference topic that can
+  be independently retrieved, updated, and reused.
+-->
+<reference id="training-modules" xml:lang="en-US">
+  <title>Extense DITA Training Modules</title>
+  <shortdesc>Summary of available DITA training modules with duration, difficulty level, and target audience for each course.</shortdesc>
+
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Training modules</indexterm>
+        <indexterm>Course catalog</indexterm>
+        <indexterm>Learning path</indexterm>
+      </keywords>
+      <category>taxonomy:training</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="training-modules"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT5M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="medium"/>
+    <data name="service-line" value="training-enablement"/>
+    <data name="prerequisites" value="none"/>
+  </prolog>
+
+  <refbody>
+    <section id="learning-path">
+      <title>Recommended learning path</title>
+      <p>Modules are designed to build on each other. Start with <b>DITA Fundamentals</b> to learn core concepts, then progress through authoring, publishing, and advanced topics based on your role:</p>
+      <ul>
+        <li><b>Technical writers:</b> Fundamentals → Authoring &amp; Reuse → Publishing &amp; Automation</li>
+        <li><b>Developers and build engineers:</b> Fundamentals → Publishing &amp; Automation → Plugin Development</li>
+        <li><b>Content strategists:</b> Fundamentals → Authoring &amp; Reuse → AI Integration</li>
+      </ul>
+    </section>
+
+    <section id="available-modules">
+      <title>Available training modules</title>
+      <table>
+        <tgroup cols="4">
+          <colspec colname="module" colwidth="2*"/>
+          <colspec colname="duration" colwidth="1*"/>
+          <colspec colname="level" colwidth="1*"/>
+          <colspec colname="audience" colwidth="1.5*"/>
+          <thead>
+            <row>
+              <entry>Module</entry>
+              <entry>Duration</entry>
+              <entry>Difficulty</entry>
+              <entry>Target Audience</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>DITA Fundamentals</entry>
+              <entry>4 hours</entry>
+              <entry>Beginner</entry>
+              <entry>Everyone</entry>
+            </row>
+            <row>
+              <entry>Authoring &amp; Reuse</entry>
+              <entry>8 hours</entry>
+              <entry>Intermediate</entry>
+              <entry>Technical writers</entry>
+            </row>
+            <row>
+              <entry>Publishing &amp; Automation</entry>
+              <entry>6 hours</entry>
+              <entry>Intermediate</entry>
+              <entry>Writers, Build engineers</entry>
+            </row>
+            <row>
+              <entry>Plugin Development</entry>
+              <entry>12 hours</entry>
+              <entry>Advanced</entry>
+              <entry>Developers</entry>
+            </row>
+            <row>
+              <entry>AI Integration</entry>
+              <entry>8 hours</entry>
+              <entry>Advanced</entry>
+              <entry>Developers, Content strategists</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </refbody>
+</reference>

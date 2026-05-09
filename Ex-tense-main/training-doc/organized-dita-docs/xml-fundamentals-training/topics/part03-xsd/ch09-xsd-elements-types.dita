@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="xsd-elements-types" xml:lang="en-US">
+  <title>XSD Elements and Data Types</title>
+  <shortdesc>XSD defines elements using simple types (for text-only content) and complex types (for elements with children or attributes) — with 44 built-in data types for precise validation.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-04-05"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>XSD elements</indexterm>
+        <indexterm>Simple type</indexterm>
+        <indexterm>Complex type</indexterm>
+        <indexterm>XSD data types</indexterm>
+        <indexterm>xs:element</indexterm>
+      </keywords>
+      <category>taxonomy:xml-schema</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="xml-training" appname="chatbot" id="xsd-elements-types"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT25M"/>
+    <data name="content-domain" value="xml-schema"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="structured-content-strategy"/>
+    <data name="prerequisites" value="what-is-xsd"/>
+  </prolog>
+  <conbody>
+
+    <section id="simple-elements">
+      <title>Simple elements</title>
+      <p>A simple element contains only text — no child elements and no attributes. You declare it using a built-in type:</p>
+      <codeblock outputclass="language-xml">&lt;xs:element name="title" type="xs:string"/&gt;
+&lt;xs:element name="year" type="xs:integer"/&gt;
+&lt;xs:element name="price" type="xs:decimal"/&gt;
+&lt;xs:element name="published" type="xs:date"/&gt;
+&lt;xs:element name="inStock" type="xs:boolean"/&gt;</codeblock>
+      <p>These declarations say: <codeph>&lt;title&gt;</codeph> must contain a string, <codeph>&lt;year&gt;</codeph> must contain an integer, <codeph>&lt;price&gt;</codeph> must contain a decimal number, and so on. A document with <codeph>&lt;year&gt;not-a-number&lt;/year&gt;</codeph> would fail validation.</p>
+    </section>
+
+    <section id="common-types">
+      <title>Common built-in data types</title>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="type" colwidth="1*"/>
+          <colspec colname="description" colwidth="2*"/>
+          <colspec colname="example" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Type</entry>
+              <entry>Description</entry>
+              <entry>Example value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>xs:string</codeph></entry>
+              <entry>Any character string</entry>
+              <entry>Hello World</entry>
+            </row>
+            <row>
+              <entry><codeph>xs:integer</codeph></entry>
+              <entry>Whole number (positive or negative)</entry>
+              <entry>42</entry>
+            </row>
+            <row>
+              <entry><codeph>xs:decimal</codeph></entry>
+              <entry>Decimal number</entry>
+              <entry>29.95</entry>
+            </row>
+            <row>
+              <entry><codeph>xs:boolean</codeph></entry>
+              <entry>true/false or 1/0</entry>
+              <entry>true</entry>
+            </row>
+            <row>
+              <entry><codeph>xs:date</codeph></entry>
+              <entry>Calendar date (YYYY-MM-DD)</entry>
+              <entry>2026-04-05</entry>
+            </row>
+            <row>
+              <entry><codeph>xs:dateTime</codeph></entry>
+              <entry>Date and time</entry>
+              <entry>2026-04-05T14:30:00</entry>
+            </row>
+            <row>
+              <entry><codeph>xs:anyURI</codeph></entry>
+              <entry>Uniform Resource Identifier</entry>
+              <entry>https://example.com</entry>
+            </row>
+            <row>
+              <entry><codeph>xs:positiveInteger</codeph></entry>
+              <entry>Integer greater than zero</entry>
+              <entry>7</entry>
+            </row>
+            <row>
+              <entry><codeph>xs:ID</codeph></entry>
+              <entry>Unique identifier (like DTD ID)</entry>
+              <entry>item-001</entry>
+            </row>
+            <row>
+              <entry><codeph>xs:NMTOKEN</codeph></entry>
+              <entry>Name token (no spaces, restricted chars)</entry>
+              <entry>draft</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="default-fixed">
+      <title>Default and fixed values</title>
+      <p>Simple elements can have default or fixed values:</p>
+      <codeblock outputclass="language-xml">&lt;!-- If omitted, defaults to "Unknown" --&gt;
+&lt;xs:element name="author" type="xs:string" default="Unknown"/&gt;
+
+&lt;!-- Always this value — cannot be changed --&gt;
+&lt;xs:element name="version" type="xs:string" fixed="1.0"/&gt;</codeblock>
+    </section>
+
+    <section id="complex-types">
+      <title>Complex types: Elements with structure</title>
+      <p>An element that contains child elements, attributes, or both uses a complex type. There are several patterns:</p>
+      <p><b>Sequence</b> — children must appear in the specified order:</p>
+      <codeblock outputclass="language-xml">&lt;xs:element name="book"&gt;
+  &lt;xs:complexType&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="title" type="xs:string"/&gt;
+      &lt;xs:element name="author" type="xs:string"/&gt;
+      &lt;xs:element name="year" type="xs:integer"/&gt;
+      &lt;xs:element name="price" type="xs:decimal"/&gt;
+    &lt;/xs:sequence&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:element&gt;</codeblock>
+      <p><b>Choice</b> — exactly one of the listed children can appear:</p>
+      <codeblock outputclass="language-xml">&lt;xs:element name="payment"&gt;
+  &lt;xs:complexType&gt;
+    &lt;xs:choice&gt;
+      &lt;xs:element name="creditCard" type="xs:string"/&gt;
+      &lt;xs:element name="bankTransfer" type="xs:string"/&gt;
+      &lt;xs:element name="cash" type="xs:string"/&gt;
+    &lt;/xs:choice&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:element&gt;</codeblock>
+      <p><b>All</b> — children can appear in any order, each at most once:</p>
+      <codeblock outputclass="language-xml">&lt;xs:element name="address"&gt;
+  &lt;xs:complexType&gt;
+    &lt;xs:all&gt;
+      &lt;xs:element name="street" type="xs:string"/&gt;
+      &lt;xs:element name="city" type="xs:string"/&gt;
+      &lt;xs:element name="zip" type="xs:string"/&gt;
+    &lt;/xs:all&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:element&gt;</codeblock>
+    </section>
+
+    <section id="occurrence">
+      <title>Occurrence constraints: minOccurs and maxOccurs</title>
+      <p>XSD provides precise control over how many times a child element can appear:</p>
+      <codeblock outputclass="language-xml">&lt;xs:element name="book"&gt;
+  &lt;xs:complexType&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="title" type="xs:string"/&gt;
+      &lt;!-- 1 to 5 authors --&gt;
+      &lt;xs:element name="author" type="xs:string"
+                  minOccurs="1" maxOccurs="5"/&gt;
+      &lt;!-- Optional subtitle --&gt;
+      &lt;xs:element name="subtitle" type="xs:string"
+                  minOccurs="0"/&gt;
+      &lt;!-- Unlimited keywords --&gt;
+      &lt;xs:element name="keyword" type="xs:string"
+                  minOccurs="0" maxOccurs="unbounded"/&gt;
+    &lt;/xs:sequence&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:element&gt;</codeblock>
+      <p>Compare this to DTD, which can only express "exactly one", "optional" (<codeph>?</codeph>), "one or more" (<codeph>+</codeph>), and "zero or more" (<codeph>*</codeph>).</p>
+    </section>
+
+    <section id="attributes-in-xsd">
+      <title>Defining attributes in XSD</title>
+      <p>Attributes are declared inside complex types using <codeph>&lt;xs:attribute&gt;</codeph>:</p>
+      <codeblock outputclass="language-xml">&lt;xs:element name="book"&gt;
+  &lt;xs:complexType&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="title" type="xs:string"/&gt;
+      &lt;xs:element name="author" type="xs:string"/&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attribute name="isbn" type="xs:string" use="required"/&gt;
+    &lt;xs:attribute name="format" type="xs:string" default="paperback"/&gt;
+    &lt;xs:attribute name="language" type="xs:string" use="optional"/&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:element&gt;</codeblock>
+      <p>Attribute use values:</p>
+      <ul>
+        <li><codeph>use="required"</codeph> — must be present (like DTD <codeph>#REQUIRED</codeph>)</li>
+        <li><codeph>use="optional"</codeph> — may be omitted (like DTD <codeph>#IMPLIED</codeph>)</li>
+        <li><codeph>use="prohibited"</codeph> — must not appear (useful when restricting inherited types)</li>
+      </ul>
+    </section>
+
+    <section id="named-types">
+      <title>Named types: Reusing type definitions</title>
+      <p>Instead of defining types inline (anonymous), you can name them for reuse:</p>
+      <codeblock outputclass="language-xml">&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+
+  &lt;!-- Named complex type --&gt;
+  &lt;xs:complexType name="addressType"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="street" type="xs:string"/&gt;
+      &lt;xs:element name="city" type="xs:string"/&gt;
+      &lt;xs:element name="zip" type="xs:string"/&gt;
+      &lt;xs:element name="country" type="xs:string"/&gt;
+    &lt;/xs:sequence&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;!-- Reuse in multiple elements --&gt;
+  &lt;xs:element name="shippingAddress" type="addressType"/&gt;
+  &lt;xs:element name="billingAddress" type="addressType"/&gt;
+
+&lt;/xs:schema&gt;</codeblock>
+    </section>
+
+  </conbody>
+</concept>

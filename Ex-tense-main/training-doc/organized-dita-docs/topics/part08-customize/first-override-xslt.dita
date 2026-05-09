@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="first-override-xslt" xml:lang="en-US">
+  <title>Write your first override XSLT correctly</title>
+  <shortdesc>Your override stylesheet imports the default HTML5 transform and overrides only the templates you need, using xsl:next-match for safe layering.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>XSLT override</indexterm><indexterm>xsl:import</indexterm><indexterm>xsl:next-match</indexterm><indexterm>Template precedence</indexterm>
+      </keywords>
+      <category>taxonomy:customization</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="first-override-xslt"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="xslt"/>
+    <data name="content-intent" value="how-to"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="xml-engineering"/>
+    <data name="prerequisites" value="create-html5-plugin"/>
+  </prolog>
+  <conbody>
+<p><b>Import the default HTML5 implementation</b></p>
+<p>Your override stylesheet should start by importing the default HTML5 transform:</p>
+<codeblock outputclass="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;
+                version=&quot;3.0&quot;&gt;
+
+  &lt;xsl:import href=&quot;plugin:org.dita.html5:xsl/dita2html5.xsl&quot;/&gt;
+
+  &lt;!-- overrides below --&gt;
+
+&lt;/xsl:stylesheet&gt;</codeblock>
+<p><b>Precedence rules (do not skip)</b></p>
+<ul>
+  <li>templates in your override file win over imported templates</li>
+  <li>within the same precedence level, more specific matches win</li>
+  <li>import order matters if you have multiple imports</li>
+</ul>
+<p>Practical implication: keep overrides in a single file (or layered imports you control) and avoid rewriting entire default templates unless necessary.</p>
+<p><b>Prefer <codeph>xsl:next-match</codeph> for safe layering</b></p>
+<p>When overriding a template but wanting default behavior, wrap with <codeph>xsl:next-match</codeph>:</p>
+<codeblock outputclass="language-xslt">&lt;xsl:template match=&quot;*[contains(@class,&#x27; topic/table &#x27;)]&quot;&gt;
+  &lt;div class=&quot;table-wrap&quot;&gt;
+    &lt;xsl:next-match/&gt;
+  &lt;/div&gt;
+&lt;/xsl:template&gt;</codeblock>
+<p>This is safer than copy-pasting large default templates.</p>
+  </conbody>
+</concept>

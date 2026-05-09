@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="writing-first-dita-project" xml:lang="en-US">
+  <title>Writing Your First DITA Project</title>
+  <shortdesc>Build a complete documentation project from scratch — create three topic types, a map with keys, a conref library, and publish to HTML5.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>First project</indexterm><indexterm>Tutorial</indexterm><indexterm>End-to-end</indexterm><indexterm>Hands-on</indexterm>
+      </keywords>
+      <category>taxonomy:getting-started</category>
+      <audience type="user" othertype="beginner"/>
+      <audience type="user" othertype="technical-writer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="writing-first-dita-project"/>
+    <data name="difficulty" value="beginner"/>
+    <data name="duration" value="PT45M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="tutorial"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="installing-dita-ot,setting-up-authoring-tools"/>
+  </prolog>
+  <taskbody>
+
+    <prereq>
+      <p><b>After completing this chapter, you will be able to:</b></p>
+      <ul>
+        <li>Create concept, task, and reference topics from scratch</li>
+        <li>Build a DITA map with key definitions</li>
+        <li>Use conref to share reusable content</li>
+        <li>Use keyref for product names</li>
+        <li>Build HTML5 output with sidebar navigation</li>
+      </ul>
+      <p><b>Prerequisites:</b></p>
+      <ul>
+        <li><xref href="../part02-prepare/installing-dita-ot.dita">DITA-OT installed</xref> and on your PATH</li>
+        <li>An XML editor configured (<xref href="../part02-prepare/setting-up-authoring-tools.dita">Setting Up Authoring Tools</xref>)</li>
+        <li>You have read the preceding <xref href="dita-authoring.dita">Authoring DITA Topics</xref> chapter (or at least the templates section)</li>
+      </ul>
+      <p><b>Time estimate:</b> 45–60 minutes</p>
+    </prereq>
+
+    <context>
+      <p>This is a hands-on, end-to-end tutorial. You will create a small "Getting Started" guide for a fictional product called <b>WidgetPro</b>. By the end, you will have a working DITA project that demonstrates all core DITA concepts.</p>
+    </context>
+
+    <steps>
+      <!-- Step 1: Directory structure -->
+      <step id="step-create-dirs">
+        <cmd>Create the project directory structure.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">mkdir -p widgetpro-docs/{maps,topics/concepts,topics/tasks,topics/reference,reuse,out}</codeblock>
+          <p>Your project tree:</p>
+          <codeblock>widgetpro-docs/
+  maps/
+  topics/
+    concepts/
+    tasks/
+    reference/
+  reuse/
+  out/</codeblock>
+        </info>
+      </step>
+
+      <!-- Step 2: Concept topic -->
+      <step id="step-concept">
+        <cmd>Create a concept topic: <filepath>topics/concepts/what-is-widgetpro.dita</filepath></cmd>
+        <info>
+          <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd"&gt;
+&lt;concept id="what-is-widgetpro"&gt;
+  &lt;title&gt;What Is &lt;ph keyref="product-name"/&gt;?&lt;/title&gt;
+  &lt;shortdesc&gt;&lt;ph keyref="product-name"/&gt; is a widget management platform for teams.&lt;/shortdesc&gt;
+  &lt;conbody&gt;
+    &lt;p&gt;&lt;ph keyref="product-name"/&gt; helps you create, organize, and deploy widgets
+    across multiple environments.&lt;/p&gt;
+    &lt;section id="key-benefits"&gt;
+      &lt;title&gt;Key benefits&lt;/title&gt;
+      &lt;ul&gt;
+        &lt;li&gt;Centralized widget management&lt;/li&gt;
+        &lt;li&gt;Multi-environment deployment&lt;/li&gt;
+        &lt;li&gt;Version control built in&lt;/li&gt;
+        &lt;li&gt;Role-based access control&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/section&gt;
+  &lt;/conbody&gt;
+&lt;/concept&gt;</codeblock>
+          <note type="tip"><b>New syntax explained:</b>
+            <ul>
+              <li><codeph>&lt;!DOCTYPE concept ...&gt;</codeph> — This line tells the XML processor which topic type this file uses. The word after DOCTYPE (concept, task, or reference) must match your root element. You can copy this line from a template.</li>
+              <li><codeph>&lt;ph keyref="product-name"/&gt;</codeph> — This is a <b>key reference</b>. Instead of typing "WidgetPro" directly, you reference a key defined in the map. If the product is rebranded, you change it once in the map — not in every topic.</li>
+            </ul>
+          </note>
+          <p><b>Key learning:</b> Notice <codeph>&lt;ph keyref="product-name"/&gt;</codeph> — this pulls the product name from the map. You never hard-code product names in topics.</p>
+        </info>
+      </step>
+
+      <!-- Step 3: Task topic -->
+      <step id="step-task">
+        <cmd>Create a task topic: <filepath>topics/tasks/install-widgetpro.dita</filepath></cmd>
+        <info>
+          <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd"&gt;
+&lt;task id="install-widgetpro"&gt;
+  &lt;title&gt;Installing &lt;ph keyref="product-name"/&gt;&lt;/title&gt;
+  &lt;shortdesc&gt;Download and install &lt;ph keyref="product-name"/&gt; on your machine.&lt;/shortdesc&gt;
+  &lt;taskbody&gt;
+    &lt;prereq&gt;
+      &lt;note conref="../../reuse/shared-notes.dita#shared-notes/admin-warning"/&gt;
+      &lt;ul&gt;
+        &lt;li&gt;Operating system: Windows 10+, macOS 12+, or Ubuntu 22+&lt;/li&gt;
+        &lt;li&gt;1 GB free disk space&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/prereq&gt;
+    &lt;context&gt;
+      &lt;p&gt;This procedure installs &lt;ph keyref="product-name"/&gt; using the
+      command-line installer.&lt;/p&gt;
+    &lt;/context&gt;
+    &lt;steps&gt;
+      &lt;step&gt;
+        &lt;cmd&gt;Download the installer from &lt;xref keyref="download-url"/&gt;.&lt;/cmd&gt;
+      &lt;/step&gt;
+      &lt;step&gt;
+        &lt;cmd&gt;Run the installer.&lt;/cmd&gt;
+        &lt;info&gt;
+          &lt;codeblock outputclass="language-bash"&gt;./widgetpro-install.sh&lt;/codeblock&gt;
+        &lt;/info&gt;
+      &lt;/step&gt;
+      &lt;step&gt;
+        &lt;cmd&gt;Verify the installation.&lt;/cmd&gt;
+        &lt;info&gt;
+          &lt;codeblock outputclass="language-bash"&gt;widgetpro --version&lt;/codeblock&gt;
+          &lt;p&gt;Expected output: &lt;codeph&gt;WidgetPro 3.0.0&lt;/codeph&gt;&lt;/p&gt;
+        &lt;/info&gt;
+      &lt;/step&gt;
+    &lt;/steps&gt;
+    &lt;result&gt;
+      &lt;p&gt;&lt;ph keyref="product-name"/&gt; is installed and ready to use.&lt;/p&gt;
+    &lt;/result&gt;
+  &lt;/taskbody&gt;
+&lt;/task&gt;</codeblock>
+          <p><b>Key learning:</b> Notice the <codeph>conref</codeph> pulling a shared warning and <codeph>keyref</codeph> for the download URL.</p>
+          <note type="tip"><b>New syntax explained:</b>
+            <ul>
+              <li><codeph>conref="../../reuse/shared-notes.dita#shared-notes/admin-warning"</codeph> — A <b>content reference</b>. This pulls content from another file by pointing to a specific element's <codeph>id</codeph>. The format is <codeph>filepath#topic-id/element-id</codeph>. Think of it as an "include" that always stays in sync with the source.</li>
+              <li><codeph>&lt;xref keyref="download-url"/&gt;</codeph> — A cross-reference resolved via a key. The actual URL is defined in the map, not in the topic.</li>
+            </ul>
+          </note>
+        </info>
+      </step>
+
+      <!-- Step 4: Reference topic -->
+      <step id="step-reference">
+        <cmd>Create a reference topic: <filepath>topics/reference/cli-options.dita</filepath></cmd>
+        <info>
+          <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd"&gt;
+&lt;reference id="cli-options"&gt;
+  &lt;title&gt;&lt;ph keyref="product-name"/&gt; CLI Options&lt;/title&gt;
+  &lt;shortdesc&gt;Command-line options for &lt;ph keyref="product-name"/&gt;.&lt;/shortdesc&gt;
+  &lt;refbody&gt;
+    &lt;section id="syntax"&gt;
+      &lt;title&gt;Syntax&lt;/title&gt;
+      &lt;codeblock&gt;widgetpro [command] [options]&lt;/codeblock&gt;
+    &lt;/section&gt;
+    &lt;section id="commands"&gt;
+      &lt;title&gt;Commands&lt;/title&gt;
+      &lt;simpletable&gt;
+        &lt;sthead&gt;
+          &lt;stentry&gt;Command&lt;/stentry&gt;
+          &lt;stentry&gt;Description&lt;/stentry&gt;
+        &lt;/sthead&gt;
+        &lt;strow&gt;
+          &lt;stentry&gt;&lt;codeph&gt;init&lt;/codeph&gt;&lt;/stentry&gt;
+          &lt;stentry&gt;Initialize a new widget project&lt;/stentry&gt;
+        &lt;/strow&gt;
+        &lt;strow&gt;
+          &lt;stentry&gt;&lt;codeph&gt;build&lt;/codeph&gt;&lt;/stentry&gt;
+          &lt;stentry&gt;Build widgets for deployment&lt;/stentry&gt;
+        &lt;/strow&gt;
+        &lt;strow&gt;
+          &lt;stentry&gt;&lt;codeph&gt;deploy&lt;/codeph&gt;&lt;/stentry&gt;
+          &lt;stentry&gt;Deploy widgets to target environment&lt;/stentry&gt;
+        &lt;/strow&gt;
+        &lt;strow&gt;
+          &lt;stentry&gt;&lt;codeph&gt;--version&lt;/codeph&gt;&lt;/stentry&gt;
+          &lt;stentry&gt;Display version information&lt;/stentry&gt;
+        &lt;/strow&gt;
+        &lt;strow&gt;
+          &lt;stentry&gt;&lt;codeph&gt;--help&lt;/codeph&gt;&lt;/stentry&gt;
+          &lt;stentry&gt;Display help text&lt;/stentry&gt;
+        &lt;/strow&gt;
+      &lt;/simpletable&gt;
+    &lt;/section&gt;
+  &lt;/refbody&gt;
+&lt;/reference&gt;</codeblock>
+          <p><b>Key learning:</b> Reference topics are scannable. Use tables consistently for parameters, commands, and options.</p>
+        </info>
+      </step>
+
+      <!-- Step 5: Shared notes (conref library) -->
+      <step id="step-reuse-library">
+        <cmd>Create a reuse library: <filepath>reuse/shared-notes.dita</filepath></cmd>
+        <info>
+          <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd"&gt;
+&lt;topic id="shared-notes"&gt;
+  &lt;title&gt;Shared Notes Library&lt;/title&gt;
+  &lt;body&gt;
+    &lt;note id="admin-warning" type="warning"&gt;You must have administrator
+    privileges to perform this operation.&lt;/note&gt;
+    &lt;note id="backup-reminder" type="tip"&gt;Always back up your configuration
+    before making changes.&lt;/note&gt;
+  &lt;/body&gt;
+&lt;/topic&gt;</codeblock>
+          <p><b>Key learning:</b> Each reusable element has a stable <codeph>id</codeph>. Topics pull them with <codeph>conref="reuse/shared-notes.dita#shared-notes/admin-warning"</codeph>.</p>
+        </info>
+      </step>
+
+      <!-- Step 6: DITA Map -->
+      <step id="step-create-map">
+        <cmd>Create the map: <filepath>maps/widgetpro-guide.ditamap</filepath></cmd>
+        <info>
+          <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd"&gt;
+&lt;map id="widgetpro-guide"&gt;
+  &lt;title&gt;WidgetPro Getting Started Guide&lt;/title&gt;
+
+  &lt;!-- Key definitions — change these once, updates everywhere --&gt;
+  &lt;keydef keys="product-name"&gt;
+    &lt;topicmeta&gt;&lt;keywords&gt;&lt;keyword&gt;WidgetPro&lt;/keyword&gt;&lt;/keywords&gt;&lt;/topicmeta&gt;
+  &lt;/keydef&gt;
+  &lt;keydef keys="download-url" href="https://example.com/widgetpro/download"
+          scope="external" format="html"/&gt;
+
+  &lt;!-- Table of contents --&gt;
+  &lt;topicref href="../topics/concepts/what-is-widgetpro.dita"/&gt;
+  &lt;topicref href="../topics/tasks/install-widgetpro.dita"/&gt;
+  &lt;topicref href="../topics/reference/cli-options.dita"/&gt;
+&lt;/map&gt;</codeblock>
+          <p><b>Key learning:</b> The map defines <codeph>product-name</codeph> and <codeph>download-url</codeph> as keys. Topics use <codeph>keyref</codeph> to resolve them. To rebrand for a different product, change the map — not the topics.</p>
+        </info>
+      </step>
+
+      <!-- Step 7: Build -->
+      <step id="step-build">
+        <cmd>Build HTML5 output.</cmd>
+        <info>
+          <codeblock outputclass="language-bash">cd widgetpro-docs
+dita -i maps/widgetpro-guide.ditamap -f html5 -o out/html5 --nav-toc=full</codeblock>
+        </info>
+      </step>
+
+      <!-- Step 8: Verify -->
+      <step id="step-verify">
+        <cmd>Open the output and verify everything works.</cmd>
+        <substeps>
+          <substep><cmd>Open <filepath>out/html5/index.html</filepath> in a browser.</cmd></substep>
+          <substep><cmd>Verify the product name shows "WidgetPro" (from keyref).</cmd></substep>
+          <substep><cmd>Verify the install topic shows the admin warning (from conref).</cmd></substep>
+          <substep><cmd>Verify the reference topic has a formatted command table.</cmd></substep>
+          <substep><cmd>Verify the sidebar TOC shows all three topics.</cmd></substep>
+        </substeps>
+      </step>
+
+      <!-- Step 9: Experiment -->
+      <step id="step-experiment">
+        <cmd>Try these experiments to deepen your understanding.</cmd>
+        <info>
+          <p><b>Experiment A — Change the product name:</b></p>
+          <ol>
+            <li>In the map, change <codeph>&lt;keyword&gt;WidgetPro&lt;/keyword&gt;</codeph> to <codeph>&lt;keyword&gt;GizmoMax&lt;/keyword&gt;</codeph>.</li>
+            <li>Rebuild. Verify every page now says "GizmoMax" — without editing any topic file.</li>
+          </ol>
+          <p><b>Experiment B — Add a second conref:</b></p>
+          <ol>
+            <li>Add the <codeph>backup-reminder</codeph> note from your reuse library to the install topic's <codeph>&lt;postreq&gt;</codeph>.</li>
+            <li>Rebuild and verify it appears.</li>
+          </ol>
+          <p><b>Experiment C — Add platform filtering:</b></p>
+          <ol>
+            <li>In the install topic, add two steps with <codeph>platform="windows"</codeph> and <codeph>platform="linux"</codeph>.</li>
+            <li>Create a <filepath>build/windows.ditaval</filepath> that excludes <codeph>platform="linux"</codeph>.</li>
+            <li>Build with <codeph>--filter=build/windows.ditaval</codeph> and verify only Windows content appears.</li>
+          </ol>
+        </info>
+      </step>
+    </steps>
+
+    <result>
+      <p>You have created a complete DITA project with three topic types, a map with key definitions, a conref reuse library, and HTML5 output. You have practiced the core DITA workflow: <b>author → organize → build → verify</b>.</p>
+    </result>
+
+    <postreq>
+      <p><b>What you learned:</b></p>
+      <ul>
+        <li>Concept, task, and reference topics have different structures for different purposes</li>
+        <li>Maps define the TOC structure and key definitions</li>
+        <li>Keys (<codeph>keyref</codeph>) make topics portable across deliverables</li>
+        <li>Conref pulls shared content from a reuse library</li>
+        <li>DITA-OT transforms XML into browsable HTML5</li>
+      </ul>
+      <p><b>Next step:</b> <xref href="dita-reuse-variants.dita">Reuse, Keys &amp; Variant Management</xref> for advanced reuse patterns.</p>
+    </postreq>
+
+  </taskbody>
+</task>

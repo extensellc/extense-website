@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="getting-started-map">
+  <title>DITA-OT HTML5 Starter — Sidebar TOC + Chunking</title>
+
+  <!-- Keys (late-bound references) -->
+  <keydef keys="product-name">
+    <topicmeta>
+      <keywords><keyword>Acme Doc Platform</keyword></keywords>
+    </topicmeta>
+  </keydef>
+  <keydef keys="support-url" href="https://example.com/support"/>
+  <keydef keys="external-docs" href="https://www.dita-ot.org"/>
+
+  <!-- =========================================================
+       topichead/topicgroup examples
+       - topichead: non-clickable heading used for grouping in TOC
+       - topicgroup: non-clickable container used for grouping as well
+       ========================================================= -->
+
+  <topichead navtitle="Getting started">
+    <!-- Chunk this branch so each child becomes its own page -->
+    <topicref href="../../topics/concepts/what-is-dita.dita" chunk="to-content">
+      <topicref href="../../topics/tasks/install.dita"/>
+      <topicref href="../../topics/concepts/elements-cookbook.dita"/>
+    </topicref>
+  </topichead>
+
+  <topicgroup navtitle="Reference">
+    <topicref href="../../topics/reference/cli-reference.dita"/>
+    <topicref href="../../topics/reference/glossary.dita"/>
+  </topicgroup>
+
+</map>

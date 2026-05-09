@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="robust-xslt-patterns" xml:lang="en-US">
+  <title>Writing Robust XSLT Customizations</title>
+  <shortdesc>Recommended XSLT patterns for DITA-OT customization: import layers, <codeph>@class</codeph> ancestry matching, wrapper overrides, and consistent hooks.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>XSLT</indexterm><indexterm>xsl:next-match</indexterm><indexterm>@class matching</indexterm><indexterm>import layers</indexterm>
+      </keywords>
+      <category>taxonomy:customization</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="robust-xslt-patterns"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="xslt"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="medium"/>
+    <data name="service-line" value="xml-engineering"/>
+    <data name="prerequisites" value="safe-customization-xslt-import"/>
+  </prolog>
+  <refbody>
+
+    <section id="recommended-patterns">
+      <title>Recommended patterns</title>
+      <p>Even though the full OT pipeline is complex, most real customization work is XSLT. These patterns minimize upgrade pain:</p>
+      <ol>
+        <li><b>Import the default transform</b> — <codeph>xsl:import</codeph> the shipped XSL for your target output.</li>
+        <li><b>Override templates by @class ancestry</b> — <codeph>match="*[contains(@class,' topic/p ')]"</codeph> to work across specializations.</li>
+        <li><b>Prefer wrapper overrides</b> — Use <codeph>xsl:next-match</codeph> to keep default logic but add wrappers/classes.</li>
+        <li><b>Add consistent hooks</b> — classes and <codeph>data-*</codeph> attributes for styling and analytics.</li>
+      </ol>
+    </section>
+
+  </refbody>
+</reference>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80">
+  <rect width="240" height="80" fill="none"/>
+  <g transform="translate(10,12)">
+    <!-- Eagle simplified -->
+    <polygon points="28,10 20,30 28,25 36,30" fill="#003a70"/>
+    <circle cx="28" cy="8" r="5" fill="#003a70"/>
+    <text x="50" y="20" font-family="serif" font-size="11" fill="#003a70" font-weight="bold">GREAT AMERICAN</text>
+    <text x="50" y="35" font-family="serif" font-size="11" fill="#003a70" font-weight="bold">INSURANCE COMPANY</text>
+    <line x1="50" y1="40" x2="195" y2="40" stroke="#c8102e" stroke-width="2"/>
+    <text x="50" y="53" font-family="serif" font-size="7.5" fill="#666" font-weight="600" letter-spacing="1">MEMBER OF AMERICAN FINANCIAL GROUP</text>
+  </g>
+</svg>

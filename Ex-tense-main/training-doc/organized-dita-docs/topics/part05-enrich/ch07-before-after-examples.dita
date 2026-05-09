@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="before-after-examples" xml:lang="en-US">
+  <title>Before and After: Complete Transformation Examples</title>
+  <shortdesc>Side-by-side comparison of real training content showing the complete transformation from unstructured XML to AI-ready DITA, with annotations explaining why each change matters for chatbot quality.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-02-10"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Before and after</indexterm>
+        <indexterm>Transformation examples</indexterm>
+        <indexterm>Comparison</indexterm>
+      </keywords>
+      <category>taxonomy:intelligent-content</category>
+      <audience type="user" othertype="all"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="before-after-examples"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="dita-fundamentals"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="content-migration"/>
+    <data name="prerequisites" value="migration-step-by-step"/>
+  </prolog>
+  <refbody>
+
+    <section id="example-1-concept">
+      <title>Example 1: Concept topic — Explaining content reuse</title>
+      <p><b>BEFORE — Unstructured XML:</b></p>
+      <codeblock outputclass="language-xml">&lt;article&gt;
+  &lt;h1&gt;DITA Reuse and Variants&lt;/h1&gt;
+
+  &lt;section&gt;
+    &lt;h2&gt;Overview&lt;/h2&gt;
+    &lt;p&gt;Content reuse is a key benefit of DITA. You can reuse
+    content at multiple levels using different mechanisms.&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;h2&gt;Conref&lt;/h2&gt;
+    &lt;p&gt;The conref mechanism lets you pull content from one
+    topic into another. It works like a symlink for content.&lt;/p&gt;
+    &lt;p&gt;Example:&lt;/p&gt;
+    &lt;pre&gt;&amp;lt;p conref="shared/warnings.dita#warnings/safety-warning"/&amp;gt;&lt;/pre&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;h2&gt;Keyref&lt;/h2&gt;
+    &lt;p&gt;Keys provide indirect references. Define a key in
+    your map, then reference it in topics.&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;h2&gt;DITAVAL Filtering&lt;/h2&gt;
+    &lt;p&gt;Use DITAVAL files to include or exclude content based
+    on audience, platform, or product attributes.&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;h2&gt;Best Practices&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Always use keys for product names&lt;/li&gt;
+      &lt;li&gt;Prefer keyref over conref when possible&lt;/li&gt;
+      &lt;li&gt;Test all variants before publishing&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+&lt;/article&gt;</codeblock>
+
+      <p><b>AFTER — AI-Ready DITA:</b></p>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+  "concept.dtd"&gt;
+<ph outputclass="hi-yellow">&lt;concept id="dita-reuse-variants" xml:lang="en-US"&gt;</ph>
+  &lt;title&gt;Reuse, Keys, and Variant Management&lt;/title&gt;
+  <ph outputclass="hi-yellow">&lt;shortdesc&gt;How to write content once and assemble it into
+    multiple deliverables using conref, keyref, conkeyref,
+    and DITAVAL filtering.&lt;/shortdesc&gt;</ph>
+
+  <ph outputclass="hi-yellow">&lt;prolog&gt;
+    &lt;author&gt;Extense LLC&lt;/author&gt;
+    &lt;critdates&gt;
+      &lt;created date="2026-02-10"/&gt;
+    &lt;/critdates&gt;
+    &lt;metadata&gt;
+      &lt;keywords&gt;
+        &lt;indexterm&gt;Content reuse&lt;/indexterm&gt;
+        &lt;indexterm&gt;Conref&lt;/indexterm&gt;
+        &lt;indexterm&gt;Keyref&lt;/indexterm&gt;
+        &lt;indexterm&gt;DITAVAL&lt;/indexterm&gt;
+        &lt;indexterm&gt;Conditional processing&lt;/indexterm&gt;
+      &lt;/keywords&gt;
+      &lt;category&gt;taxonomy:content-reuse&lt;/category&gt;
+      &lt;audience&gt;technical-writer&lt;/audience&gt;
+      &lt;audience&gt;developer&lt;/audience&gt;
+    &lt;/metadata&gt;
+    &lt;resourceid appid="extense-training"
+      appname="chatbot" id="dita-reuse-variants"/&gt;
+    &lt;data name="difficulty" value="intermediate"/&gt;
+    &lt;data name="duration" value="PT25M"/&gt;
+    &lt;data name="content-domain" value="content-reuse"/&gt;
+    &lt;data name="content-intent" value="explain"/&gt;
+    &lt;data name="chatbot-priority" value="high"/&gt;
+    &lt;data name="service-line" value="dita-engineering"/&gt;
+    &lt;data name="prerequisites" value="dita-authoring"/&gt;
+  &lt;/prolog&gt;</ph>
+
+  <ph outputclass="hi-yellow">&lt;conbody&gt;</ph>
+    <ph outputclass="hi-yellow">&lt;section id="why-reuse-matters"&gt;</ph>
+      &lt;title&gt;Why does content reuse matter?&lt;/title&gt;
+      &lt;p&gt;Reuse eliminates duplication...&lt;/p&gt;
+    &lt;/section&gt;
+
+    <ph outputclass="hi-yellow">&lt;section id="conref-mechanism"&gt;</ph>
+      &lt;title&gt;How does conref work?&lt;/title&gt;
+      &lt;p&gt;The conref mechanism pulls content from one
+        topic into another at publish time...&lt;/p&gt;
+      &lt;codeblock outputclass="language-xml"&gt;
+&amp;lt;p conref="shared/warnings.dita#warnings/safety"/&amp;gt;
+      &lt;/codeblock&gt;
+    &lt;/section&gt;
+
+    <ph outputclass="hi-yellow">&lt;section id="keyref-mechanism"&gt;</ph>
+      &lt;title&gt;How do keys and keyref work?&lt;/title&gt;
+      &lt;p&gt;Keys provide indirect references...&lt;/p&gt;
+    &lt;/section&gt;
+
+    <ph outputclass="hi-yellow">&lt;section id="ditaval-filtering"&gt;</ph>
+      &lt;title&gt;How does DITAVAL filtering work?&lt;/title&gt;
+      &lt;p&gt;DITAVAL files include or exclude content...&lt;/p&gt;
+    &lt;/section&gt;
+
+    <ph outputclass="hi-yellow">&lt;section id="reuse-best-practices"&gt;</ph>
+      &lt;title&gt;What are the best practices for reuse?&lt;/title&gt;
+      &lt;ul&gt;
+        &lt;li&gt;Always use keys for product names&lt;/li&gt;
+        &lt;li&gt;Prefer keyref over conref&lt;/li&gt;
+        &lt;li&gt;Test all variants before publishing&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/section&gt;
+  &lt;/conbody&gt;
+&lt;/concept&gt;</codeblock>
+
+      <p><b>What changed and why:</b></p>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="change" colwidth="2*"/>
+          <colspec colname="why" colwidth="2*"/>
+          <colspec colname="ai" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Change made</entry>
+              <entry>Why it was needed</entry>
+              <entry>AI/chatbot impact</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>File typed as <codeph>&lt;concept&gt;</codeph></entry>
+              <entry>This content explains ideas, not procedures</entry>
+              <entry>AI formats answer as explanation, not steps</entry>
+            </row>
+            <row>
+              <entry>Added <codeph>&lt;shortdesc&gt;</codeph></entry>
+              <entry>Serves as chunk summary in vector search</entry>
+              <entry>Every chunk inherits this summary for context</entry>
+            </row>
+            <row>
+              <entry>Added 5 <codeph>&lt;indexterm&gt;</codeph>s including "Conditional processing"</entry>
+              <entry>Users search by multiple terms for the same concept</entry>
+              <entry>Both "DITAVAL" and "conditional processing" queries find this topic</entry>
+            </row>
+            <row>
+              <entry>Set <codeph>content-domain="content-reuse"</codeph></entry>
+              <entry>Classifies by subject area</entry>
+              <entry>Domain-filtered retrieval: only return reuse content when user asks about reuse</entry>
+            </row>
+            <row>
+              <entry>Set <codeph>content-intent="explain"</codeph></entry>
+              <entry>Declares this explains a concept, not instructs a task</entry>
+              <entry>"What is conref?" routes here; "How do I set up conref?" routes to a task topic</entry>
+            </row>
+            <row>
+              <entry>Section titles rewritten as questions</entry>
+              <entry>Matches how users ask the chatbot</entry>
+              <entry>"How does conref work?" query matches section title directly, boosting retrieval score</entry>
+            </row>
+            <row>
+              <entry>Each section has an <codeph>@id</codeph></entry>
+              <entry>Enables deep-linking and section-level retrieval</entry>
+              <entry>Chatbot can link to <codeph>#conref-mechanism</codeph> specifically</entry>
+            </row>
+            <row>
+              <entry>Set <codeph>prerequisites="dita-authoring"</codeph></entry>
+              <entry>Defines learning sequence</entry>
+              <entry>Chatbot can suggest "Read DITA Authoring first" to beginners</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="example-2-task">
+      <title>Example 2: Task topic — Installing DITA-OT</title>
+      <p><b>BEFORE — Unstructured XML:</b></p>
+      <codeblock outputclass="language-xml">&lt;article&gt;
+  &lt;h1&gt;Installing DITA-OT&lt;/h1&gt;
+
+  &lt;p&gt;You need Java 17+ installed first.&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;Go to https://www.dita-ot.org/download&lt;/li&gt;
+    &lt;li&gt;Download the latest .zip release&lt;/li&gt;
+    &lt;li&gt;Unzip to a directory (e.g., ~/dita-ot)&lt;/li&gt;
+    &lt;li&gt;Add ~/dita-ot/bin to your PATH&lt;/li&gt;
+    &lt;li&gt;Test: run &lt;code&gt;dita --version&lt;/code&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;If you see the version number, you're all set!&lt;/p&gt;
+&lt;/article&gt;</codeblock>
+
+      <p><b>AFTER — AI-Ready DITA task:</b></p>
+      <codeblock outputclass="language-xml"><ph outputclass="hi-yellow">&lt;task id="installing-dita-ot" xml:lang="en-US"&gt;</ph>
+  &lt;title&gt;Installing DITA-OT&lt;/title&gt;
+  <ph outputclass="hi-yellow">&lt;shortdesc&gt;Download, install, and verify DITA Open Toolkit
+    4.x on your machine.&lt;/shortdesc&gt;</ph>
+  <ph outputclass="hi-yellow">&lt;prolog&gt;
+    &lt;!-- Full AI-ready metadata... --&gt;
+    &lt;data name="difficulty" value="beginner"/&gt;
+    &lt;data name="content-intent" value="how-to"/&gt;
+    &lt;data name="chatbot-priority" value="high"/&gt;
+    &lt;data name="prerequisites" value="none"/&gt;
+  &lt;/prolog&gt;</ph>
+  <ph outputclass="hi-yellow">&lt;taskbody&gt;</ph>
+    <ph outputclass="hi-yellow">&lt;prereq&gt;</ph>
+      &lt;ul&gt;
+        &lt;li&gt;&lt;b&gt;Java 17 or later&lt;/b&gt; — Check with
+          &lt;codeph&gt;java -version&lt;/codeph&gt;.&lt;/li&gt;
+        &lt;li&gt;&lt;b&gt;500 MB free disk space&lt;/b&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;b&gt;Network access&lt;/b&gt; to download&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/prereq&gt;
+    <ph outputclass="hi-yellow">&lt;steps&gt;</ph>
+      <ph outputclass="hi-yellow">&lt;step&gt;
+        &lt;cmd&gt;</ph>Download the latest release from
+          dita-ot.org/download&lt;/cmd&gt;
+        <ph outputclass="hi-yellow">&lt;info&gt;</ph>Choose the .zip distribution for your
+          platform.&lt;/info&gt;
+      &lt;/step&gt;
+      &lt;step&gt;
+        &lt;cmd&gt;Unzip to your preferred directory.&lt;/cmd&gt;
+        <ph outputclass="hi-yellow">&lt;stepxmp&gt;</ph>
+          &lt;codeblock outputclass="language-bash"&gt;
+unzip dita-ot-4.2.zip -d ~/
+          &lt;/codeblock&gt;
+        &lt;/stepxmp&gt;
+        <ph outputclass="hi-yellow">&lt;stepresult&gt;A dita-ot-4.2/ directory is
+          created.&lt;/stepresult&gt;</ph>
+      &lt;/step&gt;
+      &lt;step&gt;
+        &lt;cmd&gt;Add the bin/ directory to your PATH.&lt;/cmd&gt;
+        &lt;stepxmp&gt;
+          &lt;codeblock outputclass="language-bash"&gt;
+export PATH=~/dita-ot-4.2/bin:$PATH
+          &lt;/codeblock&gt;
+        &lt;/stepxmp&gt;
+      &lt;/step&gt;
+    &lt;/steps&gt;
+    <ph outputclass="hi-yellow">&lt;result&gt;</ph>
+      &lt;p&gt;Run &lt;codeph&gt;dita --version&lt;/codeph&gt;. You should
+        see: &lt;codeph&gt;DITA-OT version 4.2&lt;/codeph&gt;.&lt;/p&gt;
+    &lt;/result&gt;
+  &lt;/taskbody&gt;
+&lt;/task&gt;</codeblock>
+
+      <p><b>Key improvements:</b></p>
+      <ul>
+        <li><b>Prerequisites are semantically separated</b> — AI can show them before the steps, and warn users if prerequisites are not met</li>
+        <li><b>Steps use <codeph>&lt;cmd&gt;</codeph></b> — the imperative instruction is clearly separated from supporting info, examples, and results</li>
+        <li><b><codeph>&lt;stepresult&gt;</codeph></b> — AI can tell users what to expect after each step</li>
+        <li><b><codeph>&lt;result&gt;</codeph></b> — AI can describe the expected outcome to help users verify success</li>
+        <li><b><codeph>content-intent="how-to"</codeph></b> — "How do I install DITA-OT?" queries are routed directly here</li>
+      </ul>
+    </section>
+
+    <section id="example-3-metadata-impact">
+      <title>Example 3: The metadata difference — same topic, two quality levels</title>
+      <p>This example shows the same DITA topic at two metadata quality levels, demonstrating the before/after of the metadata enrichment process:</p>
+      <p><b>BEFORE — Lean metadata (only author + indexterms):</b></p>
+      <codeblock outputclass="language-xml">&lt;concept id="docker-basics"&gt;
+  &lt;title&gt;Docker for DITA-OT&lt;/title&gt;
+  &lt;shortdesc&gt;Using the official DITA-OT Docker image
+    for consistent builds.&lt;/shortdesc&gt;
+  &lt;prolog&gt;
+    &lt;author&gt;Extense LLC&lt;/author&gt;
+    &lt;metadata&gt;
+      &lt;keywords&gt;
+        &lt;indexterm&gt;Docker&lt;/indexterm&gt;
+        &lt;indexterm&gt;Container&lt;/indexterm&gt;
+      &lt;/keywords&gt;
+    &lt;/metadata&gt;
+  &lt;/prolog&gt;
+  ...
+&lt;/concept&gt;</codeblock>
+      <p><b>What the chatbot can do:</b> Find this topic via keyword match ("Docker") or vector similarity. That's it. No filtering by audience, difficulty, domain, or intent.</p>
+
+      <p><b>AFTER — Full AI-ready metadata:</b></p>
+      <codeblock outputclass="language-xml">&lt;concept id="docker-basics" xml:lang="en-US"&gt;
+  &lt;title&gt;Docker for DITA-OT: Local Builds and Reproducible
+    Toolchains&lt;/title&gt;
+  &lt;shortdesc&gt;Using the official DITA-OT Docker image for
+    consistent, reproducible builds that eliminate environment
+    differences across developer machines and CI.&lt;/shortdesc&gt;
+  &lt;prolog&gt;
+    &lt;author&gt;Extense LLC&lt;/author&gt;
+    &lt;critdates&gt;
+      &lt;created date="2026-02-10"/&gt;
+    &lt;/critdates&gt;
+    &lt;metadata&gt;
+      &lt;keywords&gt;
+        &lt;indexterm&gt;Docker&lt;/indexterm&gt;
+        &lt;indexterm&gt;Container&lt;/indexterm&gt;
+        &lt;indexterm&gt;Reproducible builds&lt;/indexterm&gt;
+      &lt;/keywords&gt;
+      &lt;category&gt;taxonomy:devops&lt;/category&gt;
+      &lt;audience&gt;developer&lt;/audience&gt;
+      &lt;audience&gt;build-engineer&lt;/audience&gt;
+    &lt;/metadata&gt;
+    &lt;resourceid appid="extense-training"
+      appname="chatbot" id="docker-basics"/&gt;
+    &lt;data name="difficulty" value="intermediate"/&gt;
+    &lt;data name="duration" value="PT20M"/&gt;
+    &lt;data name="content-domain" value="devops"/&gt;
+    &lt;data name="content-intent" value="explain"/&gt;
+    &lt;data name="chatbot-priority" value="high"/&gt;
+    &lt;data name="service-line"
+      value="publishing-engineering"/&gt;
+    &lt;data name="prerequisites" value="dita-publishing"/&gt;
+  &lt;/prolog&gt;
+  ...
+&lt;/concept&gt;</codeblock>
+      <p><b>What the chatbot can now do:</b></p>
+      <ul>
+        <li>Filter for <codeph>audience=developer</codeph> — show this only to developers, not content strategists</li>
+        <li>Filter for <codeph>difficulty=intermediate</codeph> — don't show to absolute beginners</li>
+        <li>Route <codeph>content-domain=devops</codeph> — only return when user asks about devops topics</li>
+        <li>Match <codeph>content-intent=explain</codeph> — show for "what is..." questions, not "how to..." questions</li>
+        <li>Apply <codeph>chatbot-priority=high</codeph> — rank above low-priority reference material</li>
+        <li>Suggest <codeph>prerequisites=dita-publishing</codeph> — "You should read DITA Publishing first"</li>
+        <li>Use <codeph>critdates</codeph> — rank fresher content higher</li>
+      </ul>
+    </section>
+
+    <section id="summary-table">
+      <title>Summary: What changes at each transformation stage</title>
+      <table>
+        <tgroup cols="4">
+          <colspec colname="aspect" colwidth="1.5*"/>
+          <colspec colname="md" colwidth="1.5*"/>
+          <colspec colname="lean" colwidth="1.5*"/>
+          <colspec colname="full" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Aspect</entry>
+              <entry>Unstructured XML (Level 1)</entry>
+              <entry>DITA with lean metadata (Level 2)</entry>
+              <entry>AI-ready DITA (Level 3+)</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Content type signal</entry>
+              <entry>None</entry>
+              <entry>Root element type</entry>
+              <entry>Root element + content-intent metadata</entry>
+            </row>
+            <row>
+              <entry>Audience targeting</entry>
+              <entry>None</entry>
+              <entry>None</entry>
+              <entry><codeph>&lt;audience&gt;</codeph> + taxonomy</entry>
+            </row>
+            <row>
+              <entry>Difficulty filtering</entry>
+              <entry>None</entry>
+              <entry>None</entry>
+              <entry><codeph>&lt;data name="difficulty"&gt;</codeph></entry>
+            </row>
+            <row>
+              <entry>Domain routing</entry>
+              <entry>Inferred from text</entry>
+              <entry>Inferred from text</entry>
+              <entry>Explicit <codeph>content-domain</codeph></entry>
+            </row>
+            <row>
+              <entry>Chunk quality</entry>
+              <entry>Heading-split, no metadata</entry>
+              <entry>Section-split, basic metadata</entry>
+              <entry>Section-split with full metadata inheritance</entry>
+            </row>
+            <row>
+              <entry>Retrieval ranking</entry>
+              <entry>Vector similarity only</entry>
+              <entry>Vector + keyword</entry>
+              <entry>Vector + keyword + metadata boost + priority weighting</entry>
+            </row>
+            <row>
+              <entry>Learning sequences</entry>
+              <entry>None</entry>
+              <entry>Map ordering</entry>
+              <entry>Map ordering + prerequisite chains</entry>
+            </row>
+            <row>
+              <entry>Chatbot answer quality</entry>
+              <entry>Mediocre</entry>
+              <entry>Good structure, limited filtering</entry>
+              <entry>Precise, filtered, intent-matched, audience-appropriate</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+  </refbody>
+</reference>

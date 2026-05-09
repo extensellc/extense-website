@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="part03-xsd-schemas">
+  <title>Part 3: XML Schema Definition (XSD)</title>
+  <topicmeta>
+    <shortdesc>Modern schema validation with XSD: data types, restrictions, complex types,
+      inheritance, and when to choose XSD over DTD.</shortdesc>
+    <othermeta name="difficulty" content="intermediate"/>
+    <othermeta name="learningObjectives"
+      content="Write XSD schemas with data types and restrictions; create reusable named types; compare XSD and DTD capabilities"/>
+  </topicmeta>
+  <topicref href="../topics/part03-xsd/ch08-what-is-xsd.dita">
+    <topicmeta>
+      <navtitle>What Is XSD?</navtitle>
+      <shortdesc>Why XSD was created, DTD vs. XSD comparison, and linking schemas to XML documents.</shortdesc>
+    </topicmeta>
+  </topicref>
+  <topicref href="../topics/part03-xsd/ch09-xsd-elements-types.dita">
+    <topicmeta>
+      <navtitle>XSD Elements and Types</navtitle>
+      <shortdesc>Simple elements, built-in data types, complex types, and content model compositors.</shortdesc>
+    </topicmeta>
+  </topicref>
+  <topicref href="../topics/part03-xsd/ch10-xsd-restrictions-patterns.dita">
+    <topicmeta>
+      <navtitle>XSD Restrictions and Patterns</navtitle>
+      <shortdesc>Custom types with facets, enumerations, regex patterns, and type extension/restriction.</shortdesc>
+    </topicmeta>
+  </topicref>
+  <topicref href="../topics/part03-xsd/xsd-syntax-reference.dita">
+    <topicmeta>
+      <navtitle>XSD Quick Reference</navtitle>
+      <shortdesc>Concise reference for XSD schema templates, data types, facets, and content models.</shortdesc>
+    </topicmeta>
+  </topicref>
+</map>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="exercise-xsd-schema">
+  <title>Exercise 3: Writing XML Schemas (XSD)</title>
+  <shortdesc>Practice writing XSD schemas with data types, restrictions, and complex types — then compare XSD validation with DTD validation to understand the differences.</shortdesc>
+  <prolog>
+    <metadata>
+      <audience type="user" experiencelevel="novice"/>
+      <othermeta name="persona" content="Both"/>
+      <othermeta name="phase" content="3"/>
+      <othermeta name="estimated-time" content="60-90 minutes"/>
+    </metadata>
+  </prolog>
+  <taskbody>
+    <prereq>
+      <ul>
+        <li>Completed Exercise 2 (DTD Validation)</li>
+        <li>Read Part 3: Chapters 8-10 (What Is XSD, Elements and Types, Restrictions and Patterns)</li>
+        <li>An XML editor that supports XSD validation</li>
+      </ul>
+    </prereq>
+
+    <context>
+      <p>You will re-create the BookVault catalog schema using XSD — experiencing the additional power XSD provides over DTDs. Then you will write schemas for new document types.</p>
+    </context>
+
+    <steps>
+      <!-- Exercise 3.1: Basic XSD -->
+      <step>
+        <cmd>Create an XSD schema: <filepath>xml-exercises/catalog.xsd</filepath></cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Root element: <codeph>catalog</codeph> containing one or more <codeph>book</codeph> elements</li>
+            <li>Each <codeph>book</codeph> has children: <codeph>title</codeph> (string), <codeph>author</codeph> (string, 1 to 5 occurrences), <codeph>year</codeph> (integer), <codeph>price</codeph> (decimal), optional <codeph>description</codeph> (string)</li>
+            <li><codeph>book</codeph> has attributes: <codeph>isbn</codeph> (string, required), <codeph>category</codeph> (enumeration: fiction/non-fiction/technical, required)</li>
+            <li><codeph>price</codeph> has attribute: <codeph>currency</codeph> (string, default "USD")</li>
+          </ul>
+        </info>
+        <stepresult>
+          <p>Your XSD should be a well-formed XML document with <codeph>&lt;xs:schema&gt;</codeph> as the root.</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise 3.2: Link and validate -->
+      <step>
+        <cmd>Create <filepath>xml-exercises/catalog-xsd.xml</filepath> that validates against your XSD.</cmd>
+        <info>
+          <p>Use <codeph>xsi:noNamespaceSchemaLocation</codeph> to link to your schema:</p>
+          <codeblock outputclass="language-xml">&lt;catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="catalog.xsd"&gt;</codeblock>
+          <p>Include at least 3 books with correct data types in all elements.</p>
+        </info>
+        <stepresult>
+          <p>The document should validate without errors.</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise 3.3: Data type validation -->
+      <step>
+        <cmd>Test XSD data type validation by introducing type errors.</cmd>
+        <info>
+          <p>Try each change and observe what happens:</p>
+          <ol>
+            <li>Put text in the <codeph>&lt;year&gt;</codeph> element (declared as integer): <codeph>&lt;year&gt;twenty twenty-five&lt;/year&gt;</codeph></li>
+            <li>Put a negative number in <codeph>&lt;price&gt;</codeph> — does it validate? (It should, because you declared it as <codeph>xs:decimal</codeph>, not a restricted type)</li>
+            <li>Add a 6th <codeph>&lt;author&gt;</codeph> element (exceeds maxOccurs="5")</li>
+          </ol>
+          <note type="tip">Notice how XSD catches data type errors that a DTD would miss. A DTD treats all content as text, so <codeph>&lt;year&gt;hello&lt;/year&gt;</codeph> would be valid against a DTD but invalid against an XSD.</note>
+        </info>
+      </step>
+
+      <!-- Exercise 3.4: Custom type restrictions -->
+      <step>
+        <cmd>Enhance your XSD with custom restricted types.</cmd>
+        <info>
+          <p><b>Add these custom types:</b></p>
+          <ul>
+            <li><codeph>priceType</codeph> — decimal with minimum value of 0.00 and maximum of 9999.99, with exactly 2 fraction digits</li>
+            <li><codeph>yearType</codeph> — integer between 1900 and 2100</li>
+            <li><codeph>isbnType</codeph> — string matching the pattern <codeph>[0-9]{3}-[0-9]-[0-9]{2}-[0-9]{6}-[0-9]</codeph></li>
+          </ul>
+          <p>Replace the built-in types with your custom types and re-validate your XML.</p>
+        </info>
+        <stepresult>
+          <p>Now a <codeph>&lt;year&gt;1800&lt;/year&gt;</codeph> or <codeph>&lt;price&gt;-5.00&lt;/price&gt;</codeph> should fail validation.</p>
+        </stepresult>
+      </step>
+
+      <!-- Exercise 3.5: Named complex types -->
+      <step>
+        <cmd>Create a new schema for a different domain: <filepath>xml-exercises/employees.xsd</filepath></cmd>
+        <info>
+          <p><b>Requirements:</b></p>
+          <ul>
+            <li>Define a named complex type <codeph>addressType</codeph> with: <codeph>street</codeph>, <codeph>city</codeph>, <codeph>state</codeph>, <codeph>zip</codeph></li>
+            <li>Define a named complex type <codeph>personType</codeph> with: <codeph>firstName</codeph>, <codeph>lastName</codeph>, <codeph>email</codeph> (anyURI type)</li>
+            <li>Define <codeph>employeeType</codeph> by extending <codeph>personType</codeph> with: <codeph>department</codeph>, <codeph>hireDate</codeph> (date), <codeph>address</codeph> (addressType)</li>
+            <li>Root element: <codeph>company</codeph> with attribute <codeph>name</codeph>, containing one or more <codeph>employee</codeph> elements</li>
+          </ul>
+          <p>Create a matching <filepath>xml-exercises/employees.xml</filepath> with sample data.</p>
+        </info>
+      </step>
+
+      <!-- Exercise 3.6: Compare DTD vs. XSD -->
+      <step>
+        <cmd>Reflect on DTD vs. XSD differences.</cmd>
+        <info>
+          <p>Write down answers to these questions:</p>
+          <ul>
+            <li>What validation errors did XSD catch that DTD could not? Give specific examples.</li>
+            <li>Which schema language was easier to write? Why?</li>
+            <li>When would you choose DTD over XSD?</li>
+            <li>Why does DITA provide both DTD and XSD grammars?</li>
+          </ul>
+        </info>
+      </step>
+    </steps>
+
+    <result>
+      <p><b>Self-Check — you should now be able to:</b></p>
+      <ul>
+        <li>✓ Write XSD schemas with simple and complex types</li>
+        <li>✓ Use built-in data types: string, integer, decimal, date, boolean</li>
+        <li>✓ Create custom types with restrictions: enumerations, patterns, ranges</li>
+        <li>✓ Control element occurrences with minOccurs/maxOccurs</li>
+        <li>✓ Define named complex types and reuse them</li>
+        <li>✓ Extend complex types (type inheritance)</li>
+        <li>✓ Link XML documents to XSD schemas and validate</li>
+        <li>✓ Explain the key differences between DTD and XSD</li>
+      </ul>
+    </result>
+  </taskbody>
+</task>

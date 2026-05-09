@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="rag-pipeline-architecture" xml:lang="en-US">
+  <title>RAG Pipeline Architecture: From DITA to Chatbot Answers</title>
+  <shortdesc>How a Retrieval-Augmented Generation pipeline transforms structured DITA content into accurate, cited chatbot responses — architecture overview and component roles.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates><created date="2026-02-10"/></critdates>
+    <metadata>
+      <keywords>
+        <indexterm>RAG pipeline</indexterm>
+        <indexterm>Retrieval-Augmented Generation</indexterm>
+        <indexterm>Chatbot architecture</indexterm>
+        <indexterm>Vector search</indexterm>
+      </keywords>
+      <category>taxonomy:intelligent-content</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="content-strategist"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="rag-pipeline-architecture"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT15M"/>
+    <data name="content-domain" value="architecture"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="metadata-enrichment"/>
+  </prolog>
+  <conbody>
+
+    <section id="what-is-rag">
+      <title>What is Retrieval-Augmented Generation?</title>
+      <p>RAG is an AI architecture that combines <b>information retrieval</b> (searching a knowledge base) with <b>text generation</b> (composing a natural-language answer). Instead of relying solely on the LLM's training data, RAG grounds every answer in your actual documentation.</p>
+      <p>The pipeline has four stages:</p>
+      <ol>
+        <li><b>Ingest:</b> DITA content is chunked, enriched with metadata, and embedded into vector space</li>
+        <li><b>Retrieve:</b> User queries are matched against the vector store to find the most relevant chunks</li>
+        <li><b>Rerank:</b> A cross-encoder model reorders the retrieved chunks by semantic relevance</li>
+        <li><b>Generate:</b> The LLM composes an answer using only the top-ranked chunks as context</li>
+      </ol>
+    </section>
+
+    <section id="why-dita-for-rag">
+      <title>Why is DITA the ideal source format for RAG?</title>
+      <p>DITA provides three things that unstructured content cannot:</p>
+      <table>
+        <tgroup cols="3">
+          <colspec colname="capability" colwidth="1*"/>
+          <colspec colname="dita" colwidth="2*"/>
+          <colspec colname="impact" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Capability</entry>
+              <entry>DITA provides</entry>
+              <entry>RAG impact</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Clean boundaries</entry>
+              <entry>Section elements with IDs provide natural chunk boundaries</entry>
+              <entry>Chunks are semantically coherent, not arbitrary text splits</entry>
+            </row>
+            <row>
+              <entry>Metadata per chunk</entry>
+              <entry>Prolog metadata is inherited by every chunk from that topic</entry>
+              <entry>Retrieval can filter by audience, difficulty, domain, intent</entry>
+            </row>
+            <row>
+              <entry>Type semantics</entry>
+              <entry>Concept vs task vs reference typing identifies content purpose</entry>
+              <entry>Intent routing: "How do I…" → task chunks; "What is…" → concept chunks</entry>
+            </row>
+            <row>
+              <entry>Hierarchy context</entry>
+              <entry>Map-defined nesting shows parent-child topic relationships</entry>
+              <entry>Chatbot can suggest "See also: parent topic" and prerequisites</entry>
+            </row>
+            <row>
+              <entry>Controlled vocabulary</entry>
+              <entry>Subject scheme enforces consistent classification</entry>
+              <entry>Metadata filters work reliably because values are constrained</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="pipeline-architecture">
+      <title>End-to-end pipeline architecture</title>
+      <p>The complete pipeline from DITA source to chatbot answer:</p>
+      <codeblock outputclass="language-text">┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│  DITA Source  │───▶│ Section-Aware │───▶│   Embedding  │
+│  (.dita XML)  │    │   Chunking    │    │    Model     │
+└──────────────┘    └──────────────┘    └──────┬───────┘
+                                               │
+                    ┌──────────────┐    ┌───────▼──────┐
+                    │  Metadata    │───▶│ Vector Store │
+                    │  Extraction  │    │  (+ metadata)│
+                    └──────────────┘    └───────┬──────┘
+                                               │
+┌──────────────┐    ┌──────────────┐    ┌───────▼──────┐
+│   Answer     │◀───│   Cross-     │◀───│  Semantic    │
+│  Generation  │    │   Encoder    │    │  Search      │
+│  (LLM)       │    │   Reranker   │    │  + Filters   │
+└──────┬───────┘    └──────────────┘    └──────────────┘
+       │
+┌──────▼───────┐
+│  Formatted   │
+│  Response    │
+│ (with cites) │
+└──────────────┘</codeblock>
+      <p>Each stage is configured in <codeph>chatbot-config.json</codeph> and can be tuned independently.</p>
+    </section>
+
+    <section id="config-overview">
+      <title>Key configuration parameters</title>
+      <p>The chatbot configuration file controls every stage of the pipeline:</p>
+      <codeblock outputclass="language-json">{
+  "embedding": {
+    "model": "text-embedding-3-large",
+    "dimensions": 3072,
+    "similarity_metric": "cosine"
+  },
+  "chunking": {
+    "strategy": "section-aware",
+    "min_tokens": 100,
+    "max_tokens": 1500,
+    "overlap_sentences": 2
+  },
+  "retrieval": {
+    "top_k": 8,
+    "score_threshold": 0.72,
+    "reranker": "cross-encoder",
+    "metadata_boost": {
+      "chatbot-priority-high": 1.3,
+      "chatbot-priority-medium": 1.0,
+      "chatbot-priority-low": 0.8
+    }
+  }
+}</codeblock>
+      <p>The remaining chapters explain each component in detail.</p>
+    </section>
+
+  </conbody>
+</concept>

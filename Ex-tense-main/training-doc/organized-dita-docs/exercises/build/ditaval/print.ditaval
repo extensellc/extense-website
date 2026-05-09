@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  print.ditaval — Sample DITAVAL filter for print/PDF output
+  
+  This file excludes web-only content from print builds.
+  
+  Usage:
+    dita -i lab-sample.ditamap -f pdf -o out/pdf
+         -args.filter=build/ditaval/print.ditaval
+-->
+<val>
+  <!-- Exclude web-only content from print output -->
+  <prop action="exclude" att="platform" val="web"/>
+  
+  <!-- Include print-specific content -->
+  <prop action="include" att="platform" val="print"/>
+</val>

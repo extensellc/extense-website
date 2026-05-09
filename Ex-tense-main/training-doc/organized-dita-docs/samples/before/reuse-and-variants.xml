@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  SAMPLE: Unstructured XML — DITA Reuse and Variants
+  
+  This is a typical unstructured XML training file about DITA reuse.
+  It is technically accurate but gives AI systems zero semantic signals.
+  
+  Used in:
+    - Part 1, Chapter 2: The Problem with Unstructured Content
+    - Part 3, Chapter 5: Information Typing for AI (concept example)
+    - Part 5, Chapter 7: Before and After Examples (Example 1)
+  
+  Problems with this format:
+    - No content type signal (concept? task? reference?)
+    - No metadata (audience, difficulty, domain, intent)
+    - No shortdesc for vector search context
+    - No section IDs for deep-linking
+    - No prerequisite chain for learning paths
+    - All content treated identically by AI systems
+-->
+<article>
+  <h1>DITA Reuse and Variants</h1>
+
+  <section>
+    <h2>Overview</h2>
+    <p>Content reuse is a key benefit of DITA. You can reuse
+    content at multiple levels using different mechanisms.</p>
+  </section>
+
+  <section>
+    <h2>Conref</h2>
+    <p>The conref mechanism lets you pull content from one
+    topic into another. It works like a symlink for content.</p>
+    <p>Example:</p>
+    <pre>&lt;p conref="shared/warnings.dita#warnings/safety-warning"/&gt;</pre>
+  </section>
+
+  <section>
+    <h2>Keyref</h2>
+    <p>Keys provide indirect references. Define a key in
+    your map, then reference it in topics.</p>
+    <p>For example, define a key in your map:</p>
+    <pre>&lt;keydef keys="product-name"&gt;
+  &lt;topicmeta&gt;&lt;keywords&gt;&lt;keyword&gt;WidgetPro&lt;/keyword&gt;&lt;/keywords&gt;&lt;/topicmeta&gt;
+&lt;/keydef&gt;</pre>
+    <p>Then use it in any topic:</p>
+    <pre>&lt;ph keyref="product-name"/&gt;</pre>
+  </section>
+
+  <section>
+    <h2>DITAVAL Filtering</h2>
+    <p>Use DITAVAL files to include or exclude content based
+    on audience, platform, or product attributes.</p>
+  </section>
+
+  <section>
+    <h2>Best Practices</h2>
+    <ul>
+      <li>Always use keys for product names</li>
+      <li>Prefer keyref over conref when possible</li>
+      <li>Test all variants before publishing</li>
+    </ul>
+  </section>
+</article>

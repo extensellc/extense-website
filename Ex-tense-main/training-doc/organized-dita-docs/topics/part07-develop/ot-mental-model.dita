@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="ot-mental-model" xml:lang="en-US">
+  <title>How DITA-OT Is Built and Its Core Architecture</title>
+  <shortdesc>DITA-OT implements a multi-stage, map-driven architecture where preprocessing dominates the complexity and the temp directory is the single source of truth for debugging.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>DITA-OT</indexterm><indexterm>architecture</indexterm><indexterm>temp directory</indexterm><indexterm>preprocessing</indexterm>
+      </keywords>
+      <category>taxonomy:devops</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="build-engineer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="ot-mental-model"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="architecture"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="dita-publishing"/>
+  </prolog>
+  <conbody>
+
+    <section id="mental-model">
+      <title>The mental model</title>
+      <p>DITA-OT implements a <b>multi-stage, map-driven architecture</b>. Each stage examines some or all of the content; some stages generate temporary files used later, while others generate final outputs. Most processing happens in a <b>temporary working directory</b>, and <b>source files are never modified</b>.</p>
+      <p>You can think of every transtype as:</p>
+      <codeblock>inputs (map/topics)
+   |
+   |  preprocessing (common)
+   v
+normalized / resolved intermediates
+   |
+   |  format-specific processing (HTML5, PDF, etc.)
+   v
+output</codeblock>
+      <p>This is the key to fast debugging: <b>if the intermediate artifacts are wrong</b>, downstream output will be wrong.</p>
+    </section>
+
+    <section id="core-architecture">
+      <title>Stages, temp dir, and why preprocessing dominates</title>
+      <p><b>Stages are designed around responsibility boundaries</b></p>
+      <p>DITA-OT's processing structure is:</p>
+      <ul>
+        <li><b>map-first</b> or <b>mixed</b> preprocessing (depending on pipeline)</li>
+        <li>transformation steps for topics and maps</li>
+        <li>resource copying and final assembly</li>
+      </ul>
+      <p>The "hard" part is not HTML or PDF formatting—it's the <b>DITA model itself</b>: keys, scoping, references, reuse, filtering, chunking.</p>
+      <p><b>The temp directory is your truth source</b></p>
+      <p>Because DITA-OT does not modify sources and performs most work in a temp dir, you can debug by comparing:</p>
+      <ul>
+        <li>preprocessed topic versions (resolved conrefs/keyrefs)</li>
+        <li>filtered versions (DITAVAL applied)</li>
+        <li>chunked result lists (how the build decided to split output)</li>
+      </ul>
+      <p>DITA-OT explicitly describes this temp-dir-based processing behavior.</p>
+    </section>
+
+  </conbody>
+</concept>

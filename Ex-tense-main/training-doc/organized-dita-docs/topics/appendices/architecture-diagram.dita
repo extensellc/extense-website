@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="architecture-diagram" xml:lang="en-US">
+  <title>DITA-OT Architecture Diagram</title>
+  <shortdesc>ASCII reference diagram showing the complete DITA-OT HTML5 processing pipeline from inputs through preprocessing, transformation, and output.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-01-15"/>
+      <revised modified="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Architecture</indexterm><indexterm>Pipeline</indexterm><indexterm>Preprocessing</indexterm><indexterm>HTML5 processing</indexterm>
+      </keywords>
+      <category>taxonomy:reference</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="architecture-diagram"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="content-domain" value="architecture"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="medium"/>
+    <data name="service-line" value="publishing-engineering"/>
+  </prolog>
+  <refbody>
+
+    <section id="pipeline-overview">
+      <title>DITA-OT HTML5 pipeline overview</title>
+      <fig>
+        <title>DITA-OT (HTML5) Architecture — preprocess vs preprocess2</title>
+        <pre>
+┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+│                         DITA-OT (HTML5) ARCHITECTURE — with preprocess2 option               │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+
+INPUTS (your repo)
+┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+│ • DITA map (.ditamap) + topics (.dita)                                                        │
+│ • Resources (images/media/code)                                                               │
+│ • DITAVAL filters (audience/platform/product/props)                                           │
+│ • Plug-ins (XSLT / Ant / Java) + build properties (.properties / CLI params)                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                         |
+                                         v
+SELECT PREPROCESSING PIPELINE (HTML5)
+┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Choose ONE (depends on toolkit/version/transtype configuration):                               │
+│                                                                                               │
+│   ┌───────────────────────────────┐            ┌──────────────────────────────────────────┐   │
+│   │ A) preprocess  (legacy/mixed) │    OR      │ B) preprocess2 (map-first)               │   │
+│   │ map + topic steps interleave  │            │ complete map processing first, then      │   │
+│   └───────────────┬───────────────┘            │ process topics after map features are     │   │
+│                   │                            │ resolved                                  │   │
+│                   │                            └───────────────────┬──────────────────────┘   │
+└───────────────────┼────────────────────────────────────────────────┼──────────────────────────┘
+                    |                                                |
+                    v                                                v
+COMMON PREPROCESSING RESPONSIBILITIES  (both pipelines produce the same "normalized" intent)
+┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 1) Map parsing + key collection                                                               │
+│    • keydefs, key scopes, key space                                                           │
+│ 2) Conditional processing / filtering                                                         │
+│    • DITAVAL/props applied → content included/excluded                                        │
+│ 3) Reference resolution                                                                       │
+│    • conref / conkeyref / keyref / coderef                                                    │
+│ 4) Pull processing                                                                            │
+│    • metadata pulls, navtitle/title behavior                                                  │
+│ 5) Chunking decisions + job file lists                                                        │
+│    • "what becomes which HTML file/page"                                                      │
+│ 6) Relationship/link metadata                                                                 │
+│    • maplink, rel tables                                                                      │
+│                                                                                               │
+│ RESULT: normalized + resolved intermediate content                                             │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                         |
+                                         v
+TEMP WORKSPACE (work dir / temp dir)
+┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+│ • normalized / filtered / resolved topics + maps                                              │
+│ • job configuration + file lists (what to build)                                              │
+│ • logs + diagnostics                                                                          │
+│                                                                                               │
+│ Debug rule: if intermediates are wrong, HTML5 output will be wrong.                           │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                         |
+                                         v
+HTML5 PROCESSING (format-specific)
+┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+│ A) HTML5 XSLT transform                                                                       │
+│    • converts normalized DITA to HTML markup                                                  │
+│    • applies your XSLT import overrides (if plug-in installed)                                │
+│                                                                                               │
+│ B) Navigation / TOC generation                                                                │
+│    • index/TOC artifacts                                                                      │
+│    • optional embedded nav per page (e.g., nav-toc=full)                                      │
+│                                                                                               │
+│ C) Post-processing / packaging                                                                │
+│    • copy CSS/JS/images                                                                       │
+│    • add extra assets (search index, analytics hooks, etc.)                                   │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+                                         |
+                                         v
+HTML5 OUTPUT (deliverable)
+┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+│ • chunked topic pages (or single-page output)                                                 │
+│ • sidebar/embedded TOC (if configured)                                                        │
+│ • CSS/JS/images/fonts (packaged into output)                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+        </pre>
+      </fig>
+    </section>
+
+    <section id="customization-control-plane">
+      <title>Where your customization applies</title>
+      <fig>
+        <title>HTML5-focused customization control plane</title>
+        <pre>
+┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Plug-ins + extension points can affect:                                                       │
+│                                                                                               │
+│ • Preprocessing: Ant target hooks (recommended: pre/post preprocess)                          │
+│   - add validation, metadata generation, diagnostics                                           │
+│   - step-specific hooks are more fragile and may differ between preprocess/preprocess2        │
+│                                                                                               │
+│ • HTML5 processing: XSLT import overrides + TOC overrides + parameters                         │
+│   - safest way to change HTML structure, classes, data-* hooks, nav markup                     │
+│                                                                                               │
+│ • Build parameters: .properties/CLI (nav-toc, filters, css, chunking strategy, etc.)          │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+        </pre>
+      </fig>
+    </section>
+
+  </refbody>
+</reference>

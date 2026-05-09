@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="plugin-reference" xml:lang="en-US">
+  <title>Complete Plugin Reference</title>
+  <shortdesc>Full source of the v2 starter plugin (com.acme.html5.sidebar) demonstrating production-ready DITA-OT HTML5 customization.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-01-15"/>
+      <revised modified="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Plugin</indexterm><indexterm>plugin.xml</indexterm><indexterm>override.xsl</indexterm><indexterm>DITAVAL</indexterm><indexterm>Extension points</indexterm>
+      </keywords>
+      <category>taxonomy:customization</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="plugin-reference"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="content-domain" value="customization"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="medium"/>
+    <data name="service-line" value="xml-engineering"/>
+  </prolog>
+  <refbody>
+    <section id="plugin-xml">
+      <title>plugin.xml</title>
+      <p>The plugin descriptor declares the plugin ID, its dependency on the HTML5 transtype, and two extension points.</p>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;plugin id="com.acme.html5.sidebar" version="1.0.0"&gt;
+  &lt;require plugin="org.dita.html5"/&gt;
+  &lt;feature extension="dita.xsl.html5" file="xsl/html5/override.xsl"/&gt;
+  &lt;feature extension="dita.xsl.html5.toc" file="xsl/toc/toc-override.xsl"/&gt;
+&lt;/plugin&gt;</codeblock>
+    </section>
+    <section id="override-xsl">
+      <title>override.xsl — Topic Transform (key excerpts)</title>
+      <p><b>Import + JS injection:</b></p>
+      <codeblock outputclass="language-xslt">&lt;xsl:import href="plugin:org.dita.html5:xsl/dita2html5.xsl"/&gt;
+
+&lt;xsl:template name="gen-user-head"&gt;
+  &lt;xsl:next-match/&gt;
+  &lt;script src="{concat($PATH2PROJ, 'js/site.js')}"/&gt;
+&lt;/xsl:template&gt;</codeblock>
+      <p><b>Topic wrapper (standardizes across concept/task/reference):</b></p>
+      <codeblock outputclass="language-xslt">&lt;xsl:template match="*[contains(@class,' topic/topic ')]"&gt;
+  &lt;article class="dita-topic" data-topic-type="{local-name()}"&gt;
+    &lt;xsl:apply-templates select="*[contains(@class,' topic/title ')]"/&gt;
+    &lt;xsl:apply-templates select="*[contains(@class,' topic/shortdesc ')]"/&gt;
+    &lt;main class="dita-body"&gt;
+      &lt;xsl:apply-templates
+        select="*[contains(@class,' topic/body ')]
+              | *[contains(@class,' concept/conbody ')]
+              | *[contains(@class,' task/taskbody ')]
+              | *[contains(@class,' reference/refbody ')]"/&gt;
+    &lt;/main&gt;
+  &lt;/article&gt;
+&lt;/xsl:template&gt;</codeblock>
+      <p><b>Notes as callout boxes:</b></p>
+      <codeblock outputclass="language-xslt">&lt;xsl:template match="*[contains(@class,' topic/note ')]"&gt;
+  &lt;aside class="callout{if (@type) then concat(' callout-', @type) else ''}"&gt;
+    &lt;xsl:if test="@type"&gt;
+      &lt;div class="callout-title"&gt;&lt;xsl:value-of select="upper-case(@type)"/&gt;&lt;/div&gt;
+    &lt;/xsl:if&gt;
+    &lt;div class="callout-body"&gt;&lt;xsl:apply-templates/&gt;&lt;/div&gt;
+  &lt;/aside&gt;
+&lt;/xsl:template&gt;</codeblock>
+      <p><b>Code blocks with Copy button:</b></p>
+      <codeblock outputclass="language-xslt">&lt;xsl:template match="*[contains(@class,' topic/codeblock ')]"&gt;
+  &lt;div class="codeblock"&gt;
+    &lt;button class="copy-btn" type="button"&gt;Copy&lt;/button&gt;
+    &lt;pre&gt;&lt;code&gt;&lt;xsl:apply-templates/&gt;&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+&lt;/xsl:template&gt;</codeblock>
+      <p><b>Task steps with anchors:</b></p>
+      <codeblock outputclass="language-xslt">&lt;xsl:template match="*[contains(@class,' task/step ')]"&gt;
+  &lt;li class="task-step"
+      data-step="{count(preceding-sibling::*[contains(@class,' task/step ')]) + 1}"&gt;
+    &lt;xsl:apply-templates/&gt;
+  &lt;/li&gt;
+&lt;/xsl:template&gt;</codeblock>
+    </section>
+    <section id="toc-override-xsl">
+      <title>toc-override.xsl — Sidebar Navigation</title>
+      <codeblock outputclass="language-xslt">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"&gt;
+  &lt;xsl:import href="plugin:org.dita.html5:xsl/toc.xsl"/&gt;
+  &lt;xsl:template match="nav"&gt;
+    &lt;nav class="sidebar-toc"&gt;
+      &lt;xsl:apply-templates select="@* | node()"/&gt;
+    &lt;/nav&gt;
+  &lt;/xsl:template&gt;
+  &lt;xsl:template match="li"&gt;
+    &lt;li data-level="{count(ancestor::li)+1}"&gt;
+      &lt;xsl:apply-templates select="@* | node()"/&gt;
+    &lt;/li&gt;
+  &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</codeblock>
+    </section>
+    <section id="ditaval-samples">
+      <title>Sample DITAVAL Files</title>
+      <p><b>web.ditaval</b> — exclude print-only content:</p>
+      <codeblock outputclass="language-xml">&lt;val&gt;
+  &lt;prop action="exclude" att="platform" val="print"/&gt;
+&lt;/val&gt;</codeblock>
+      <p><b>print.ditaval</b> — exclude web-only content:</p>
+      <codeblock outputclass="language-xml">&lt;val&gt;
+  &lt;prop action="exclude" att="platform" val="web"/&gt;
+&lt;/val&gt;</codeblock>
+      <p><b>audience-admin.ditaval</b> — admin content only:</p>
+      <codeblock outputclass="language-xml">&lt;val&gt;
+  &lt;prop action="include" att="audience" val="admin"/&gt;
+  &lt;prop action="exclude" att="audience" val="novice"/&gt;
+&lt;/val&gt;</codeblock>
+    </section>
+    <section id="build-command">
+      <title>Build Command</title>
+      <codeblock outputclass="language-bash">dita -i dita/maps/guides/getting-started.ditamap -f html5 -o out/html5   --nav-toc=full   --args.copycss=yes   --args.cssroot=css/   --args.css=brand.css   --args.filter=build/ditaval/web.ditaval</codeblock>
+    </section>
+  </refbody>
+</reference>

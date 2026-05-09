@@ -1,0 +1,223 @@
+# DITA / Technical Writing Interview Questions
+
+Job interview questions for DITA and Technical Writing roles, organized by skill level and topic area. Based on the full curriculum of the Ex-tense DITA Training Guide.
+
+---
+
+## Part I — Intelligent Content & Content Strategy
+
+### Beginner
+
+1. What is "intelligent content" and what characteristics distinguish it from traditional documentation?
+2. What are the limitations of unstructured formats like Markdown and Word when it comes to machine-readability and AI consumption?
+3. Describe the five levels of the AI-Readiness Maturity Model (Unstructured → Structured → Enriched → Connected → Intelligent). Where would you place most enterprise documentation today, and why?
+4. Why does a component-based content model scale better than a document-centric one?
+
+### Intermediate
+
+5. How does DITA's structural typing (concept, task, reference) directly support AI capabilities like intent routing and answer formatting?
+6. A client's documentation exists entirely in Confluence wiki pages. What business case would you make for migrating to structured content?
+
+---
+
+## Part II — Content Preparation & Tooling
+
+### Beginner
+
+7. What is XML, and how do elements, attributes, and nesting work at a basic level?
+8. Name the three core DITA topic types and explain when you would use each one.
+9. What is the relationship between topics and maps in DITA?
+10. Describe the steps to install and verify the DITA Open Toolkit. What prerequisites are required?
+
+### Intermediate
+
+11. Compare Oxygen XML Editor and VS Code as DITA authoring environments. What are the tradeoffs?
+12. Explain the difference between `conref` and `keyref`. When would you choose one over the other?
+
+---
+
+## Part III — Authoring DITA Content
+
+### Beginner
+
+13. What are the main structural elements of a DITA task topic? Walk through a well-formed `<task>` from `<prereq>` to `<postreq>`.
+14. When writing topic titles, why should you avoid titles containing "and" or "then"?
+15. What is "chunking" in the context of topic authoring, and what factors influence how granular your topics should be?
+
+### Intermediate
+
+16. You have a document that explains what a feature is, gives step-by-step setup instructions, and lists all configuration parameters in a table. How would you split this into DITA topics, and why?
+17. Explain the role of stable IDs in DITA. What breaks when IDs change?
+18. How does `conkeyref` combine the benefits of both `conref` and `keyref`? Give a practical example.
+19. Describe how DITAVAL filtering works. How would you produce audience-specific outputs (e.g., for developers vs. technical writers) from a single source?
+20. You're building documentation for a product that ships on three platforms (Windows, macOS, Linux). Outline a reuse strategy using keys and conditional processing.
+
+### Advanced
+
+21. How does DITA information typing (concept/task/reference) influence AI chatbot behavior — specifically intent routing, answer formatting, and classification?
+
+---
+
+## Part IV — Information Architecture
+
+### Intermediate
+
+22. What are the key considerations when designing a DITA map hierarchy? How does map-driven architecture differ from a file-based directory approach?
+23. What is a DITA subject scheme, and how does it enforce controlled vocabulary across a content set?
+24. Name the five classification facets used in this training's taxonomy (audience, difficulty, content domain, content intent, service line). Why does AI need controlled vocabulary rather than free-text tags?
+
+### Advanced
+
+25. How do you bind a subject scheme to a map so that editors can validate metadata values? What happens when an author uses a value outside the scheme?
+26. How do taxonomy and metadata normalization impact downstream AI systems like RAG pipelines and chatbots?
+
+---
+
+## Part V — Metadata Enrichment & Migration
+
+### Intermediate
+
+27. Walk through the nine-step migration process for converting unstructured content into properly typed DITA topics.
+28. Describe a complete AI-ready `<prolog>` block. What elements and custom `<data>` fields should it contain?
+29. What is the difference between manual and scripted metadata enrichment? When would you choose each approach?
+30. What does "100% metadata coverage" mean, and why is it critical for AI-powered content delivery?
+
+### Advanced
+
+31. You've been given 500 Markdown files to migrate to DITA. Outline your strategy for topic typing, ID assignment, metadata enrichment, and validation.
+32. How do DITA topic types map to Schema.org structured data? What are the SEO and AI-agent implications?
+33. The training reports an AI-readiness score improvement from 2.1 to 9.2 after metadata enrichment. What specific metadata fields drive that improvement, and how would you measure it on your own project?
+
+---
+
+## Part VI — Publishing & Automation
+
+### Beginner
+
+34. What is the DITA Open Toolkit, and what role does it play in the publishing pipeline?
+35. Name at least four output formats that DITA-OT can produce from a single DITA map.
+
+### Intermediate
+
+36. Explain the stages of a DITA-OT build pipeline: preprocess → reference resolution → filtering → transform → postprocess.
+37. What is a DITA project file, and how does it differ from a shell script or properties file for configuring builds?
+38. How would you customize HTML5 output branding (colors, fonts, logos) without writing a plugin?
+39. Describe a CI/CD publishing pipeline for DITA content using GitHub Actions. What triggers the build, and what artifacts does it produce?
+
+### Advanced
+
+40. A DITA build is producing broken cross-references in the output. Walk through your diagnostic process, including temp directory inspection and log analysis.
+41. How would you set up multi-variant publishing (e.g., different products, audiences, platforms) in a single CI/CD pipeline?
+
+---
+
+## Part VII — DITA-OT Plugin Development
+
+### Intermediate
+
+42. What is a DITA-OT plugin, and why is creating a plugin preferred over modifying DITA-OT source files directly?
+43. Describe the structure of a `plugin.xml` file. What are the key elements it must contain?
+44. What are DITA-OT extension points? Name three and explain when you would use each.
+45. Explain the difference between `preprocess` and `preprocess2` in DITA-OT 4.x. What is map-first preprocessing?
+
+### Advanced
+
+46. Walk through the 11-step DITA-OT preprocessing pipeline. Why are these implemented as separate Ant targets rather than a single monolithic process?
+47. You need to add a custom build step that runs after conref resolution but before the HTML5 transform. How would you implement this as a plugin?
+48. Explain the XSLT import pattern for safe customization. Why is `<xsl:import>` safer than copying and modifying default stylesheets?
+49. Describe how you would containerize a DITA-OT build environment using Docker. What goes in the Dockerfile, and how do you handle custom plugins?
+50. How would you debug a plugin conflict where two plugins modify the same extension point?
+
+---
+
+## Part VIII — XSLT Customization
+
+### Intermediate
+
+51. What is the DITA `@class` attribute, and why is matching on `@class` preferred over matching on element names in XSLT?
+52. Explain the `xsl:next-match` pattern. How does it enable layered customization without duplicating default logic?
+53. You want to inject a custom `<meta>` tag into the `<head>` of every HTML5 page. Which named template would you override, and how?
+
+### Advanced
+
+54. Describe the three phases of the DITA-OT HTML5 transform. At which phase would you customize sidebar navigation?
+55. Walk through creating a complete HTML5 plugin that adds custom note callout styling using `@outputclass` and CSS hooks.
+56. You need to add anchor IDs and deep-linking to every `<step>` in task topics. Describe the XSLT template match pattern and the generated HTML structure.
+57. Compare Strategy A (plugin + `<xsl:import>`) vs. Strategy B (`args.xsl` parameter) for XSLT customization. When would you use each?
+58. How would you implement a collapsible sidebar TOC using the `dita.xsl.html5.toc` extension point? What role does JavaScript play?
+59. A client reports that their XSLT override works in DITA-OT 3.x but breaks in 4.x. What is your debugging workflow, and what are the most likely causes?
+
+---
+
+## Part IX — AI Pipeline & RAG Integration
+
+### Intermediate
+
+60. What is Retrieval-Augmented Generation (RAG), and what are its four stages (ingest, retrieve, rerank, generate)?
+61. Why is DITA an ideal source format for RAG pipelines compared to unstructured text?
+62. What is section-aware chunking? How does it differ from naive text splitting, and why does it produce better retrieval results?
+
+### Advanced
+
+63. Explain how DITA metadata enables filtered vector search. Give an example of a multi-faceted query that filters by audience, difficulty, and content domain simultaneously.
+64. You're designing a RAG pipeline for a DITA-based knowledge base. Describe your chunking strategy, embedding model choice, retrieval parameters (top-k, score threshold), and reranking approach.
+65. How does the `chatbot-priority` metadata field affect retrieval ranking? What is the role of cross-encoder reranking vs. vector similarity?
+66. How would you implement citation generation that links chatbot answers back to specific DITA sections using `<section id>` and `<resourceid>`?
+67. Describe how DITA information typing enables intent routing in a chatbot — e.g., routing "What is X?" to concept topics and "How do I X?" to task topics.
+
+---
+
+## Part X — Benefits, ROI & Impact
+
+### Beginner
+
+68. What is single-source, multi-channel publishing, and why is it the primary business value of DITA?
+69. Name at least four measurable KPIs for a DITA implementation.
+
+### Intermediate
+
+70. How would you quantify the ROI of migrating from unstructured documentation to DITA? What before/after metrics would you track?
+71. Explain how metadata enrichment enables six key intelligent features: metadata filtering, intent routing, learning paths, priority weighting, Schema.org mapping, and multi-channel delivery.
+
+### Advanced
+
+72. A stakeholder asks: "Why should we invest in DITA when our Markdown docs work fine?" Build a business case using specific metrics from the training (AI-readiness score, metadata coverage, retrievable chunks, publication formats).
+
+---
+
+## Scenario-Based Questions (Cross-Cutting)
+
+73. **Migration scenario:** You inherit a documentation set of 200 Word documents. The team wants to move to DITA and eventually power an AI chatbot. Outline your end-to-end plan covering migration, taxonomy design, metadata enrichment, publishing pipeline, and chatbot integration.
+
+74. **Debugging scenario:** A DITA build succeeds but the PDF output is missing three topics that appear in the HTML5 output. Where do you start troubleshooting?
+
+75. **Architecture scenario:** Your team is documenting a SaaS product with three editions (Starter, Professional, Enterprise). Each edition shares 70% of the same content but has unique features. Design the DITA information architecture — maps, keys, DITAVAL filters, and reuse strategy.
+
+76. **Plugin development scenario:** The marketing team wants every HTML5 page to include Open Graph `<meta>` tags pulled from DITA prolog metadata. How would you implement this as a DITA-OT plugin?
+
+77. **AI integration scenario:** Your chatbot is returning irrelevant answers to beginner-level user questions because it retrieves advanced expert content. How would you use DITA metadata to fix this?
+
+78. **Scale scenario:** Your DITA content set has grown to 2,000 topics across 15 products. Builds are slow and the team struggles with key conflicts. What architectural changes would you propose?
+
+79. **Quality scenario:** A new technical writer joins your team and starts creating DITA topics with inconsistent IDs, missing metadata, and mixed content types in single topics. Design a governance process and tooling strategy to prevent this.
+
+80. **Localization scenario:** Your DITA content needs to be translated into 8 languages. How does DITA's structure (conref, keyref, filtering) support or complicate the localization workflow?
+
+---
+
+## Quick-Fire / Definitions
+
+81. What is a `conref`?
+82. What is a `keyref`?
+83. What is a DITAVAL file?
+84. What is a subject scheme?
+85. What is the difference between `<topichead>` and `<topicgroup>`?
+86. What does `@chunk="to-content"` do on a `<topicref>`?
+87. What is the purpose of `<shortdesc>` in a DITA topic?
+88. What is specialization in DITA?
+89. What is the role of the `<prolog>` element?
+90. What is an extension point in DITA-OT?
+
+---
+
+*Generated from the Ex-tense DITA Training Guide curriculum (Parts I–X).*

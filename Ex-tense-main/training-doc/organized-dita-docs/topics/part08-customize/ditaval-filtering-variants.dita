@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="ditaval-filtering-variants" xml:lang="en-US">
+  <title>Filtering with DITAVAL and build variants (audience/platform)</title>
+  <shortdesc>DITA supports conditional processing using attributes such as audience and platform. DITA-OT applies filtering using a DITAVAL file referenced by args.filter.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>DITAVAL</indexterm><indexterm>Filtering</indexterm><indexterm>Build variants</indexterm><indexterm>Conditional processing</indexterm>
+      </keywords>
+      <category>taxonomy:content-reuse</category>
+      <audience type="user" othertype="developer"/>
+      <audience type="user" othertype="technical-writer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="ditaval-filtering-variants"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="content-reuse"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="dita-reuse-variants"/>
+  </prolog>
+  <conbody>
+<p><b>Example DITAVAL files</b></p>
+<p>Exclude print-only content for a WEB build:</p>
+<codeblock outputclass="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;val&gt;
+  &lt;prop action=&quot;exclude&quot; att=&quot;platform&quot; val=&quot;print&quot;/&gt;
+&lt;/val&gt;</codeblock>
+<p>Exclude novice-only content for an ADMIN build:</p>
+<codeblock outputclass="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;val&gt;
+  &lt;prop action=&quot;exclude&quot; att=&quot;audience&quot; val=&quot;novice&quot;/&gt;
+&lt;/val&gt;</codeblock>
+<p><b>Using filters in builds</b></p>
+<codeblock outputclass="language-bash">dita -i map.ditamap -f html5 -o out/html5-web   --args.filter=build/ditaval/web.ditaval
+dita -i map.ditamap -f html5 -o out/html5-print --args.filter=build/ditaval/print.ditaval
+
+dita -i map.ditamap -f html5 -o out/html5-admin  --args.filter=build/ditaval/audience-admin.ditaval
+dita -i map.ditamap -f html5 -o out/html5-novice --args.filter=build/ditaval/audience-novice.ditaval</codeblock>
+<p><b>Best practice: properties files per variant</b></p>
+<p>Store stable settings in properties files:</p>
+<ul>
+  <li><codeph>build/html5-sidebar.properties</codeph> (base)</li>
+  <li><codeph>build/html5-sidebar-web.properties</codeph> (base + <codeph>args.filter=...</codeph>)</li>
+  <li><codeph>build/html5-sidebar-print.properties</codeph> (base + <codeph>args.filter=...</codeph>)</li>
+  <li><codeph>build/html5-sidebar-admin.properties</codeph> (base + <codeph>args.filter=...</codeph>)</li>
+  <li><codeph>build/html5-sidebar-novice.properties</codeph> (base + <codeph>args.filter=...</codeph>)</li>
+</ul>
+<p>This prevents "mystery builds" and makes CI reproducible.</p>
+<p><b>Common variant patterns you'll use in real projects</b></p>
+<ul>
+  <li><b>Platform split:</b> web vs print output styles, image sizes, navigation density</li>
+  <li><b>Audience split:</b> admin vs end-user content, warnings, extra setup steps</li>
+  <li><b>Feature tiers:</b> community vs enterprise (often driven by <codeph>product</codeph> or custom props)</li>
+  <li><b>Region/language:</b> often via map roots + language settings; DITAVAL can help when content is shared</li>
+</ul>
+  </conbody>
+</concept>

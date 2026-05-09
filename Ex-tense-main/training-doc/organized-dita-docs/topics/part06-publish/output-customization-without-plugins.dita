@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="output-customization-without-plugins" xml:lang="en-US">
+  <title>Output Customization Without Plugins</title>
+  <shortdesc>Customize HTML5 and PDF output using built-in DITA-OT parameters, properties files, CSS injection, and DITAVAL filtering — no plugin development required.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Output customization</indexterm><indexterm>CSS</indexterm>
+        <indexterm>DITAVAL</indexterm><indexterm>Properties files</indexterm>
+        <indexterm>Parameters</indexterm>
+      </keywords>
+      <category>taxonomy:publishing</category>
+      <audience type="user" othertype="technical-writer"/>
+      <audience type="user" othertype="build-engineer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="output-customization-without-plugins"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT40M"/>
+    <data name="content-domain" value="publishing"/>
+    <data name="content-intent" value="how-to"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="dita-publishing"/>
+  </prolog>
+  <conbody>
+
+    <section id="customization-without-code">
+      <title>Customization without code</title>
+      <p>Many teams assume output customization requires writing XSLT plugins. In practice,
+        DITA-OT provides <b>dozens of built-in parameters</b> that control layout, styling,
+        navigation, and content inclusion — all configurable from the command line, properties
+        files, or project files.</p>
+      <p>This topic covers every customization you can make <b>without writing any code</b>.</p>
+    </section>
+
+    <section id="html5-parameters">
+      <title>HTML5 customization parameters</title>
+      <p>The HTML5 transtype supports extensive customization through parameters:</p>
+      <table id="html5-params-table">
+        <title>Key HTML5 parameters</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="1.5*"/>
+          <colspec colname="c2" colwidth="2*"/>
+          <colspec colname="c3" colwidth="1.5*"/>
+          <thead>
+            <row>
+              <entry>Parameter</entry>
+              <entry>Effect</entry>
+              <entry>Example value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>args.css</codeph></entry>
+              <entry>Custom CSS file injected into every page</entry>
+              <entry><codeph>brand.css</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.cssroot</codeph></entry>
+              <entry>Directory containing the CSS file</entry>
+              <entry><codeph>css/</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.copycss</codeph></entry>
+              <entry>Copy the CSS file to the output directory</entry>
+              <entry><codeph>yes</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.hdr</codeph></entry>
+              <entry>HTML file included as a page header</entry>
+              <entry><codeph>includes/header.xml</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.ftr</codeph></entry>
+              <entry>HTML file included as a page footer</entry>
+              <entry><codeph>includes/footer.xml</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>nav-toc</codeph></entry>
+              <entry>Navigation TOC style: none, partial, or full</entry>
+              <entry><codeph>full</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.indexshow</codeph></entry>
+              <entry>Show index entries in output</entry>
+              <entry><codeph>yes</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.gen.task.lbl</codeph></entry>
+              <entry>Generate labels for task steps (Prerequisites, Steps, etc.)</entry>
+              <entry><codeph>YES</codeph></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <p><b>Example command:</b></p>
+      <codeblock outputclass="language-bash">dita -i map.ditamap -f html5 -o out/html5 \
+  --args.css=brand.css --args.cssroot=css --args.copycss=yes \
+  --args.hdr=includes/header.xml --nav-toc=full</codeblock>
+    </section>
+
+    <section id="css-branding">
+      <title>CSS-only branding</title>
+      <p>The fastest way to brand HTML5 output is with a custom CSS file. DITA-OT generates
+        semantic HTML with predictable class names, making CSS targeting straightforward:</p>
+      <codeblock outputclass="language-css">/* Brand colors */
+:root {
+  --brand-primary: #1a3a5c;
+  --brand-accent: #e8721c;
+}
+
+/* Page header */
+header.brand-header {
+  background: var(--brand-primary);
+  color: white;
+  padding: 1rem 2rem;
+}
+
+/* Topic titles */
+.topictitle1 {
+  color: var(--brand-primary);
+  border-bottom: 3px solid var(--brand-accent);
+}
+
+/* Code blocks */
+pre.codeblock {
+  background: #f4f4f4;
+  border-left: 4px solid var(--brand-accent);
+  padding: 1rem;
+}
+
+/* Navigation sidebar */
+nav[role="toc"] {
+  background: #f9f9f9;
+  border-right: 1px solid #ddd;
+}</codeblock>
+      <p>Save as <codeph>brand.css</codeph> and reference via <codeph>args.css</codeph>.</p>
+    </section>
+
+    <section id="pdf-parameters">
+      <title>PDF customization parameters</title>
+      <p>The PDF transtype also supports customization without XSLT overrides:</p>
+      <table id="pdf-params-table">
+        <title>Key PDF parameters</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="1.5*"/>
+          <colspec colname="c2" colwidth="2*"/>
+          <colspec colname="c3" colwidth="1.5*"/>
+          <thead>
+            <row>
+              <entry>Parameter</entry>
+              <entry>Effect</entry>
+              <entry>Example value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><codeph>args.chapter.layout</codeph></entry>
+              <entry>Add mini-TOC at the start of each chapter</entry>
+              <entry><codeph>MINITOC</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.bookmap-order</codeph></entry>
+              <entry>Preserve the bookmap ordering in output</entry>
+              <entry><codeph>retain</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.bookmark.style</codeph></entry>
+              <entry>PDF bookmark (outline) expansion</entry>
+              <entry><codeph>EXPANDED</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.fo.userconfig</codeph></entry>
+              <entry>Custom Apache FOP configuration (fonts, renderers)</entry>
+              <entry><codeph>fop.xconf</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>args.gen.task.lbl</codeph></entry>
+              <entry>Generate section labels in tasks</entry>
+              <entry><codeph>YES</codeph></entry>
+            </row>
+            <row>
+              <entry><codeph>outputFile.base</codeph></entry>
+              <entry>Override the output PDF filename</entry>
+              <entry><codeph>training-guide</codeph></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="properties-files">
+      <title>Properties files</title>
+      <p>Instead of passing parameters on the command line, save them in a <codeph>.properties</codeph> file:</p>
+      <codeblock outputclass="language-properties"># build-html5.properties
+args.css = brand.css
+args.cssroot = css
+args.copycss = yes
+args.hdr = includes/header.xml
+nav-toc = full
+args.indexshow = yes
+args.gen.task.lbl = YES</codeblock>
+      <p>Use with:</p>
+      <codeblock outputclass="language-bash">dita -i map.ditamap -f html5 -o out/html5 \
+  --propertyfile=build-html5.properties</codeblock>
+      <p>Properties files are version-controllable, shareable, and keep your build commands clean.</p>
+    </section>
+
+    <section id="ditaval-filtering">
+      <title>DITAVAL filtering</title>
+      <p>DITAVAL files control which content appears in the output based on profiling attributes
+        (<codeph>audience</codeph>, <codeph>platform</codeph>, <codeph>product</codeph>, etc.):</p>
+      <codeblock outputclass="language-xml">&lt;val&gt;
+  &lt;!-- Include only admin content --&gt;
+  &lt;prop action="include" att="audience" val="admin"/&gt;
+  &lt;prop action="exclude" att="audience" val="end-user"/&gt;
+  
+  &lt;!-- Flag deprecated content with a warning --&gt;
+  &lt;prop action="flag" att="status" val="deprecated"&gt;
+    &lt;startflag imageref="icons/warning.png"&gt;
+      &lt;alt-text&gt;Deprecated&lt;/alt-text&gt;
+    &lt;/startflag&gt;
+  &lt;/prop&gt;
+  
+  &lt;!-- Highlight new content --&gt;
+  &lt;revprop action="flag" val="2.0"
+           changebar="solid" color="green"/&gt;
+&lt;/val&gt;</codeblock>
+      <p>Apply with:</p>
+      <codeblock outputclass="language-bash">dita -i map.ditamap -f html5 -o out/ \
+  --args.filter=filters/admin-only.ditaval</codeblock>
+      <p>One map + multiple DITAVAL files = multiple audience-specific deliverables with
+        zero content duplication.</p>
+    </section>
+
+    <section id="combining-techniques">
+      <title>Combining techniques</title>
+      <p>The most effective approach combines all three:</p>
+      <ol>
+        <li><b>Properties file</b> — captures all build parameters in a reusable, version-controlled file.</li>
+        <li><b>CSS file</b> — handles visual branding for HTML5 without touching the transform.</li>
+        <li><b>DITAVAL file</b> — controls content visibility for audience-specific variants.</li>
+      </ol>
+      <p>Together, these three files give you branded, filtered output with zero plugin
+        development — suitable for 80% of publishing requirements.</p>
+    </section>
+
+  </conbody>
+</concept>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="key-references" xml:lang="en-US">
+  <title>Key References</title>
+  <shortdesc>Authoritative DITA-OT documentation sources referenced throughout this handbook.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>references</indexterm><indexterm>documentation</indexterm>
+      </keywords>
+      <category>taxonomy:devops</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="key-references"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT10M"/>
+    <data name="content-domain" value="architecture"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="low"/>
+    <data name="service-line" value="publishing-engineering"/>
+    <data name="prerequisites" value="dita-ot-developer-handbook"/>
+  </prolog>
+  <refbody>
+
+    <section id="reference-list">
+      <title>Official documentation sources</title>
+      <ul>
+        <li>Processing structure: temp dir, stages, intermediate artifacts</li>
+        <li>Pre-processing modules: preprocess as Ant targets</li>
+        <li>Pre-processing extension points: recommended pre/post hooks + cautions</li>
+        <li>XSLT-import extension points: installer adds imports into default code</li>
+        <li>Map-first preprocessing: preprocess2 model, HTML5 default as of 4.2, limitations</li>
+        <li>Docker usage and creating images: run builds and install plugins in images</li>
+        <li>GitHub Actions guidance and dita-ot-action repo README</li>
+        <li>Extension point reference and plug-in descriptor file docs</li>
+      </ul>
+    </section>
+
+  </refbody>
+</reference>

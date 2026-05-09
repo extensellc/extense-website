@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<!--
+  SAMPLE: AI-Ready DITA Concept — Reuse, Keys, and Variant Management
+  
+  This is the "after" version of samples/before/reuse-and-variants.xml.
+  Compare the two files to see every improvement made during migration.
+  
+  Key changes:
+    1. Typed as <concept> — AI knows this explains ideas, not procedures
+    2. <shortdesc> — prepended to every chunk as vector search context
+    3. Full prolog metadata — audience, difficulty, domain, intent, priority
+    4. Section IDs — enable deep-linking (#conref-mechanism)
+    5. Question-phrased section titles — match how users ask chatbots
+    6. Controlled vocabulary — taxonomy:content-reuse, not free-text tags
+    7. Prerequisites — AI can suggest learning order
+-->
+<concept id="dita-reuse-variants" xml:lang="en-US">
+  <title>Reuse, Keys, and Variant Management</title>
+  <shortdesc>How to write content once and assemble it into multiple deliverables using conref, keyref, conkeyref, and DITAVAL filtering.</shortdesc>
+
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>Content reuse</indexterm>
+        <indexterm>Conref</indexterm>
+        <indexterm>Keyref</indexterm>
+        <indexterm>DITAVAL</indexterm>
+        <indexterm>Conditional processing</indexterm>
+      </keywords>
+      <category>taxonomy:content-reuse</category>
+      <audience type="user" othertype="technical-writer"/>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="dita-reuse-variants"/>
+    <data name="difficulty" value="intermediate"/>
+    <data name="duration" value="PT25M"/>
+    <data name="content-domain" value="content-reuse"/>
+    <data name="content-intent" value="explain"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="dita-engineering"/>
+    <data name="prerequisites" value="dita-authoring"/>
+  </prolog>
+
+  <conbody>
+    <section id="why-reuse-matters">
+      <title>Why does content reuse matter?</title>
+      <p>Reuse eliminates duplication. Instead of copying content into multiple documents and maintaining every copy, you write content once and reference it wherever it is needed. When the source changes, every reference updates automatically at publish time.</p>
+      <p>Benefits include:</p>
+      <ul>
+        <li><b>Consistency:</b> Every document uses the exact same text for shared content</li>
+        <li><b>Reduced maintenance:</b> Update once, publish everywhere</li>
+        <li><b>Translation savings:</b> Reused content is translated once, not per-document</li>
+        <li><b>Quality assurance:</b> Reviewed content stays reviewed across all uses</li>
+      </ul>
+    </section>
+
+    <section id="conref-mechanism">
+      <title>How does conref work?</title>
+      <p>The conref mechanism pulls content from one topic into another at publish time. It works like a symlink for content — the source topic contains the authoritative text, and referencing topics include it by ID.</p>
+      <codeblock outputclass="language-xml">&lt;p conref="shared/warnings.dita#warnings/safety-warning"/&gt;</codeblock>
+      <p>This pulls the paragraph with <codeph>id="safety-warning"</codeph> from <codeph>shared/warnings.dita</codeph> into the current topic.</p>
+    </section>
+
+    <section id="keyref-mechanism">
+      <title>How do keys and keyref work?</title>
+      <p>Keys provide indirect references. You define a key in your DITA map, then reference that key in topics. This decouples content from specific file paths or values.</p>
+      <p>Common uses:</p>
+      <ul>
+        <li><b>Product names:</b> <codeph>&lt;ph keyref="product-name"/&gt;</codeph> resolves to different names per deliverable</li>
+        <li><b>Cross-references:</b> <codeph>&lt;xref keyref="install-guide"/&gt;</codeph> resolves to the correct target in each map</li>
+        <li><b>Variable values:</b> Version numbers, URLs, and other changing values defined once in the map</li>
+      </ul>
+    </section>
+
+    <section id="conkeyref-mechanism">
+      <title>What is conkeyref and when should I use it?</title>
+      <p>Conkeyref combines conref and keyref — it pulls reusable content through an indirect key reference rather than a direct file path. This is useful when the source file for reused content varies between deliverables.</p>
+      <codeblock outputclass="language-xml">&lt;!-- Map defines the key: --&gt;
+&lt;keydef keys="shared-warnings" href="product-a/warnings.dita"/&gt;
+
+&lt;!-- Topic references content through the key: --&gt;
+&lt;note conkeyref="shared-warnings/battery-warning"/&gt;</codeblock>
+      <p>By switching the key definition in a different map, the same topic can pull warnings from <codeph>product-b/warnings.dita</codeph> instead — without any change to the topic itself.</p>
+    </section>
+
+    <section id="ditaval-filtering">
+      <title>How does DITAVAL filtering work?</title>
+      <p>DITAVAL files include or exclude content based on attribute values. You mark content with attributes like <codeph>audience</codeph>, <codeph>platform</codeph>, or <codeph>product</codeph>, then use a DITAVAL file to control what appears in each output.</p>
+      <codeblock outputclass="language-xml">&lt;!-- In your topic: --&gt;
+&lt;p audience="admin"&gt;Log in as administrator to access this feature.&lt;/p&gt;
+&lt;p audience="user"&gt;Contact your administrator for access.&lt;/p&gt;
+
+&lt;!-- In admin.ditaval: --&gt;
+&lt;prop action="include" att="audience" val="admin"/&gt;
+&lt;prop action="exclude" att="audience" val="user"/&gt;</codeblock>
+    </section>
+
+    <section id="reuse-best-practices">
+      <title>What are the best practices for reuse?</title>
+      <ul>
+        <li>Always use keys for product names, version numbers, and URLs</li>
+        <li>Prefer keyref over conref when the referenced content may vary by deliverable</li>
+        <li>Store reusable content in a dedicated <codeph>shared/</codeph> directory</li>
+        <li>Test all variants (DITAVAL combinations) before publishing</li>
+        <li>Document your key definitions in a warehouse topic or README</li>
+      </ul>
+    </section>
+  </conbody>
+</concept>

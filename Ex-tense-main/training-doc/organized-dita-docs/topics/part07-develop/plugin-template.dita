@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="plugin-template" xml:lang="en-US">
+  <title>A Minimal Developer Plug-In Template</title>
+  <shortdesc>A complete starter template for an HTML5 customization plug-in including plugin.xml, topic override, TOC override, and build commands.</shortdesc>
+  <prolog>
+    <author>Extense LLC</author>
+    <critdates>
+      <created date="2026-02-10"/>
+    </critdates>
+    <metadata>
+      <keywords>
+        <indexterm>plug-in template</indexterm><indexterm>HTML5 plugin</indexterm><indexterm>override.xsl</indexterm><indexterm>toc-override.xsl</indexterm>
+      </keywords>
+      <category>taxonomy:customization</category>
+      <audience type="user" othertype="developer"/>
+    </metadata>
+    <resourceid appid="extense-training" appname="chatbot" id="plugin-template"/>
+    <data name="difficulty" value="advanced"/>
+    <data name="duration" value="PT20M"/>
+    <data name="content-domain" value="customization"/>
+    <data name="content-intent" value="reference"/>
+    <data name="chatbot-priority" value="high"/>
+    <data name="service-line" value="xml-engineering"/>
+    <data name="prerequisites" value="extension-points-fundamentals"/>
+  </prolog>
+  <refbody>
+
+    <section id="directory-structure">
+      <title>Directory structure</title>
+      <codeblock>plugins/
+  com.yourco.html5.custom/
+    plugin.xml
+    xsl/
+      html5/
+        override.xsl
+      toc/
+        toc-override.xsl
+    css/
+      brand.css
+    js/
+      site.js</codeblock>
+    </section>
+
+    <section id="plugin-xml-minimal">
+      <title>plugin.xml (minimal)</title>
+      <codeblock outputclass="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;plugin id="com.yourco.html5.custom"&gt;
+  &lt;require plugin="org.dita.html5"/&gt;
+  &lt;feature extension="dita.xsl.html5" file="xsl/html5/override.xsl"/&gt;
+  &lt;feature extension="dita.xsl.html5.toc" file="xsl/toc/toc-override.xsl"/&gt;
+&lt;/plugin&gt;</codeblock>
+      <p>Key points:</p>
+      <ul>
+        <li><codeph>id</codeph> must be unique and follow reverse-domain naming.</li>
+        <li><codeph>require</codeph> ensures DITA-OT installs the HTML5 transtype first.</li>
+        <li>Two extension points: <codeph>dita.xsl.html5</codeph> (topic transform) and <codeph>dita.xsl.html5.toc</codeph> (navigation).</li>
+      </ul>
+    </section>
+
+    <section id="override-xsl-skeleton">
+      <title>override.xsl (skeleton)</title>
+      <codeblock outputclass="language-xslt">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"&gt;
+  &lt;!-- Import the default HTML5 transform --&gt;
+  &lt;xsl:import href="plugin:org.dita.html5:xsl/dita2html5.xsl"/&gt;
+
+  &lt;!-- Override paragraphs: add data-dita-class for CSS/JS hooks --&gt;
+  &lt;xsl:template match="*[contains(@class,' topic/p ')]"&gt;
+    &lt;p data-dita-class="{normalize-space(@class)}"&gt;
+      &lt;xsl:apply-templates/&gt;
+    &lt;/p&gt;
+  &lt;/xsl:template&gt;
+
+  &lt;!-- Override notes: style as callout boxes --&gt;
+  &lt;xsl:template match="*[contains(@class,' topic/note ')]"&gt;
+    &lt;div class="callout callout-{@type}" data-dita-class="{normalize-space(@class)}"&gt;
+      &lt;xsl:apply-templates/&gt;
+    &lt;/div&gt;
+  &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</codeblock>
+    </section>
+
+    <section id="toc-override-skeleton">
+      <title>toc-override.xsl (skeleton)</title>
+      <codeblock outputclass="language-xslt">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0"&gt;
+  &lt;xsl:import href="plugin:org.dita.html5:xsl/toc.xsl"/&gt;
+
+  &lt;xsl:template match="nav"&gt;
+    &lt;nav class="sidebar-toc"&gt;
+      &lt;xsl:apply-templates select="@* | node()"/&gt;
+    &lt;/nav&gt;
+  &lt;/xsl:template&gt;
+
+  &lt;xsl:template match="li"&gt;
+    &lt;li data-level="{count(ancestor::li)+1}"&gt;
+      &lt;xsl:apply-templates select="@* | node()"/&gt;
+    &lt;/li&gt;
+  &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</codeblock>
+    </section>
+
+    <section id="install-and-build">
+      <title>Install and build</title>
+      <codeblock outputclass="language-bash"># Copy plug-in into DITA-OT
+cp -r plugins/com.yourco.html5.custom DITA-OT/plugins/
+
+# Integrate
+dita --install
+
+# Build
+dita -i maps/book.ditamap -f html5 -o out/html5 \
+  --nav-toc=full \
+  --args.copycss=yes \
+  --args.cssroot=css/ \
+  --args.css=brand.css</codeblock>
+    </section>
+
+  </refbody>
+</reference>

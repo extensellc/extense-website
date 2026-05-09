@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  SAMPLE: Unstructured XML — Docker for DITA-OT
+  
+  This file demonstrates a concept-style doc written as flat XML.
+  It has useful content but zero metadata for AI filtering.
+  
+  Used in:
+    - Part 5, Chapter 7: Before and After Examples (Example 3 — metadata comparison)
+  
+  Problems with this format:
+    - No audience targeting — shown to everyone, even non-developers
+    - No difficulty level — beginners may be overwhelmed
+    - No content domain — AI can't route to "devops" category
+    - No prerequisites — no learning path guidance
+    - No chatbot priority — can't rank against other content
+-->
+<article>
+  <h1>Docker for DITA-OT</h1>
+
+  <section>
+    <h2>Why use Docker?</h2>
+    <p>Using the official DITA-OT Docker image ensures consistent,
+    reproducible builds across all environments.</p>
+    <p>Benefits include:</p>
+    <ul>
+      <li>No local Java installation required</li>
+      <li>Same build environment on every machine</li>
+      <li>Easy CI/CD integration</li>
+      <li>Version pinning for reproducible results</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Getting started</h2>
+    <p>Pull the official image:</p>
+    <pre>docker pull ghcr.io/dita-ot/dita-ot:4.2</pre>
+    <p>Run a build:</p>
+    <pre>docker run -v /path/to/src:/src ghcr.io/dita-ot/dita-ot:4.2 \
+  -i /src/my.ditamap -f html5 -o /src/out</pre>
+  </section>
+
+  <section>
+    <h2>CI/CD integration</h2>
+    <p>Add the Docker build to your GitHub Actions or Jenkins pipeline.
+    The container handles all dependencies automatically.</p>
+    <p>Example GitHub Actions step:</p>
+    <pre>- name: Build DITA docs
+  run: |
+    docker run -v $GITHUB_WORKSPACE/docs:/src \
+      ghcr.io/dita-ot/dita-ot:4.2 \
+      -i /src/training.ditamap -f html5 -o /src/output</pre>
+    <p>For Jenkins, use the same Docker run command in a shell step.</p>
+  </section>
+
+  <section>
+    <h2>Tips</h2>
+    <ul>
+      <li>Pin the image tag to a specific version instead of using "latest"</li>
+      <li>Mount only the source directory, not the entire workspace</li>
+      <li>Use a .dockerignore to keep the build context small</li>
+    </ul>
+  </section>
+</article>

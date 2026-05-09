@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="part08-xslt-customization">
+  <title>Advanced XSLT Customization</title>
+  <topicmeta>
+    <shortdesc>Hands-on labs — build a complete HTML5 customization plugin from scratch using XSLT overrides</shortdesc>
+    <metadata>
+      <othermeta name="difficulty" content="advanced"/>
+      <othermeta name="learningObjectives" content="Build custom DITA-OT output plugins using XSLT overrides, parameters, and production patterns."/>
+    </metadata>
+  </topicmeta>
+  <topicref href="../topics/part08-customize/xslt-customization-tutorial.dita" navtitle="Tutorial Overview">
+    <topicmeta><shortdesc>Overview of the XSLT customization tutorial and what you will build</shortdesc></topicmeta>
+  </topicref>
+  <topicgroup navtitle="Concepts &amp; Foundations">
+    <topicmeta><shortdesc>HTML5 transform architecture, customization strategies, and baseline patterns</shortdesc></topicmeta>
+    <topicref href="../topics/part08-customize/html5-transform-architecture.dita"/>
+    <topicref href="../topics/part08-customize/safe-customization-strategies.dita"/>
+    <topicref href="../topics/part08-customize/xslt-prerequisites.dita"/>
+    <topicref href="../topics/part08-customize/sidebar-toc-chunking-baseline.dita"/>
+    <!-- audience="all": also in writer track (Phase 3W) -->
+    <topicref href="../topics/part08-customize/ditaval-filtering-variants.dita" audience="all"/>
+    <topicref href="../topics/part08-customize/toc-grouping.dita"/>
+  </topicgroup>
+  <topicgroup navtitle="Plugin Development">
+    <topicmeta><shortdesc>Create, override, extend, and parameterize DITA-OT HTML5 plugins</shortdesc></topicmeta>
+    <topicref href="../topics/part08-customize/create-html5-plugin.dita"/>
+    <topicref href="../topics/part08-customize/first-override-xslt.dita"/>
+    <topicref href="../topics/part08-customize/production-patterns.dita"/>
+    <topicref href="../topics/part08-customize/extended-element-overrides.dita"/>
+    <topicref href="../topics/part08-customize/sidebar-toc-customization.dita"/>
+    <topicref href="../topics/part08-customize/passing-parameters.dita"/>
+  </topicgroup>
+  <topicgroup navtitle="Operations &amp; Reference">
+    <topicmeta><shortdesc>Debugging, hardening, exercises, and troubleshooting reference</shortdesc></topicmeta>
+    <topicref href="../topics/part08-customize/debugging-workflow.dita"/>
+    <topicref href="../topics/part08-customize/production-hardening.dita"/>
+    <topicref href="../topics/part08-customize/exercises-and-labs.dita"/>
+    <topicref href="../topics/part08-customize/xslt-troubleshooting.dita"/>
+    <topicref href="../topics/part08-customize/starter-repo-guide.dita"/>
+    <topicref href="../topics/part08-customize/quick-checklists.dita"/>
+  </topicgroup>
+  <topicref href="../topics/part08-customize/dita-ot-technical-reference.dita" navtitle="DITA-OT Technical Reference">
+    <topicmeta><shortdesc>Building from source, XSLT patterns, and debugging playbook</shortdesc></topicmeta>
+  </topicref>
+</map>

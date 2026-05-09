@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  SAMPLE: Unstructured XML — DITA-OT Parameters
+  
+  This is a typical unstructured XML reference file.
+  The table has the right data but no semantic typing.
+  
+  Used in:
+    - Part 3, Chapter 5: Information Typing for AI (reference example)
+  
+  Problems with this format:
+    - No content type signal — AI doesn't know this is lookup data
+    - HTML-style <table> has no column specs or semantic grouping
+    - No shortdesc for search/retrieval context
+    - AI formats this the same as a concept or task
+    - "What parameters does HTML5 accept?" won't route here
+-->
+<article>
+  <h1>DITA-OT Parameters</h1>
+
+  <p>These are the key parameters for running DITA-OT builds.</p>
+
+  <table>
+    <tr><th>Parameter</th><th>Description</th><th>Default</th></tr>
+    <tr><td>args.input</td><td>Input file</td><td>—</td></tr>
+    <tr><td>output.dir</td><td>Output directory</td><td>out/</td></tr>
+    <tr><td>transtype</td><td>Transform type</td><td>html5</td></tr>
+    <tr><td>args.cssroot</td><td>CSS root directory</td><td>—</td></tr>
+    <tr><td>args.css</td><td>Custom CSS file</td><td>—</td></tr>
+    <tr><td>args.copycss</td><td>Copy CSS to output</td><td>no</td></tr>
+  </table>
+
+  <p>For a full list, see the DITA-OT documentation.</p>
+</article>

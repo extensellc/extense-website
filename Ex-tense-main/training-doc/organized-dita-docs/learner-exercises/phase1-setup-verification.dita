@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="phase1-setup-verification">
+  <title>Phase 1 Exercise: Environment Setup and Verification</title>
+  <shortdesc>Install DITA-OT, verify your environment, and run your first build to confirm everything works. This exercise is required for both technical writers and software engineers.</shortdesc>
+  <prolog>
+    <metadata>
+      <audience type="user" experiencelevel="novice"/>
+      <othermeta name="persona" content="Both"/>
+      <othermeta name="phase" content="1"/>
+      <othermeta name="estimated-time" content="30-45 minutes"/>
+    </metadata>
+  </prolog>
+  <taskbody>
+    <prereq>
+      <p>Before starting, ensure you have:</p>
+      <ul>
+        <li>A computer with terminal/command-line access</li>
+        <li>An internet connection to download DITA-OT</li>
+        <li>A text/XML editor (Oxygen XML Editor recommended, or VS Code with XML extension)</li>
+      </ul>
+    </prereq>
+
+    <context>
+      <p>This exercise takes you from zero to a working DITA environment. By the end,
+      you will have DITA-OT installed, understand the basic command structure, and have
+      produced your first HTML5 output from a DITA file.</p>
+      <p><b>Read first:</b> Review the topics in Part 1 (Why Intelligent Content) and
+      Part 2 (Prepare) of the training guide before starting.</p>
+    </context>
+
+    <steps>
+      <!-- Step 1: Install Java -->
+      <step>
+        <cmd>Verify that Java 17 or later is installed.</cmd>
+        <info>
+          <p>DITA-OT 4.x requires Java 17+. Check your version:</p>
+          <codeblock>java -version</codeblock>
+          <p>If Java is not installed, download it from
+          <xref href="https://adoptium.net/" format="html" scope="external">Adoptium</xref>
+          (recommended) or your OS package manager.</p>
+        </info>
+        <stepresult>
+          <p>You should see output like: <codeph>openjdk version "17.0.x"</codeph> or higher.</p>
+        </stepresult>
+      </step>
+
+      <!-- Step 2: Download DITA-OT -->
+      <step>
+        <cmd>Download DITA-OT 4.x from the official site.</cmd>
+        <info>
+          <p>Go to <xref href="https://www.dita-ot.org/download" format="html"
+          scope="external">dita-ot.org/download</xref> and download the latest 4.x release ZIP.</p>
+        </info>
+        <substeps>
+          <substep>
+            <cmd>Extract the ZIP to a location you will remember (e.g., <filepath>~/dita-ot</filepath>).</cmd>
+          </substep>
+          <substep>
+            <cmd>Add the <filepath>bin/</filepath> directory to your system PATH.</cmd>
+            <info>
+              <p><b>Linux/macOS:</b></p>
+              <codeblock>export PATH=$PATH:~/dita-ot/bin
+# Add this line to ~/.bashrc or ~/.zshrc to make it permanent</codeblock>
+              <p><b>Windows (PowerShell):</b></p>
+              <codeblock>$env:PATH += ";C:\dita-ot\bin"</codeblock>
+            </info>
+          </substep>
+        </substeps>
+      </step>
+
+      <!-- Step 3: Verify installation -->
+      <step>
+        <cmd>Verify DITA-OT is installed correctly.</cmd>
+        <info>
+          <codeblock>dita --version</codeblock>
+        </info>
+        <stepresult>
+          <p>You should see: <codeph>DITA-OT version 4.x.x</codeph>.</p>
+        </stepresult>
+      </step>
+
+      <!-- Step 4: Create your first DITA file -->
+      <step>
+        <cmd>Create a minimal DITA concept topic to test your setup.</cmd>
+        <info>
+          <p>Create a file named <filepath>hello-dita.dita</filepath> with this content:</p>
+          <codeblock>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd"&gt;
+&lt;concept id="hello-dita"&gt;
+  &lt;title&gt;Hello, DITA!&lt;/title&gt;
+  &lt;shortdesc&gt;My first DITA topic.&lt;/shortdesc&gt;
+  &lt;conbody&gt;
+    &lt;p&gt;If you can read this in a browser, your DITA-OT setup works!&lt;/p&gt;
+  &lt;/conbody&gt;
+&lt;/concept&gt;</codeblock>
+        </info>
+      </step>
+
+      <!-- Step 5: Build HTML5 output -->
+      <step>
+        <cmd>Build HTML5 output from your test topic.</cmd>
+        <info>
+          <codeblock>dita -i hello-dita.dita -f html5 -o out/hello</codeblock>
+        </info>
+        <stepresult>
+          <p>DITA-OT processes the file and creates <filepath>out/hello/hello-dita.html</filepath>.</p>
+        </stepresult>
+      </step>
+
+      <!-- Step 6: View the output -->
+      <step>
+        <cmd>Open the generated HTML file in your browser.</cmd>
+        <info>
+          <codeblock># Linux
+xdg-open out/hello/hello-dita.html
+
+# macOS
+open out/hello/hello-dita.html
+
+# Windows
+start out\hello\hello-dita.html</codeblock>
+        </info>
+        <stepresult>
+          <p>You should see a rendered HTML page with the title "Hello, DITA!" and your paragraph text.</p>
+        </stepresult>
+      </step>
+
+      <!-- Step 7: Explore DITA-OT help -->
+      <step>
+        <cmd>Explore available DITA-OT commands and transforms.</cmd>
+        <info>
+          <codeblock># List all available commands
+dita --help
+
+# List installed transformation types
+dita transtypes
+
+# List installed plugins
+dita plugins</codeblock>
+        </info>
+        <stepresult>
+          <p>Note the available transforms (html5, pdf, etc.) and installed plugins.
+          You will use these throughout the training.</p>
+        </stepresult>
+      </step>
+    </steps>
+
+    <result>
+      <p><b>Self-Check — you should now be able to:</b></p>
+      <ul>
+        <li>✓ Run <codeph>dita --version</codeph> and see version 4.x</li>
+        <li>✓ Create a basic DITA concept topic from scratch</li>
+        <li>✓ Build HTML5 output with a single command</li>
+        <li>✓ View the rendered output in a browser</li>
+      </ul>
+      <note type="tip">Keep your <filepath>hello-dita.dita</filepath> file — you will expand
+      it in Phase 2 exercises.</note>
+    </result>
+  </taskbody>
+</task>

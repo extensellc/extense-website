@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map id="part04-information-architecture">
+  <title>Information Architecture</title>
+  <topicmeta>
+    <shortdesc>Design topic hierarchies, define controlled vocabulary, and build maps that guide learning progression</shortdesc>
+    <metadata>
+      <othermeta name="difficulty" content="intermediate"/>
+      <othermeta name="learningObjectives" content="Organize content into progressive learning paths with taxonomy-driven classification."/>
+    </metadata>
+  </topicmeta>
+  <topicref href="../topics/part04-architect/ch08-topic-based-architecture.dita" navtitle="Topic-Based Information Architecture">
+    <topicmeta><shortdesc>Directory structure, map hierarchy, granularity guidelines, and section design for AI chunking</shortdesc></topicmeta>
+  </topicref>
+  <topicref href="../topics/part04-architect/ch09-taxonomy-controlled-vocabulary.dita" navtitle="Taxonomy and Controlled Vocabulary">
+    <topicmeta><shortdesc>Subject scheme design with 5 classification facets for consistent AI filtering</shortdesc></topicmeta>
+  </topicref>
+</map>

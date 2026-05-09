@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg-og" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1D397C"/>
+      <stop offset="60%" stop-color="#152c63"/>
+      <stop offset="100%" stop-color="#0f2350"/>
+    </linearGradient>
+    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E9AC15"/>
+      <stop offset="100%" stop-color="#d4990f"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg-og)"/>
+  <!-- Decorative grid -->
+  <g opacity="0.03" stroke="#fff" stroke-width="1">
+    <line x1="0" y1="105" x2="1200" y2="105"/><line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/><line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="200" y1="0" x2="200" y2="630"/><line x1="400" y1="0" x2="400" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/><line x1="800" y1="0" x2="800" y2="630"/>
+    <line x1="1000" y1="0" x2="1000" y2="630"/>
+  </g>
+  <!-- Decorative ghost squares (outline style matching logo) -->
+  <rect x="70" y="200" width="100" height="100" rx="6" fill="none" stroke="#E9AC15" stroke-width="1.5" opacity="0.1"/>
+  <rect x="120" y="240" width="90" height="90" rx="6" fill="none" stroke="#E9AC15" stroke-width="1.5" opacity="0.07"/>
+  <rect x="1030" y="350" width="80" height="80" rx="5" fill="none" stroke="#4682B4" stroke-width="1.5" opacity="0.1"/>
+  <rect x="1070" y="380" width="72" height="72" rx="5" fill="none" stroke="#4682B4" stroke-width="1.5" opacity="0.07"/>
+  <!-- Gold accent line left -->
+  <rect x="0" y="0" width="6" height="630" fill="url(#gold-grad)"/>
+
+  <!-- EXACT logo mark from website -->
+  <g transform="translate(405, 100) scale(0.85)">
+    <!-- Outer square (top-right) -->
+    <rect x="60" y="10" width="110" height="110" rx="4" fill="none" stroke="#E9AC15" stroke-width="5"/>
+    <!-- Inner square (bottom-left, overlapping) -->
+    <rect x="30" y="60" width="100" height="100" rx="4" fill="none" stroke="#E9AC15" stroke-width="5"/>
+    <!-- Connecting line going up -->
+    <line x1="170" y1="10" x2="170" y2="0" stroke="#E9AC15" stroke-width="5" stroke-linecap="round"/>
+    <!-- Open circle at top -->
+    <circle cx="170" cy="0" r="6" fill="none" stroke="#E9AC15" stroke-width="4"/>
+  </g>
+
+  <!-- Company name -->
+  <text x="530" y="175" font-family="'Montserrat','Helvetica Neue',Arial,sans-serif" font-weight="300" font-size="60" fill="white" letter-spacing="8">EXTENSE</text>
+  <!-- Tagline line 1 -->
+  <text x="530" y="243" font-family="'Questrial','Helvetica Neue',Arial,sans-serif" font-weight="400" font-size="26" fill="#81AFCB" letter-spacing="1">Harnessing the Power of XML</text>
+  <!-- Tagline line 2 -->
+  <text x="530" y="280" font-family="'Questrial','Helvetica Neue',Arial,sans-serif" font-weight="400" font-size="26" fill="#81AFCB" letter-spacing="1">to Transform Your Organization</text>
+  <!-- Divider -->
+  <rect x="530" y="307" width="300" height="2" fill="#E9AC15" opacity="0.6"/>
+  <!-- Service bullets -->
+  <text x="530" y="353" font-family="'Questrial','Helvetica Neue',Arial,sans-serif" font-size="17" fill="rgba(255,255,255,0.7)" letter-spacing="1">Content Engineering • Publishing Solutions • CCMS</text>
+  <!-- Certifications -->
+  <g transform="translate(530, 395)">
+    <rect x="0" y="0" width="130" height="30" rx="15" fill="#0ACB8B" opacity="0.2"/>
+    <text x="65" y="20" text-anchor="middle" font-family="'Montserrat','Helvetica Neue',Arial,sans-serif" font-weight="600" font-size="11" fill="#0ACB8B" letter-spacing="1">8(a) CERTIFIED</text>
+    <rect x="145" y="0" width="145" height="30" rx="15" fill="#81AFCB" opacity="0.15"/>
+    <text x="217" y="20" text-anchor="middle" font-family="'Montserrat','Helvetica Neue',Arial,sans-serif" font-weight="600" font-size="11" fill="#81AFCB" letter-spacing="1">WOMAN-OWNED</text>
+    <rect x="305" y="0" width="160" height="30" rx="15" fill="#E9AC15" opacity="0.15"/>
+    <text x="385" y="20" text-anchor="middle" font-family="'Montserrat','Helvetica Neue',Arial,sans-serif" font-weight="600" font-size="11" fill="#E9AC15" letter-spacing="1">MINORITY-OWNED</text>
+  </g>
+  <!-- Website URL -->
+  <text x="530" y="515" font-family="'Montserrat','Helvetica Neue',Arial,sans-serif" font-weight="500" font-size="16" fill="rgba(255,255,255,0.45)" letter-spacing="3">WWW.EX-TENSE.CO</text>
+  <!-- Bottom accent -->
+  <rect x="0" y="620" width="1200" height="10" fill="url(#gold-grad)" opacity="0.8"/>
+</svg>

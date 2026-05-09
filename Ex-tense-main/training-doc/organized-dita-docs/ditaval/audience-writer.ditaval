@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  audience-writer.ditaval
+  DITAVAL filter for Technical Writer persona
+  
+  Excludes developer-only content (Parts VII, VIII, IX) while
+  retaining all writer-track topics (Parts I through VI, X, Appendices).
+  
+  One Part VIII topic (ditaval-filtering-variants.dita) is preserved
+  because it is in the writer Phase 3W reading list; it is marked
+  audience="all" in the part08 submap so it passes this filter.
+  
+  Usage (PDF):
+    dita -i extense-supermap.ditamap -f pdf -o output/pdf-writer
+         -Dargs.filter=ditaval/audience-writer.ditaval
+  
+  Usage (HTML5):
+    dita -i extense-supermap.ditamap -f html5 -o output/html5-writer
+         -Dargs.filter=ditaval/audience-writer.ditaval
+-->
+<val>
+  <!-- Exclude developer-only parts -->
+  <prop action="exclude" att="audience" val="developer"/>
+  
+  <!-- Include writer and shared content -->
+  <prop action="include" att="audience" val="technical-writer"/>
+  <prop action="include" att="audience" val="all"/>
+</val>
