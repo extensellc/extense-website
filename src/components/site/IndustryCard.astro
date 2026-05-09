@@ -1,0 +1,114 @@
+---
+/*
+  IndustryCard — industry navigation card on /private-sector.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Cards)
+
+  Structurally similar to PillarCard but no badge icon (industries don't have
+  natural icons; forcing them would be awkward). Editorial-load heading.
+
+  Structure:
+    Eyebrow (industry name in caps) → space-3 →
+    Heading (one-line vertical-specific stake — editorial, not placeholder) → space-3 →
+    Description (1–2 sentences) → space-4 →
+    "View [Industry] →" link
+
+  Whole card is a link. Same nested-link Phase 4 pattern as PillarCard.
+
+  Heading copy is editorially load-bearing: it captures the vertical's specific
+  stake in one declarative sentence. Phase 4 copy phase gives this dedicated
+  attention; treating it as templated produces interchangeable cards.
+*/
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  href: string;
+  linkLabel: string;
+}
+
+const { eyebrow, heading, description, href, linkLabel } = Astro.props;
+---
+
+<article class="industry-card">
+  <a href={href} class="industry-card__link">
+    <p class="eyebrow industry-card__eyebrow">{eyebrow}</p>
+    <h3 class="industry-card__heading">{heading}</h3>
+    <p class="industry-card__description">{description}</p>
+    <span class="industry-card__cta">
+      {linkLabel} <span class="industry-card__arrow" aria-hidden="true">→</span>
+    </span>
+  </a>
+</article>
+
+<style>
+  .industry-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .industry-card__link {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .industry-card__link:hover,
+  .industry-card__link:focus-visible {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .industry-card__eyebrow {
+    margin-bottom: var(--space-3);
+  }
+
+  .industry-card__heading {
+    font-family: var(--font-body);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+    text-wrap: balance;
+  }
+
+  .industry-card__description {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-4);
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+
+  .industry-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .industry-card__link:hover .industry-card__cta,
+  .industry-card__link:focus-visible .industry-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .industry-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+
+  .industry-card__link:hover .industry-card__arrow {
+    transform: translateX(2px);
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+/*
+  PDFDownloadButton — inline link with file-pdf icon.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Page-specific / Pattern)
+
+  Document-grade utility affordance, not a heavy CTA. Federal procurement officers
+  know what PDF downloads are; placement makes it findable, styling keeps it
+  document-register.
+
+  Treatment:
+    - Inline link, not button
+    - Phosphor "file-pdf" icon (16px, color-text-secondary) → space-2 → label text
+    - text-body weight-medium color-link
+    - Underline on hover; opens in new tab; rel="noopener noreferrer"
+
+  Currently used on /public-sector. Formalize as full component if reused on
+  /capabilities or /insights white-paper downloads.
+*/
+
+interface Props {
+  href: string;
+  label?: string;
+  fileSize?: string; // e.g. "240 KB"
+}
+
+const {
+  href,
+  label = "Download capability statement",
+  fileSize,
+} = Astro.props;
+
+const fullLabel = fileSize ? `${label} (PDF, ${fileSize})` : `${label} (PDF)`;
+---
+
+<div class="pdf-download container-prose">
+  <a
+    href={href}
+    class="pdf-download__link"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={fullLabel}
+  >
+    <svg
+      class="pdf-download__icon"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <text x="7.5" y="17" font-family="JetBrains Mono, monospace" font-size="5" font-weight="600" fill="currentColor" stroke="none">PDF</text>
+    </svg>
+    <span class="pdf-download__label">{fullLabel}</span>
+  </a>
+</div>
+
+<style>
+  .pdf-download {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-12);
+  }
+
+  .pdf-download__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .pdf-download__link:hover,
+  .pdf-download__link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .pdf-download__icon {
+    flex-shrink: 0;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .pdf-download__link:hover .pdf-download__icon,
+  .pdf-download__link:focus-visible .pdf-download__icon {
+    color: var(--color-link-hover);
+  }
+</style>

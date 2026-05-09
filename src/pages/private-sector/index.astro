@@ -1,0 +1,282 @@
+---
+/*
+  /private-sector — commercial outcomes landing page.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §8
+
+  Section order (argument-first — commercial buyers want value before self-routing):
+    1. TopNav (BaseLayout)
+    2. Hero (Hero.outcome) — outcome-led with concrete numbers, NO transformation language
+    3. Cost-of-being-wrong (DocumentRow.failureMode × 3)
+    4. LogoBench.commercial — 8 logos
+    5. Four pillars (PillarCard × 4) — business language register
+    6. Outcome stats (StatBlock.three) — 60/72/85, commercial framing
+    7. Industry navigation (IndustryCard × 4) — Financial Services, Life Sciences, Automotive, Insurance
+       + orphans paragraph (AMD, HPE, FedEx)
+    8. CTAModule (Sample Content Assessment, private-sector audience preset)
+    9. Footer (BaseLayout)
+
+  Locked: real numbers in hero, no "transform" verbs.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import DocumentRow from "../../components/site/DocumentRow.astro";
+import LogoBench from "../../components/site/LogoBench.astro";
+import PillarCard from "../../components/site/PillarCard.astro";
+import StatBlock from "../../components/site/StatBlock.astro";
+import IndustryCard from "../../components/site/IndustryCard.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+const failureModes = [
+  {
+    eyebrow: "LIFE SCIENCES",
+    heading: "An IFU error triggers an FDA Class I recall.",
+    body: "Direct remediation runs into the millions. Brand damage lasts years. The document was the safety control — and the safety control failed.",
+  },
+  {
+    eyebrow: "AUTOMOTIVE",
+    heading: "A dealer service-manual error voids OEM warranty exposure.",
+    body: "Claims liability moves from the dealer back to the manufacturer. A single procedure error, replicated across a service network, becomes a multi-million-dollar claim event.",
+  },
+  {
+    eyebrow: "DEFENSE",
+    heading: "An S1000D conformance failure triggers a stop-work order.",
+    body: "Payment halts. The contract goes to risk. For commercial defense contractors, a single failed conformance check can put a whole program on cure-notice procedures.",
+  },
+];
+
+const commercialPillars = [
+  {
+    pillar: "ia" as const,
+    name: "Information Architecture",
+    scope: "The foundation that pays back across every downstream system. Get the schema right and reuse, translation, retrieval, and compliance all become tractable.",
+    href: "/capabilities/information-architecture",
+  },
+  {
+    pillar: "migration" as const,
+    name: "Content Migration",
+    scope: "Cost-out and risk-reduction. Recover what's locked in legacy estates and identify reusable assets — translation savings and audit-readiness follow.",
+    href: "/capabilities/content-migration",
+  },
+  {
+    pillar: "ccms" as const,
+    name: "CCMS & Publishing",
+    scope: "Time-to-publish unlock. From quarterly publishing to per-merge releases. Multi-platform fluency across IXIASOFT, Heretto, Paligo, and Tridion Docs.",
+    href: "/capabilities/ccms-and-publishing",
+  },
+  {
+    pillar: "ai-ready" as const,
+    name: "AI-Ready Content",
+    scope: "The difference between content LLMs can use and content that becomes invisible. Chunking, metadata, and retrieval architecture for regulated-industry RAG.",
+    href: "/capabilities/ai-ready-content",
+  },
+];
+
+const stats = [
+  {
+    number: "60%",
+    label: "Faster publishing cycles",
+    context: "From quarterly publishing to per-merge releases.",
+  },
+  {
+    number: "72%",
+    label: "Translation cost savings",
+    context: "Single-source reuse cuts localization volume across markets.",
+  },
+  {
+    number: "85%",
+    label: "RAG retrieval precision",
+    context: "Structured content as the difference between accurate retrieval and hallucination.",
+  },
+];
+
+const industries = [
+  {
+    eyebrow: "Financial Services",
+    heading: "Where policy and procedure documentation is part of the SOX 404 control environment.",
+    description: "Policies, regulatory filings, and disclosures as control infrastructure. RAG over policy libraries for compliance assistants and adviser-facing tools.",
+    href: "/private-sector/financial-services",
+    linkLabel: "View Financial Services",
+  },
+  {
+    eyebrow: "Life Sciences",
+    heading: "Where IFU errors trigger FDA Class I recalls.",
+    description: "Patient safety, not paperwork. IFUs, regulatory submissions, validated DITA workflows, GxP-defensible methodology.",
+    href: "/private-sector/life-sciences",
+    linkLabel: "View Life Sciences",
+  },
+  {
+    eyebrow: "Automotive",
+    heading: "Where translation cost is the largest single ROI lever.",
+    description: "Service manuals, parts catalogs, owner's manuals across global dealer networks. Single-source reuse cuts localization volume by the largest absolute number.",
+    href: "/private-sector/automotive",
+    linkLabel: "View Automotive",
+  },
+  {
+    eyebrow: "Insurance",
+    heading: "Where the policy form is the product.",
+    description: "Policy forms, claims-handling guidelines, and underwriting manuals as direct revenue and litigation exposure. State-DOI variation managed with discipline.",
+    href: "/private-sector/insurance",
+    linkLabel: "View Insurance",
+  },
+];
+---
+
+<BaseLayout
+  title="Private Sector — Commercial Outcomes"
+  description="Extense LLC commercial engagements. Real outcomes for Fortune 500 documentation programs across financial services, life sciences, automotive, and insurance. 60% faster publishing, 72% translation savings, 85% RAG precision."
+>
+  <Hero
+    variant="outcome"
+    title="Publish 60% faster. Cut translation costs 72%. Retrieve at 85% precision."
+    subdeck="XML content engineering for Fortune 500 documentation programs across financial services, life sciences, automotive, and insurance. From single-source authoring to AI-ready retrieval."
+  />
+
+  <section class="priv-section priv-section--failure-modes" aria-labelledby="failure-modes-heading">
+    <div class="container-prose priv-section__inner">
+      <h2 id="failure-modes-heading" class="priv-section__heading">
+        What happens when documentation is wrong.
+      </h2>
+      <div class="priv-section__rows">
+        {failureModes.map((fm) => (
+          <DocumentRow
+            variant="failureMode"
+            eyebrow={fm.eyebrow}
+            heading={fm.heading}
+            body={fm.body}
+            headingLevel={3}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="priv-section priv-section--logos" aria-label="Commercial client proof">
+    <LogoBench variant="commercial" eyebrow="Commercial Engagements" />
+  </section>
+
+  <section class="priv-section priv-section--pillars" aria-labelledby="pillars-heading">
+    <div class="container-data priv-section__inner">
+      <h2 id="pillars-heading" class="priv-section__heading">Four capabilities, in business language.</h2>
+      <div class="priv-section__pillar-grid">
+        {commercialPillars.map((p) => (
+          <PillarCard pillar={p.pillar} name={p.name} scope={p.scope} href={p.href} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="priv-section priv-section--stats" aria-label="Outcome metrics">
+    <div class="container-data priv-section__inner">
+      <StatBlock variant="three" stats={stats} />
+    </div>
+  </section>
+
+  <section class="priv-section priv-section--industries" aria-labelledby="industries-heading">
+    <div class="container-data priv-section__inner">
+      <h2 id="industries-heading" class="priv-section__heading">By industry.</h2>
+      <div class="priv-section__industry-grid">
+        {industries.map((ind) => (
+          <IndustryCard
+            eyebrow={ind.eyebrow}
+            heading={ind.heading}
+            description={ind.description}
+            href={ind.href}
+            linkLabel={ind.linkLabel}
+          />
+        ))}
+      </div>
+      <p class="priv-section__orphans">
+        Extense also works with named clients in semiconductors and enterprise tech (AMD, HPE) and logistics (FedEx) — present on engagements without dedicated industry pages today.
+      </p>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="private-sector"
+    body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for a business case, with no obligation to proceed."
+  />
+</BaseLayout>
+
+<style>
+  .priv-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+  }
+
+  @media (max-width: 767px) {
+    .priv-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .priv-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-12);
+    text-wrap: balance;
+  }
+
+  .priv-section__rows {
+    /* DocumentRow handles its own spacing */
+  }
+
+  .priv-section__pillar-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 600px) {
+    .priv-section__pillar-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .priv-section__pillar-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  .priv-section__industry-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 600px) {
+    .priv-section__industry-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .priv-section__industry-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  .priv-section__orphans {
+    margin-top: var(--space-12);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-align: center;
+    max-width: 60ch;
+    margin-left: auto;
+    margin-right: auto;
+    text-wrap: pretty;
+  }
+</style>

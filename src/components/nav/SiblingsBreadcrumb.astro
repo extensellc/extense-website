@@ -1,0 +1,134 @@
+---
+/*
+  SiblingsBreadcrumb — wayfinding affordance for sibling pages.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Navigation)
+
+  Variants follow .audienceCategory naming pattern (extensible):
+    .pillars    — IA · Migration · CCMS · AI-Ready (lifecycle order, meaningful)
+    .industries — Financial Services · Life Sciences · Automotive · Insurance (stable order)
+
+  Visual treatment:
+    - container-prose centered, hairline rules above and below, internal padding space-3
+    - Single line of names separated by middle dot (·), space-3 around each separator
+    - Current item: weight-semibold, color-text-primary, aria-current="page"
+    - Other items: weight-regular, color-link, links to their pages
+
+  Implementation note: multi-word names use non-breaking spaces (U+00A0) inside
+  the name string; the markup uses CSS white-space: nowrap on each name span
+  to prevent mid-name line breaks. Mid-name breaks are the failure mode.
+
+  Not used on /capabilities (parent enumerates pillars in content) or
+  /public-sector/government-and-defense (one-item siblings would be silly).
+*/
+
+interface Sibling {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  variant: "pillars" | "industries";
+  current: string; // matches one sibling's href (or label)
+}
+
+const pillarSiblings: Sibling[] = [
+  { label: "Information Architecture", href: "/capabilities/information-architecture" },
+  { label: "Content Migration", href: "/capabilities/content-migration" },
+  { label: "CCMS & Publishing", href: "/capabilities/ccms-and-publishing" },
+  { label: "AI-Ready Content", href: "/capabilities/ai-ready-content" },
+];
+
+const industrySiblings: Sibling[] = [
+  { label: "Financial Services", href: "/private-sector/financial-services" },
+  { label: "Life Sciences", href: "/private-sector/life-sciences" },
+  { label: "Automotive", href: "/private-sector/automotive" },
+  { label: "Insurance", href: "/private-sector/insurance" },
+];
+
+const { variant, current } = Astro.props;
+const siblings = variant === "pillars" ? pillarSiblings : industrySiblings;
+
+const navLabel = variant === "pillars" ? "Capability lifecycle navigation" : "Industries navigation";
+---
+
+<nav class="siblings-breadcrumb" aria-label={navLabel}>
+  <div class="container-prose siblings-breadcrumb__inner">
+    <ol class="siblings-breadcrumb__list">
+      {siblings.map((s, i) => {
+        const isCurrent = s.href === current || s.label === current;
+        return (
+          <>
+            <li class="siblings-breadcrumb__item">
+              {isCurrent ? (
+                <span class="siblings-breadcrumb__current" aria-current="page">{s.label}</span>
+              ) : (
+                <a href={s.href} class="siblings-breadcrumb__link">{s.label}</a>
+              )}
+            </li>
+            {i < siblings.length - 1 && (
+              <li class="siblings-breadcrumb__sep" aria-hidden="true">·</li>
+            )}
+          </>
+        );
+      })}
+    </ol>
+  </div>
+</nav>
+
+<style>
+  .siblings-breadcrumb {
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+  }
+
+  .siblings-breadcrumb__inner {
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+  }
+
+  .siblings-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .siblings-breadcrumb__item {
+    /* Multi-word pillar/industry names should never break mid-name */
+    white-space: nowrap;
+  }
+
+  .siblings-breadcrumb__current {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .siblings-breadcrumb__link {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .siblings-breadcrumb__link:hover,
+  .siblings-breadcrumb__link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .siblings-breadcrumb__sep {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+    user-select: none;
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+/*
+  CapabilityStrip — top-of-page document strip on /public-sector.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Page-specific)
+
+  Structure:
+    - container-data, hairline rules above and below, internal padding space-12
+    - 3-column row desktop (NAICS | CAGE | UEI), stacks mobile
+    - Each cell: gravitas-navy eyebrow + value
+    - NAICS cell: vertical-stacked JetBrains Mono codes (one per line)
+    - CAGE / UEI cells: text-body single-value
+    - No card box, no background fill, no icons
+
+  Note: contract-vehicles row deferred per Phase 3 verification (will add later).
+
+  Default placeholders for NAICS / CAGE / UEI come from the existing site's
+  about page; Phase 4 practitioner session can confirm/update.
+*/
+
+interface Props {
+  naicsCodes?: string[];
+  cage?: string;
+  uei?: string;
+}
+
+const {
+  naicsCodes = [
+    "561410",
+    "541990",
+    "541430",
+    "541511",
+    "541330",
+    "511120",
+    "519130",
+    "518210",
+  ],
+  cage = "8FGJ9",
+  uei = "—",
+} = Astro.props;
+---
+
+<section class="cap-strip" aria-label="Federal capability identifiers">
+  <hr class="cap-strip__rule cap-strip__rule--top" aria-hidden="true" />
+  <div class="container-data cap-strip__inner">
+    <div class="cap-strip__cell">
+      <p class="eyebrow eyebrow--gravitas">NAICS Codes</p>
+      <ul class="cap-strip__codes tabular">
+        {naicsCodes.map((code) => <li><code>{code}</code></li>)}
+      </ul>
+    </div>
+
+    <div class="cap-strip__cell">
+      <p class="eyebrow eyebrow--gravitas">CAGE</p>
+      <p class="cap-strip__value tabular">{cage}</p>
+    </div>
+
+    <div class="cap-strip__cell">
+      <p class="eyebrow eyebrow--gravitas">UEI</p>
+      <p class="cap-strip__value tabular">{uei}</p>
+    </div>
+  </div>
+  <hr class="cap-strip__rule cap-strip__rule--bottom" aria-hidden="true" />
+</section>
+
+<style>
+  .cap-strip {
+    /* No background fill, no card box per spec — document-grade. */
+  }
+
+  .cap-strip__rule {
+    margin: 0;
+  }
+
+  .cap-strip__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .cap-strip__inner {
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: var(--space-12);
+      align-items: start;
+    }
+  }
+
+  .cap-strip__cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .cap-strip__codes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .cap-strip__codes code {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-primary);
+    background: none;
+  }
+
+  .cap-strip__value {
+    font-family: var(--font-mono);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+  }
+</style>
