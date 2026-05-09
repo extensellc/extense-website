@@ -1,0 +1,129 @@
+---
+/*
+  FormField — shared form primitive.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (/contact form primitives)
+
+  Structure:
+    Label (text-body-sm, weight-medium, color-text-primary) above field
+    space-2 below label
+    Input: 48px height, hairline border, color-page-bg background, radius-sm
+    space-2 below input for helper text
+    Helper text: text-caption color-text-secondary (color-error in error state)
+
+  States:
+    default — hairline border
+    focus — border color-link
+    error — border color-error, helper text color-error
+
+  Required-field indication: subtle small mark on label, not aggressive.
+*/
+
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  type?: "text" | "email" | "tel" | "url";
+  placeholder?: string;
+  helperText?: string;
+  required?: boolean;
+  autocomplete?: string;
+  value?: string;
+}
+
+const {
+  id,
+  name,
+  label,
+  type = "text",
+  placeholder,
+  helperText,
+  required = false,
+  autocomplete,
+  value,
+} = Astro.props;
+---
+
+<div class="form-field">
+  <label for={id} class="form-field__label">
+    {label}
+    {required && <span class="form-field__required" aria-hidden="true">*</span>}
+  </label>
+  <input
+    id={id}
+    name={name}
+    type={type}
+    placeholder={placeholder}
+    required={required}
+    autocomplete={autocomplete}
+    value={value}
+    class="form-field__input"
+    aria-describedby={helperText ? `${id}-helper` : undefined}
+    aria-required={required ? "true" : undefined}
+  />
+  {helperText && (
+    <p id={`${id}-helper`} class="form-field__helper">{helperText}</p>
+  )}
+</div>
+
+<style>
+  .form-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-field + :global(.form-field),
+  .form-field + :global(.textarea-field),
+  .form-field + :global(.file-upload-field) {
+    margin-top: var(--space-6);
+  }
+
+  .form-field__label {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .form-field__required {
+    color: var(--color-text-secondary);
+    margin-left: 2px;
+  }
+
+  .form-field__input {
+    height: 48px;
+    width: 100%;
+    padding: 0 var(--space-3);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    background-color: var(--color-page-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+
+  .form-field__input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .form-field__input:focus {
+    outline: none;
+    border-color: var(--color-link);
+    box-shadow: 0 0 0 1px var(--color-link);
+  }
+
+  .form-field__input:invalid:not(:placeholder-shown) {
+    border-color: var(--color-error);
+  }
+
+  .form-field__helper {
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-top: var(--space-2);
+    margin-bottom: 0;
+  }
+</style>

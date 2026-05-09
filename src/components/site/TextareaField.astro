@@ -1,0 +1,110 @@
+---
+/*
+  TextareaField — multi-line FormField variant.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (/contact form primitives)
+
+  Same structure as FormField but multi-line input. Min height 120px (5 rows
+  at text-body line-height).
+*/
+
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  placeholder?: string;
+  helperText?: string;
+  required?: boolean;
+  rows?: number;
+}
+
+const {
+  id,
+  name,
+  label,
+  placeholder,
+  helperText,
+  required = false,
+  rows = 5,
+} = Astro.props;
+---
+
+<div class="textarea-field">
+  <label for={id} class="textarea-field__label">
+    {label}
+    {required && <span class="textarea-field__required" aria-hidden="true">*</span>}
+  </label>
+  <textarea
+    id={id}
+    name={name}
+    placeholder={placeholder}
+    required={required}
+    rows={rows}
+    class="textarea-field__input"
+    aria-describedby={helperText ? `${id}-helper` : undefined}
+    aria-required={required ? "true" : undefined}
+  />
+  {helperText && (
+    <p id={`${id}-helper`} class="textarea-field__helper">{helperText}</p>
+  )}
+</div>
+
+<style>
+  .textarea-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .textarea-field + :global(.form-field),
+  .textarea-field + :global(.textarea-field),
+  .textarea-field + :global(.file-upload-field) {
+    margin-top: var(--space-6);
+  }
+
+  .textarea-field__label {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .textarea-field__required {
+    color: var(--color-text-secondary);
+    margin-left: 2px;
+  }
+
+  .textarea-field__input {
+    width: 100%;
+    min-height: 120px;
+    padding: var(--space-3);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-primary);
+    background-color: var(--color-page-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--duration-base) var(--easing-out);
+    resize: vertical;
+  }
+
+  .textarea-field__input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .textarea-field__input:focus {
+    outline: none;
+    border-color: var(--color-link);
+    box-shadow: 0 0 0 1px var(--color-link);
+  }
+
+  .textarea-field__helper {
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-top: var(--space-2);
+    margin-bottom: 0;
+  }
+</style>

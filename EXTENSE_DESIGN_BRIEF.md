@@ -535,4 +535,55 @@ Three "content-wrong" scenarios rotate on the homepage. Each industry page surfa
 
 ---
 
+## 16. Phase 4 Build Status
+
+### Complete (committed to `redesign-2026` branch)
+
+- Astro 5 + TypeScript strict + Vercel adapter
+- Design tokens (color, typography, spacing, containers, borders, motion)
+- Global stylesheet (reset, base typography, container utilities, prose, focus rings)
+- BaseLayout with SEO/OG/Twitter meta + JSON-LD organization schema
+- All 13 pages spec'd + 3 individual `/insights/[slug]` post pages + `/rss.xml` + auto-generated `sitemap-index.xml` + `/privacy` + `/terms`
+- All components in inventory: TopNav, Footer, Hero, Logo, DocumentRow (`.entry`/`.failureMode`), SiblingsBreadcrumb, LifecycleNav, PillarCard + 4 badge icons, IndustryCard, AudiencePivotCard, CTAModule, PhaseWeightMatrix, StatBlock, LogoBench, CapabilityStrip, PDFDownloadButton, CompactList, TopicFilter, PostListItem, AudienceToggle, FormField, TextareaField, FileUploadField
+- Two shared layouts: PillarPageLayout, IndustryPageLayout
+- Content collections (`src/content/insights/`) with 3 placeholder posts
+- Build passes; typecheck 0 errors; 21 pages generated
+
+### Deferred to Phase 4 follow-up
+
+**(a) Build-time PDF generation for capability statement.** The `PDFDownloadButton` component exists but is currently inactive on `/public-sector` (replaced with an "available on request" mailto line). Implementation pattern: Playwright headless render of `/public-sector` to PDF at build time, with capability-document conventions (cover page, running header/footer, document metadata, print-tuned typography, LogoBench print restructuring). Estimated: 1–2 days of focused work.
+
+**(b) Phase 4 practitioner session — seven deliverables.** Single focused conversation that gates substantive copy work:
+
+1. PhaseWeightMatrix cell content (29 calibrated items: 20 cells + 4 pillar row labels + 5 phase column labels)
+2. Per-pillar standards and tooling lists (IA taxonomy management platforms; AI-Ready vector stores + orchestration frameworks; CCMS CI/CD tooling specifics)
+3. Engagement-shape items on `/capabilities` (actual engagement types Extense scopes)
+4. Anonymized end-to-end case study realism check (with conditional: IDMP confirmed → keep example; IDMP dropped → reframe to FDA eCTD)
+5. MIL-PRF-32070 verification (confirm whether this standard belongs in `/public-sector/government-and-defense`)
+6. IETP standards reframe (replace catchall "IETP standards" with specific standards Extense ships against)
+7. Certifications list completeness (ISO 9001, ISO 27001, security clearances — anything beyond 8(a)/WOSB/MBE)
+
+Without these answers, `/capabilities`, the four pillar pages, `/public-sector/government-and-defense`, `/about`, and `/private-sector/life-sciences` ship with placeholder copy that holds the structural shape but doesn't carry the practitioner-grade specificity locked in Phase 3 directives.
+
+**(c) Brand asset sourcing.**
+
+- Replace text-fallback labels in LogoBench with actual client logo SVGs (12 total). Single-color rendering at `--color-text-secondary`, max 32px desktop / 24px mobile.
+- Pillar badge icons currently use Phosphor-aligned line drawings (IA grid, Migration arrows, CCMS stacks, AI-Ready network). Phase 4 may commission custom marks aligned to the same 1.5px stroke and 48×48px frame.
+
+**(d) Phase 4 visual calibration tasks.**
+
+- H1 weight calibration: test 48px Source Serif 4 at `weight-regular` vs. `weight-medium` under rendered output. Token default is regular; H1-specific override possible after rendered review.
+- Mobile-first responsive validation at 360px before laptop (per locked spec).
+
+### Required for production deployment
+
+1. **Formspree form provisioning.** Create Formspree account, create a form with destination email `contactus@ex-tense.co`, set `PUBLIC_FORMSPREE_ENDPOINT` (in `.env` for local dev; in Vercel project env vars for production) to the Formspree action URL.
+2. **Vercel project setup.** Connect `extensellc/extense-website` repo to Vercel. Astro auto-detects via `@astrojs/vercel` adapter. Set production branch to `main` after merge from `redesign-2026`.
+3. **Domain mapping.** Point `www.ex-tense.co` and apex `ex-tense.co` (with redirect) to Vercel.
+4. **Environment variables in Vercel:**
+   - `PUBLIC_FORMSPREE_ENDPOINT` — set after Formspree provisioning
+   - `PUBLIC_SITE_URL` — defaults to `https://www.ex-tense.co`; override only if staging on a different URL
+
+---
+
 *End of brief. Phase 4 implementation reads this document as canonical input.*

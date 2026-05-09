@@ -1,0 +1,89 @@
+---
+/*
+  /privacy — privacy policy.
+
+  Long-form legal page. Content adapted from existing site's privacy-policy.html.
+
+  Note: This is a placeholder for the redesign. The actual policy content
+  should be reviewed by counsel before final publication. Phase 4 task:
+  legal review and edits as needed.
+*/
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/site/Hero.astro";
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="Extense LLC privacy policy — how we collect, use, and safeguard your information."
+>
+  <Hero
+    variant="universal"
+    title="Privacy Policy"
+    subdeck="Last updated: January 2026."
+  />
+
+  <section class="legal-section">
+    <div class="container-prose legal-section__inner prose">
+      <h2>1. Overview</h2>
+      <p>Extense LLC ("Extense," "we," "us") respects your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or engage our services. By using our site, you consent to the practices described in this policy.</p>
+
+      <h2>2. Information We Collect</h2>
+      <h3>2.1 Information You Provide</h3>
+      <ul>
+        <li><strong>Contact forms:</strong> name, email address, organization, role, phone number, and message content. Optional sample uploads when submitted as part of a Sample Content Assessment.</li>
+        <li><strong>Career applications:</strong> resume, cover letter, portfolio links, and work history.</li>
+        <li><strong>Client engagements:</strong> business contact information and project-related communications.</li>
+      </ul>
+      <h3>2.2 Automatically Collected Information</h3>
+      <ul>
+        <li><strong>Log data:</strong> IP address, browser type, operating system, referring URLs, pages visited, and timestamps.</li>
+        <li><strong>Cookies:</strong> we use essential cookies for site functionality. You can disable cookies in your browser settings.</li>
+      </ul>
+
+      <h2>3. How We Use Your Information</h2>
+      <ul>
+        <li>To respond to your inquiries and provide requested services.</li>
+        <li>To perform Sample Content Assessments on submitted content samples.</li>
+        <li>To process career applications.</li>
+        <li>To send project updates and invoices to existing clients.</li>
+        <li>To improve our website and service offerings through analytics.</li>
+        <li>To comply with legal obligations.</li>
+      </ul>
+
+      <h2>4. Data Sharing</h2>
+      <p>We do <strong>not</strong> sell, rent, or trade your personal information. We may share information with:</p>
+      <ul>
+        <li><strong>Service providers:</strong> hosting, email delivery, form processing (Formspree), and CRM tools that process data on our behalf under data processing agreements.</li>
+        <li><strong>Legal requirements:</strong> when required by law, regulation, or legal process.</li>
+      </ul>
+
+      <h2>5. Data Security</h2>
+      <p>We implement industry-standard security measures including TLS encryption for data in transit, encrypted storage for data at rest, role-based access controls, and regular security audits. For clients in regulated industries (defense, healthcare), we provide additional security controls as specified in the SOW, including ITAR-compliant workflows and HIPAA Business Associate Agreements where applicable.</p>
+
+      <h2>6. Data Retention</h2>
+      <p>We retain personal data only as long as necessary to fulfill the purposes for which it was collected. Contact form submissions are retained for two years. Sample Content Assessment uploads are retained only as long as needed to perform the assessment and respond, then deleted. Client project data is retained for five years after engagement completion unless contractually specified otherwise.</p>
+
+      <h2>7. Your Rights</h2>
+      <p>Depending on your jurisdiction, you may have the right to:</p>
+      <ul>
+        <li>Access, correct, or delete your personal data.</li>
+        <li>Opt out of marketing communications.</li>
+        <li>Request data portability.</li>
+        <li>Lodge a complaint with a supervisory authority (GDPR, CCPA).</li>
+      </ul>
+
+      <h2>8. Contact</h2>
+      <p>For privacy-related inquiries, contact us at <strong>privacy@ex-tense.co</strong>.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-section {
+    padding-top: var(--space-12);
+    padding-bottom: var(--section-pad-default);
+  }
+
+  /* .prose styles inherited from /insights/[...slug].astro global rules */
+</style>

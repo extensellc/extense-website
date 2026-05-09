@@ -1,0 +1,104 @@
+---
+/*
+  AudienceToggle — segmented control on /contact.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (/contact)
+
+  Three options: Public Sector | Private Sector | General Inquiry.
+  Single segmented control; not a dropdown.
+
+  Toggle preset by referrer (handled client-side):
+    - From /public-sector or descendants → Public Sector
+    - From /private-sector or descendants → Private Sector
+    - From /, /about, /capabilities, /insights → General Inquiry
+
+  Toggle also reads ?audience= query param (set by CTAModule when routing
+  from a page where the audience is known).
+
+  Mobile: stacks to vertical button group at 360px if labels can't fit
+  equal-width.
+*/
+
+const segments = [
+  { value: "public-sector", label: "Public Sector" },
+  { value: "private-sector", label: "Private Sector" },
+  { value: "general", label: "General Inquiry" },
+];
+---
+
+<div class="audience-toggle" role="radiogroup" aria-labelledby="audience-toggle-label" data-audience-toggle>
+  <span id="audience-toggle-label" class="sr-only">Select audience</span>
+  {segments.map((seg, i) => (
+    <button
+      type="button"
+      role="radio"
+      class:list={["audience-toggle__segment", i === 2 && "is-active"]}
+      data-audience={seg.value}
+      aria-checked={i === 2 ? "true" : "false"}
+    >
+      {seg.label}
+    </button>
+  ))}
+</div>
+
+<style>
+  .audience-toggle {
+    display: flex;
+    width: 100%;
+    border: var(--border-hairline);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+    background-color: var(--color-page-bg);
+  }
+
+  @media (max-width: 480px) {
+    .audience-toggle {
+      flex-direction: column;
+      border-radius: var(--radius-md);
+    }
+  }
+
+  .audience-toggle__segment {
+    flex: 1;
+    padding: var(--space-3) var(--space-6);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    background-color: var(--color-page-bg);
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--duration-base) var(--easing-out),
+      color var(--duration-base) var(--easing-out);
+    white-space: nowrap;
+  }
+
+  .audience-toggle__segment:not(:last-child) {
+    border-right: var(--border-hairline);
+  }
+
+  @media (max-width: 480px) {
+    .audience-toggle__segment:not(:last-child) {
+      border-right: none;
+      border-bottom: var(--border-hairline);
+    }
+  }
+
+  .audience-toggle__segment:hover {
+    background-color: var(--color-surface-elevated);
+  }
+
+  .audience-toggle__segment:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: -2px;
+  }
+
+  .audience-toggle__segment.is-active {
+    background-color: var(--color-text-primary);
+    color: var(--color-page-bg);
+  }
+
+  .audience-toggle__segment.is-active:hover {
+    background-color: var(--color-text-primary);
+  }
+</style>

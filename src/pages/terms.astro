@@ -1,0 +1,67 @@
+---
+/*
+  /terms — terms of service.
+
+  Long-form legal page. Content adapted from existing site's terms.html.
+
+  Note: This is a placeholder for the redesign. The actual terms content
+  should be reviewed by counsel before final publication. Phase 4 task:
+  legal review and edits as needed.
+*/
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/site/Hero.astro";
+---
+
+<BaseLayout
+  title="Terms of Service"
+  description="Extense LLC terms of service — agreement governing use of our website and services."
+>
+  <Hero
+    variant="universal"
+    title="Terms of Service"
+    subdeck="Last updated: January 2026."
+  />
+
+  <section class="legal-section">
+    <div class="container-prose legal-section__inner prose">
+      <h2>1. Agreement to Terms</h2>
+      <p>By accessing or using the Extense website ("site") and any services provided by Extense LLC ("company," "we," or "us"), you agree to be bound by these Terms of Service ("terms"). If you do not agree to these terms, you may not access or use the site or our services.</p>
+
+      <h2>2. Services Description</h2>
+      <p>Extense LLC provides XML content engineering services including, but not limited to: information architecture, content migration, CCMS implementation, publishing automation, AI-ready content engineering, and training. Service scope, deliverables, timeline, and fees are defined in individual Statements of Work (SOW) executed between Extense LLC and the client.</p>
+
+      <h2>3. Intellectual Property</h2>
+      <p>All materials on this site — including text, graphics, logos, images, and software — are the intellectual property of Extense LLC and are protected by applicable copyright, trademark, and other intellectual property laws.</p>
+      <p><strong>Client work products:</strong> unless otherwise stated in the SOW, all deliverables produced by Extense LLC for a client become the client's property upon full payment. Extense LLC retains the right to use anonymized case studies and methodologies derived from client work for marketing purposes, subject to any applicable confidentiality terms.</p>
+
+      <h2>4. Confidentiality</h2>
+      <p>Extense LLC acknowledges that client content and documentation may contain proprietary or classified information. We maintain strict confidentiality protocols including NDA execution, secure file transfer, access-controlled environments, and ITAR-compliant procedures where applicable.</p>
+
+      <h2>5. Sample Content Assessment</h2>
+      <p>Sample materials submitted via the Sample Content Assessment intake are handled under standard confidentiality. Submissions are used solely to perform the assessment and respond; they are not retained beyond the assessment cycle, are not used for training models, and are not shared with third parties.</p>
+
+      <h2>6. Payment Terms</h2>
+      <p>Payment terms are as specified in each SOW. Unless otherwise agreed, invoices are due NET 30 from the date of issuance. Late payments accrue interest at 1.5% per month. Project milestones may trigger partial payments as defined in the SOW.</p>
+
+      <h2>7. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by law, Extense LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from the use of our services. Our total liability for any claim shall not exceed the total fees paid by the client for the specific engagement giving rise to the claim.</p>
+
+      <h2>8. Termination</h2>
+      <p>Either party may terminate an engagement with 30 days written notice. In the event of termination, the client shall pay for all work completed and expenses incurred up to the termination date. Extense LLC will deliver all work-in-progress materials upon final payment.</p>
+
+      <h2>9. Governing Law</h2>
+      <p>These terms shall be governed by and construed in accordance with the laws of the State of Maryland, without regard to its conflict of law provisions. Any disputes shall be resolved in the courts of Maryland or, where mutually agreed, through binding arbitration.</p>
+
+      <h2>10. Contact</h2>
+      <p>For questions about these terms, contact us at <strong>legal@ex-tense.co</strong>.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-section {
+    padding-top: var(--space-12);
+    padding-bottom: var(--section-pad-default);
+  }
+</style>

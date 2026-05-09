@@ -1,0 +1,483 @@
+---
+/*
+  /contact — conversion mechanics.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §8 (/contact) and §11 (Phase 4 directives)
+
+  Section order:
+    1. TopNav (BaseLayout)
+    2. Hero (Hero.universal — minimal-direct)
+    3. AudienceToggle + form
+    4. Alternative channels
+    5. Footer (BaseLayout)
+
+  Form fields per audience (swap on toggle):
+    Public Sector: Organization, Agency, Role, Brief description, Name,
+                   Email, Phone (optional), Sample upload (optional)
+    Private Sector: Organization, Role, Problem area, Timeline, Brief
+                    description, Name, Email, Phone (optional), Sample upload
+    General Inquiry: Brief description, Name, Email, Phone (optional),
+                     Sample upload (optional)
+
+  Toggle preset by referrer (handled client-side):
+    From /public-sector or descendants -> Public Sector
+    From /private-sector or descendants -> Private Sector
+    From /, /about, /capabilities, /insights -> General Inquiry
+
+  Toggle also reads ?audience=... query param (set by CTAModule).
+
+  Submission to Formspree (configured via FORMSPREE_ENDPOINT env var).
+  Routes to contactus@ex-tense.co per Phase 1 lock.
+  Response commitment: <24 hours business days.
+*/
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/site/Hero.astro";
+import AudienceToggle from "../components/site/AudienceToggle.astro";
+import FormField from "../components/site/FormField.astro";
+import TextareaField from "../components/site/TextareaField.astro";
+import FileUploadField from "../components/site/FileUploadField.astro";
+
+// Formspree endpoint — configure via .env or replace at deploy time.
+// Phase 4 deployment task: provision Formspree form, set FORMSPREE_ENDPOINT.
+const FORMSPREE_ENDPOINT =
+  import.meta.env.PUBLIC_FORMSPREE_ENDPOINT ?? "https://formspree.io/f/REPLACE_WITH_FORM_ID";
+---
+
+<BaseLayout
+  title="Contact"
+  description="Submit a 20-page sample for a free Sample Content Assessment, or send a general inquiry. Response within 24 business hours."
+>
+  <Hero
+    variant="universal"
+    title="Contact Extense."
+    subdeck="Submit a sample for a Sample Content Assessment, or send a general inquiry. Response within 24 business hours."
+  />
+
+  <section class="contact-section contact-section--form" aria-labelledby="form-heading">
+    <div class="container-prose contact-section__inner">
+      <h2 id="form-heading" class="sr-only">Contact form</h2>
+
+      <div class="contact-section__success" data-success hidden>
+        <h3 class="contact-section__success-heading">Thanks. We'll be in touch.</h3>
+        <p class="contact-section__success-body">
+          Your submission has been received. We'll respond within 24 business hours. If you submitted a sample, the assessment will follow within two business days.
+        </p>
+        <div class="contact-section__success-links" data-success-links>
+          <a href="/" class="contact-section__success-link">Back to home →</a>
+        </div>
+      </div>
+
+      <form
+        class="contact-form"
+        method="POST"
+        action={FORMSPREE_ENDPOINT}
+        enctype="multipart/form-data"
+        data-contact-form
+      >
+        <p class="contact-form__instructions">
+          Select the audience that best matches your context. Field set adapts to the audience.
+        </p>
+
+        <AudienceToggle />
+
+        <input type="hidden" name="audience" data-audience-input value="general" />
+
+        <!-- Universal fields -->
+        <div class="contact-form__group" data-fieldset="all">
+          <FormField id="name" name="name" label="Your name" required autocomplete="name" />
+          <FormField id="email" name="email" label="Work email" type="email" required autocomplete="email" />
+          <FormField id="phone" name="phone" label="Phone" type="tel" autocomplete="tel" placeholder="(optional)" />
+        </div>
+
+        <!-- Public Sector fields -->
+        <div class="contact-form__group" data-fieldset="public-sector" hidden>
+          <FormField id="ps-org" name="organization" label="Organization" autocomplete="organization" placeholder="Agency, contractor, or program office" />
+          <FormField id="ps-agency" name="agency" label="Agency or program" placeholder="e.g., Department of Defense, NIH, GSA" />
+          <FormField id="ps-role" name="role" label="Your role" placeholder="e.g., Contracting officer, program lead" />
+        </div>
+
+        <!-- Private Sector fields -->
+        <div class="contact-form__group" data-fieldset="private-sector" hidden>
+          <FormField id="cs-org" name="organization" label="Organization" autocomplete="organization" />
+          <FormField id="cs-role" name="role" label="Your role" placeholder="e.g., Director of Documentation" />
+          <FormField id="cs-problem" name="problem_area" label="Problem area" placeholder="e.g., CCMS migration, RAG enablement, IA refactor" />
+          <FormField id="cs-timeline" name="timeline" label="Timeline" placeholder="e.g., Active RFP, FY26 planning" />
+        </div>
+
+        <!-- Universal description + upload -->
+        <div class="contact-form__group">
+          <TextareaField
+            id="description"
+            name="description"
+            label="Brief description"
+            required
+            placeholder="What are you trying to do? What's getting in the way?"
+            rows={6}
+          />
+          <FileUploadField />
+        </div>
+
+        <div class="contact-form__commit">
+          <p class="contact-form__commit-text">Response within 24 business hours.</p>
+        </div>
+
+        <button type="submit" class="contact-form__submit" data-submit>
+          Submit →
+        </button>
+
+        <p class="contact-form__error" data-error hidden role="alert">
+          Something went wrong. Please try again or email
+          <a href="mailto:contactus@ex-tense.co">contactus@ex-tense.co</a> directly.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <section class="contact-section contact-section--alt" aria-labelledby="alt-heading">
+    <div class="container-prose contact-section__inner">
+      <h2 id="alt-heading" class="contact-section__heading">Other ways to reach us.</h2>
+      <dl class="contact-section__channels">
+        <div class="contact-section__channel">
+          <dt class="contact-section__channel-label">Email</dt>
+          <dd class="contact-section__channel-value">
+            <a href="mailto:contactus@ex-tense.co">contactus@ex-tense.co</a>
+          </dd>
+        </div>
+        <div class="contact-section__channel">
+          <dt class="contact-section__channel-label">Phone</dt>
+          <dd class="contact-section__channel-value">
+            <a href="tel:+14123297746">+1 (412) 329-7746</a>
+          </dd>
+        </div>
+        <div class="contact-section__channel">
+          <dt class="contact-section__channel-label">Mailing address</dt>
+          <dd class="contact-section__channel-value">
+            Extense LLC<br />
+            Maryland, United States
+          </dd>
+        </div>
+        <div class="contact-section__channel">
+          <dt class="contact-section__channel-label">LinkedIn</dt>
+          <dd class="contact-section__channel-value">
+            <a href="https://www.linkedin.com/company/ex-tense" target="_blank" rel="noopener noreferrer">
+              Extense LLC on LinkedIn
+            </a>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+  }
+
+  @media (max-width: 767px) {
+    .contact-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .contact-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-12);
+  }
+
+  /* Success state */
+  .contact-section__success {
+    text-align: center;
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  .contact-section__success-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+  }
+
+  .contact-section__success-body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-8);
+    max-width: 60ch;
+    margin-left: auto;
+    margin-right: auto;
+    text-wrap: pretty;
+  }
+
+  .contact-section__success-link {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .contact-section__success-link:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+  }
+
+  /* Form */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .contact-form__instructions {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .contact-form__group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-form__group[hidden] {
+    display: none;
+  }
+
+  .contact-form__commit {
+    text-align: center;
+    margin-top: var(--space-4);
+  }
+
+  .contact-form__commit-text {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+
+  .contact-form__submit {
+    align-self: flex-start;
+    padding: var(--space-4) var(--space-8);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    background-color: var(--color-accent-primary);
+    background-image: linear-gradient(
+      135deg,
+      var(--color-logo-gradient-1) 0%,
+      var(--color-accent-primary) 100%
+    );
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color var(--duration-base) var(--easing-out);
+  }
+
+  .contact-form__submit:hover {
+    background-image: none;
+    background-color: var(--color-accent-primary-hover);
+  }
+
+  .contact-form__submit:active {
+    background-image: none;
+    background-color: var(--color-accent-primary-pressed);
+  }
+
+  .contact-form__submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 600px) {
+    .contact-form__submit {
+      align-self: stretch;
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .contact-form__error {
+    color: var(--color-error);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .contact-form__error a {
+    color: var(--color-error);
+    text-decoration: underline;
+  }
+
+  /* Alternative channels */
+  .contact-section__channels {
+    margin: 0;
+    padding: 0;
+  }
+
+  .contact-section__channel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-top: var(--border-hairline);
+  }
+
+  .contact-section__channel:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (min-width: 600px) {
+    .contact-section__channel {
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+  }
+
+  .contact-section__channel-label {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .contact-section__channel-value {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+  }
+
+  .contact-section__channel-value a {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .contact-section__channel-value a:hover,
+  .contact-section__channel-value a:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+</style>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // /contact — audience toggle + form submission
+  // ─────────────────────────────────────────────────────────
+  function setupContactForm() {
+    const toggle = document.querySelector<HTMLElement>("[data-audience-toggle]");
+    const audienceInput = document.querySelector<HTMLInputElement>("[data-audience-input]");
+    const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+    const successPanel = document.querySelector<HTMLElement>("[data-success]");
+    const errorMsg = document.querySelector<HTMLElement>("[data-error]");
+    const submitBtn = document.querySelector<HTMLButtonElement>("[data-submit]");
+
+    if (!toggle || !audienceInput || !form || !successPanel || !errorMsg || !submitBtn) return;
+
+    const segments = toggle.querySelectorAll<HTMLButtonElement>("[data-audience]");
+    const fieldsets = document.querySelectorAll<HTMLElement>("[data-fieldset]");
+
+    function setAudience(value: string) {
+      // Update toggle UI
+      segments.forEach((seg) => {
+        const isActive = seg.dataset.audience === value;
+        seg.classList.toggle("is-active", isActive);
+        seg.setAttribute("aria-checked", isActive ? "true" : "false");
+      });
+      // Update hidden input
+      audienceInput!.value = value;
+      // Update visible fieldsets
+      fieldsets.forEach((fs) => {
+        const target = fs.dataset.fieldset;
+        const visible = target === "all" || target === value;
+        fs.hidden = !visible;
+        // Disable inputs in hidden fieldsets so they don't submit
+        fs.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input, textarea, select")
+          .forEach((el) => {
+            el.disabled = !visible;
+          });
+      });
+    }
+
+    // Click handlers on toggle segments
+    segments.forEach((seg) => {
+      seg.addEventListener("click", () => {
+        const value = seg.dataset.audience;
+        if (value) setAudience(value);
+      });
+    });
+
+    // Determine initial audience: ?audience= query param > document.referrer > default
+    function determineInitialAudience(): string {
+      const params = new URLSearchParams(window.location.search);
+      const fromQuery = params.get("audience");
+      if (fromQuery && ["public-sector", "private-sector", "general"].includes(fromQuery)) {
+        return fromQuery;
+      }
+      const ref = document.referrer;
+      if (ref) {
+        try {
+          const refUrl = new URL(ref);
+          if (refUrl.hostname === window.location.hostname) {
+            if (refUrl.pathname.startsWith("/public-sector")) return "public-sector";
+            if (refUrl.pathname.startsWith("/private-sector")) return "private-sector";
+          }
+        } catch {
+          /* ignore parse errors */
+        }
+      }
+      return "general";
+    }
+
+    setAudience(determineInitialAudience());
+
+    // Form submission via fetch — keeps us on the page and renders success state
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorMsg!.hidden = true;
+      submitBtn!.disabled = true;
+      submitBtn!.textContent = "Submitting...";
+
+      const formData = new FormData(form!);
+      try {
+        const res = await fetch(form!.action, {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" },
+        });
+
+        if (res.ok) {
+          form!.hidden = true;
+          successPanel!.hidden = false;
+          successPanel!.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          throw new Error(`Submission failed: ${res.status}`);
+        }
+      } catch (err) {
+        errorMsg!.hidden = false;
+        submitBtn!.disabled = false;
+        submitBtn!.textContent = "Submit →";
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", setupContactForm);
+  document.addEventListener("astro:page-load", setupContactForm);
+</script>

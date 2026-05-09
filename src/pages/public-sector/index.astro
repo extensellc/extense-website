@@ -21,7 +21,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/site/Hero.astro";
 import CapabilityStrip from "../../components/site/CapabilityStrip.astro";
-import PDFDownloadButton from "../../components/site/PDFDownloadButton.astro";
+// PDFDownloadButton — wired but not active until build-time PDF generation lands.
+// import PDFDownloadButton from "../../components/site/PDFDownloadButton.astro";
 import LogoBench from "../../components/site/LogoBench.astro";
 import DocumentRow from "../../components/site/DocumentRow.astro";
 import PillarCard from "../../components/site/PillarCard.astro";
@@ -104,10 +105,18 @@ const federalPillars = [
 
   <CapabilityStrip />
 
-  <PDFDownloadButton
-    href="/capability-statement.pdf"
-    label="Download capability statement"
-  />
+  <!--
+    PDFDownloadButton is wired but not active until Phase 4 build-time
+    PDF generation lands. For now, display a neutral utility line directing
+    federal procurement officers to email for a capability statement copy.
+  -->
+  <div class="container-prose ps-pdf-placeholder">
+    <p>
+      For a printable capability statement,
+      <a href="mailto:contactus@ex-tense.co?subject=Capability%20Statement%20Request">contactus@ex-tense.co</a>
+      &mdash; sent within 24 business hours.
+    </p>
+  </div>
 
   <section class="pub-section pub-section--logos" aria-label="Federal client proof">
     <LogoBench variant="federal" eyebrow="Federal Past Performance" />
@@ -205,6 +214,19 @@ const federalPillars = [
 
   .pub-section__rows {
     /* DocumentRow handles its own spacing */
+  }
+
+  .ps-pdf-placeholder {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-12);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+  }
+
+  .ps-pdf-placeholder a {
+    color: var(--color-link);
+    font-weight: var(--weight-medium);
   }
 
   .pub-section__pillar-grid {
