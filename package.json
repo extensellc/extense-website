@@ -1,0 +1,27 @@
+{
+  "name": "extense-website",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Extense LLC — XML content engineering firm. redesign-2026.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/vercel": "^8.0.6",
+    "astro": "^5.1.5",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7"
+  },
+  "engines": {
+    "node": ">=20.18.0"
+  }
+}

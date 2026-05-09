@@ -1,0 +1,202 @@
+/*
+  Design tokens — Extense LLC website
+  Source of truth: EXTENSE_DESIGN_BRIEF.md §10
+  Locked Phase 3. Changes require brief update + design-lead approval.
+*/
+
+:root {
+  /* ─────────────────────────────────────────────────────────
+     COLOR
+     ───────────────────────────────────────────────────────── */
+
+  /* Surfaces & text */
+  --color-page-bg: #faf7f2;
+  --color-surface-elevated: #f2eee8;
+  --color-text-primary: #1a1817;
+  --color-text-secondary: #6b6560;
+  --color-text-muted: #9c958e;
+  --color-border-subtle: #e5dfd7;
+
+  /* Accent — brand identity ONLY (logo, CTA backgrounds, brand presence)
+     RULE: never used as rendered text on color-page-bg (fails WCAG AA).
+     For inline link / actionable text, use --color-link. */
+  --color-accent-primary: #f59e0b;
+  --color-accent-primary-hover: #d97706;
+  --color-accent-primary-pressed: #b45309;
+
+  /* Logo gradient stops (used in Extense logo lockup) */
+  --color-logo-gradient-1: #fcd34d;
+  --color-logo-gradient-2: #fde047;
+  --color-logo-gradient-3: #f59e0b;
+
+  /* Link / actionable text — passes WCAG AA on color-page-bg (~5.4:1) */
+  --color-link: #b45309;
+  --color-link-hover: #9a3412;
+
+  /* /public-sector structural accent — additive, not replacement */
+  --color-gravitas-navy: #1f2d3d;
+
+  /* Functional */
+  --color-success: #15803d;
+  --color-warning: #9a3412; /* distinct from accent-primary-pressed */
+  --color-error: #991b1b;
+
+  /* On-dark text (for dark surfaces) */
+  --color-text-on-dark: #faf7f2;
+  --color-text-on-dark-secondary: #c9c4be;
+
+  /* ─────────────────────────────────────────────────────────
+     TYPOGRAPHY
+     ───────────────────────────────────────────────────────── */
+
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "Menlo", "Cascadia Code", "Courier New", monospace;
+
+  /* Type scale — fluid where appropriate, fixed where contrast matters */
+  /* H1 / display-xl: 32px → 48px */
+  --text-display-xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+  /* H2 / display-lg: 26px → 36px */
+  --text-display-lg: clamp(1.625rem, 1.3125rem + 1.5625vw, 2.25rem);
+  /* H3 / display-md: 20px → 24px */
+  --text-display-md: clamp(1.25rem, 1.125rem + 0.625vw, 1.5rem);
+  /* H4 / display-sm: 18px (fixed) */
+  --text-display-sm: 1.125rem;
+  /* Outcome stat numbers: 44px → 64px */
+  --text-stat: clamp(2.75rem, 2.125rem + 3.125vw, 4rem);
+  /* Body sizes (fixed for reading consistency) */
+  --text-body-lg: 1.125rem;     /* 18px */
+  --text-body: 1.0625rem;       /* 17px */
+  --text-body-sm: 0.9375rem;    /* 15px */
+  --text-caption: 0.875rem;     /* 14px */
+
+  /* Line heights */
+  --leading-tight: 1.2;
+  --leading-snug: 1.4;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+
+  /* Weights — Source Serif 4 + Inter both ship 400/500/600 */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Letter-spacing for label / eyebrow / wordmark */
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.1em;
+  --tracking-wordmark: 0.2em;
+
+  /* ─────────────────────────────────────────────────────────
+     SPACING — 8px baseline, augmented with 4px / 12px steps
+     ───────────────────────────────────────────────────────── */
+
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+
+  /* ─────────────────────────────────────────────────────────
+     CONTAINERS & LAYOUT
+     ───────────────────────────────────────────────────────── */
+
+  --container-prose: 720px;     /* warmth reading width */
+  --container-data: 1080px;     /* tables, matrix, multi-column rows */
+  --container-page: 1280px;     /* full content width */
+
+  --container-padding: var(--space-6);
+
+  /* Section vertical padding — typical / compressed */
+  --section-pad-default: var(--space-24);
+  --section-pad-compressed: var(--space-16);
+  --section-pad-emphasis: var(--space-32);
+
+  /* ─────────────────────────────────────────────────────────
+     BORDERS / RADIUS
+     ───────────────────────────────────────────────────────── */
+
+  --border-hairline: 1px solid var(--color-border-subtle);
+  --border-hairline-strong: 1px solid var(--color-text-secondary);
+
+  --radius-none: 0;
+  --radius-sm: 4px;       /* form fields, primary CTA button */
+  --radius-md: 8px;       /* rare; only for app-flavored elements */
+  --radius-pill: 9999px;  /* RESERVED for chip-like interactive controls only */
+
+  /* ─────────────────────────────────────────────────────────
+     MOTION
+     ───────────────────────────────────────────────────────── */
+
+  --duration-fast: 100ms;
+  --duration-base: 150ms;
+  --duration-medium: 200ms;
+  --easing-out: cubic-bezier(0, 0, 0.2, 1);
+  --easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ─────────────────────────────────────────────────────────
+     ICONS
+     ───────────────────────────────────────────────────────── */
+
+  --stroke-icon: 1.5px;
+
+  /* ─────────────────────────────────────────────────────────
+     Z-INDEX SCALE
+     ───────────────────────────────────────────────────────── */
+
+  --z-base: 1;
+  --z-elevated: 10;
+  --z-sticky: 100;
+  --z-overlay: 1000;
+  --z-modal: 10000;
+
+  /* ─────────────────────────────────────────────────────────
+     FOCUS RING (system convention)
+     ───────────────────────────────────────────────────────── */
+
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-link);
+}
+
+/* Tablet container padding */
+@media (min-width: 768px) {
+  :root {
+    --container-padding: var(--space-8);
+  }
+}
+
+/* Desktop container padding */
+@media (min-width: 1024px) {
+  :root {
+    --container-padding: var(--space-12);
+  }
+}
+
+/* Mobile body line-height bump for legibility */
+@media (max-width: 767px) {
+  :root {
+    --leading-body: var(--leading-relaxed);
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --leading-body: var(--leading-normal);
+  }
+}
+
+/* Reduced motion — system convention */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-medium: 0ms;
+  }
+}

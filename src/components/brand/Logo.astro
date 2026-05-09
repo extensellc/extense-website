@@ -1,0 +1,84 @@
+---
+/*
+  Logo — Extense horizontal wordmark
+  Two overlapping squares (amber gradient) + "EXTENSE" wordmark in Montserrat ExtraLight.
+
+  Usage:
+    <Logo height={32} />              -> default, dark wordmark on light background
+    <Logo height={32} variant="dark" /> -> light wordmark on dark background
+    <Logo monochrome />               -> single-color rendering (footer / proof contexts)
+
+  Accessibility: SVG has aria-label "Extense LLC" and role="img".
+  The wordmark depends on Montserrat 200 — loaded by BaseLayout.
+*/
+
+interface Props {
+  height?: number;
+  variant?: "default" | "dark";
+  monochrome?: boolean;
+  class?: string;
+}
+
+const {
+  height = 40,
+  variant = "default",
+  monochrome = false,
+  class: className,
+} = Astro.props;
+
+const wordmarkColor =
+  variant === "dark" ? "var(--color-text-on-dark)" : "var(--color-text-primary)";
+
+const gradientId = `extense-logo-amber-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1020 180"
+  height={height}
+  role="img"
+  aria-label="Extense LLC"
+  class:list={["extense-logo", className]}
+  data-monochrome={monochrome ? "true" : undefined}
+>
+  <defs>
+    <linearGradient id={gradientId} x1="15" y1="10" x2="155" y2="160" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="var(--color-logo-gradient-1)" />
+      <stop offset="50%" stop-color="var(--color-logo-gradient-2)" />
+      <stop offset="100%" stop-color="var(--color-logo-gradient-3)" />
+    </linearGradient>
+  </defs>
+  <rect
+    x="45" y="10" width="110" height="110" rx="4"
+    fill="none"
+    stroke={monochrome ? "currentColor" : `url(#${gradientId})`}
+    stroke-width="5"
+  />
+  <rect
+    x="15" y="60" width="100" height="100" rx="4"
+    fill="none"
+    stroke={monochrome ? "currentColor" : `url(#${gradientId})`}
+    stroke-width="5"
+  />
+  <text
+    x="205" y="137"
+    font-family="'Montserrat', 'Helvetica Neue', Arial, sans-serif"
+    font-size="150"
+    font-weight="200"
+    letter-spacing="20"
+    fill={monochrome ? "currentColor" : wordmarkColor}
+  >EXTENSE</text>
+</svg>
+
+<style>
+  .extense-logo {
+    display: block;
+    width: auto;
+  }
+
+  /* Monochrome variant inherits color from currentColor — useful for footer
+     where the whole wordmark + squares should match surrounding text. */
+  .extense-logo[data-monochrome="true"] {
+    color: currentColor;
+  }
+</style>

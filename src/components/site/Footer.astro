@@ -1,0 +1,238 @@
+---
+/*
+  Footer — shared, all pages.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (System / Shared)
+
+  Structure:
+    - Background color-surface-elevated, full-width edge-to-edge
+    - Top hairline border
+    - 4 columns desktop (~25% each), single column mobile
+    - Bottom row: copyright left | LinkedIn icon + Privacy/Terms right
+    - Footer is structural navigation only — no newsletter, no marketing CTAs.
+*/
+
+import Logo from "../brand/Logo.astro";
+
+const year = new Date().getFullYear();
+
+const columns = [
+  {
+    heading: "Capabilities",
+    links: [
+      { label: "Information Architecture", href: "/capabilities/information-architecture" },
+      { label: "Content Migration", href: "/capabilities/content-migration" },
+      { label: "CCMS & Publishing", href: "/capabilities/ccms-and-publishing" },
+      { label: "AI-Ready Content", href: "/capabilities/ai-ready-content" },
+    ],
+  },
+  {
+    heading: "Audiences",
+    links: [
+      { label: "Public Sector", href: "/public-sector" },
+      { label: "Private Sector", href: "/private-sector" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { label: "About", href: "/about" },
+      { label: "Insights", href: "/insights" },
+      { label: "Contact", href: "/contact" },
+    ],
+  },
+];
+---
+
+<footer class="footer" aria-label="Site footer">
+  <div class="footer__inner container-page">
+    <div class="footer__columns">
+      <div class="footer__brand">
+        <Logo height={28} monochrome />
+        <p class="footer__tagline">XML content engineering for organizations whose documentation has to be right.</p>
+      </div>
+
+      {columns.map((col) => (
+        <div class="footer__column">
+          <h4 class="footer__heading">{col.heading}</h4>
+          <ul class="footer__links">
+            {col.links.map((link) => (
+              <li>
+                <a href={link.href} class="footer__link">{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">© {year} Extense LLC. All rights reserved.</p>
+      <div class="footer__utility">
+        <a
+          href="https://www.linkedin.com/company/ex-tense"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer__linkedin"
+          aria-label="Extense LLC on LinkedIn"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.43v6.31zM5.34 7.43A2.06 2.06 0 113.27 5.36a2.06 2.06 0 012.07 2.07zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.28V1.72C24 .77 23.21 0 22.22 0z"></path>
+          </svg>
+        </a>
+        <a href="/privacy" class="footer__legal">Privacy</a>
+        <span class="footer__sep" aria-hidden="true">·</span>
+        <a href="/terms" class="footer__legal">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--color-surface-elevated);
+    border-top: var(--border-hairline);
+    color: var(--color-text-primary);
+    margin-top: auto;
+  }
+
+  .footer__inner {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-12);
+  }
+
+  /* Mobile: stacked single column */
+  .footer__columns {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  /* Desktop: 4-column grid */
+  @media (min-width: 1024px) {
+    .footer__columns {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(3, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .footer__tagline {
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 28ch;
+  }
+
+  .footer__heading {
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+  }
+
+  .footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .footer__link {
+    display: inline-block;
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .footer__link:hover,
+  .footer__link:focus-visible {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* Bottom row */
+  .footer__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: flex-start;
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .footer__copyright {
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+  }
+
+  .footer__utility {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .footer__linkedin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: var(--color-text-muted);
+    border-radius: var(--radius-sm);
+    transition: color var(--duration-base) var(--easing-out),
+      background-color var(--duration-base) var(--easing-out);
+  }
+
+  .footer__linkedin:hover,
+  .footer__linkedin:focus-visible {
+    color: var(--color-link);
+    background-color: var(--color-page-bg);
+  }
+
+  .footer__legal {
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .footer__legal:hover,
+  .footer__legal:focus-visible {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .footer__sep {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+</style>

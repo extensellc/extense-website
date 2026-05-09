@@ -1,0 +1,425 @@
+---
+/*
+  TopNav — shared, sticky to viewport top.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (System / Shared)
+
+  Behavior:
+    - Background color-page-bg default; fades to color-surface-elevated
+      with hairline-bottom border when scrolled past hero.
+    - Active page: weight-semibold + color-link, with aria-current="page".
+    - "Contact" emphasis: weight-semibold default (preserves restraint;
+      no amber underline / chip).
+    - No dropdowns. Each nav item routes to its parent landing page.
+    - Mobile: hamburger right; full-height drawer slides from right.
+*/
+
+import Logo from "../brand/Logo.astro";
+
+const currentPath = Astro.url.pathname;
+
+interface NavItem {
+  label: string;
+  href: string;
+  matchPaths?: RegExp[];
+  emphasis?: boolean;
+}
+
+const navItems: NavItem[] = [
+  { label: "Capabilities", href: "/capabilities", matchPaths: [/^\/capabilities/] },
+  { label: "Public Sector", href: "/public-sector", matchPaths: [/^\/public-sector/] },
+  { label: "Private Sector", href: "/private-sector", matchPaths: [/^\/private-sector/] },
+  { label: "About", href: "/about" },
+  { label: "Insights", href: "/insights", matchPaths: [/^\/insights/] },
+  { label: "Contact", href: "/contact", emphasis: true },
+];
+
+function isActive(item: NavItem): boolean {
+  if (item.matchPaths) {
+    return item.matchPaths.some((re) => re.test(currentPath));
+  }
+  // Trailing-slash-tolerant exact match
+  return currentPath === item.href || currentPath === `${item.href}/`;
+}
+---
+
+<header class="topnav" data-topnav>
+  <div class="topnav__inner container-page">
+    <a href="/" class="topnav__logo" aria-label="Extense LLC — home">
+      <Logo height={32} />
+    </a>
+
+    <nav class="topnav__nav" aria-label="Main navigation">
+      <ul class="topnav__list">
+        {navItems.map((item) => {
+          const active = isActive(item);
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  "topnav__link",
+                  active && "is-active",
+                  item.emphasis && "is-emphasis",
+                ]}
+                aria-current={active ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      class="topnav__hamburger"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="topnav-mobile"
+      data-topnav-trigger
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width={1.5}
+        stroke-linecap="round"
+      >
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div
+    class="topnav__drawer"
+    id="topnav-mobile"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Main navigation"
+    data-topnav-drawer
+    hidden
+  >
+    <div class="topnav__drawer-inner">
+      <div class="topnav__drawer-head">
+        <a href="/" class="topnav__drawer-logo" aria-label="Extense LLC — home">
+          <Logo height={28} />
+        </a>
+        <button
+          type="button"
+          class="topnav__drawer-close"
+          aria-label="Close menu"
+          data-topnav-close
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width={1.5}
+            stroke-linecap="round"
+          >
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <ul class="topnav__drawer-list">
+        {navItems.map((item) => {
+          const active = isActive(item);
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={["topnav__drawer-link", active && "is-active"]}
+                aria-current={active ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </div>
+</header>
+
+<style>
+  .topnav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background-color: var(--color-page-bg);
+    transition: background-color var(--duration-base) var(--easing-out),
+      border-color var(--duration-base) var(--easing-out);
+    border-bottom: 1px solid transparent;
+  }
+
+  .topnav[data-scrolled="true"] {
+    background-color: var(--color-surface-elevated);
+    border-bottom-color: var(--color-border-subtle);
+  }
+
+  .topnav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    height: 56px;
+  }
+
+  @media (min-width: 768px) {
+    .topnav__inner {
+      height: 72px;
+    }
+  }
+
+  .topnav__logo {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-primary);
+  }
+  .topnav__logo:hover,
+  .topnav__logo:focus-visible {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  /* Desktop nav */
+  .topnav__nav {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .topnav__nav {
+      display: block;
+    }
+  }
+
+  .topnav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .topnav__link {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .topnav__link:hover,
+  .topnav__link:focus-visible {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .topnav__link.is-active {
+    font-weight: var(--weight-semibold);
+    color: var(--color-link);
+  }
+
+  .topnav__link.is-emphasis {
+    font-weight: var(--weight-semibold);
+  }
+
+  /* Hamburger */
+  .topnav__hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: calc(var(--space-3) * -1); /* visually align with edge */
+    color: var(--color-text-primary);
+    border-radius: var(--radius-sm);
+    transition: background-color var(--duration-base) var(--easing-out);
+  }
+
+  .topnav__hamburger:hover {
+    background-color: var(--color-surface-elevated);
+  }
+
+  @media (min-width: 1024px) {
+    .topnav__hamburger {
+      display: none;
+    }
+  }
+
+  /* Mobile drawer */
+  .topnav__drawer {
+    position: fixed;
+    inset: 0;
+    background-color: var(--color-page-bg);
+    z-index: var(--z-modal);
+    overflow-y: auto;
+  }
+
+  .topnav__drawer[hidden] {
+    display: none;
+  }
+
+  .topnav__drawer-inner {
+    padding: var(--space-4) var(--container-padding);
+  }
+
+  .topnav__drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    margin-bottom: var(--space-8);
+  }
+
+  .topnav__drawer-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--color-text-primary);
+    border-radius: var(--radius-sm);
+  }
+
+  .topnav__drawer-close:hover {
+    background-color: var(--color-surface-elevated);
+  }
+
+  .topnav__drawer-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .topnav__drawer-link {
+    display: block;
+    padding: var(--space-3) 0;
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    border-bottom: var(--border-hairline);
+  }
+
+  .topnav__drawer-link:hover,
+  .topnav__drawer-link:focus-visible {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .topnav__drawer-link.is-active {
+    font-weight: var(--weight-semibold);
+    color: var(--color-link);
+  }
+
+  /* Lock scroll on body when drawer is open */
+  :global(body.has-drawer-open) {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // Sticky-nav background fade on scroll past hero
+  // ─────────────────────────────────────────────────────────
+  function setupScrollFade() {
+    const nav = document.querySelector<HTMLElement>("[data-topnav]");
+    if (!nav) return;
+
+    const threshold = 64; // ~hero top padding; sufficient signal for scroll fade
+    let ticking = false;
+
+    function update() {
+      ticking = false;
+      const y = window.scrollY;
+      if (y > threshold) {
+        nav!.dataset.scrolled = "true";
+      } else {
+        delete nav!.dataset.scrolled;
+      }
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+  }
+
+  // ─────────────────────────────────────────────────────────
+  // Mobile drawer — focus trap, escape-to-close, scroll lock
+  // ─────────────────────────────────────────────────────────
+  function setupMobileDrawer() {
+    const trigger = document.querySelector<HTMLButtonElement>("[data-topnav-trigger]");
+    const drawer = document.querySelector<HTMLElement>("[data-topnav-drawer]");
+    const closeBtn = document.querySelector<HTMLButtonElement>("[data-topnav-close]");
+
+    if (!trigger || !drawer || !closeBtn) return;
+
+    let lastFocused: HTMLElement | null = null;
+
+    function open() {
+      lastFocused = document.activeElement as HTMLElement;
+      drawer!.hidden = false;
+      trigger!.setAttribute("aria-expanded", "true");
+      document.body.classList.add("has-drawer-open");
+      // Move focus into the drawer
+      const firstFocusable = drawer!.querySelector<HTMLElement>(
+        "a, button, [tabindex]:not([tabindex='-1'])"
+      );
+      firstFocusable?.focus();
+    }
+
+    function close() {
+      drawer!.hidden = true;
+      trigger!.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("has-drawer-open");
+      lastFocused?.focus();
+    }
+
+    trigger.addEventListener("click", open);
+    closeBtn.addEventListener("click", close);
+
+    // Escape to close
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !drawer.hidden) {
+        close();
+      }
+    });
+
+    // Close on link click (so SPA-style navigation feels right;
+    // also handles cases where the user clicks an anchor that navigates)
+    drawer.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === "A") {
+        close();
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setupScrollFade();
+    setupMobileDrawer();
+  });
+
+  // Re-setup on view transitions (Astro client-side nav)
+  document.addEventListener("astro:page-load", () => {
+    setupScrollFade();
+    setupMobileDrawer();
+  });
+</script>

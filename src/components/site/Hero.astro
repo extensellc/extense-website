@@ -1,0 +1,132 @@
+---
+/*
+  Hero — used on every primary page.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Hero)
+
+  One component, three copy-mode variants. Structure is identical across variants;
+  only copy register varies. The variant prop is a class hook for any page-specific
+  styling tweaks (e.g., gravitas-navy treatment on /public-sector if needed).
+
+  Variants:
+    .universal   — /, /about, /capabilities, /insights, /contact
+    .identifying — /public-sector (declarative federal-procurement)
+    .outcome     — /private-sector (outcome-led with concrete numbers)
+
+  Locked rules:
+    - No CTA in hero. Conversion mechanism lives at the close of each page.
+    - No transformation language anywhere. (No "we transform", "empower", "enable" verbs.)
+    - /private-sector hero must use real numbers, not abstractions.
+    - /about hero uses Phase 1 canonical positioning sentence verbatim.
+*/
+
+interface Props {
+  title: string;
+  subdeck?: string;
+  variant?: "universal" | "identifying" | "outcome";
+  /**
+   * If true, includes a small badge row above the H1 (e.g., for /
+   * homepage with certification pills). Phase 4 design has shipped this
+   * out of the hero per locked decisions, but the slot remains available
+   * for future use.
+   */
+  badges?: string[];
+  /**
+   * Eyebrow above H1 (small label). Used on some interior pages.
+   */
+  eyebrow?: string;
+}
+
+const { title, subdeck, variant = "universal", badges, eyebrow } = Astro.props;
+---
+
+<section class:list={["hero", `hero--${variant}`]}>
+  <div class="container-page hero__inner">
+    <div class="hero__content">
+      {eyebrow && <p class="eyebrow hero__eyebrow">{eyebrow}</p>}
+
+      {badges && badges.length > 0 && (
+        <ul class="hero__badges" aria-label="Firm certifications">
+          {badges.map((b) => <li>{b}</li>)}
+        </ul>
+      )}
+
+      <h1 class="hero__title">{title}</h1>
+
+      {subdeck && <p class="hero__subdeck"><Fragment set:html={subdeck} /></p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      padding-top: var(--space-32);
+      padding-bottom: var(--space-24);
+    }
+  }
+
+  .hero__inner {
+    /* container-page provides max-width + padding */
+  }
+
+  .hero__content {
+    /* Content lives within container-prose width inside the page-width container.
+       Left-aligned, not centered — Phase 3 wireframe spec. */
+    max-width: var(--container-prose);
+  }
+
+  .hero__eyebrow {
+    margin-bottom: var(--space-4);
+  }
+
+  .hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .hero__badges li {
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    padding: var(--space-1) var(--space-3);
+    border: var(--border-hairline);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-page-bg);
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-xl);
+    /* Phase 4 calibration: test weight-regular vs. weight-medium under rendered output.
+       Default per spec is weight-regular; bump to weight-medium if it reads soft on warm bg. */
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .hero__subdeck {
+    margin-top: var(--space-6);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  /* Variant-specific class hooks — currently no visual deviation,
+     but the hooks exist for any per-audience tweaks discovered in Phase 4. */
+  .hero--identifying .hero__eyebrow {
+    color: var(--color-gravitas-navy);
+  }
+</style>
