@@ -1,0 +1,133 @@
+---
+/*
+  TopicFilter — pill-chip topic filter on /insights.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (/insights)
+
+  Visual register mirrors SiblingsBreadcrumb (hairline rules above and below,
+  internal padding space-3) — both are slim navigation/filter bands.
+
+  Topics locked: All / DITA / S1000D / CCMS Migration / RAG-AI / Methodology.
+
+  Filter selection updates URL query parameter (?topic=...) for shareable,
+  bookmarkable, back-button-friendly state. The page renders statically with
+  all posts; a client-side script reads the URL and toggles the active chip
+  + visible posts on page load.
+*/
+
+interface Topic {
+  label: string;
+  value: string; // matches insights post topic enum, or "all"
+}
+
+const topics: Topic[] = [
+  { label: "All", value: "all" },
+  { label: "DITA", value: "DITA" },
+  { label: "S1000D", value: "S1000D" },
+  { label: "CCMS Migration", value: "CCMS Migration" },
+  { label: "RAG / AI", value: "RAG/AI" },
+  { label: "Methodology", value: "Methodology" },
+];
+---
+
+<nav class="topic-filter" aria-label="Filter posts by topic" data-topic-filter>
+  <div class="container-prose topic-filter__inner">
+    <ul class="topic-filter__list">
+      {topics.map((t) => {
+        const href = t.value === "all" ? "/insights" : `/insights?topic=${encodeURIComponent(t.value)}`;
+        return (
+          <li>
+            <a
+              href={href}
+              data-topic-value={t.value}
+              class:list={["topic-filter__chip", t.value === "all" && "is-active"]}
+              aria-current={t.value === "all" ? "page" : undefined}
+            >
+              {t.label}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  // Sync active-chip state with URL ?topic=... on page load.
+  function syncTopicFilterActiveState() {
+    const filter = document.querySelector<HTMLElement>("[data-topic-filter]");
+    if (!filter) return;
+    const params = new URLSearchParams(window.location.search);
+    const topic = params.get("topic") ?? "all";
+    const chips = filter.querySelectorAll<HTMLAnchorElement>("[data-topic-value]");
+    chips.forEach((chip) => {
+      const matches = chip.dataset.topicValue === topic;
+      chip.classList.toggle("is-active", matches);
+      if (matches) {
+        chip.setAttribute("aria-current", "page");
+      } else {
+        chip.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", syncTopicFilterActiveState);
+  document.addEventListener("astro:page-load", syncTopicFilterActiveState);
+</script>
+
+<style>
+  .topic-filter {
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+  }
+
+  .topic-filter__inner {
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+  }
+
+  .topic-filter__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .topic-filter__chip {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    background-color: var(--color-page-bg);
+    border: var(--border-hairline);
+    border-radius: var(--radius-pill);
+    transition: background-color var(--duration-base) var(--easing-out),
+      border-color var(--duration-base) var(--easing-out),
+      color var(--duration-base) var(--easing-out);
+    line-height: 1;
+  }
+
+  .topic-filter__chip:hover,
+  .topic-filter__chip:focus-visible {
+    background-color: var(--color-surface-elevated);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .topic-filter__chip.is-active {
+    background-color: var(--color-text-primary);
+    color: var(--color-page-bg);
+    border-color: var(--color-text-primary);
+  }
+
+  .topic-filter__chip.is-active:hover,
+  .topic-filter__chip.is-active:focus-visible {
+    background-color: var(--color-text-primary);
+    color: var(--color-page-bg);
+  }
+</style>

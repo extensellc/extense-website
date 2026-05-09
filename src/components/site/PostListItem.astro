@@ -1,0 +1,134 @@
+---
+/*
+  PostListItem — post listing on /insights.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (/insights)
+
+  Kept as separate component from DocumentRow per Phase 3 resolution:
+  clickable-whole-item behavior + post-specific content slots (date · reading
+  time, title-as-link, summary) are a real architectural distinction, not just
+  a content-shape difference.
+
+  Structure:
+    Hairline rule above → metadata line (date · reading time) → title (link) →
+    summary (one sentence)
+
+  Whole item is a link.
+*/
+
+interface Props {
+  href: string;
+  title: string;
+  summary: string;
+  publishedAt: Date;
+  readingTime: string;
+  topic?: string;
+}
+
+const { href, title, summary, publishedAt, readingTime, topic } = Astro.props;
+
+const dateLabel = publishedAt.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<article class="post-item">
+  <a href={href} class="post-item__link">
+    <hr class="post-item__rule" aria-hidden="true" />
+    <div class="post-item__meta">
+      <time datetime={publishedAt.toISOString()}>{dateLabel}</time>
+      <span class="post-item__sep" aria-hidden="true">·</span>
+      <span>{readingTime}</span>
+      {topic && (
+        <>
+          <span class="post-item__sep" aria-hidden="true">·</span>
+          <span class="post-item__topic">{topic}</span>
+        </>
+      )}
+    </div>
+    <h3 class="post-item__title">{title}</h3>
+    <p class="post-item__summary">{summary}</p>
+  </a>
+</article>
+
+<style>
+  .post-item {
+    display: block;
+  }
+
+  .post-item__link {
+    display: block;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .post-item__link:hover,
+  .post-item__link:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+  }
+
+  .post-item__rule {
+    margin: 0;
+    margin-bottom: var(--space-3);
+  }
+
+  .post-item__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: baseline;
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+  }
+
+  .post-item__sep {
+    color: var(--color-text-muted);
+  }
+
+  .post-item__topic {
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    font-weight: var(--weight-semibold);
+    font-size: 0.8125rem; /* slightly smaller than caption */
+  }
+
+  .post-item__title {
+    font-family: var(--font-body);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+    transition: color var(--duration-base) var(--easing-out);
+    text-wrap: balance;
+  }
+
+  .post-item__link:hover .post-item__title,
+  .post-item__link:focus-visible .post-item__title {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .post-item__summary {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-4);
+    text-wrap: pretty;
+  }
+
+  .post-item + .post-item {
+    margin-top: var(--space-6);
+  }
+</style>

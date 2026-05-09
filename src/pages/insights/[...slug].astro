@@ -1,0 +1,239 @@
+---
+/*
+  /insights/[slug] — individual post page.
+
+  Renders a single insights post as long-form content within container-prose.
+  Hero section uses post title and meta; main body renders the markdown content.
+
+  Phase 4 directive: post bodies are placeholder structural shells until the
+  practitioner-led editorial production replaces them. Body markdown handled
+  by Astro's content collection rendering.
+*/
+
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("insights", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateLabel = post.data.publishedAt.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<BaseLayout title={post.data.title} description={post.data.summary}>
+  <Hero
+    variant="universal"
+    title={post.data.title}
+    subdeck={post.data.summary}
+    eyebrow={post.data.topic}
+  />
+
+  <section class="post-section">
+    <div class="container-prose post-section__inner">
+      <div class="post-section__meta">
+        <time datetime={post.data.publishedAt.toISOString()}>{dateLabel}</time>
+        <span class="post-section__sep" aria-hidden="true">·</span>
+        <span>{post.data.readingTime}</span>
+      </div>
+
+      <article class="post-section__article prose">
+        <Content />
+      </article>
+
+      <div class="post-section__back">
+        <a href="/insights" class="post-section__back-link">
+          ← Back to all insights
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
+  />
+</BaseLayout>
+
+<style>
+  .post-section {
+    padding-top: var(--space-12);
+    padding-bottom: var(--section-pad-default);
+  }
+
+  @media (max-width: 767px) {
+    .post-section {
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .post-section__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: baseline;
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-12);
+  }
+
+  .post-section__sep {
+    color: var(--color-text-muted);
+  }
+
+  .post-section__article {
+    /* Long-form prose styling — see :global(.prose) below */
+  }
+
+  .post-section__back {
+    margin-top: var(--space-16);
+    padding-top: var(--space-8);
+    border-top: var(--border-hairline);
+  }
+
+  .post-section__back-link {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .post-section__back-link:hover,
+  .post-section__back-link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* Long-form prose treatment for rendered markdown */
+  :global(.prose) {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+  }
+
+  :global(.prose h2) {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-4);
+    text-wrap: balance;
+  }
+
+  :global(.prose h2:first-child) {
+    margin-top: 0;
+  }
+
+  :global(.prose h3) {
+    font-family: var(--font-body);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+  }
+
+  :global(.prose p) {
+    margin-bottom: var(--space-4);
+    text-wrap: pretty;
+  }
+
+  :global(.prose p:last-child) {
+    margin-bottom: 0;
+  }
+
+  :global(.prose blockquote) {
+    margin: var(--space-6) 0;
+    padding: var(--space-3) var(--space-6);
+    border-left: 3px solid var(--color-gravitas-navy);
+    background-color: var(--color-surface-elevated);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+
+  :global(.prose blockquote p) {
+    margin-bottom: var(--space-2);
+  }
+
+  :global(.prose blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  :global(.prose ul),
+  :global(.prose ol) {
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-4);
+  }
+
+  :global(.prose ul) {
+    list-style: disc;
+  }
+
+  :global(.prose ol) {
+    list-style: decimal;
+  }
+
+  :global(.prose li) {
+    margin-bottom: var(--space-2);
+  }
+
+  :global(.prose code) {
+    font-family: var(--font-mono);
+    font-size: 0.9375em;
+    background-color: var(--color-surface-elevated);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+  }
+
+  :global(.prose pre) {
+    background-color: var(--color-surface-elevated);
+    padding: var(--space-4);
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+    margin-bottom: var(--space-4);
+    font-size: var(--text-body-sm);
+  }
+
+  :global(.prose pre code) {
+    background: none;
+    padding: 0;
+  }
+
+  :global(.prose a) {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  :global(.prose a:hover),
+  :global(.prose a:focus-visible) {
+    color: var(--color-link-hover);
+  }
+
+  :global(.prose strong) {
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+</style>

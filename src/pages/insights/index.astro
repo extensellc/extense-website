@@ -1,0 +1,182 @@
+---
+/*
+  /insights — editorial publication surface.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §8 (/insights)
+
+  Section order:
+    1. TopNav (BaseLayout)
+    2. Hero (Hero.universal — editorial register)
+    3. TopicFilter
+    4. Post list (PostListItem × N)
+    5. RSS link
+    6. Footer (BaseLayout)
+
+  Posts come from the insights content collection.
+
+  Filter implementation: page renders ALL posts statically; a small client-side
+  script reads ?topic= from the URL on page load and hides non-matching posts.
+  Filter chips are full-page links to ?topic=X — URL state is canonical and
+  shareable, search engines see all posts in the rendered HTML, performance is
+  static-page-fast.
+
+  Editorial bar enforced through what gets published; not self-declared on page.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import TopicFilter from "../../components/site/TopicFilter.astro";
+import PostListItem from "../../components/site/PostListItem.astro";
+import { getCollection } from "astro:content";
+
+// Fetch all published posts, sorted newest first
+const allPosts = await getCollection("insights", ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+---
+
+<BaseLayout
+  title="Insights — Field Notes from the Practice"
+  description="Field notes, technical writing, and methodology dispatches from the Extense practice. DITA, S1000D, CCMS migration, RAG, methodology — every post names tools and standards and takes a position."
+>
+  <Hero
+    variant="universal"
+    title="Field notes from the practice."
+    subdeck="Technical writing on DITA, S1000D, CCMS migration, RAG retrieval engineering, and methodology — every post names tools and standards and takes a position."
+  />
+
+  <TopicFilter />
+
+  <section class="insights-section" aria-label="Posts">
+    <div class="container-prose insights-section__inner">
+      <ul class="insights-section__list" data-post-list>
+        {sortedPosts.map((post) => (
+          <li data-topic={post.data.topic}>
+            <PostListItem
+              href={`/insights/${post.id}`}
+              title={post.data.title}
+              summary={post.data.summary}
+              publishedAt={post.data.publishedAt}
+              readingTime={post.data.readingTime}
+              topic={post.data.topic}
+            />
+          </li>
+        ))}
+      </ul>
+      <p class="insights-section__empty" data-empty hidden>
+        No posts under this topic yet. <a href="/insights">View all posts</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="insights-rss" aria-label="Subscribe">
+    <div class="container-prose insights-rss__inner">
+      <a href="/rss.xml" class="insights-rss__link">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M4 11a9 9 0 0 1 9 9"></path>
+          <path d="M4 4a16 16 0 0 1 16 16"></path>
+          <circle cx="5" cy="19" r="1"></circle>
+        </svg>
+        Subscribe via RSS
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .insights-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--space-12);
+  }
+
+  @media (max-width: 767px) {
+    .insights-section {
+      padding-top: var(--space-16);
+    }
+  }
+
+  .insights-section__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .insights-section__list li[hidden] {
+    display: none;
+  }
+
+  .insights-section__empty {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    text-align: center;
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  .insights-rss {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-16);
+  }
+
+  .insights-rss__inner {
+    text-align: center;
+  }
+
+  .insights-rss__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .insights-rss__link:hover,
+  .insights-rss__link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+</style>
+
+<script>
+  // Filter posts by ?topic= query parameter on page load.
+  // Page renders all posts statically; this script hides non-matching ones.
+  // URL is canonical and shareable; search engines see all posts.
+  function applyTopicFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const topic = params.get("topic");
+    const items = document.querySelectorAll<HTMLLIElement>("[data-post-list] > li");
+    const empty = document.querySelector<HTMLElement>("[data-empty]");
+
+    let visibleCount = 0;
+    items.forEach((item) => {
+      const itemTopic = item.dataset.topic;
+      const matches = !topic || itemTopic === topic;
+      item.hidden = !matches;
+      if (matches) visibleCount++;
+    });
+
+    if (empty) {
+      empty.hidden = visibleCount > 0;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", applyTopicFilter);
+  document.addEventListener("astro:page-load", applyTopicFilter);
+</script>
