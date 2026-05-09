@@ -1,0 +1,42 @@
+---
+/*
+  Pillar badge — Content Migration.
+  Concept: transform / arrows — left-to-right transformation between forms.
+  Phosphor-aligned: 1.5px stroke, single-color via currentColor.
+*/
+
+interface Props {
+  size?: number;
+  class?: string;
+}
+
+const { size = 48, class: className } = Astro.props;
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 48 48"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  aria-hidden="true"
+>
+  <!-- Source document (left) -->
+  <path d="M8 11 L20 11 L20 37 L8 37 Z" />
+  <line x1="11" y1="17" x2="17" y2="17" />
+  <line x1="11" y1="22" x2="17" y2="22" />
+  <line x1="11" y1="27" x2="15" y2="27" />
+
+  <!-- Transformation arrow -->
+  <line x1="22" y1="24" x2="32" y2="24" />
+  <polyline points="28,20 32,24 28,28" />
+
+  <!-- Target structure (right) -->
+  <rect x="34" y="11" width="6" height="6" rx="1" />
+  <rect x="34" y="21" width="6" height="6" rx="1" />
+  <rect x="34" y="31" width="6" height="6" rx="1" />
+</svg>

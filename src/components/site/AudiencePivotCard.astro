@@ -1,0 +1,149 @@
+---
+/*
+  AudiencePivotCard — used as a pair on / homepage.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Cards)
+
+  Structure:
+    - Hairline border on right and bottom
+    - 4px accent left border (color depends on variant)
+    - radius-none, color-page-bg background, padding space-8 all sides
+    - Eyebrow → heading → description → "View [audience] →" link
+
+  Variants:
+    .public-sector  — left border --color-gravitas-navy, eyebrow --color-gravitas-navy
+    .private-sector — left border --color-text-secondary (warm gray), eyebrow --color-text-secondary
+
+  Whole card wrapped in <a>. Stretched-link pattern via ::after to avoid nested-link
+  accessibility issues.
+
+  Card visual itself does not change on hover (document-grade restraint).
+  Only the inner CTA reflects hover state.
+*/
+
+interface Props {
+  variant: "public-sector" | "private-sector";
+  eyebrow: string;
+  heading: string;
+  description: string;
+  href: string;
+  linkLabel?: string;
+}
+
+const {
+  variant,
+  eyebrow,
+  heading,
+  description,
+  href,
+  linkLabel = `View ${variant === "public-sector" ? "Public Sector" : "Private Sector"}`,
+} = Astro.props;
+---
+
+<article class:list={["pivot-card", `pivot-card--${variant}`]}>
+  <a href={href} class="pivot-card__link">
+    <p class="eyebrow pivot-card__eyebrow">{eyebrow}</p>
+    <h3 class="pivot-card__heading">{heading}</h3>
+    <p class="pivot-card__description">{description}</p>
+    <span class="pivot-card__cta">
+      {linkLabel} <span class="pivot-card__arrow" aria-hidden="true">→</span>
+    </span>
+  </a>
+</article>
+
+<style>
+  .pivot-card {
+    background-color: var(--color-page-bg);
+    border-top: var(--border-hairline);
+    border-right: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-radius: var(--radius-none);
+    transition: background-color var(--duration-base) var(--easing-out);
+  }
+
+  .pivot-card:hover {
+    background-color: var(--color-surface-elevated);
+  }
+
+  .pivot-card--public-sector {
+    border-left-color: var(--color-gravitas-navy);
+  }
+
+  .pivot-card--private-sector {
+    border-left-color: var(--color-text-secondary);
+  }
+
+  .pivot-card__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--space-8);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .pivot-card__link:hover,
+  .pivot-card__link:focus-visible {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .pivot-card--public-sector .pivot-card__eyebrow {
+    color: var(--color-gravitas-navy);
+  }
+
+  .pivot-card--private-sector .pivot-card__eyebrow {
+    color: var(--color-text-secondary);
+  }
+
+  .pivot-card__eyebrow {
+    margin-bottom: var(--space-3);
+  }
+
+  .pivot-card__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+    text-wrap: balance;
+  }
+
+  .pivot-card__description {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-6);
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+
+  .pivot-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .pivot-card__link:hover .pivot-card__cta,
+  .pivot-card__link:focus-visible .pivot-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .pivot-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+
+  .pivot-card__link:hover .pivot-card__arrow {
+    transform: translateX(2px);
+  }
+</style>

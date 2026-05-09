@@ -18,12 +18,4 @@ export default defineConfig({
     prefetchAll: false,
     defaultStrategy: 'hover',
   },
-  vite: {
-    css: {
-      transformer: 'lightningcss',
-    },
-    build: {
-      cssMinify: 'lightningcss',
-    },
-  },
 });

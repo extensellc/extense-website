@@ -1,0 +1,143 @@
+---
+/*
+  StatBlock — outcome stat presentation.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Visualization)
+
+  Variant-explicit implementation. Four named variants only:
+    .one    — single stat (pillar pages)
+    .two    — 2-column row desktop, stacked mobile (industry pages)
+    .three  — 3-column row desktop, stacked mobile (homepage, /private-sector)
+    .five   — 5-column row desktop, 2-or-3-col tablet, stacked mobile (/about)
+
+  No animated counters (locked).
+  Stat numbers in --color-text-primary (NOT amber — single-semantic-accent rule).
+*/
+
+interface Stat {
+  number: string;
+  label: string;
+  context?: string;
+}
+
+interface Props {
+  variant: "one" | "two" | "three" | "five";
+  stats: Stat[];
+}
+
+const { variant, stats } = Astro.props;
+
+// Defensive: if the stats count doesn't match the variant, log a warning.
+const expectedCounts = { one: 1, two: 2, three: 3, five: 5 };
+if (stats.length !== expectedCounts[variant]) {
+  console.warn(
+    `[StatBlock] Variant "${variant}" expects ${expectedCounts[variant]} stats but got ${stats.length}.`
+  );
+}
+---
+
+<dl class:list={["stat-block", `stat-block--${variant}`]}>
+  {stats.map((stat) => (
+    <div class="stat-block__item">
+      <dt class="stat-block__label-group">
+        <span class="stat-block__number tabular">{stat.number}</span>
+      </dt>
+      <dd class="stat-block__details">
+        <span class="stat-block__label">{stat.label}</span>
+        {stat.context && (
+          <span class="stat-block__context">{stat.context}</span>
+        )}
+      </dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .stat-block {
+    display: grid;
+    gap: var(--space-12);
+  }
+
+  /* Mobile: all variants stack to single column */
+  @media (max-width: 767px) {
+    .stat-block {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Tablet+ */
+  @media (min-width: 768px) {
+    .stat-block--one {
+      grid-template-columns: 1fr;
+      max-width: var(--container-prose);
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .stat-block--two {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-16);
+    }
+
+    .stat-block--three {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-16);
+    }
+
+    /* .five — 2 or 3 columns at tablet, 5 at desktop */
+    .stat-block--five {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stat-block--five {
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  .stat-block__item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-block__label-group {
+    margin-bottom: var(--space-3);
+  }
+
+  .stat-block__number {
+    font-family: var(--font-display);
+    font-size: var(--text-stat);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    /* Static; no animation. Locked. */
+  }
+
+  .stat-block__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+  }
+
+  .stat-block__label {
+    font-family: var(--font-body);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    line-height: var(--leading-snug);
+  }
+
+  .stat-block__context {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+</style>

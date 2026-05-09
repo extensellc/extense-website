@@ -84,7 +84,7 @@ const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
     <meta name="theme-color" content="#FAF7F2" />
 
     <!-- Structured data — Organization (matches existing site's JSON-LD) -->
-    <script type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Extense LLC",

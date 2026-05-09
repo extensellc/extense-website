@@ -1,0 +1,287 @@
+---
+/*
+  / — homepage
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §8
+
+  Section order:
+    1. TopNav (BaseLayout)
+    2. Hero (Hero.universal)
+    3. Cost-of-being-wrong (DocumentRow.failureMode × 3)
+    4. Four pillars (PillarCard × 4)
+    5. Outcome stats (StatBlock.three) — 60/72/85
+    6. Proof bench (LogoBench.full)
+    7. Audience pivot (AudiencePivotCard × 2)
+    8. CTA (CTAModule, audience: general)
+    9. Footer (BaseLayout)
+
+  Copy is placeholder pending Phase 4 practitioner session and copy phase.
+  Substantive directives that apply to this page:
+    - No CTA in hero
+    - No transformation language anywhere
+    - Stat numbers in --color-text-primary, never amber
+    - Lifecycle order on pillars: IA → Migration → CCMS → AI-Ready
+    - 60/72/85 trio (full deck of 5 lives only on /about)
+*/
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/site/Hero.astro";
+import DocumentRow from "../components/site/DocumentRow.astro";
+import PillarCard from "../components/site/PillarCard.astro";
+import StatBlock from "../components/site/StatBlock.astro";
+import LogoBench from "../components/site/LogoBench.astro";
+import AudiencePivotCard from "../components/site/AudiencePivotCard.astro";
+import CTAModule from "../components/site/CTAModule.astro";
+
+const failureModes = [
+  {
+    eyebrow: "LIFE SCIENCES",
+    heading: "An IFU error triggers an FDA Class I recall.",
+    body: "Direct remediation runs into the millions. Brand damage lasts years. The document was the safety control — and the safety control failed.",
+  },
+  {
+    eyebrow: "DEFENSE",
+    heading: "An S1000D conformance failure triggers a stop-work order.",
+    body: "Payment halts. The contract goes to risk. Cure-notice procedures begin. The data modules have to be reauthored before delivery resumes.",
+  },
+  {
+    eyebrow: "AUTOMOTIVE",
+    heading: "A dealer service-manual error voids OEM warranty exposure.",
+    body: "Claims liability moves from the dealer back to the manufacturer. A single procedure error, replicated across a service network, becomes a multi-million-dollar claim event.",
+  },
+];
+
+const pillars = [
+  {
+    pillar: "ia" as const,
+    name: "Information Architecture",
+    scope: "Schema design, taxonomy, reuse strategy. The decisions that determine what every downstream system can do with your content.",
+    href: "/capabilities/information-architecture",
+  },
+  {
+    pillar: "migration" as const,
+    name: "Content Migration",
+    scope: "Recovery operation. Convert legacy estates from FrameMaker, Word, and unstructured XML into clean, reusable DITA.",
+    href: "/capabilities/content-migration",
+  },
+  {
+    pillar: "ccms" as const,
+    name: "CCMS & Publishing",
+    scope: "Operating system for content, plus the CI/CD that closes the loop from source to published output across every format.",
+    href: "/capabilities/ccms-and-publishing",
+  },
+  {
+    pillar: "ai-ready" as const,
+    name: "AI-Ready Content",
+    scope: "Chunking, metadata, retrieval architecture. The translation layer between structured content and the AI systems that consume it.",
+    href: "/capabilities/ai-ready-content",
+  },
+];
+
+const stats = [
+  {
+    number: "60%",
+    label: "Faster publishing cycles",
+    context: "From quarterly publishing to per-merge releases.",
+  },
+  {
+    number: "72%",
+    label: "Translation cost savings",
+    context: "Single-source reuse cuts localization volume across markets.",
+  },
+  {
+    number: "85%",
+    label: "RAG retrieval precision",
+    context: "Structured content as the difference between accurate retrieval and hallucination.",
+  },
+];
+---
+
+<BaseLayout
+  title="XML Content Engineering"
+  description="Extense LLC is an XML content engineering firm for organizations whose documentation has to be right — federal agencies, Fortune 500 manufacturers, life sciences companies, financial institutions, and defense contractors."
+>
+  <Hero
+    variant="universal"
+    title="XML content engineering for organizations whose documentation has to be right."
+    subdeck="Information architecture through automated CI/CD publishing — for the IRS, the U.S. House of Representatives, Toyota, FedEx, and Morgan Stanley. Founded 2012. SBA 8(a) certified, woman-owned, minority-owned."
+  />
+
+  <section class="home-section home-section--failure-modes" aria-labelledby="failure-modes-heading">
+    <div class="container-prose home-section__inner">
+      <h2 id="failure-modes-heading" class="home-section__heading">
+        What happens when documentation is wrong.
+      </h2>
+      <div class="home-section__failure-stack">
+        {failureModes.map((fm) => (
+          <DocumentRow
+            variant="failureMode"
+            eyebrow={fm.eyebrow}
+            heading={fm.heading}
+            body={fm.body}
+            headingLevel={3}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section home-section--pillars" aria-labelledby="pillars-heading">
+    <div class="container-data home-section__inner">
+      <div class="home-section__heading-block">
+        <h2 id="pillars-heading" class="home-section__heading">
+          Four capabilities. One lifecycle.
+        </h2>
+        <p class="home-section__subdeck">
+          Most engagements move through more than one. Architecture sets the foundation; migration recovers what's there; CCMS and publishing operate the system; AI-ready content extends it.
+        </p>
+      </div>
+      <div class="home-section__pillar-grid">
+        {pillars.map((p) => (
+          <PillarCard
+            pillar={p.pillar}
+            name={p.name}
+            scope={p.scope}
+            href={p.href}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section home-section--stats" aria-label="Outcome metrics">
+    <div class="container-data home-section__inner">
+      <StatBlock variant="three" stats={stats} />
+    </div>
+  </section>
+
+  <section class="home-section home-section--logos" aria-label="Client proof">
+    <LogoBench variant="full" eyebrow="Trusted by" />
+  </section>
+
+  <section class="home-section home-section--pivot" aria-labelledby="pivot-heading">
+    <div class="container-data home-section__inner">
+      <h2 id="pivot-heading" class="home-section__heading home-section__heading--center">
+        Where to next.
+      </h2>
+      <div class="home-section__pivot-grid">
+        <AudiencePivotCard
+          variant="public-sector"
+          eyebrow="Public Sector"
+          heading="For federal agencies and contractors."
+          description="Capability statement, NAICS codes, sole-source eligibility, and past performance with the IRS, the U.S. House, and the U.S. District Courts."
+          href="/public-sector"
+        />
+        <AudiencePivotCard
+          variant="private-sector"
+          eyebrow="Private Sector"
+          heading="For commercial buyers and partners."
+          description="Outcomes-led engagements with Toyota, FedEx, Morgan Stanley, and Fortune 500 documentation programs across regulated industries."
+          href="/private-sector"
+        />
+      </div>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
+  />
+</BaseLayout>
+
+<style>
+  .home-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+  }
+
+  @media (max-width: 767px) {
+    .home-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .home-section__inner {
+    /* container utility provides max-width + padding */
+  }
+
+  .home-section__heading-block {
+    max-width: var(--container-prose);
+    margin-bottom: var(--space-12);
+  }
+
+  .home-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .home-section__heading--center {
+    text-align: center;
+  }
+
+  .home-section__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+
+  /* Failure modes section: container-prose width, heading + stack */
+  .home-section--failure-modes .home-section__heading {
+    margin-bottom: var(--space-12);
+  }
+
+  .home-section__failure-stack {
+    /* DocumentRow handles its own spacing (space-12 between rows) */
+  }
+
+  /* Pillars grid: 4-up desktop, 2×2 tablet, single column mobile */
+  .home-section__pillar-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 600px) {
+    .home-section__pillar-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .home-section__pillar-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  /* Logos section uses LogoBench's own container-page */
+  .home-section--logos {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+  }
+
+  /* Audience pivot grid: 2-up desktop, stacked mobile */
+  .home-section__pivot-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    margin-top: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .home-section__pivot-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

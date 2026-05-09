@@ -1,0 +1,39 @@
+---
+/*
+  Pillar badge — Information Architecture.
+  Concept: structure / grid — ordered cells signal foundational schema.
+  Phosphor-aligned: 1.5px stroke, single-color via currentColor, no fills.
+  Phase 4 may commission a custom mark; this is the launch placeholder.
+*/
+
+interface Props {
+  size?: number;
+  class?: string;
+}
+
+const { size = 48, class: className } = Astro.props;
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 48 48"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  aria-hidden="true"
+>
+  <!-- Outer container -->
+  <rect x="6" y="6" width="36" height="36" rx="2" />
+  <!-- Internal grid lines (structure) -->
+  <line x1="6" y1="18" x2="42" y2="18" />
+  <line x1="6" y1="30" x2="42" y2="30" />
+  <line x1="18" y1="6" x2="18" y2="42" />
+  <line x1="30" y1="6" x2="30" y2="42" />
+  <!-- Anchor cells -->
+  <rect x="9" y="9" width="6" height="6" rx="1" />
+  <rect x="33" y="33" width="6" height="6" rx="1" />
+</svg>

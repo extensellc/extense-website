@@ -1,0 +1,100 @@
+---
+/*
+  DocumentRow — hairline-separated structured entry pattern.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Document patterns)
+
+  Two variants only:
+    .entry      — no eyebrow, text-display-sm heading, text-body body.
+                  Used for certs, past performance, methodology (applied + definitional).
+                  Content discipline enforced through copy guidance, not component-level.
+    .failureMode — eyebrow, text-display-md heading, text-body body.
+                   Used for cost-of-being-wrong scenarios.
+
+  Used as repeated stacked rows. Hairline rule above each, space-12 desktop /
+  space-8 mobile between rows.
+
+  Heading semantic level (h2/h3/h4) is configurable via `headingLevel` prop;
+  defaults to h3.
+*/
+
+interface Props {
+  variant?: "entry" | "failureMode";
+  eyebrow?: string;
+  heading: string;
+  body: string;
+  headingLevel?: 2 | 3 | 4;
+}
+
+const { variant = "entry", eyebrow, heading, body, headingLevel = 3 } = Astro.props;
+const HeadingTag = `h${headingLevel}` as "h2" | "h3" | "h4";
+---
+
+<article class:list={["doc-row", `doc-row--${variant}`]}>
+  <hr class="doc-row__rule" aria-hidden="true" />
+
+  {variant === "failureMode" && eyebrow && (
+    <p class="eyebrow doc-row__eyebrow">{eyebrow}</p>
+  )}
+
+  <HeadingTag class="doc-row__heading">{heading}</HeadingTag>
+
+  <p class="doc-row__body">{body}</p>
+</article>
+
+<style>
+  .doc-row {
+    /* Container is set by parent — DocumentRow does not constrain width itself. */
+    display: block;
+  }
+
+  .doc-row + .doc-row {
+    margin-top: var(--space-12);
+  }
+
+  @media (max-width: 767px) {
+    .doc-row + .doc-row {
+      margin-top: var(--space-8);
+    }
+  }
+
+  .doc-row__rule {
+    margin: 0;
+    margin-bottom: var(--space-6);
+  }
+
+  .doc-row__eyebrow {
+    margin-bottom: var(--space-3);
+  }
+
+  /* .entry — heading at text-display-sm, font-body weight-semibold */
+  .doc-row--entry .doc-row__heading {
+    font-family: var(--font-body);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+
+  /* .failureMode — heading at text-display-md, font-display weight-regular */
+  .doc-row--failureMode .doc-row__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+    text-wrap: balance;
+  }
+
+  .doc-row__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+</style>

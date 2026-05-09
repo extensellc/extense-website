@@ -1,0 +1,212 @@
+---
+/*
+  LogoBench — client logo display.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Visualization)
+
+  Variants:
+    .full        — 12 logos mixed federal/commercial (/)
+    .federal     — 3 logos: IRS, U.S. House, U.S. District Courts
+                   (/public-sector and /public-sector/government-and-defense)
+    .commercial  — 8 logos (/private-sector)
+    .industry    — 1–2 logos relevant to the vertical (industry pages)
+
+  Treatment: monochrome single-color (color-text-secondary), no original brand colors.
+  Optical-balance alignment, not strict pixel-grid.
+
+  For Phase 4 launch: actual logo SVGs sourced separately. This component supports
+  both image src (preferred) and text fallback. When src is omitted, the label is
+  rendered in styled text — preserves the bench layout while we acquire real assets.
+*/
+
+interface Logo {
+  label: string;
+  src?: string;
+  href?: string;
+}
+
+interface Props {
+  variant: "full" | "federal" | "commercial" | "industry";
+  logos?: Logo[];
+  eyebrow?: string;
+}
+
+// Default logo sets per variant (resolved from EXTENSE_DESIGN_BRIEF.md §3 / §9)
+const defaultLogos: Record<Props["variant"], Logo[]> = {
+  full: [
+    { label: "IRS" },
+    { label: "U.S. House of Representatives" },
+    { label: "U.S. District Courts" },
+    { label: "Toyota" },
+    { label: "FedEx" },
+    { label: "Morgan Stanley" },
+    { label: "Guidewire" },
+    { label: "Thermo Fisher" },
+    { label: "AMD" },
+    { label: "HPE" },
+    { label: "Great American Insurance" },
+    { label: "Paralyzed Veterans of America" },
+  ],
+  federal: [
+    { label: "IRS" },
+    { label: "U.S. House of Representatives" },
+    { label: "U.S. District Courts" },
+  ],
+  commercial: [
+    { label: "Toyota" },
+    { label: "FedEx" },
+    { label: "Morgan Stanley" },
+    { label: "Thermo Fisher" },
+    { label: "AMD" },
+    { label: "HPE" },
+    { label: "Guidewire" },
+    { label: "Great American Insurance" },
+  ],
+  industry: [],
+};
+
+const { variant, logos = defaultLogos[variant], eyebrow } = Astro.props;
+---
+
+<section class:list={["logo-bench", `logo-bench--${variant}`]} aria-label="Client logo bench">
+  <div class="container-page logo-bench__inner">
+    {eyebrow && <p class="eyebrow logo-bench__eyebrow">{eyebrow}</p>}
+    <ul class="logo-bench__grid">
+      {logos.map((logo) => (
+        <li class="logo-bench__item">
+          {logo.href ? (
+            <a href={logo.href} class="logo-bench__cell">
+              {logo.src ? (
+                <img src={logo.src} alt={logo.label} loading="lazy" />
+              ) : (
+                <span class="logo-bench__text">{logo.label}</span>
+              )}
+            </a>
+          ) : (
+            <span class="logo-bench__cell">
+              {logo.src ? (
+                <img src={logo.src} alt={logo.label} loading="lazy" />
+              ) : (
+                <span class="logo-bench__text">{logo.label}</span>
+              )}
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .logo-bench {
+    /* No background — sits within the parent page surface. */
+  }
+
+  .logo-bench__eyebrow {
+    text-align: center;
+    margin-bottom: var(--space-6);
+  }
+
+  .logo-bench__grid {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    gap: var(--space-6);
+  }
+
+  /* .full — 12 logos: 4×3 desktop, 3×4 tablet, 2×6 mobile */
+  .logo-bench--full .logo-bench__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 768px) {
+    .logo-bench--full .logo-bench__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
+  }
+  @media (min-width: 1024px) {
+    .logo-bench--full .logo-bench__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  /* .federal — 3 logos: 3-col desktop, 3-col tablet, stacked mobile */
+  .logo-bench--federal .logo-bench__grid {
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 600px) {
+    .logo-bench--federal .logo-bench__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  /* .commercial — 8 logos: 4×2 desktop, 4×2 tablet, 2×4 mobile */
+  .logo-bench--commercial .logo-bench__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 768px) {
+    .logo-bench--commercial .logo-bench__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  /* .industry — 1–2 logos: row layout, centered */
+  .logo-bench--industry .logo-bench__grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
+    justify-content: center;
+    gap: var(--space-12);
+  }
+
+  .logo-bench__item {
+    width: 100%;
+  }
+
+  .logo-bench__cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    padding: 0 var(--space-3);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out),
+      opacity var(--duration-base) var(--easing-out);
+    opacity: 0.9;
+  }
+
+  .logo-bench__cell:hover,
+  .logo-bench__cell:focus-visible {
+    opacity: 1;
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .logo-bench__cell img {
+    max-height: 24px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(100%);
+  }
+
+  @media (min-width: 768px) {
+    .logo-bench__cell img {
+      max-height: 32px;
+    }
+  }
+
+  /* Text fallback for missing logo SVGs — single-color, small caps, optical-weight aligned */
+  .logo-bench__text {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: inherit;
+    text-align: center;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+</style>
