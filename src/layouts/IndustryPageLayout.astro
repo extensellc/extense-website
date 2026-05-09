@@ -1,0 +1,288 @@
+---
+/*
+  IndustryPageLayout — shared base for the five industry pages.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §8 (industry pages)
+
+  Section order (shared across all five):
+    1. TopNav (BaseLayout)
+    2. Hero (Hero.universal, vertical-specific framing)
+    3. SiblingsBreadcrumb (.industries) — only on /private-sector industries
+    4. Document types — compact structured list
+    5. Standards and frameworks — compact structured list
+    6. Cost-of-being-wrong (DocumentRow.failureMode × 1)
+    7. Capability relevance — compact list with cross-links
+    8. Proof — LogoBench.industry + anonymized case studies
+    9. Outcome stats (StatBlock.two)
+    10. CTAModule (vertical-specific body)
+    11. Footer (BaseLayout)
+
+  G&D omits SiblingsBreadcrumb (only one industry under /public-sector — a
+  one-item siblings breadcrumb would be silly).
+*/
+
+import BaseLayout from "./BaseLayout.astro";
+import Hero from "../components/site/Hero.astro";
+import SiblingsBreadcrumb from "../components/nav/SiblingsBreadcrumb.astro";
+import CompactList from "../components/site/CompactList.astro";
+import DocumentRow from "../components/site/DocumentRow.astro";
+import LogoBench from "../components/site/LogoBench.astro";
+import StatBlock from "../components/site/StatBlock.astro";
+import CTAModule from "../components/site/CTAModule.astro";
+
+interface CompactItem {
+  label: string;
+  description?: string;
+}
+
+interface CapabilityRelevance {
+  pillarLabel: string;
+  pillarHref: string;
+  context: string;
+}
+
+interface CaseStudy {
+  framing: string;
+  body: string;
+}
+
+interface Logo {
+  label: string;
+  src?: string;
+}
+
+interface Stat {
+  number: string;
+  label: string;
+  context?: string;
+}
+
+interface Props {
+  pageTitle: string;
+  pageDescription: string;
+  heroTitle: string;
+  heroSubdeck: string;
+  industryHref?: string; // for SiblingsBreadcrumb; omit for G&D
+  showBreadcrumb?: boolean;
+  documentTypes: CompactItem[];
+  standards: CompactItem[];
+  failureMode: {
+    eyebrow: string;
+    heading: string;
+    body: string;
+  };
+  capabilityRelevance: CapabilityRelevance[];
+  industryLogos: Logo[];
+  caseStudies: CaseStudy[];
+  stats: [Stat, Stat]; // exactly 2
+  ctaAudience?: "public-sector" | "private-sector" | "general";
+  ctaBody: string;
+}
+
+const {
+  pageTitle,
+  pageDescription,
+  heroTitle,
+  heroSubdeck,
+  industryHref,
+  showBreadcrumb = true,
+  documentTypes,
+  standards,
+  failureMode,
+  capabilityRelevance,
+  industryLogos,
+  caseStudies,
+  stats,
+  ctaAudience = "private-sector",
+  ctaBody,
+} = Astro.props;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Hero variant="universal" title={heroTitle} subdeck={heroSubdeck} />
+
+  {showBreadcrumb && industryHref && (
+    <SiblingsBreadcrumb variant="industries" current={industryHref} />
+  )}
+
+  <section class="ind-section ind-section--documents" aria-labelledby="documents-heading">
+    <div class="container-prose ind-section__inner">
+      <h2 id="documents-heading" class="ind-section__heading">Document types we work in.</h2>
+      <CompactList items={documentTypes} />
+    </div>
+  </section>
+
+  <section class="ind-section ind-section--standards" aria-labelledby="standards-heading">
+    <div class="container-prose ind-section__inner">
+      <h2 id="standards-heading" class="ind-section__heading">Regulatory frameworks and standards.</h2>
+      <CompactList items={standards} />
+    </div>
+  </section>
+
+  <section class="ind-section ind-section--failure" aria-labelledby="failure-heading">
+    <div class="container-prose ind-section__inner">
+      <h2 id="failure-heading" class="ind-section__heading">When this goes wrong.</h2>
+      <DocumentRow
+        variant="failureMode"
+        eyebrow={failureMode.eyebrow}
+        heading={failureMode.heading}
+        body={failureMode.body}
+        headingLevel={3}
+      />
+    </div>
+  </section>
+
+  <section class="ind-section ind-section--relevance" aria-labelledby="relevance-heading">
+    <div class="container-prose ind-section__inner">
+      <h2 id="relevance-heading" class="ind-section__heading">Where Extense's capabilities apply.</h2>
+      <dl class="ind-section__relevance-list">
+        {capabilityRelevance.map((cr) => (
+          <div class="ind-section__relevance-item">
+            <dt class="ind-section__relevance-label">
+              <a href={cr.pillarHref}>{cr.pillarLabel}</a>
+            </dt>
+            <dd class="ind-section__relevance-context">{cr.context}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="ind-section ind-section--proof" aria-labelledby="proof-heading">
+    <div class="container-prose ind-section__inner">
+      <h2 id="proof-heading" class="ind-section__heading">Engagements in this vertical.</h2>
+    </div>
+    <LogoBench variant="industry" logos={industryLogos} />
+    <div class="container-prose ind-section__inner ind-section__case-studies">
+      {caseStudies.map((cs) => (
+        <div class="ind-section__case-study">
+          <h3 class="ind-section__case-h3">{cs.framing}</h3>
+          <p class="ind-section__case-body">{cs.body}</p>
+        </div>
+      ))}
+      <p class="ind-section__case-note">
+        Case studies anonymized for client confidentiality. Specific scope and named outcomes available under appropriate NDA channels.
+      </p>
+    </div>
+  </section>
+
+  <section class="ind-section ind-section--stats" aria-label="Outcome metrics">
+    <div class="container-data ind-section__inner">
+      <StatBlock variant="two" stats={stats} />
+    </div>
+  </section>
+
+  <CTAModule audience={ctaAudience} body={ctaBody} />
+</BaseLayout>
+
+<style>
+  .ind-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+  }
+
+  @media (max-width: 767px) {
+    .ind-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .ind-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-12);
+    text-wrap: balance;
+  }
+
+  .ind-section__relevance-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ind-section__relevance-item {
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+    border-top: var(--border-hairline);
+  }
+
+  .ind-section__relevance-item:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  .ind-section__relevance-label {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    margin-bottom: var(--space-2);
+  }
+
+  .ind-section__relevance-label a {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .ind-section__relevance-label a:hover,
+  .ind-section__relevance-label a:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .ind-section__relevance-context {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .ind-section__case-studies {
+    margin-top: var(--space-12);
+  }
+
+  .ind-section__case-study {
+    margin-bottom: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: var(--border-hairline);
+  }
+
+  .ind-section__case-study:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .ind-section__case-h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+    text-wrap: balance;
+  }
+
+  .ind-section__case-body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  .ind-section__case-note {
+    margin-top: var(--space-8);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+    line-height: var(--leading-normal);
+  }
+</style>

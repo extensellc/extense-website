@@ -1,0 +1,106 @@
+---
+import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+---
+
+<IndustryPageLayout
+  pageTitle="Life Sciences — Industries"
+  pageDescription="Regulatory documentation engineering for medical device manufacturers, pharmaceutical companies, and biotech. IFU authoring, FDA submission components, 21 CFR Part 11-validated workflows, GxP-defensible methodology."
+  heroTitle="Life Sciences"
+  heroSubdeck="Where IFU errors trigger FDA Class I recalls. Patient safety, not paperwork. Regulatory documentation is the bottleneck on submission timelines and the surface where compliance and patient-safety failures originate."
+  industryHref="/private-sector/life-sciences"
+  documentTypes={[
+    {
+      label: "Instructions for Use (IFU) and labeling",
+      description: "Patient-facing and clinician-facing IFUs. Labeling content across global markets with single-source authoring and profiling.",
+    },
+    {
+      label: "Regulatory submission components",
+      description: "510(k), PMA, NDA, BLA, ANDA submission content. Module structure and component-level reuse across submissions.",
+    },
+    {
+      label: "Clinical study documentation",
+      description: "Clinical Study Reports (CSRs), study protocols, investigator brochures.",
+    },
+    {
+      label: "Validated documentation programs",
+      description: "21 CFR Part 11-compliant authoring workflows with electronic signatures and audit trails.",
+    },
+    {
+      label: "Training and procedural content",
+      description: "GxP-aligned training materials, standard operating procedures, manufacturing documentation.",
+    },
+  ]}
+  standards={[
+    {
+      label: "21 CFR Part 11",
+      description: "FDA electronic-records and electronic-signatures requirements. Validated authoring workflows that meet Part 11 controls.",
+    },
+    {
+      label: "GxP / cGMP / cGCP / cGLP",
+      description: "Good Practice frameworks for manufacturing, clinical, and laboratory operations. Documentation as a GxP control artifact.",
+    },
+    {
+      label: "ISO 13485",
+      description: "Medical device quality-management-system requirements. FDA-recognized standard for device documentation.",
+    },
+    {
+      label: "MedDRA",
+      description: "Medical Dictionary for Regulatory Activities — controlled terminology for adverse-event reporting and safety documentation.",
+    },
+    {
+      label: "SNOMED CT",
+      description: "Clinical terminology used in clinical documentation and regulatory submissions.",
+    },
+  ]}
+  failureMode={{
+    eyebrow: "LIFE SCIENCES / FDA",
+    heading: "An IFU error triggers an FDA Class I recall.",
+    body: "Direct remediation runs into the millions. Brand damage lasts years. Class I recalls invoke notification cascades across distribution, customer-facing communications, regulatory reporting, and field-engineer deployment. The document was the safety control — and the safety control failed.",
+  }}
+  capabilityRelevance={[
+    {
+      pillarLabel: "Information Architecture",
+      pillarHref: "/capabilities/information-architecture",
+      context: "Device-family content models with regulatory-variant profiling. Controlled vocabulary aligned to MedDRA. Reuse strategy across IFUs and labeling.",
+    },
+    {
+      pillarLabel: "Content Migration",
+      pillarHref: "/capabilities/content-migration",
+      context: "Heavy in this vertical. Legacy Word and FrameMaker IFU estates converted to clean DITA, with QA harnesses that surface pre-existing content errors as part of the migration.",
+    },
+    {
+      pillarLabel: "CCMS & Publishing",
+      pillarHref: "/capabilities/ccms-and-publishing",
+      context: "CCMS adoption growing fast in regulated content. Validated authoring workflows; multi-format publishing across regulatory submissions and patient-facing surfaces.",
+    },
+    {
+      pillarLabel: "AI-Ready Content",
+      pillarHref: "/capabilities/ai-ready-content",
+      context: "Emerges carefully — validation requirements slow but don't stop deployment. RAG over regulated content estates requires evaluation discipline and provenance metadata that survives the pipeline.",
+    },
+  ]}
+  industryLogos={[{ label: "Thermo Fisher" }]}
+  caseStudies={[
+    {
+      framing: "A Class III medical device manufacturer consolidating IFUs across global markets.",
+      body: "Single-source DITA across device families, regulatory-variant profiling for FDA-recognized markets, controlled vocabulary aligned to MedDRA. Translation costs reduced through reuse rather than retranslation; submissions accelerated by component-level approval.",
+    },
+    {
+      framing: "A pharmaceutical company restructuring regulatory submission components for FDA eCTD.",
+      body: "Component-level reuse across submission programs; metadata-driven assembly for module structure. Authoring workflows validated under 21 CFR Part 11; audit trails preserved through publication.",
+    },
+  ]}
+  stats={[
+    {
+      number: "45%",
+      label: "Content reuse in regulatory submissions",
+      context: "Component-level reuse across submission programs.",
+    },
+    {
+      number: "72%",
+      label: "Translation cost savings",
+      context: "IFU and labeling localization across regulated markets.",
+    },
+  ]}
+  ctaBody="Submit a 20-page sample (IFU, labeling, or submission component). We'll return a content-readiness assessment — what's recoverable, what's at risk, and what GxP-defensible methodology would change. Two business days, no obligation to proceed."
+/>
