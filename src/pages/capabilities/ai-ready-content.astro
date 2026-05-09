@@ -1,0 +1,94 @@
+---
+import PillarPageLayout from "../../layouts/PillarPageLayout.astro";
+---
+
+<PillarPageLayout
+  pillarId="ai-ready"
+  pillarHref="/capabilities/ai-ready-content"
+  pageTitle="AI-Ready Content — Capabilities"
+  pageDescription="Chunking strategy, metadata schema, retrieval architecture for RAG and AI-assistant pipelines. The translation layer between structured technical content and the AI systems that consume it."
+  heroTitle="AI-Ready Content"
+  heroSubdeck="A content-engineering problem, not a model problem. Structured content is the difference between RAG that retrieves accurately and RAG that hallucinates. Most AI initiatives in regulated industries fail at the content layer, not the model layer."
+  deliverables={[
+    {
+      label: "Content readiness assessment",
+      description: "Score the existing content estate on retrieval-readiness dimensions. What's recoverable, what needs remediation, what won't survive ingestion.",
+    },
+    {
+      label: "Chunking strategy",
+      description: "Section-aware chunk boundaries that preserve semantic context. Most RAG retrieval failures trace to chunking that severs claim from evidence.",
+    },
+    {
+      label: "Metadata schema design",
+      description: "Filtered-retrieval metadata, provenance tracking, version metadata, compliance attribution. Survives the pipeline.",
+    },
+    {
+      label: "Retrieval architecture",
+      description: "Vector store choices, hybrid retrieval patterns, evaluation harnesses. Built against the regulated-industry use cases that matter.",
+    },
+    {
+      label: "Pipeline integration",
+      description: "RAG ingestion pipelines, content-update propagation, deployment automation. JSONL or similar AI-ingestion-ready output formats.",
+    },
+    {
+      label: "Retrieval evaluation",
+      description: "Test sets, precision metrics, ongoing tuning processes. The evaluation harness that catches retrieval regressions before they reach production.",
+    },
+  ]}
+  phases={[
+    {
+      phase: "Discovery",
+      body: "Content readiness assessment, retrieval use-case mapping. What questions does the AI assistant need to answer? What content estate is supposed to support those answers?",
+    },
+    {
+      phase: "Architecture",
+      body: "Chunking strategy design, metadata schema design, retrieval architecture. The content-engineering decisions that determine whether retrieval is precise or noisy. Primary load alongside Implementation.",
+    },
+    {
+      phase: "Migration",
+      body: "Content remediation for AI ingestion — chunking and metadata enrichment of legacy content. Often runs in parallel with Content Migration when both pillars are in scope.",
+    },
+    {
+      phase: "Implementation",
+      body: "Pipeline integration, retrieval evaluation harness, RAG deployment. The pillar's primary execution load — building the pipelines and the evaluation that guards them.",
+    },
+    {
+      phase: "Enablement",
+      body: "Ongoing tuning processes, AI-ready authoring practices. RAG systems require ongoing maintenance the buyer's team has to own; the page should be honest about that.",
+    },
+  ]}
+  anchorStat={{
+    number: "85%",
+    label: "Retrieval precision in deployed RAG pipelines",
+    context: "The precision floor we deliver — measured against representative regulated-industry test sets.",
+  }}
+  bridgeProse="Precision matters more than recall in regulated industries. A hallucinated regulation cited as authoritative is worse than a missed one — the missed one gets escalated, the hallucinated one gets followed. 85% retrieval precision is the floor we deliver across deployed pipelines; for regulated workloads, that's not a starting point, it's the operational threshold for production."
+  standardsAndTooling={[
+    {
+      label: "Chunking standards",
+      description: "Section-aware chunking aligned to DITA topic boundaries; semantic-preserving chunk overlap patterns; metadata-first chunking for filtered retrieval.",
+    },
+    {
+      label: "Retrieval evaluation",
+      description: "Custom test sets per use case; precision and recall measurement; regression harnesses that catch retrieval drift after content changes.",
+    },
+    {
+      label: "Vector stores",
+      description: "Pinecone, Weaviate, pgvector, OpenSearch — chosen for the use case, not as a default.",
+    },
+    {
+      label: "Orchestration frameworks",
+      description: "LangChain, LlamaIndex, custom pipelines. The framework matters less than the chunking and evaluation discipline.",
+    },
+    {
+      label: "Output formats",
+      description: "JSONL for AI ingestion, structured metadata, provenance tracking. The format the LLM provider's pipeline expects.",
+    },
+  ]}
+  failureMode={{
+    eyebrow: "WHEN AI-READY ISN'T",
+    heading: "Six-figure model investments fail at the content layer.",
+    body: "RAG retrieving the wrong regulation and surfacing it as authoritative. AI assistants confidently citing outdated procedures. Compliance assistants that pass smoke tests but hallucinate at edge cases. The pattern: the model was selected before the content was engineered, and the team thinks they have an AI problem when they actually have a content problem.",
+  }}
+  ctaBody="Submit a 20-page sample. We'll return an AI-readiness diagnostic — chunking fitness, metadata gaps, retrieval-architecture implications. Two business days, no obligation to proceed. Especially valuable if you have an active AI program that's underperforming."
+/>

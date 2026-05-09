@@ -1,0 +1,85 @@
+---
+/*
+  LifecycleNav — small inline "Next: [next pillar] →" link before the footer
+  on pillar pages.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §8 (pillar pages)
+
+  Sequential-reader affordance, complements the SiblingsBreadcrumb at the top.
+  Document-grade quiet — single line, no ornamentation.
+*/
+
+interface Props {
+  currentPillar: "ia" | "migration" | "ccms" | "ai-ready";
+}
+
+const sequence = [
+  { id: "ia", label: "Information Architecture", href: "/capabilities/information-architecture" },
+  { id: "migration", label: "Content Migration", href: "/capabilities/content-migration" },
+  { id: "ccms", label: "CCMS & Publishing", href: "/capabilities/ccms-and-publishing" },
+  { id: "ai-ready", label: "AI-Ready Content", href: "/capabilities/ai-ready-content" },
+];
+
+const { currentPillar } = Astro.props;
+const currentIndex = sequence.findIndex((p) => p.id === currentPillar);
+const next = currentIndex < sequence.length - 1 ? sequence[currentIndex + 1] : null;
+---
+
+<nav class="lifecycle-nav" aria-label="Lifecycle progression">
+  <div class="container-prose lifecycle-nav__inner">
+    {next ? (
+      <a href={next.href} class="lifecycle-nav__link">
+        Next: <span class="lifecycle-nav__pillar">{next.label}</span>
+        <span class="lifecycle-nav__arrow" aria-hidden="true">→</span>
+      </a>
+    ) : (
+      <a href="/capabilities" class="lifecycle-nav__link">
+        Back to <span class="lifecycle-nav__pillar">all capabilities</span>
+        <span class="lifecycle-nav__arrow" aria-hidden="true">→</span>
+      </a>
+    )}
+  </div>
+</nav>
+
+<style>
+  .lifecycle-nav {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  .lifecycle-nav__inner {
+    text-align: center;
+  }
+
+  .lifecycle-nav__link {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .lifecycle-nav__link:hover,
+  .lifecycle-nav__link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .lifecycle-nav__pillar {
+    /* Multi-word pillar names should not break across lines */
+    white-space: nowrap;
+  }
+
+  .lifecycle-nav__arrow {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+
+  .lifecycle-nav__link:hover .lifecycle-nav__arrow {
+    transform: translateX(2px);
+  }
+</style>

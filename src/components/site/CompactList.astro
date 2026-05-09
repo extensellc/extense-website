@@ -1,0 +1,95 @@
+---
+/*
+  CompactList — bolded label + brief descriptor pair pattern.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (used for Deliverables, Standards/Tooling
+  on pillar pages; Document Types, Standards/Frameworks, Capability Relevance,
+  Engagement Shape on industry/capabilities pages)
+
+  Compact density — signals list-as-inventory vs. DocumentRow's narrative-prose-density.
+  Items separated by space-3, label and descriptor stacked.
+
+  Two layout modes:
+    .stacked (default) — label above descriptor (vertical pair per item)
+    .inline             — label and descriptor on same line (where descriptor is short)
+*/
+
+interface Item {
+  label: string;
+  description?: string;
+}
+
+interface Props {
+  items: Item[];
+  layout?: "stacked" | "inline";
+}
+
+const { items, layout = "stacked" } = Astro.props;
+---
+
+<dl class:list={["compact-list", `compact-list--${layout}`]}>
+  {items.map((item) => (
+    <div class="compact-list__item">
+      <dt class="compact-list__label">{item.label}</dt>
+      {item.description && (
+        <dd class="compact-list__description">{item.description}</dd>
+      )}
+    </div>
+  ))}
+</dl>
+
+<style>
+  .compact-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .compact-list__item {
+    margin: 0;
+  }
+
+  .compact-list__item + .compact-list__item {
+    margin-top: var(--space-3);
+  }
+
+  .compact-list__label {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .compact-list__description {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Stacked: label above description */
+  .compact-list--stacked .compact-list__description {
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Inline: label followed by description on same paragraph baseline */
+  .compact-list--inline .compact-list__item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: baseline;
+  }
+
+  .compact-list--inline .compact-list__label::after {
+    content: " —";
+    color: var(--color-text-muted);
+    font-weight: var(--weight-regular);
+  }
+
+  .compact-list--inline .compact-list__description {
+    display: inline;
+  }
+</style>

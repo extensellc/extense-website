@@ -1,0 +1,178 @@
+---
+/*
+  PillarPageLayout — shared base for the four pillar pages.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §8 (pillar pages)
+
+  Section order (shared across all four pillars):
+    1. TopNav (BaseLayout)
+    2. Hero (Hero.universal, pillar-specific copy)
+    3. SiblingsBreadcrumb (.pillars)
+    4. Deliverables — compact structured list
+    5. Methodology phases applied (DocumentRow.entry × 5) —
+       Discovery → Architecture → Migration → Implementation → Enablement
+    6. Anchor stat + bridge (StatBlock.one + bridge prose)
+    7. Standards and tooling — compact structured list
+    8. Cost-of-being-wrong (DocumentRow.failureMode × 1)
+    9. CTAModule
+    10. LifecycleNav — small inline "Next: [pillar] →"
+    11. Footer (BaseLayout)
+*/
+
+import BaseLayout from "./BaseLayout.astro";
+import Hero from "../components/site/Hero.astro";
+import SiblingsBreadcrumb from "../components/nav/SiblingsBreadcrumb.astro";
+import CompactList from "../components/site/CompactList.astro";
+import DocumentRow from "../components/site/DocumentRow.astro";
+import StatBlock from "../components/site/StatBlock.astro";
+import CTAModule from "../components/site/CTAModule.astro";
+import LifecycleNav from "../components/nav/LifecycleNav.astro";
+
+interface CompactItem {
+  label: string;
+  description?: string;
+}
+
+interface PhaseEntry {
+  phase: "Discovery" | "Architecture" | "Migration" | "Implementation" | "Enablement";
+  body: string;
+}
+
+interface Stat {
+  number: string;
+  label: string;
+  context?: string;
+}
+
+interface FailureMode {
+  eyebrow: string;
+  heading: string;
+  body: string;
+}
+
+interface Props {
+  pillarId: "ia" | "migration" | "ccms" | "ai-ready";
+  pillarHref: string;
+  pageTitle: string;
+  pageDescription: string;
+  heroTitle: string;
+  heroSubdeck: string;
+  deliverables: CompactItem[];
+  phases: PhaseEntry[]; // exactly 5
+  anchorStat: Stat;
+  bridgeProse: string;
+  standardsAndTooling: CompactItem[];
+  failureMode: FailureMode;
+  ctaBody: string;
+}
+
+const {
+  pillarId,
+  pillarHref,
+  pageTitle,
+  pageDescription,
+  heroTitle,
+  heroSubdeck,
+  deliverables,
+  phases,
+  anchorStat,
+  bridgeProse,
+  standardsAndTooling,
+  failureMode,
+  ctaBody,
+} = Astro.props;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Hero variant="universal" title={heroTitle} subdeck={heroSubdeck} />
+
+  <SiblingsBreadcrumb variant="pillars" current={pillarHref} />
+
+  <section class="pillar-section pillar-section--deliverables" aria-labelledby="deliverables-heading">
+    <div class="container-prose pillar-section__inner">
+      <h2 id="deliverables-heading" class="pillar-section__heading">What gets delivered.</h2>
+      <CompactList items={deliverables} />
+    </div>
+  </section>
+
+  <section class="pillar-section pillar-section--methodology" aria-labelledby="methodology-heading">
+    <div class="container-prose pillar-section__inner">
+      <h2 id="methodology-heading" class="pillar-section__heading">How we run engagements.</h2>
+      <div class="pillar-section__rows">
+        {phases.map((p) => (
+          <DocumentRow variant="entry" heading={p.phase} body={p.body} headingLevel={3} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="pillar-section pillar-section--anchor" aria-labelledby="anchor-heading">
+    <div class="container-prose pillar-section__inner">
+      <h2 id="anchor-heading" class="pillar-section__heading">Outcomes.</h2>
+      <StatBlock variant="one" stats={[anchorStat]} />
+      <p class="pillar-section__bridge">{bridgeProse}</p>
+    </div>
+  </section>
+
+  <section class="pillar-section pillar-section--standards" aria-labelledby="standards-heading">
+    <div class="container-prose pillar-section__inner">
+      <h2 id="standards-heading" class="pillar-section__heading">Standards and tooling.</h2>
+      <CompactList items={standardsAndTooling} />
+    </div>
+  </section>
+
+  <section class="pillar-section pillar-section--failure" aria-labelledby="failure-heading">
+    <div class="container-prose pillar-section__inner">
+      <h2 id="failure-heading" class="pillar-section__heading">When this goes wrong.</h2>
+      <DocumentRow
+        variant="failureMode"
+        eyebrow={failureMode.eyebrow}
+        heading={failureMode.heading}
+        body={failureMode.body}
+        headingLevel={3}
+      />
+    </div>
+  </section>
+
+  <CTAModule audience="general" body={ctaBody} />
+
+  <LifecycleNav currentPillar={pillarId} />
+</BaseLayout>
+
+<style>
+  .pillar-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+  }
+
+  @media (max-width: 767px) {
+    .pillar-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .pillar-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-12);
+    text-wrap: balance;
+  }
+
+  .pillar-section__rows {
+    /* DocumentRow handles its own spacing */
+  }
+
+  .pillar-section__bridge {
+    margin-top: var(--space-8);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+</style>

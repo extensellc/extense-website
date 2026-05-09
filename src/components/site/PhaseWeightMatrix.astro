@@ -1,0 +1,309 @@
+---
+/*
+  PhaseWeightMatrix — load-bearing centerpiece of /capabilities.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Visualization)
+
+  4 rows × 5 columns capability matrix:
+    Rows: pillars in lifecycle order
+      Information Architecture | Content Migration | CCMS & Publishing | AI-Ready Content
+    Columns: methodology phases
+      Discovery | Architecture | Migration | Implementation | Enablement
+
+  Cell content: brief application notes (8–15 words) — what this pillar's
+  work looks like in this phase.
+
+  Primary-load shading: cells where the pillar concentrates its work get a
+  subtle navy background fill (low opacity) — but the primary-load distinction
+  is ALSO communicated through cell text so it's not visual-only.
+
+  Mobile: horizontally scrollable container with sticky first column (pillar
+  names) and sticky header row (phase names). Cells maintain readable text.
+
+  Phase 4 directive: matrix cell content (29 items: 20 cells + 4 row labels +
+  5 column labels) requires dedicated practitioner verification — this file
+  ships with placeholder copy that holds the structural shape; actual cell
+  content gets written cell-by-cell with the practitioner.
+
+  Print: full-fidelity, primary-load shading reproduces in B&W.
+*/
+
+interface Cell {
+  text: string;
+  primary?: boolean; // true = pillar's primary-load phase
+}
+
+interface PillarRow {
+  name: string;
+  scope: string;
+  cells: [Cell, Cell, Cell, Cell, Cell]; // exactly 5 phases
+}
+
+const phases = [
+  { name: "Discovery", scope: "Audit, stakeholder interviews, current-state mapping" },
+  { name: "Architecture", scope: "Schema, taxonomy, structural decisions" },
+  { name: "Migration", scope: "Conversion, normalization, content recovery" },
+  { name: "Implementation", scope: "Configuration, build pipelines, rollout" },
+  { name: "Enablement", scope: "Training, governance, runbook handover" },
+];
+
+// Placeholder cell content — Phase 4 practitioner session produces actuals.
+// Structural shape preserved: each cell describes what the pillar does in
+// that phase, in the pillar's voice. Primary-load cells (where the pillar
+// concentrates) carry that signal in both copy and visual shading.
+const rows: PillarRow[] = [
+  {
+    name: "Information Architecture",
+    scope: "Schema and taxonomy that determine downstream possibility",
+    cells: [
+      { text: "Stakeholder interviews, content audit, use-case mapping.", primary: true },
+      { text: "Content models (DITA elements, S1000D modules, custom DTDs), taxonomy, reuse strategy.", primary: true },
+      { text: "IA validation through pilot conversion of representative content." },
+      { text: "IA propagation across authoring tools and CCMS configuration." },
+      { text: "Governance handover, IA documentation, author orientation." },
+    ],
+  },
+  {
+    name: "Content Migration",
+    scope: "Recovery operation that turns legacy content into reusable assets",
+    cells: [
+      { text: "Content audit, inventory, source-format assessment." },
+      { text: "Conversion design, target schema validation, QA harness design.", primary: true },
+      { text: "Pilot conversion, production batches, normalization, metadata enrichment.", primary: true },
+      { text: "Cutover, parallel running, rollback procedures." },
+      { text: "Author transition, runbook handover, post-migration optimization." },
+    ],
+  },
+  {
+    name: "CCMS & Publishing",
+    scope: "Operating system for content plus the CI/CD that closes the loop",
+    cells: [
+      { text: "Current-state assessment, platform fit analysis, requirements gathering." },
+      { text: "CCMS configuration design, workflow design, publishing pipeline architecture.", primary: true },
+      { text: "Data load and content migration into the configured CCMS." },
+      { text: "Pipeline build, CI/CD integration, automation rollout, multi-format publishing.", primary: true },
+      { text: "Admin and author training, runbook handover, ongoing optimization.", primary: true },
+    ],
+  },
+  {
+    name: "AI-Ready Content",
+    scope: "Translation layer between structured content and AI retrieval",
+    cells: [
+      { text: "Content readiness assessment, retrieval use-case mapping." },
+      { text: "Chunking strategy, metadata schema, retrieval architecture.", primary: true },
+      { text: "Content remediation for AI ingestion (chunking and metadata enrichment)." },
+      { text: "Pipeline integration, retrieval evaluation harness, RAG deployment.", primary: true },
+      { text: "Ongoing tuning processes, AI-ready authoring practices.", primary: true },
+    ],
+  },
+];
+---
+
+<div class="matrix-container">
+  <div class="matrix-scroll">
+    <table class="matrix" aria-label="Pillar work distribution across methodology phases">
+      <caption class="sr-only">
+        How each capability pillar concentrates its work across the five
+        methodology phases. Cells marked as primary-load (visually shaded
+        and noted in copy) indicate where the pillar's primary execution lives.
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col" class="matrix__corner">
+            <span class="matrix__corner-label">Pillar &times; Phase</span>
+          </th>
+          {phases.map((p) => (
+            <th scope="col" class="matrix__phase-header">
+              <span class="matrix__phase-name">{p.name}</span>
+              <span class="matrix__phase-scope">{p.scope}</span>
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr>
+            <th scope="row" class="matrix__pillar-header">
+              <span class="matrix__pillar-name">{row.name}</span>
+              <span class="matrix__pillar-scope">{row.scope}</span>
+            </th>
+            {row.cells.map((cell) => (
+              <td class:list={["matrix__cell", cell.primary && "matrix__cell--primary"]}>
+                <span class="matrix__cell-text">{cell.text}</span>
+                {cell.primary && (
+                  <span class="sr-only"> Primary-load phase for this pillar.</span>
+                )}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .matrix-container {
+    /* container-data is provided by parent */
+    width: 100%;
+    /* Matrix needs more horizontal width than container-prose; the parent
+       section uses container-data. This wrapper just constrains overflow. */
+    overflow: hidden;
+  }
+
+  .matrix-scroll {
+    /* Mobile: horizontally scrollable. Cells maintain readable text size;
+       do not collapse to cards (locked tabular treatment per Phase 3). */
+    overflow-x: auto;
+    /* Smooth horizontal scroll on touch */
+    -webkit-overflow-scrolling: touch;
+    /* Subtle scroll snap to columns for better mobile UX */
+    scroll-snap-type: x proximity;
+  }
+
+  .matrix {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 880px; /* Below this, horizontal scroll engages */
+    border-spacing: 0;
+    /* Document-grade table — no rounded corners, hairline borders only */
+  }
+
+  .matrix__corner {
+    text-align: left;
+    vertical-align: bottom;
+    padding: var(--space-4) var(--space-4);
+    border-bottom: var(--border-hairline);
+    border-right: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    /* Sticky on horizontal scroll for mobile */
+    position: sticky;
+    left: 0;
+    z-index: var(--z-elevated);
+    width: 200px;
+  }
+
+  .matrix__corner-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .matrix__phase-header {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--space-4) var(--space-4);
+    border-bottom: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    /* Sticky header row for vertical scroll */
+    position: sticky;
+    top: 0;
+    z-index: var(--z-base);
+  }
+
+  .matrix__phase-header:not(:last-child) {
+    border-right: var(--border-hairline);
+  }
+
+  .matrix__phase-name {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-gravitas-navy);
+    margin-bottom: var(--space-1);
+  }
+
+  .matrix__phase-scope {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-snug);
+  }
+
+  .matrix__pillar-header {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--space-4) var(--space-4);
+    border-right: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    /* Sticky pillar name column on horizontal scroll */
+    position: sticky;
+    left: 0;
+    z-index: var(--z-elevated);
+    width: 200px;
+  }
+
+  .matrix__pillar-name {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  .matrix__pillar-scope {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-snug);
+    text-wrap: pretty;
+  }
+
+  .matrix__cell {
+    vertical-align: top;
+    padding: var(--space-4) var(--space-4);
+    border-bottom: var(--border-hairline);
+    scroll-snap-align: start;
+  }
+
+  .matrix__cell:not(:last-child) {
+    border-right: var(--border-hairline);
+  }
+
+  /* Primary-load shading: subtle navy at low opacity. Reproduces in B&W
+     for print (browsers darken the background uniformly). */
+  .matrix__cell--primary {
+    background-color: rgb(31 45 61 / 0.06); /* color-gravitas-navy at ~6% */
+    box-shadow: inset 2px 0 0 var(--color-gravitas-navy);
+  }
+
+  .matrix__cell-text {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-snug);
+    text-wrap: pretty;
+  }
+
+  .matrix__cell--primary .matrix__cell-text {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+
+  /* Print styles */
+  @media print {
+    .matrix-scroll {
+      overflow: visible;
+    }
+    .matrix {
+      min-width: auto;
+    }
+    .matrix__cell--primary {
+      background-color: rgb(0 0 0 / 0.08);
+      box-shadow: inset 2px 0 0 #000;
+    }
+  }
+</style>

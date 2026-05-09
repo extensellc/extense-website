@@ -1,0 +1,94 @@
+---
+import PillarPageLayout from "../../layouts/PillarPageLayout.astro";
+---
+
+<PillarPageLayout
+  pillarId="migration"
+  pillarHref="/capabilities/content-migration"
+  pageTitle="Content Migration — Capabilities"
+  pageDescription="Recovery operation that converts legacy content estates from FrameMaker, Word, and unstructured XML into clean, reusable DITA. Conversion scripting, normalization, QA harnesses, cutover planning."
+  heroTitle="Content Migration"
+  heroSubdeck="Recovery operation, not copy-paste. Most existing content has more value than the current system can extract. Migration is the operation that recovers it — converting legacy estates into reusable assets at scale."
+  deliverables={[
+    {
+      label: "Content audit and inventory",
+      description: "Volume, formats, complexity, reuse potential. Decisions about what gets migrated, what gets retired, what gets rewritten.",
+    },
+    {
+      label: "Conversion scripting",
+      description: "XSLT pipelines, custom converters, off-the-shelf conversion tools where appropriate.",
+    },
+    {
+      label: "Normalization and metadata enrichment",
+      description: "Cleanup that brings inconsistent legacy content to a single quality bar in the target schema.",
+    },
+    {
+      label: "QA harnesses",
+      description: "Validation rules, link checking, structural integrity, content equivalence verification.",
+    },
+    {
+      label: "Cutover and parallel-running plans",
+      description: "How the new system goes live without breaking the old one. Rollback procedures if it does.",
+    },
+    {
+      label: "Author transition support",
+      description: "Training and runbook handover. The migration ships when authors are operating the new system, not when the conversion finishes.",
+    },
+  ]}
+  phases={[
+    {
+      phase: "Discovery",
+      body: "Content audit, inventory, stakeholder interviews. What exists, what's worth migrating, what's been duplicated, what's quietly broken. The audit determines scope; the inventory determines effort.",
+    },
+    {
+      phase: "Architecture",
+      body: "Conversion design, target schema validation, QA harness design. This is where Migration projects succeed or fail before anyone has converted a single topic. Significant load alongside the Migration phase itself.",
+    },
+    {
+      phase: "Migration",
+      body: "Pilot conversion, production batches, normalization, metadata enrichment. The pillar's primary execution load — converting legacy content to clean, reusable assets in the target schema.",
+    },
+    {
+      phase: "Implementation",
+      body: "Cutover, parallel running, rollback procedures. The new system goes live without breaking the old one; if it does, recovery is procedural, not panicked.",
+    },
+    {
+      phase: "Enablement",
+      body: "Author transition, runbook handover, post-migration optimization. Training so the new workflow is operational, not aspirational.",
+    },
+  ]}
+  anchorStat={{
+    number: "45%",
+    label: "Content reuse rate after migration",
+    context: "Average across migrations from unstructured legacy formats to clean DITA.",
+  }}
+  bridgeProse="Migration isn't moving content — it's identifying recoverable reusable assets. The 45% recovery rate is what makes downstream translation savings possible. When content is recovered as reusable topics rather than rewritten chapter by chapter, localization volume drops proportionally and every subsequent change costs less."
+  standardsAndTooling={[
+    {
+      label: "Source formats",
+      description: "FrameMaker (.fm, .mif), unstructured Word, Adobe InDesign, legacy CCMS exports, unstructured or partially-structured XML.",
+    },
+    {
+      label: "Target formats",
+      description: "DITA 1.3, S1000D Issue 5/6, custom XML schemas where required.",
+    },
+    {
+      label: "Conversion tooling",
+      description: "XSLT 2.0/3.0 pipelines, custom Python or Node converters, off-the-shelf tools (mif2dita, MadCap converters) where appropriate.",
+    },
+    {
+      label: "QA harnesses",
+      description: "Schematron validation, custom link-check and structural validators, content-equivalence verification.",
+    },
+    {
+      label: "Containerized builds",
+      description: "Docker-based DITA-OT for repeatable conversion runs across environments.",
+    },
+  ]}
+  failureMode={{
+    eyebrow: "WHEN MIGRATION IS BOTCHED",
+    heading: "Failed cutovers leave content debt that never gets paid down.",
+    body: "Migrations that lose fidelity. 'We'll clean it up later' debt that never gets cleaned up. Conversion projects that produce structured-looking content with the same authoring problems as the legacy system — now in a new format. The pattern is consistent: the architecture work was skipped or rushed, and the conversion ran against an unspecified target.",
+  }}
+  ctaBody="Submit a 20-page sample. We'll return a migration feasibility assessment — recovery potential, conversion effort, and the architecture decisions that would shape a production migration. Two business days, no obligation to proceed."
+/>
