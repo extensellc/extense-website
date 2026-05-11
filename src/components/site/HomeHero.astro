@@ -290,7 +290,10 @@
     stroke: currentColor;
     stroke-width: 1.5;
     fill: none;
-    stroke-linecap: square;
+    /* butt (default), not square — square caps extend half-stroke-width past the
+       endpoint, which leaves visible whisker stubs at every T-junction once the
+       bent connectors are split into separate straight segments. */
+    stroke-linecap: butt;
     stroke-linejoin: miter;
     vector-effect: non-scaling-stroke;
   }
