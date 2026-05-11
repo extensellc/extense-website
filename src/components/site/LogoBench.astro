@@ -25,6 +25,13 @@ interface Logo {
   label: string;
   src?: string;
   href?: string;
+  /**
+   * Per-logo max height in px (desktop). Used to visually balance logos
+   * of different intrinsic aspect ratios in the marquee. Seals and
+   * pictorial marks need more height than horizontal wordmarks.
+   * Mobile renders at ~75% of this value.
+   */
+  maxH?: number;
 }
 
 interface Props {
@@ -33,35 +40,39 @@ interface Props {
   eyebrow?: string;
 }
 
+/* Per-logo heights tuned for optical balance — pictorial seals get more
+   height than horizontal wordmarks so each reads at comparable visual weight.
+   Heights chosen against the marquee row baseline. */
 const defaultLogos: Record<Props["variant"], Logo[]> = {
   full: [
-    { label: "IRS" },
-    { label: "U.S. House of Representatives" },
-    { label: "U.S. District Courts" },
-    { label: "Toyota" },
-    { label: "FedEx" },
-    { label: "Morgan Stanley" },
-    { label: "Guidewire" },
-    { label: "Thermo Fisher" },
-    { label: "AMD" },
-    { label: "HPE" },
-    { label: "Great American Insurance" },
-    { label: "Paralyzed Veterans of America" },
+    { label: "IRS", src: "/images/clients/irs.png", maxH: 64 },
+    { label: "U.S. House of Representatives", src: "/images/clients/us-house.png", maxH: 64 },
+    { label: "U.S. District Courts", src: "/images/clients/us-district-courts.png", maxH: 60 },
+    { label: "Toyota", src: "/images/clients/toyota.png", maxH: 52 },
+    { label: "FedEx", src: "/images/clients/fedex.png", maxH: 56 },
+    { label: "Morgan Stanley", src: "/images/clients/morgan-stanley.jpg", maxH: 40 },
+    { label: "Guidewire", src: "/images/clients/guidewire.png", maxH: 44 },
+    { label: "Thermo Fisher", src: "/images/clients/thermo-fisher.png", maxH: 48 },
+    { label: "AMD", src: "/images/clients/amd.png", maxH: 36 },
+    { label: "HPE", src: "/images/clients/hpe.png", maxH: 32 },
+    /* Great American Insurance + Paralyzed Veterans of America: logos
+       not yet sourced — listed in the brief but absent from the kit.
+       Add to this list when assets are provided. */
   ],
   federal: [
-    { label: "IRS" },
-    { label: "U.S. House of Representatives" },
-    { label: "U.S. District Courts" },
+    { label: "IRS", src: "/images/clients/irs.png", maxH: 64 },
+    { label: "U.S. House of Representatives", src: "/images/clients/us-house.png", maxH: 64 },
+    { label: "U.S. District Courts", src: "/images/clients/us-district-courts.png", maxH: 60 },
   ],
   commercial: [
-    { label: "Toyota" },
-    { label: "FedEx" },
-    { label: "Morgan Stanley" },
-    { label: "Thermo Fisher" },
-    { label: "AMD" },
-    { label: "HPE" },
-    { label: "Guidewire" },
-    { label: "Great American Insurance" },
+    { label: "Toyota", src: "/images/clients/toyota.png", maxH: 52 },
+    { label: "FedEx", src: "/images/clients/fedex.png", maxH: 56 },
+    { label: "Morgan Stanley", src: "/images/clients/morgan-stanley.jpg", maxH: 40 },
+    { label: "Thermo Fisher", src: "/images/clients/thermo-fisher.png", maxH: 48 },
+    { label: "AMD", src: "/images/clients/amd.png", maxH: 36 },
+    { label: "HPE", src: "/images/clients/hpe.png", maxH: 32 },
+    { label: "Guidewire", src: "/images/clients/guidewire.png", maxH: 44 },
+    /* Great American Insurance: logo not yet sourced. */
   ],
   industry: [],
 };
@@ -92,7 +103,7 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
               aria-hidden={idx >= logos.length ? "true" : undefined}
             >
               {logo.href ? (
-                <a href={logo.href} class="logo-bench__cell">
+                <a href={logo.href} class="logo-bench__cell" style={logo.maxH ? `--logo-h: ${logo.maxH}px;` : undefined}>
                   {logo.src ? (
                     <img src={logo.src} alt={logo.label} loading="lazy" />
                   ) : (
@@ -100,7 +111,7 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
                   )}
                 </a>
               ) : (
-                <span class="logo-bench__cell">
+                <span class="logo-bench__cell" style={logo.maxH ? `--logo-h: ${logo.maxH}px;` : undefined}>
                   {logo.src ? (
                     <img src={logo.src} alt={logo.label} loading="lazy" />
                   ) : (
@@ -118,7 +129,7 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
           {logos.map((logo) => (
             <li class="logo-bench__item">
               {logo.href ? (
-                <a href={logo.href} class="logo-bench__cell">
+                <a href={logo.href} class="logo-bench__cell" style={logo.maxH ? `--logo-h: ${logo.maxH}px;` : undefined}>
                   {logo.src ? (
                     <img src={logo.src} alt={logo.label} loading="lazy" />
                   ) : (
@@ -126,7 +137,7 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
                   )}
                 </a>
               ) : (
-                <span class="logo-bench__cell">
+                <span class="logo-bench__cell" style={logo.maxH ? `--logo-h: ${logo.maxH}px;` : undefined}>
                   {logo.src ? (
                     <img src={logo.src} alt={logo.label} loading="lazy" />
                   ) : (
@@ -204,14 +215,15 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
 
   .logo-bench__item--marquee {
     flex-shrink: 0;
-    min-width: 180px;
+    min-width: 200px;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   @media (min-width: 768px) {
     .logo-bench__item--marquee {
-      min-width: 220px;
+      min-width: 240px;
     }
   }
 
@@ -283,13 +295,19 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 48px;
+    height: 80px;
     padding: 0 var(--space-3);
     color: var(--color-text-secondary);
     text-decoration: none;
     transition: color var(--duration-base) var(--easing-out),
       opacity var(--duration-base) var(--easing-out);
-    opacity: 0.9;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 767px) {
+    .logo-bench__cell {
+      height: 64px;
+    }
   }
 
   .logo-bench__cell:hover,
@@ -299,16 +317,21 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
     text-decoration: none;
   }
 
+  /* Each logo gets its own --logo-h (set per-item via inline style) so the
+     marquee row stays a constant height while individual logos render at the
+     proportional height that gives them comparable visual weight. */
   .logo-bench__cell img {
-    max-height: 24px;
+    max-height: var(--logo-h, 32px);
+    max-width: 100%;
     width: auto;
     object-fit: contain;
-    filter: grayscale(100%);
+    filter: grayscale(100%) contrast(1.05);
   }
 
-  @media (min-width: 768px) {
+  /* Mobile renders each logo at ~75% of its desktop max-height for fit. */
+  @media (max-width: 767px) {
     .logo-bench__cell img {
-      max-height: 32px;
+      max-height: calc(var(--logo-h, 32px) * 0.75);
     }
   }
 
