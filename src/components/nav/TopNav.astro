@@ -46,7 +46,7 @@ function isActive(item: NavItem): boolean {
 <header class="topnav" data-topnav>
   <div class="topnav__inner container-page">
     <a href="/" class="topnav__logo" aria-label="Extense LLC — home">
-      <Logo height={56} />
+      <Logo height={80} />
     </a>
 
     <nav class="topnav__nav" aria-label="Main navigation">
@@ -168,17 +168,32 @@ function isActive(item: NavItem): boolean {
     border-bottom-color: var(--color-border-subtle);
   }
 
+  /* TopNav uses wider edge-to-edge padding so the logo can sit further left
+     and the nav links can sit further right than the standard container.
+     Override container-page padding for the topnav specifically. */
   .topnav__inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-6);
-    height: 64px;
+    height: 76px;
+    max-width: none;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
   }
 
   @media (min-width: 768px) {
     .topnav__inner {
-      height: 80px;
+      height: 104px;
+      padding-left: var(--space-8);
+      padding-right: var(--space-8);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .topnav__inner {
+      padding-left: var(--space-12);
+      padding-right: var(--space-12);
     }
   }
 
@@ -195,7 +210,7 @@ function isActive(item: NavItem): boolean {
   /* Mobile: scale the stacked logo down so it fits the shorter nav cleanly */
   @media (max-width: 767px) {
     .topnav__logo :global(.extense-logo) {
-      height: 48px;
+      height: 56px;
     }
   }
 

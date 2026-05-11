@@ -5,18 +5,20 @@
   Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Visualization)
 
   Variants:
-    .full        — 12 logos mixed federal/commercial (/)
-    .federal     — 3 logos: IRS, U.S. House, U.S. District Courts
-                   (/public-sector and /public-sector/government-and-defense)
-    .commercial  — 8 logos (/private-sector)
-    .industry    — 1–2 logos relevant to the vertical (industry pages)
+    .full        — 12 logos mixed federal/commercial (/). Marquee carousel.
+    .federal     — 3 logos (public-sector pages). Static grid.
+    .commercial  — 8 logos (private-sector). Static grid.
+    .industry    — 1–2 logos (industry pages). Static grid.
 
   Treatment: monochrome single-color (color-text-secondary), no original brand colors.
   Optical-balance alignment, not strict pixel-grid.
 
-  For Phase 4 launch: actual logo SVGs sourced separately. This component supports
-  both image src (preferred) and text fallback. When src is omitted, the label is
-  rendered in styled text — preserves the bench layout while we acquire real assets.
+  The .full variant on the homepage renders as an auto-scrolling horizontal
+  marquee. The logos cycle infinitely. Pauses on hover. Honors
+  prefers-reduced-motion (animation removed; static rendering).
+
+  Phase 4 follow-up: replace text-fallback labels with actual logo SVGs in
+  public/images/clients/ when sourced. Component supports both src and label.
 */
 
 interface Logo {
@@ -31,7 +33,6 @@ interface Props {
   eyebrow?: string;
 }
 
-// Default logo sets per variant (resolved from EXTENSE_DESIGN_BRIEF.md §3 / §9)
 const defaultLogos: Record<Props["variant"], Logo[]> = {
   full: [
     { label: "IRS" },
@@ -66,34 +67,78 @@ const defaultLogos: Record<Props["variant"], Logo[]> = {
 };
 
 const { variant, logos = defaultLogos[variant], eyebrow } = Astro.props;
+
+const isCarousel = variant === "full";
+// For the carousel, duplicate the logo list so the marquee can loop seamlessly.
+// The animation translates -50% (one full set width), at which point the second
+// set has scrolled into the position where the first set started — no visible jump.
+const renderLogos = isCarousel ? [...logos, ...logos] : logos;
 ---
 
 <section class:list={["logo-bench", `logo-bench--${variant}`]} aria-label="Client logo bench">
-  <div class="container-page logo-bench__inner">
-    {eyebrow && <p class="eyebrow logo-bench__eyebrow">{eyebrow}</p>}
-    <ul class="logo-bench__grid">
-      {logos.map((logo) => (
-        <li class="logo-bench__item">
-          {logo.href ? (
-            <a href={logo.href} class="logo-bench__cell">
-              {logo.src ? (
-                <img src={logo.src} alt={logo.label} loading="lazy" />
+  <div class="logo-bench__inner">
+    {eyebrow && (
+      <div class="container-page">
+        <p class="eyebrow logo-bench__eyebrow">{eyebrow}</p>
+      </div>
+    )}
+
+    {isCarousel ? (
+      <div class="logo-bench__marquee" aria-roledescription="carousel">
+        <ul class="logo-bench__track" aria-hidden="false">
+          {renderLogos.map((logo, idx) => (
+            <li
+              class="logo-bench__item logo-bench__item--marquee"
+              aria-hidden={idx >= logos.length ? "true" : undefined}
+            >
+              {logo.href ? (
+                <a href={logo.href} class="logo-bench__cell">
+                  {logo.src ? (
+                    <img src={logo.src} alt={logo.label} loading="lazy" />
+                  ) : (
+                    <span class="logo-bench__text">{logo.label}</span>
+                  )}
+                </a>
               ) : (
-                <span class="logo-bench__text">{logo.label}</span>
+                <span class="logo-bench__cell">
+                  {logo.src ? (
+                    <img src={logo.src} alt={logo.label} loading="lazy" />
+                  ) : (
+                    <span class="logo-bench__text">{logo.label}</span>
+                  )}
+                </span>
               )}
-            </a>
-          ) : (
-            <span class="logo-bench__cell">
-              {logo.src ? (
-                <img src={logo.src} alt={logo.label} loading="lazy" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : (
+      <div class="container-page">
+        <ul class="logo-bench__grid">
+          {logos.map((logo) => (
+            <li class="logo-bench__item">
+              {logo.href ? (
+                <a href={logo.href} class="logo-bench__cell">
+                  {logo.src ? (
+                    <img src={logo.src} alt={logo.label} loading="lazy" />
+                  ) : (
+                    <span class="logo-bench__text">{logo.label}</span>
+                  )}
+                </a>
               ) : (
-                <span class="logo-bench__text">{logo.label}</span>
+                <span class="logo-bench__cell">
+                  {logo.src ? (
+                    <img src={logo.src} alt={logo.label} loading="lazy" />
+                  ) : (
+                    <span class="logo-bench__text">{logo.label}</span>
+                  )}
+                </span>
               )}
-            </span>
-          )}
-        </li>
-      ))}
-    </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
   </div>
 </section>
 
@@ -104,34 +149,101 @@ const { variant, logos = defaultLogos[variant], eyebrow } = Astro.props;
 
   .logo-bench__eyebrow {
     text-align: center;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-8);
   }
 
+  /* ─────────────────────────────────────────────────────────
+     MARQUEE — .full variant only (homepage TRUSTED BY)
+     ───────────────────────────────────────────────────────── */
+  .logo-bench__marquee {
+    overflow: hidden;
+    width: 100%;
+    /* Edge fade so the marquee looks like it's flowing in/out of the section */
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+  }
+
+  .logo-bench__track {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: max-content;
+    animation: logo-marquee 50s linear infinite;
+  }
+
+  .logo-bench__marquee:hover .logo-bench__track,
+  .logo-bench__marquee:focus-within .logo-bench__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes logo-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* Translate by exactly one full set of logos; because the second set is an
+         exact copy following the first, the marquee loops seamlessly. */
+      transform: translateX(-50%);
+    }
+  }
+
+  .logo-bench__item--marquee {
+    flex-shrink: 0;
+    min-width: 180px;
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .logo-bench__item--marquee {
+      min-width: 220px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-bench__track {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      padding-left: var(--container-padding);
+      padding-right: var(--container-padding);
+    }
+    .logo-bench__marquee {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     STATIC GRID — federal / commercial / industry variants
+     ───────────────────────────────────────────────────────── */
   .logo-bench__grid {
     display: grid;
     align-items: center;
     justify-items: center;
     gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
-  /* .full — 12 logos: 4×3 desktop, 3×4 tablet, 2×6 mobile */
-  .logo-bench--full .logo-bench__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (min-width: 768px) {
-    .logo-bench--full .logo-bench__grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-8);
-    }
-  }
-  @media (min-width: 1024px) {
-    .logo-bench--full .logo-bench__grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-12);
-    }
-  }
-
-  /* .federal — 3 logos: 3-col desktop, 3-col tablet, stacked mobile */
+  /* .federal — 3 logos */
   .logo-bench--federal .logo-bench__grid {
     grid-template-columns: 1fr;
   }
@@ -142,7 +254,7 @@ const { variant, logos = defaultLogos[variant], eyebrow } = Astro.props;
     }
   }
 
-  /* .commercial — 8 logos: 4×2 desktop, 4×2 tablet, 2×4 mobile */
+  /* .commercial — 8 logos: 4×2 */
   .logo-bench--commercial .logo-bench__grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -153,13 +265,16 @@ const { variant, logos = defaultLogos[variant], eyebrow } = Astro.props;
     }
   }
 
-  /* .industry — 1–2 logos: row layout, centered */
+  /* .industry — 1–2 logos */
   .logo-bench--industry .logo-bench__grid {
     grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
     justify-content: center;
     gap: var(--space-12);
   }
 
+  /* ─────────────────────────────────────────────────────────
+     CELL — shared across all variants
+     ───────────────────────────────────────────────────────── */
   .logo-bench__item {
     width: 100%;
   }
@@ -197,7 +312,7 @@ const { variant, logos = defaultLogos[variant], eyebrow } = Astro.props;
     }
   }
 
-  /* Text fallback for missing logo SVGs — single-color, small caps, optical-weight aligned */
+  /* Text fallback for missing logo SVGs */
   .logo-bench__text {
     font-family: var(--font-body);
     font-size: var(--text-body-sm);
@@ -208,5 +323,6 @@ const { variant, logos = defaultLogos[variant], eyebrow } = Astro.props;
     text-align: center;
     line-height: 1.2;
     text-wrap: balance;
+    white-space: nowrap;
   }
 </style>
