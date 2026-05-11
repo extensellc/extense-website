@@ -213,11 +213,9 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
     }
   }
 
-  .logo-bench__item--marquee {
-    /* Override base .logo-bench__item width: 100% — in the marquee context,
-       each item must size to its content (or its min-width), not to fill the
-       parent. The 100% width from the base class makes every item want to
-       fill the row, so only one is visible. */
+  /* .logo-bench--full is added to beat .logo-bench__item { width: 100% }
+     which appears later in this stylesheet and wins on equal specificity. */
+  .logo-bench--full .logo-bench__item--marquee {
     width: auto;
     flex-shrink: 0;
     flex-grow: 0;
@@ -229,7 +227,7 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
   }
 
   @media (min-width: 768px) {
-    .logo-bench__item--marquee {
+    .logo-bench--full .logo-bench__item--marquee {
       min-width: 240px;
     }
   }
