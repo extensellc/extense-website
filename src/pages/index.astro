@@ -11,10 +11,11 @@
     4. Four pillars (PillarCard × 4)
     5. Content Ops Stack (ContentOpsStack) — Strategy → Engineering → Automation → Delivery
     6. Outcome stats (StatBlock.three) — 60/72/85
-    7. Proof bench (LogoBench.full)
-    8. Audience pivot (AudiencePivotCard × 2)
-    9. CTA (CTAModule, audience: general)
-   10. Footer (BaseLayout)
+    7. Credentials strip (TrustBadges) — 13+/11+/WOSB/508
+    8. Proof bench (LogoBench.full)
+    9. Audience pivot (AudiencePivotCard × 2)
+   10. CTA (CTAModule, audience: general)
+   11. Footer (BaseLayout)
 
   Copy is placeholder pending Phase 4 practitioner session and copy phase.
   Substantive directives that apply to this page:
@@ -31,6 +32,7 @@ import DocumentRow from "../components/site/DocumentRow.astro";
 import PillarCard from "../components/site/PillarCard.astro";
 import ContentOpsStack from "../components/site/ContentOpsStack.astro";
 import StatBlock from "../components/site/StatBlock.astro";
+import TrustBadges from "../components/site/TrustBadges.astro";
 import LogoBench from "../components/site/LogoBench.astro";
 import AudiencePivotCard from "../components/site/AudiencePivotCard.astro";
 import CTAModule from "../components/site/CTAModule.astro";
@@ -154,6 +156,8 @@ const stats = [
       <StatBlock variant="three" stats={stats} />
     </div>
   </section>
+
+  <TrustBadges />
 
   <section class="home-section home-section--logos" aria-label="Client proof">
     <LogoBench variant="full" eyebrow="Trusted by Government Agencies, Fortune 500 Companies, & Non-Profit Organizations" />

@@ -1,0 +1,106 @@
+---
+/*
+  TrustBadges — homepage credentials strip.
+
+  Four procurement-relevant trust signals, ported from the original
+  ex-tense.co stats banner:
+    13+   Years in Business
+    11+   Major Clients Served
+    WOSB  Woman-Owned Small Business
+    508   Section Compliant
+
+  Placement: between the outcome StatBlock (60/72/85) and the LogoBench.
+  Narrative order: outcomes -> credentials -> who trusts us -> pivot.
+
+  Design: hairline top + bottom borders, four-column row on desktop, 2x2
+  on tablet, single column on mobile. No solid color fill (vs the original
+  navy banner) — fits the redesign's restrained palette. Display serif
+  for the primary line, mono caps for the descriptor, so the numbers
+  read as credentials, not outcomes (those are bigger and amber-adjacent
+  in the StatBlock above).
+*/
+
+interface Badge {
+  primary: string;
+  label: string;
+}
+
+const badges: Badge[] = [
+  { primary: "13+",  label: "Years in Business" },
+  { primary: "11+",  label: "Major Clients Served" },
+  { primary: "WOSB", label: "Woman-Owned Small Business" },
+  { primary: "508",  label: "Section Compliant" },
+];
+---
+
+<section class="trust-badges" aria-label="Credentials">
+  <div class="container-data trust-badges__inner">
+    <ul class="trust-badges__row">
+      {badges.map((b) => (
+        <li class="trust-badges__item">
+          <span class="trust-badges__primary">{b.primary}</span>
+          <span class="trust-badges__label">{b.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .trust-badges {
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  .trust-badges__row {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    text-align: center;
+  }
+
+  @media (min-width: 600px) {
+    .trust-badges__row {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .trust-badges__row {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  .trust-badges__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .trust-badges__primary {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: var(--color-text-primary);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .trust-badges__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+  }
+</style>
