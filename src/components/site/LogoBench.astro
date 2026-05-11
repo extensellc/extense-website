@@ -161,6 +161,9 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
   .logo-bench__eyebrow {
     text-align: center;
     margin-bottom: var(--space-8);
+    /* translateY shifts the eyebrow up visually without affecting layout flow,
+       so the marquee position below stays exactly where it was. */
+    transform: translateY(-24px);
   }
 
   /* ─────────────────────────────────────────────────────────
