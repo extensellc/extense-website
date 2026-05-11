@@ -3,6 +3,10 @@
   Pillar badge — Content Migration.
   Concept: transform / arrows — left-to-right transformation between forms.
   Phosphor-aligned: 1.5px stroke, single-color via currentColor.
+
+  Hover animation: arrow traces left-to-right, then the 3 target structures
+  fade-in in sequence. Suggests the conversion motion that defines the pillar.
+  Respects prefers-reduced-motion (no animation).
 */
 
 interface Props {
@@ -22,21 +26,109 @@ const { size = 48, class: className } = Astro.props;
   stroke-width="1.5"
   stroke-linecap="round"
   stroke-linejoin="round"
-  class={className}
+  class:list={["mig-badge", className]}
   aria-hidden="true"
 >
-  <!-- Source document (left) -->
-  <path d="M8 11 L20 11 L20 37 L8 37 Z" />
-  <line x1="11" y1="17" x2="17" y2="17" />
-  <line x1="11" y1="22" x2="17" y2="22" />
-  <line x1="11" y1="27" x2="15" y2="27" />
+  <!-- Source document (static frame) -->
+  <path d="M8 11 L20 11 L20 37 L8 37 Z" class="mig-frame" />
+  <line x1="11" y1="17" x2="17" y2="17" class="mig-source-line" />
+  <line x1="11" y1="22" x2="17" y2="22" class="mig-source-line" />
+  <line x1="11" y1="27" x2="15" y2="27" class="mig-source-line" />
 
   <!-- Transformation arrow -->
-  <line x1="22" y1="24" x2="32" y2="24" />
-  <polyline points="28,20 32,24 28,28" />
+  <line x1="22" y1="24" x2="32" y2="24" class="mig-arrow-shaft" />
+  <polyline points="28,20 32,24 28,28" class="mig-arrow-head" />
 
   <!-- Target structure (right) -->
-  <rect x="34" y="11" width="6" height="6" rx="1" />
-  <rect x="34" y="21" width="6" height="6" rx="1" />
-  <rect x="34" y="31" width="6" height="6" rx="1" />
+  <rect x="34" y="11" width="6" height="6" rx="1" class="mig-target mig-target-1" />
+  <rect x="34" y="21" width="6" height="6" rx="1" class="mig-target mig-target-2" />
+  <rect x="34" y="31" width="6" height="6" rx="1" class="mig-target mig-target-3" />
 </svg>
+
+<style>
+  /* Default static state: everything visible. */
+  .mig-arrow-shaft {
+    stroke-dasharray: 12;
+    stroke-dashoffset: 0;
+  }
+
+  .mig-arrow-head {
+    opacity: 1;
+  }
+
+  .mig-target {
+    transform-origin: left center;
+    transform-box: fill-box;
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  /* Hover replays the migration: arrow traces, head appears, targets fade in. */
+  :global(.pillar-card__link:hover) .mig-arrow-shaft,
+  :global(.pillar-card__link:focus-visible) .mig-arrow-shaft {
+    animation: mig-draw-arrow 360ms cubic-bezier(0, 0, 0.2, 1) backwards;
+  }
+
+  :global(.pillar-card__link:hover) .mig-arrow-head,
+  :global(.pillar-card__link:focus-visible) .mig-arrow-head {
+    animation: mig-fade-in 200ms cubic-bezier(0, 0, 0.2, 1) backwards;
+    animation-delay: 320ms;
+  }
+
+  :global(.pillar-card__link:hover) .mig-target,
+  :global(.pillar-card__link:focus-visible) .mig-target {
+    animation: mig-target-in 280ms cubic-bezier(0, 0, 0.2, 1) backwards;
+  }
+  :global(.pillar-card__link:hover) .mig-target-1,
+  :global(.pillar-card__link:focus-visible) .mig-target-1 {
+    animation-delay: 440ms;
+  }
+  :global(.pillar-card__link:hover) .mig-target-2,
+  :global(.pillar-card__link:focus-visible) .mig-target-2 {
+    animation-delay: 540ms;
+  }
+  :global(.pillar-card__link:hover) .mig-target-3,
+  :global(.pillar-card__link:focus-visible) .mig-target-3 {
+    animation-delay: 640ms;
+  }
+
+  @keyframes mig-draw-arrow {
+    from {
+      stroke-dashoffset: 12;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes mig-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes mig-target-in {
+    from {
+      transform: translateX(-6px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.pillar-card__link:hover) .mig-arrow-shaft,
+    :global(.pillar-card__link:focus-visible) .mig-arrow-shaft,
+    :global(.pillar-card__link:hover) .mig-arrow-head,
+    :global(.pillar-card__link:focus-visible) .mig-arrow-head,
+    :global(.pillar-card__link:hover) .mig-target,
+    :global(.pillar-card__link:focus-visible) .mig-target {
+      animation: none;
+    }
+  }
+</style>

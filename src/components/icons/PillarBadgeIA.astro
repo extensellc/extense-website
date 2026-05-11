@@ -3,7 +3,10 @@
   Pillar badge — Information Architecture.
   Concept: structure / grid — ordered cells signal foundational schema.
   Phosphor-aligned: 1.5px stroke, single-color via currentColor, no fills.
-  Phase 4 may commission a custom mark; this is the launch placeholder.
+
+  Hover animation: grid lines draw in (stroke-dasharray sweep), then the two
+  anchor cells fade-and-scale in. Static state shows the complete grid; hover
+  replays the construction. Respects prefers-reduced-motion (no animation).
 */
 
 interface Props {
@@ -23,17 +26,90 @@ const { size = 48, class: className } = Astro.props;
   stroke-width="1.5"
   stroke-linecap="round"
   stroke-linejoin="round"
-  class={className}
+  class:list={["ia-badge", className]}
   aria-hidden="true"
 >
-  <!-- Outer container -->
-  <rect x="6" y="6" width="36" height="36" rx="2" />
-  <!-- Internal grid lines (structure) -->
-  <line x1="6" y1="18" x2="42" y2="18" />
-  <line x1="6" y1="30" x2="42" y2="30" />
-  <line x1="18" y1="6" x2="18" y2="42" />
-  <line x1="30" y1="6" x2="30" y2="42" />
-  <!-- Anchor cells -->
-  <rect x="9" y="9" width="6" height="6" rx="1" />
-  <rect x="33" y="33" width="6" height="6" rx="1" />
+  <!-- Outer container — static, never animates -->
+  <rect x="6" y="6" width="36" height="36" rx="2" class="ia-frame" />
+  <!-- Internal grid lines (4 lines, drawn in on hover) -->
+  <line x1="6" y1="18" x2="42" y2="18" class="ia-line ia-line-1" />
+  <line x1="6" y1="30" x2="42" y2="30" class="ia-line ia-line-2" />
+  <line x1="18" y1="6" x2="18" y2="42" class="ia-line ia-line-3" />
+  <line x1="30" y1="6" x2="30" y2="42" class="ia-line ia-line-4" />
+  <!-- Anchor cells (scale-fade in last) -->
+  <rect x="9" y="9" width="6" height="6" rx="1" class="ia-anchor ia-anchor-1" />
+  <rect x="33" y="33" width="6" height="6" rx="1" class="ia-anchor ia-anchor-2" />
 </svg>
+
+<style>
+  /* Default static state: everything visible. */
+  .ia-line {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 0;
+  }
+
+  .ia-anchor {
+    transform-origin: center;
+    transform-box: fill-box;
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  /* Hover replays the build: lines draw in, then anchors scale-fade in. */
+  :global(.pillar-card__link:hover) .ia-line,
+  :global(.pillar-card__link:focus-visible) .ia-line {
+    animation: ia-draw-line 480ms cubic-bezier(0, 0, 0.2, 1) backwards;
+  }
+
+  :global(.pillar-card__link:hover) .ia-line-2,
+  :global(.pillar-card__link:focus-visible) .ia-line-2 {
+    animation-delay: 60ms;
+  }
+  :global(.pillar-card__link:hover) .ia-line-3,
+  :global(.pillar-card__link:focus-visible) .ia-line-3 {
+    animation-delay: 120ms;
+  }
+  :global(.pillar-card__link:hover) .ia-line-4,
+  :global(.pillar-card__link:focus-visible) .ia-line-4 {
+    animation-delay: 180ms;
+  }
+
+  :global(.pillar-card__link:hover) .ia-anchor,
+  :global(.pillar-card__link:focus-visible) .ia-anchor {
+    animation: ia-anchor-in 320ms cubic-bezier(0, 0, 0.2, 1) backwards;
+    animation-delay: 360ms;
+  }
+  :global(.pillar-card__link:hover) .ia-anchor-2,
+  :global(.pillar-card__link:focus-visible) .ia-anchor-2 {
+    animation-delay: 440ms;
+  }
+
+  @keyframes ia-draw-line {
+    from {
+      stroke-dashoffset: 40;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes ia-anchor-in {
+    from {
+      transform: scale(0.4);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.pillar-card__link:hover) .ia-line,
+    :global(.pillar-card__link:focus-visible) .ia-line,
+    :global(.pillar-card__link:hover) .ia-anchor,
+    :global(.pillar-card__link:focus-visible) .ia-anchor {
+      animation: none;
+    }
+  }
+</style>
