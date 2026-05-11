@@ -25,7 +25,7 @@
 */
 
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/site/Hero.astro";
+import HomeHero from "../components/site/HomeHero.astro";
 import DocumentRow from "../components/site/DocumentRow.astro";
 import PillarCard from "../components/site/PillarCard.astro";
 import StatBlock from "../components/site/StatBlock.astro";
@@ -101,11 +101,7 @@ const stats = [
   title="XML Content Engineering"
   description="Extense LLC is an XML content engineering firm for organizations whose documentation has to be right — federal agencies, Fortune 500 manufacturers, life sciences companies, financial institutions, and defense contractors."
 >
-  <Hero
-    variant="universal"
-    title="XML content engineering for organizations whose documentation has to be right."
-    subdeck="Information architecture through automated CI/CD publishing — for the IRS, the U.S. House of Representatives, Toyota, FedEx, and Morgan Stanley. Founded 2012. SBA 8(a) certified, woman-owned, minority-owned."
-  />
+  <HomeHero />
 
   <section class="home-section home-section--failure-modes" aria-labelledby="failure-modes-heading">
     <div class="container-prose home-section__inner">

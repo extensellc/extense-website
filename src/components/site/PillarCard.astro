@@ -85,11 +85,16 @@ const BadgeIcon = badges[pillar];
     height: 48px;
     color: var(--color-text-primary);
     margin-bottom: var(--space-4);
-    transition: opacity var(--duration-base) var(--easing-out);
+    transition: color 240ms cubic-bezier(0, 0, 0.2, 1);
   }
 
-  .pillar-card__link:hover .pillar-card__badge {
-    opacity: 0.85;
+  /* On hover, the badge stroke transitions to amber/gold via currentColor.
+     Uses color-accent-primary-hover (#d97706) — passes WCAG 1.4.11 non-text
+     contrast (~3.4:1 on white). The flat amber complements the gradient on
+     the brand wordmark without competing with it. */
+  .pillar-card__link:hover .pillar-card__badge,
+  .pillar-card__link:focus-visible .pillar-card__badge {
+    color: var(--color-accent-primary-hover);
   }
 
   .pillar-card__name {

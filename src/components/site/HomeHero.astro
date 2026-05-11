@@ -1,0 +1,526 @@
+---
+/*
+  HomeHero — homepage-specific hero, used only on /.
+
+  Two-column layout (60/40 desktop, single column mobile):
+    LEFT  — kicker, H1 statement, hairline rule, sub-deck, client list
+    RIGHT — animated DITA topic-tree visualization with subtle idle motion
+
+  Adapted from Chat's extense-hero-v2 mockup. Adjustments from that mock:
+    - Removed CTA buttons (See engagements / Methodology)
+    - Removed the founded/certifications meta line (lives in /about)
+    - Brand-color accent on the SVG visual (amber gradient on the root
+      <map> node; amber on corner registration marks and the VALID dot)
+
+  The DITA tree draws itself in once on viewport-enter, then idles —
+  a random node pulses every ~5s, and an annotation strip below the
+  figure rotates through DITA fragments matched to the pulsing node.
+
+  Respects prefers-reduced-motion: tree renders static, no idle pulse.
+*/
+---
+
+<section class="home-hero">
+  <div class="home-hero__inner">
+    <div class="home-hero__text">
+      <p class="home-hero__kicker">
+        DITA<span class="home-hero__dot">·</span>DocBook<span class="home-hero__dot">·</span>S1000D<span class="home-hero__dot">·</span>NIEM
+      </p>
+      <h1 class="home-hero__title">
+        XML content engineering for organizations whose documentation has to be right.
+      </h1>
+      <hr class="home-hero__rule" />
+      <p class="home-hero__subdeck">
+        Information architecture through automated CI/CD publishing — built for documentation that must be auditable, multilingual, and version-correct the moment it ships.
+      </p>
+      <p class="home-hero__clients">
+        <span class="home-hero__clients-label">Clients —</span>
+        IRS<span class="home-hero__sep">·</span>
+        U.S. House of Representatives<span class="home-hero__sep">·</span>
+        Toyota<span class="home-hero__sep">·</span>
+        FedEx<span class="home-hero__sep">·</span>
+        Morgan Stanley
+      </p>
+    </div>
+
+    <div class="home-hero__visual">
+      <svg
+        class="dita-svg"
+        id="hero-dita-tree"
+        viewBox="0 0 380 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <defs>
+          <linearGradient
+            id="hero-amber-gradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
+            <stop offset="0%" stop-color="var(--color-logo-gradient-1)" />
+            <stop offset="50%" stop-color="var(--color-logo-gradient-2)" />
+            <stop offset="100%" stop-color="var(--color-logo-gradient-3)" />
+          </linearGradient>
+        </defs>
+
+        <!-- Corner registration marks (amber accent) -->
+        <g class="corner corner--accent" style="--d: 0ms">
+          <path d="M 10 20 L 10 10 L 20 10" />
+          <path d="M 360 10 L 370 10 L 370 20" />
+          <path d="M 10 300 L 10 310 L 20 310" />
+          <path d="M 360 310 L 370 310 L 370 300" />
+        </g>
+
+        <!-- Top namespace declaration -->
+        <text class="chrome" x="30" y="18" style="--d: 80ms">xmlns:dita="http://docs.oasis-open.org/dita/v1.3"</text>
+
+        <!-- L1 root: map (amber gradient stroke, ties to logo) -->
+        <rect class="node node--root" x="162" y="38" width="56" height="22" style="--d: 240ms" />
+        <text class="label label--root" x="190" y="49" style="--d: 240ms">&lt;map&gt;</text>
+
+        <!-- L1 → L2 edges -->
+        <path class="edge" pathLength="100" d="M 190 60 L 190 78 L 95 78 L 95 96"  style="--d: 400ms" />
+        <path class="edge" pathLength="100" d="M 190 60 L 190 78 L 285 78 L 285 96" style="--d: 400ms" />
+
+        <!-- L2 topics -->
+        <rect class="node" x="63" y="96" width="64" height="22" style="--d: 560ms" />
+        <text class="label" x="95" y="107" style="--d: 560ms">&lt;topic&gt;</text>
+        <rect class="node" x="253" y="96" width="64" height="22" style="--d: 560ms" />
+        <text class="label" x="285" y="107" style="--d: 560ms">&lt;topic&gt;</text>
+
+        <!-- L2 → L3 edges -->
+        <path class="edge" pathLength="100" d="M 95 118 L 95 138 L 60 138 L 60 160"   style="--d: 720ms" />
+        <path class="edge" pathLength="100" d="M 95 118 L 95 138 L 130 138 L 130 160" style="--d: 720ms" />
+        <path class="edge" pathLength="100" d="M 285 118 L 285 138 L 250 138 L 250 160" style="--d: 720ms" />
+        <path class="edge" pathLength="100" d="M 285 118 L 285 138 L 320 138 L 320 160" style="--d: 720ms" />
+
+        <!-- L3 section/xref -->
+        <rect class="node" x="30"  y="160" width="60" height="20" style="--d: 880ms" />
+        <text class="label" x="60" y="170" style="--d: 880ms">&lt;section&gt;</text>
+        <rect class="node" x="100" y="160" width="60" height="20" style="--d: 880ms" />
+        <text class="label" x="130" y="170" style="--d: 880ms">&lt;xref&gt;</text>
+        <rect class="node" x="220" y="160" width="60" height="20" style="--d: 880ms" />
+        <text class="label" x="250" y="170" style="--d: 880ms">&lt;section&gt;</text>
+        <rect class="node" x="290" y="160" width="60" height="20" style="--d: 880ms" />
+        <text class="label" x="320" y="170" style="--d: 880ms">&lt;xref&gt;</text>
+
+        <!-- L3 → L4 edges -->
+        <path class="edge" pathLength="100" d="M 60 180 L 60 215"   style="--d: 1040ms" />
+        <path class="edge" pathLength="100" d="M 130 180 L 130 215" style="--d: 1040ms" />
+        <path class="edge" pathLength="100" d="M 250 180 L 250 215" style="--d: 1040ms" />
+        <path class="edge" pathLength="100" d="M 320 180 L 320 215" style="--d: 1040ms" />
+
+        <!-- L4 leaves -->
+        <rect class="node leaf" x="53"  y="215" width="14" height="7" style="--d: 1160ms" />
+        <rect class="node leaf" x="123" y="215" width="14" height="7" style="--d: 1160ms" />
+        <rect class="node leaf" x="243" y="215" width="14" height="7" style="--d: 1160ms" />
+        <rect class="node leaf" x="313" y="215" width="14" height="7" style="--d: 1160ms" />
+
+        <!-- Title block hairline -->
+        <line class="chrome-rule" x1="30" y1="252" x2="350" y2="252" style="--d: 1260ms" />
+
+        <!-- Title block text -->
+        <text class="chrome chrome--strong" x="30" y="269" style="--d: 1300ms">FIG. 01</text>
+        <text class="chrome" x="80" y="269" style="--d: 1300ms">/</text>
+        <text class="chrome chrome--strong" x="88" y="269" style="--d: 1300ms">map.ditamap</text>
+
+        <!-- VALID status: amber dot + label -->
+        <rect class="valid-dot" x="305" y="263" width="6" height="6" style="--d: 1300ms" />
+        <text class="chrome chrome--strong" x="350" y="269" text-anchor="end" style="--d: 1300ms">VALID</text>
+
+        <!-- Annotation strip -->
+        <text class="chrome" x="30" y="290" style="--d: 1380ms">
+          <tspan class="annotation-prefix">▸</tspan><tspan id="hero-annotation-text" dx="6" class="chrome--strong">&lt;map title="api-reference.ditamap"&gt;</tspan>
+        </text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .home-hero {
+    width: 100%;
+  }
+
+  .home-hero__inner {
+    max-width: var(--container-page, 1240px);
+    margin: 0 auto;
+    padding: var(--space-32) var(--space-12);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .home-hero__inner {
+      grid-template-columns: 60% 40%;
+      gap: var(--space-12);
+      padding: var(--space-32) var(--space-12);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .home-hero__inner {
+      padding: var(--space-20) var(--space-6);
+      gap: var(--space-16);
+    }
+  }
+
+  /* ───────── Left: text column ───────── */
+  .home-hero__text {
+    max-width: 640px;
+  }
+
+  .home-hero__kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .home-hero__dot {
+    color: var(--color-text-muted);
+    margin: 0 0.5em;
+  }
+
+  .home-hero__title {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+
+  @media (max-width: 960px) {
+    .home-hero__title {
+      font-size: 36px;
+    }
+  }
+
+  .home-hero__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    width: 64px;
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .home-hero__subdeck {
+    font-family: var(--font-body);
+    font-weight: var(--weight-regular);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-8) 0;
+    max-width: 560px;
+    text-wrap: pretty;
+  }
+
+  .home-hero__clients {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: 1.9;
+  }
+
+  .home-hero__clients-label {
+    color: var(--color-text-muted);
+    margin-right: 12px;
+    font-weight: var(--weight-regular);
+  }
+
+  .home-hero__sep {
+    color: var(--color-text-muted);
+    margin: 0 8px;
+    font-weight: var(--weight-regular);
+  }
+
+  /* ───────── Right: SVG visual ───────── */
+  .home-hero__visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dita-svg {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  .dita-svg .node {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* Root <map> node — amber gradient stroke ties it to the logo */
+  .dita-svg .node--root {
+    stroke: url(#hero-amber-gradient);
+    stroke-width: 1.75;
+  }
+
+  .dita-svg .edge {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .dita-svg .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    fill: currentColor;
+    text-anchor: middle;
+    dominant-baseline: central;
+    letter-spacing: 0.01em;
+    user-select: none;
+  }
+
+  .dita-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-regular);
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+
+  .dita-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+
+  /* Amber accents on document chrome */
+  .dita-svg .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+
+  .dita-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+
+  .dita-svg .valid-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  .dita-svg .annotation-prefix {
+    fill: var(--color-text-muted);
+  }
+
+  /* Initial hidden state */
+  .dita-svg .node,
+  .dita-svg .label,
+  .dita-svg .chrome,
+  .dita-svg .chrome-rule,
+  .dita-svg .corner,
+  .dita-svg .valid-dot,
+  .dita-svg .annotation-prefix {
+    opacity: 0;
+  }
+
+  .dita-svg .edge {
+    opacity: 0;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+
+  /* Reveal cascade — triggered when .dita-svg gets the .drawn class */
+  .dita-svg.drawn .corner,
+  .dita-svg.drawn .chrome,
+  .dita-svg.drawn .chrome-rule,
+  .dita-svg.drawn .valid-dot,
+  .dita-svg.drawn .annotation-prefix {
+    animation: hero-fade-in 280ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .dita-svg.drawn .node {
+    animation: hero-fade-in 220ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .dita-svg.drawn .label {
+    animation: hero-fade-in 200ms ease-out forwards;
+    animation-delay: calc(var(--d, 0ms) + 90ms);
+  }
+
+  .dita-svg.drawn .edge {
+    animation: hero-edge-draw 260ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes hero-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hero-edge-draw {
+    0% {
+      opacity: 1;
+      stroke-dashoffset: 100;
+    }
+    100% {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes hero-node-pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.04);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .dita-svg .node.pulsing {
+    animation: hero-node-pulse 600ms ease-in-out;
+  }
+
+  #hero-annotation-text {
+    transition: opacity 180ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dita-svg .node,
+    .dita-svg .label,
+    .dita-svg .edge,
+    .dita-svg .chrome,
+    .dita-svg .chrome-rule,
+    .dita-svg .corner,
+    .dita-svg .valid-dot,
+    .dita-svg .annotation-prefix {
+      opacity: 1 !important;
+      animation: none !important;
+      stroke-dashoffset: 0 !important;
+    }
+
+    .dita-svg .node.pulsing {
+      animation: none !important;
+    }
+
+    #hero-annotation-text {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // HomeHero — viewport-triggered draw-in + idle node pulse
+  // ─────────────────────────────────────────────────────────
+  function setupHomeHero() {
+    const svg = document.getElementById("hero-dita-tree") as SVGElement | null;
+    if (!svg) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const annotationEl = document.getElementById("hero-annotation-text");
+
+    function getAnnotationFor(node: Element): string {
+      const x = parseFloat(node.getAttribute("x") || "0");
+      const y = parseFloat(node.getAttribute("y") || "0");
+
+      if (y < 80) return '<map title="api-reference.ditamap">';
+      if (y < 130 && x < 150) return '<topic id="overview" outputclass="reference">';
+      if (y < 130) return '<topic id="endpoints" outputclass="reference">';
+      if (y < 200 && x < 80) return '<section id="introduction">';
+      if (y < 200 && x < 200) return '<xref href="../auth/oauth2.dita"/>';
+      if (y < 200 && x < 290) return '<section id="response-codes">';
+      if (y < 200) return '<xref href="../errors/codes.dita"/>';
+      if (x < 80) return "<p>Block-level paragraph element.</p>";
+      if (x < 200) return '<image href="sequence.svg" placement="break"/>';
+      if (x < 290) return '<codeblock outputclass="language-bash">';
+      return '<note type="warning">Authentication required.</note>';
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+            if (!prefersReducedMotion) {
+              window.setTimeout(startIdlePulse, 1700);
+            }
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(svg);
+
+    function startIdlePulse(): void {
+      const nodes = Array.from(svg!.querySelectorAll(".node"));
+      if (nodes.length === 0) return;
+      let lastIndex = -1;
+
+      function pickNode(): Element {
+        let i: number;
+        do {
+          i = Math.floor(Math.random() * nodes.length);
+        } while (i === lastIndex && nodes.length > 1);
+        lastIndex = i;
+        return nodes[i];
+      }
+
+      function pulseOnce(): void {
+        const node = pickNode();
+        node.classList.add("pulsing");
+
+        if (annotationEl) {
+          annotationEl.style.opacity = "0";
+          window.setTimeout(() => {
+            annotationEl.textContent = getAnnotationFor(node);
+            annotationEl.style.opacity = "1";
+          }, 160);
+        }
+
+        window.setTimeout(() => node.classList.remove("pulsing"), 700);
+        const next = 4600 + Math.random() * 800;
+        window.setTimeout(pulseOnce, next);
+      }
+
+      pulseOnce();
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", setupHomeHero);
+  document.addEventListener("astro:page-load", setupHomeHero);
+</script>
