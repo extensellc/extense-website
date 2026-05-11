@@ -45,33 +45,33 @@ interface Props {
    Heights chosen against the marquee row baseline. */
 const defaultLogos: Record<Props["variant"], Logo[]> = {
   full: [
-    { label: "IRS", src: "/images/clients/irs.png", maxH: 64 },
-    { label: "U.S. House of Representatives", src: "/images/clients/us-house.png", maxH: 64 },
-    { label: "U.S. District Courts", src: "/images/clients/us-district-courts.png", maxH: 60 },
-    { label: "Toyota", src: "/images/clients/toyota.png", maxH: 52 },
-    { label: "FedEx", src: "/images/clients/fedex.png", maxH: 56 },
-    { label: "Morgan Stanley", src: "/images/clients/morgan-stanley.png", maxH: 40 },
-    { label: "Guidewire", src: "/images/clients/guidewire.png", maxH: 44 },
-    { label: "Thermo Fisher", src: "/images/clients/thermo-fisher.png", maxH: 48 },
-    { label: "AMD", src: "/images/clients/amd.png", maxH: 36 },
-    { label: "HPE", src: "/images/clients/hpe.png", maxH: 32 },
+    { label: "IRS", src: "/images/clients/irs.png", maxH: 80 },
+    { label: "U.S. House of Representatives", src: "/images/clients/us-house.png", maxH: 80 },
+    { label: "U.S. District Courts", src: "/images/clients/us-district-courts.png", maxH: 75 },
+    { label: "Toyota", src: "/images/clients/toyota.png", maxH: 65 },
+    { label: "FedEx", src: "/images/clients/fedex.png", maxH: 70 },
+    { label: "Morgan Stanley", src: "/images/clients/morgan-stanley.png", maxH: 50 },
+    { label: "Guidewire", src: "/images/clients/guidewire.png", maxH: 55 },
+    { label: "Thermo Fisher", src: "/images/clients/thermo-fisher.png", maxH: 60 },
+    { label: "AMD", src: "/images/clients/amd.png", maxH: 45 },
+    { label: "HPE", src: "/images/clients/hpe.png", maxH: 40 },
     /* Great American Insurance + Paralyzed Veterans of America: logos
        not yet sourced — listed in the brief but absent from the kit.
        Add to this list when assets are provided. */
   ],
   federal: [
-    { label: "IRS", src: "/images/clients/irs.png", maxH: 64 },
-    { label: "U.S. House of Representatives", src: "/images/clients/us-house.png", maxH: 64 },
-    { label: "U.S. District Courts", src: "/images/clients/us-district-courts.png", maxH: 60 },
+    { label: "IRS", src: "/images/clients/irs.png", maxH: 80 },
+    { label: "U.S. House of Representatives", src: "/images/clients/us-house.png", maxH: 80 },
+    { label: "U.S. District Courts", src: "/images/clients/us-district-courts.png", maxH: 75 },
   ],
   commercial: [
-    { label: "Toyota", src: "/images/clients/toyota.png", maxH: 52 },
-    { label: "FedEx", src: "/images/clients/fedex.png", maxH: 56 },
-    { label: "Morgan Stanley", src: "/images/clients/morgan-stanley.png", maxH: 40 },
-    { label: "Thermo Fisher", src: "/images/clients/thermo-fisher.png", maxH: 48 },
-    { label: "AMD", src: "/images/clients/amd.png", maxH: 36 },
-    { label: "HPE", src: "/images/clients/hpe.png", maxH: 32 },
-    { label: "Guidewire", src: "/images/clients/guidewire.png", maxH: 44 },
+    { label: "Toyota", src: "/images/clients/toyota.png", maxH: 65 },
+    { label: "FedEx", src: "/images/clients/fedex.png", maxH: 70 },
+    { label: "Morgan Stanley", src: "/images/clients/morgan-stanley.png", maxH: 50 },
+    { label: "Thermo Fisher", src: "/images/clients/thermo-fisher.png", maxH: 60 },
+    { label: "AMD", src: "/images/clients/amd.png", maxH: 45 },
+    { label: "HPE", src: "/images/clients/hpe.png", maxH: 40 },
+    { label: "Guidewire", src: "/images/clients/guidewire.png", maxH: 55 },
     /* Great American Insurance: logo not yet sourced. */
   ],
   industry: [],
@@ -220,7 +220,7 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
     flex-shrink: 0;
     flex-grow: 0;
     flex-basis: auto;
-    min-width: 200px;
+    min-width: 240px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -228,7 +228,7 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
 
   @media (min-width: 768px) {
     .logo-bench--full .logo-bench__item--marquee {
-      min-width: 240px;
+      min-width: 300px;
     }
   }
 
@@ -300,7 +300,7 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80px;
+    height: 104px;
     padding: 0 var(--space-3);
     color: var(--color-text-secondary);
     text-decoration: none;
@@ -311,7 +311,7 @@ const renderLogos = isCarousel ? [...logos, ...logos] : logos;
 
   @media (max-width: 767px) {
     .logo-bench__cell {
-      height: 64px;
+      height: 80px;
     }
   }
 
