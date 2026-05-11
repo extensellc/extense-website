@@ -1,0 +1,161 @@
+---
+/*
+  ContentOpsStack — homepage process-flow section.
+
+  Spec ref: integration of the original ex-tense.co "Extense Content Ops Stack"
+  into the redesign, between the Pillars (capabilities) and Stats (outcomes)
+  sections. Narrative slot: "how we deliver" between "what we do" and "the results".
+
+  Visual treatment (redesign aesthetic, not the original colored tiles):
+    - 4-up grid: 1 col mobile, 2x2 tablet, 4 desktop. Matches PillarGrid breakpoints.
+    - Hairline border on every side. Page-bg fill. No solid color tiles.
+    - Phase number "01..04" rendered in amber monospace (matches FIG. 01 chrome in the
+      hero SVG) — this is the cue that the four cards form a sequence, no arrows.
+    - Small inline SVG glyph above the title. Strokes match the rest of the site.
+*/
+---
+
+<section class="home-section home-section--ops-stack" aria-labelledby="ops-stack-heading">
+  <div class="container-data home-section__inner">
+    <div class="home-section__heading-block">
+      <h2 id="ops-stack-heading" class="home-section__heading">
+        The content ops stack.
+      </h2>
+      <p class="home-section__subdeck">
+        How an Extense engagement moves from idea to operating system — strategy upstream, engineering and automation in the middle, delivery downstream.
+      </p>
+    </div>
+
+    <ol class="ops-stack__grid">
+      <li class="ops-stack__card">
+        <div class="ops-stack__head">
+          <svg class="ops-stack__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="5" r="2.25" />
+            <circle cx="6" cy="18" r="2.25" />
+            <circle cx="18" cy="18" r="2.25" />
+            <path d="M12 7.5 L12 13 M12 13 L6 15.75 M12 13 L18 15.75" />
+          </svg>
+          <span class="ops-stack__num">01</span>
+        </div>
+        <h3 class="ops-stack__label">Strategy</h3>
+        <p class="ops-stack__desc">Information Architecture, Taxonomy, Content Governance</p>
+      </li>
+
+      <li class="ops-stack__card">
+        <div class="ops-stack__head">
+          <svg class="ops-stack__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 6 L4 12 L9 18 M15 6 L20 12 L15 18" />
+          </svg>
+          <span class="ops-stack__num">02</span>
+        </div>
+        <h3 class="ops-stack__label">Engineering</h3>
+        <p class="ops-stack__desc">DITA, XSLT, Schematron, CCMS Configuration</p>
+      </li>
+
+      <li class="ops-stack__card">
+        <div class="ops-stack__head">
+          <svg class="ops-stack__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 12 A8 8 0 0 1 6.5 17.5" />
+            <path d="M4 12 A8 8 0 0 1 17.5 6.5" />
+            <path d="M17.5 4 L17.5 7 L20.5 7" />
+            <path d="M6.5 20 L6.5 17 L3.5 17" />
+          </svg>
+          <span class="ops-stack__num">03</span>
+        </div>
+        <h3 class="ops-stack__label">Automation</h3>
+        <p class="ops-stack__desc">CI/CD Pipelines, Build Scripts, Validation Gates</p>
+      </li>
+
+      <li class="ops-stack__card">
+        <div class="ops-stack__head">
+          <svg class="ops-stack__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.5" y="4" width="11" height="14" />
+            <path d="M11 11 L20.5 11 M20.5 11 L17.5 8 M20.5 11 L17.5 14" />
+          </svg>
+          <span class="ops-stack__num">04</span>
+        </div>
+        <h3 class="ops-stack__label">Delivery</h3>
+        <p class="ops-stack__desc">PDF, HTML5, Portal, API, Mobile</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .ops-stack__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 600px) {
+    .ops-stack__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ops-stack__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+    }
+  }
+
+  .ops-stack__card {
+    background-color: var(--color-page-bg);
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .ops-stack__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-2);
+  }
+
+  .ops-stack__icon {
+    width: 24px;
+    height: 24px;
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    flex-shrink: 0;
+  }
+
+  /* Number plate — monospace, amber. Matches the FIG. 01 chrome in the hero SVG. */
+  .ops-stack__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary);
+    letter-spacing: 0.08em;
+  }
+
+  .ops-stack__label {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: var(--leading-snug);
+  }
+
+  .ops-stack__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+</style>

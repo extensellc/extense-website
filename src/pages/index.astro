@@ -9,11 +9,12 @@
     2. Hero (Hero.universal)
     3. Cost-of-being-wrong (DocumentRow.failureMode × 3)
     4. Four pillars (PillarCard × 4)
-    5. Outcome stats (StatBlock.three) — 60/72/85
-    6. Proof bench (LogoBench.full)
-    7. Audience pivot (AudiencePivotCard × 2)
-    8. CTA (CTAModule, audience: general)
-    9. Footer (BaseLayout)
+    5. Content Ops Stack (ContentOpsStack) — Strategy → Engineering → Automation → Delivery
+    6. Outcome stats (StatBlock.three) — 60/72/85
+    7. Proof bench (LogoBench.full)
+    8. Audience pivot (AudiencePivotCard × 2)
+    9. CTA (CTAModule, audience: general)
+   10. Footer (BaseLayout)
 
   Copy is placeholder pending Phase 4 practitioner session and copy phase.
   Substantive directives that apply to this page:
@@ -28,6 +29,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import HomeHero from "../components/site/HomeHero.astro";
 import DocumentRow from "../components/site/DocumentRow.astro";
 import PillarCard from "../components/site/PillarCard.astro";
+import ContentOpsStack from "../components/site/ContentOpsStack.astro";
 import StatBlock from "../components/site/StatBlock.astro";
 import LogoBench from "../components/site/LogoBench.astro";
 import AudiencePivotCard from "../components/site/AudiencePivotCard.astro";
@@ -144,6 +146,8 @@ const stats = [
       </div>
     </div>
   </section>
+
+  <ContentOpsStack />
 
   <section class="home-section home-section--stats" aria-label="Outcome metrics">
     <div class="container-data home-section__inner">
