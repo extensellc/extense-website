@@ -151,8 +151,16 @@ const stats = [
 
   <ContentOpsStack />
 
-  <section class="home-section home-section--stats" aria-label="Outcome metrics">
+  <section class="home-section home-section--stats" aria-labelledby="stats-heading">
     <div class="container-data home-section__inner">
+      <div class="home-section__heading-block">
+        <h2 id="stats-heading" class="home-section__heading">
+          What changes when you ship it.
+        </h2>
+        <p class="home-section__subdeck">
+          Three outcomes measured across recent production deployments.
+        </p>
+      </div>
       <StatBlock variant="three" stats={stats} />
     </div>
   </section>
