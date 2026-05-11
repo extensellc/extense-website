@@ -74,53 +74,97 @@
           <path d="M 360 310 L 370 310 L 370 300" />
         </g>
 
+        <!-- Ruler tick marks along the inner viewBox edges. Three per edge,
+             evenly spaced. Reinforces the "engineering blueprint" aesthetic
+             that the corner brackets start. -->
+        <g class="tick-marks" style="--d: 40ms">
+          <!-- top edge: ticks pointing down -->
+          <line x1="110" y1="10" x2="110" y2="14" />
+          <line x1="190" y1="10" x2="190" y2="14" />
+          <line x1="270" y1="10" x2="270" y2="14" />
+          <!-- bottom edge: ticks pointing up -->
+          <line x1="110" y1="310" x2="110" y2="306" />
+          <line x1="190" y1="310" x2="190" y2="306" />
+          <line x1="270" y1="310" x2="270" y2="306" />
+          <!-- left edge: ticks pointing right -->
+          <line x1="10" y1="85"  x2="14" y2="85" />
+          <line x1="10" y1="160" x2="14" y2="160" />
+          <line x1="10" y1="235" x2="14" y2="235" />
+          <!-- right edge: ticks pointing left -->
+          <line x1="370" y1="85"  x2="366" y2="85" />
+          <line x1="370" y1="160" x2="366" y2="160" />
+          <line x1="370" y1="235" x2="366" y2="235" />
+        </g>
+
         <!-- Top namespace declaration -->
         <text class="chrome" x="30" y="18" style="--d: 80ms">xmlns:dita="http://docs.oasis-open.org/dita/v1.3"</text>
 
-        <!-- L1 root: map (amber gradient stroke, ties to logo) -->
-        <rect class="node node--root" x="162" y="38" width="56" height="22" style="--d: 240ms" />
+        <!-- L1 root: map (amber gradient stroke, ties to logo).
+             data-branch lists which leaf-traces pass through this node
+             (all four). data-tier orders elements within a trace. -->
+        <rect class="node node--root" x="162" y="38" width="56" height="22"
+              data-branch="0 1 2 3" data-tier="0" style="--d: 240ms" />
         <text class="label label--root" x="190" y="49" style="--d: 240ms">&lt;map&gt;</text>
 
         <!-- L1 → L2 edges. Each branch is one continuous bent path from the map
              bottom all the way down to a topic top, with mitered corners.
              No T-junctions => no junction artifacts at any render scale. -->
-        <path class="edge" d="M 190 60 L 190 78 L 95 78 L 95 96"   style="--d: 400ms" />
-        <path class="edge" d="M 190 60 L 190 78 L 285 78 L 285 96" style="--d: 400ms" />
+        <path class="edge" d="M 190 60 L 190 78 L 95 78 L 95 96"
+              data-branch="0 1" data-tier="1" style="--d: 400ms" />
+        <path class="edge" d="M 190 60 L 190 78 L 285 78 L 285 96"
+              data-branch="2 3" data-tier="1" style="--d: 400ms" />
 
         <!-- L2 topics -->
-        <rect class="node" x="63" y="96" width="64" height="22" style="--d: 560ms" />
+        <rect class="node" x="63" y="96" width="64" height="22"
+              data-branch="0 1" data-tier="2" style="--d: 560ms" />
         <text class="label" x="95" y="107" style="--d: 560ms">&lt;topic&gt;</text>
-        <rect class="node" x="253" y="96" width="64" height="22" style="--d: 560ms" />
+        <rect class="node" x="253" y="96" width="64" height="22"
+              data-branch="2 3" data-tier="2" style="--d: 560ms" />
         <text class="label" x="285" y="107" style="--d: 560ms">&lt;topic&gt;</text>
 
-        <!-- L2 → L3 edges. Same approach: each branch is one continuous
-             bent path from topic bottom down to section/xref top. -->
-        <path class="edge" d="M 95 118 L 95 138 L 60 138 L 60 160"     style="--d: 720ms" />
-        <path class="edge" d="M 95 118 L 95 138 L 130 138 L 130 160"   style="--d: 720ms" />
-        <path class="edge" d="M 285 118 L 285 138 L 250 138 L 250 160" style="--d: 720ms" />
-        <path class="edge" d="M 285 118 L 285 138 L 320 138 L 320 160" style="--d: 720ms" />
+        <!-- L2 → L3 edges. Each branch is one continuous bent path. -->
+        <path class="edge" d="M 95 118 L 95 138 L 60 138 L 60 160"
+              data-branch="0" data-tier="3" style="--d: 720ms" />
+        <path class="edge" d="M 95 118 L 95 138 L 130 138 L 130 160"
+              data-branch="1" data-tier="3" style="--d: 720ms" />
+        <path class="edge" d="M 285 118 L 285 138 L 250 138 L 250 160"
+              data-branch="2" data-tier="3" style="--d: 720ms" />
+        <path class="edge" d="M 285 118 L 285 138 L 320 138 L 320 160"
+              data-branch="3" data-tier="3" style="--d: 720ms" />
 
         <!-- L3 section/xref -->
-        <rect class="node" x="30"  y="160" width="60" height="20" style="--d: 880ms" />
+        <rect class="node" x="30"  y="160" width="60" height="20"
+              data-branch="0" data-tier="4" style="--d: 880ms" />
         <text class="label" x="60" y="170" style="--d: 880ms">&lt;section&gt;</text>
-        <rect class="node" x="100" y="160" width="60" height="20" style="--d: 880ms" />
+        <rect class="node" x="100" y="160" width="60" height="20"
+              data-branch="1" data-tier="4" style="--d: 880ms" />
         <text class="label" x="130" y="170" style="--d: 880ms">&lt;xref&gt;</text>
-        <rect class="node" x="220" y="160" width="60" height="20" style="--d: 880ms" />
+        <rect class="node" x="220" y="160" width="60" height="20"
+              data-branch="2" data-tier="4" style="--d: 880ms" />
         <text class="label" x="250" y="170" style="--d: 880ms">&lt;section&gt;</text>
-        <rect class="node" x="290" y="160" width="60" height="20" style="--d: 880ms" />
+        <rect class="node" x="290" y="160" width="60" height="20"
+              data-branch="3" data-tier="4" style="--d: 880ms" />
         <text class="label" x="320" y="170" style="--d: 880ms">&lt;xref&gt;</text>
 
         <!-- L3 → L4 edges (straight verticals to leaf rects) -->
-        <path class="edge" d="M 60 180 L 60 215"   style="--d: 1040ms" />
-        <path class="edge" d="M 130 180 L 130 215" style="--d: 1040ms" />
-        <path class="edge" d="M 250 180 L 250 215" style="--d: 1040ms" />
-        <path class="edge" d="M 320 180 L 320 215" style="--d: 1040ms" />
+        <path class="edge" d="M 60 180 L 60 215"
+              data-branch="0" data-tier="5" style="--d: 1040ms" />
+        <path class="edge" d="M 130 180 L 130 215"
+              data-branch="1" data-tier="5" style="--d: 1040ms" />
+        <path class="edge" d="M 250 180 L 250 215"
+              data-branch="2" data-tier="5" style="--d: 1040ms" />
+        <path class="edge" d="M 320 180 L 320 215"
+              data-branch="3" data-tier="5" style="--d: 1040ms" />
 
         <!-- L4 leaves -->
-        <rect class="node leaf" x="53"  y="215" width="14" height="7" style="--d: 1160ms" />
-        <rect class="node leaf" x="123" y="215" width="14" height="7" style="--d: 1160ms" />
-        <rect class="node leaf" x="243" y="215" width="14" height="7" style="--d: 1160ms" />
-        <rect class="node leaf" x="313" y="215" width="14" height="7" style="--d: 1160ms" />
+        <rect class="node leaf" x="53"  y="215" width="14" height="7"
+              data-branch="0" data-tier="6" style="--d: 1160ms" />
+        <rect class="node leaf" x="123" y="215" width="14" height="7"
+              data-branch="1" data-tier="6" style="--d: 1160ms" />
+        <rect class="node leaf" x="243" y="215" width="14" height="7"
+              data-branch="2" data-tier="6" style="--d: 1160ms" />
+        <rect class="node leaf" x="313" y="215" width="14" height="7"
+              data-branch="3" data-tier="6" style="--d: 1160ms" />
 
         <!-- Title block hairline -->
         <line class="chrome-rule" x1="30" y1="252" x2="350" y2="252" style="--d: 1260ms" />
@@ -327,6 +371,23 @@
     fill: none;
   }
 
+  /* Ruler ticks — same amber as corners, thinner so they read as secondary. */
+  .dita-svg .tick-marks {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 0.75;
+    fill: none;
+    opacity: 0.7;
+  }
+
+  /* Leaves are content blobs, not structural nodes — fill with the stroke
+     color at low opacity so they read as solid ink dots, distinct from the
+     outlined-only L1/L2/L3 rects above. */
+  .dita-svg .leaf {
+    fill: currentColor;
+    fill-opacity: 0.15;
+    stroke-width: 1;
+  }
+
   .dita-svg .chrome-rule {
     stroke: var(--color-border-subtle);
     stroke-width: 1;
@@ -347,6 +408,7 @@
   .dita-svg .chrome,
   .dita-svg .chrome-rule,
   .dita-svg .corner,
+  .dita-svg .tick-marks,
   .dita-svg .valid-dot,
   .dita-svg .annotation-prefix {
     opacity: 0;
@@ -358,6 +420,7 @@
 
   /* Reveal cascade — triggered when .dita-svg gets the .drawn class */
   .dita-svg.drawn .corner,
+  .dita-svg.drawn .tick-marks,
   .dita-svg.drawn .chrome,
   .dita-svg.drawn .chrome-rule,
   .dita-svg.drawn .valid-dot,
@@ -390,20 +453,56 @@
     }
   }
 
-  @keyframes hero-node-pulse {
+  /* Branch trace — every ~5s, a "data pulse" cascades from the map node
+     down a random root-to-leaf path. Each element on the chosen branch
+     gets the .tracing class briefly, with staggered start times computed
+     in JS so the highlight reads as a wave traveling down the tree. */
+  @keyframes hero-trace-node {
     0% {
-      transform: scale(1);
+      stroke: currentColor;
+      stroke-width: 1.5;
     }
-    50% {
-      transform: scale(1.04);
+    25% {
+      stroke: var(--color-accent-primary-hover);
+      stroke-width: 2.25;
     }
     100% {
-      transform: scale(1);
+      stroke: currentColor;
+      stroke-width: 1.5;
     }
   }
 
-  .dita-svg .node.pulsing {
-    animation: hero-node-pulse 600ms ease-in-out;
+  @keyframes hero-trace-edge {
+    0% {
+      stroke: currentColor;
+      stroke-width: 1.5;
+    }
+    25% {
+      stroke: var(--color-accent-primary-hover);
+      stroke-width: 2.25;
+    }
+    100% {
+      stroke: currentColor;
+      stroke-width: 1.5;
+    }
+  }
+
+  /* Map root has an amber gradient stroke already; tint shift wouldn't read.
+     Pulse it by scaling instead, as the "ignition" frame of each trace. */
+  @keyframes hero-trace-root {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.06); }
+    100% { transform: scale(1); }
+  }
+
+  .dita-svg .node.tracing {
+    animation: hero-trace-node 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .dita-svg .edge.tracing {
+    animation: hero-trace-edge 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .dita-svg .node--root.tracing {
+    animation: hero-trace-root 700ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   #hero-annotation-text {
@@ -417,13 +516,15 @@
     .dita-svg .chrome,
     .dita-svg .chrome-rule,
     .dita-svg .corner,
+    .dita-svg .tick-marks,
     .dita-svg .valid-dot,
     .dita-svg .annotation-prefix {
       opacity: 1 !important;
       animation: none !important;
     }
 
-    .dita-svg .node.pulsing {
+    .dita-svg .node.tracing,
+    .dita-svg .edge.tracing {
       animation: none !important;
     }
 
@@ -435,7 +536,7 @@
 
 <script>
   // ─────────────────────────────────────────────────────────
-  // HomeHero — viewport-triggered draw-in + idle node pulse
+  // HomeHero — viewport-triggered draw-in + idle branch trace
   // ─────────────────────────────────────────────────────────
   function setupHomeHero() {
     const svg = document.getElementById("hero-dita-tree") as SVGElement | null;
@@ -468,7 +569,7 @@
             svg.classList.add("drawn");
             observer.unobserve(entry.target);
             if (!prefersReducedMotion) {
-              window.setTimeout(startIdlePulse, 1700);
+              window.setTimeout(startIdleTrace, 1700);
             }
           }
         });
@@ -478,38 +579,67 @@
 
     observer.observe(svg);
 
-    function startIdlePulse(): void {
-      const nodes = Array.from(svg!.querySelectorAll(".node"));
-      if (nodes.length === 0) return;
-      let lastIndex = -1;
+    /*
+     * Idle trace — every ~5s, pick a random leaf (branch 0..3) and cascade
+     * an amber "data pulse" down the path from map -> topic -> section/xref
+     * -> leaf. data-branch lists which traces an element belongs to;
+     * data-tier sorts the elements along the path so the stagger reads as
+     * a wave traveling down the tree.
+     */
+    function startIdleTrace(): void {
+      const branchCount = 4;
+      let lastBranch = -1;
+      const STEP_MS = 130;
+      const HIGHLIGHT_MS = 700;
 
-      function pickNode(): Element {
+      function pickBranch(): number {
         let i: number;
         do {
-          i = Math.floor(Math.random() * nodes.length);
-        } while (i === lastIndex && nodes.length > 1);
-        lastIndex = i;
-        return nodes[i];
+          i = Math.floor(Math.random() * branchCount);
+        } while (i === lastBranch);
+        lastBranch = i;
+        return i;
       }
 
-      function pulseOnce(): void {
-        const node = pickNode();
-        node.classList.add("pulsing");
+      function traceOnce(): void {
+        const branchIdx = pickBranch();
+        const els = Array.from(
+          svg!.querySelectorAll<SVGElement>(`[data-branch~="${branchIdx}"]`)
+        ).sort(
+          (a, b) =>
+            parseInt(a.dataset.tier || "0", 10) -
+            parseInt(b.dataset.tier || "0", 10)
+        );
 
-        if (annotationEl) {
-          annotationEl.style.opacity = "0";
+        els.forEach((el, i) => {
+          const delay = i * STEP_MS;
+          window.setTimeout(() => el.classList.add("tracing"), delay);
+          window.setTimeout(
+            () => el.classList.remove("tracing"),
+            delay + HIGHLIGHT_MS
+          );
+        });
+
+        // Update annotation strip with the leaf's DITA fragment when
+        // the pulse reaches the leaf.
+        const leaf = els[els.length - 1];
+        if (annotationEl && leaf) {
+          const leafDelay = (els.length - 1) * STEP_MS;
           window.setTimeout(() => {
-            annotationEl.textContent = getAnnotationFor(node);
-            annotationEl.style.opacity = "1";
-          }, 160);
+            annotationEl.style.opacity = "0";
+            window.setTimeout(() => {
+              annotationEl.textContent = getAnnotationFor(leaf);
+              annotationEl.style.opacity = "1";
+            }, 160);
+          }, leafDelay);
         }
 
-        window.setTimeout(() => node.classList.remove("pulsing"), 700);
-        const next = 4600 + Math.random() * 800;
-        window.setTimeout(pulseOnce, next);
+        const totalTraceMs = (els.length - 1) * STEP_MS + HIGHLIGHT_MS;
+        const next = totalTraceMs + 3200 + Math.random() * 1200;
+        window.setTimeout(traceOnce, next);
       }
 
-      pulseOnce();
+      traceOnce();
     }
   }
 
