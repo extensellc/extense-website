@@ -82,6 +82,27 @@
 </section>
 
 <style>
+  /* Section-level spacing. Because Astro scopes <style> blocks, the
+     index.astro `.home-section { padding: ... }` rule does NOT reach the
+     section element rendered inside this component — its scope is index.astro's
+     own cid, not ours. So we have to set padding here ourselves, mirroring
+     the global section defaults plus a bit of extra breathing room. */
+  .home-section--ops-stack {
+    padding-top: var(--section-pad-default);
+    padding-bottom: calc(var(--section-pad-default) + var(--space-8));
+  }
+
+  @media (max-width: 767px) {
+    .home-section--ops-stack {
+      padding-top: var(--space-16);
+      padding-bottom: calc(var(--space-16) + var(--space-6));
+    }
+  }
+
+  .home-section--ops-stack .home-section__heading-block {
+    margin-bottom: var(--space-16);
+  }
+
   .ops-stack__grid {
     list-style: none;
     margin: 0;
