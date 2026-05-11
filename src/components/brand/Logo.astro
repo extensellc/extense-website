@@ -1,15 +1,22 @@
 ---
 /*
-  Logo — Extense horizontal wordmark
-  Two overlapping squares (amber gradient) + "EXTENSE" wordmark in Montserrat ExtraLight.
+  Logo — Extense canonical brand mark.
+
+  Stacked layout (matches the canonical extense-logo.svg in the brand kit):
+  two overlapping amber-gradient squares on top, "EXTENSE" wordmark centered
+  underneath in Montserrat ExtraLight.
 
   Usage:
-    <Logo height={32} />              -> default, dark wordmark on light background
-    <Logo height={32} variant="dark" /> -> light wordmark on dark background
-    <Logo monochrome />               -> single-color rendering (footer / proof contexts)
+    <Logo height={48} />                 -> default, dark wordmark on light bg
+    <Logo height={48} variant="dark" />  -> light wordmark on dark bg (footer/shimmer)
+    <Logo height={48} monochrome />      -> single-color rendering, inherits currentColor
+                                            (footer / proof contexts where the logo should
+                                            match surrounding text color)
 
   Accessibility: SVG has aria-label "Extense LLC" and role="img".
-  The wordmark depends on Montserrat 200 — loaded by BaseLayout.
+  The wordmark depends on Montserrat (200 weight) — loaded by BaseLayout.
+
+  Source-of-truth dimensions: viewBox 200x225 (matches the brand-kit SVG).
 */
 
 interface Props {
@@ -20,7 +27,7 @@ interface Props {
 }
 
 const {
-  height = 40,
+  height = 48,
   variant = "default",
   monochrome = false,
   class: className,
@@ -34,7 +41,7 @@ const gradientId = `extense-logo-amber-${Math.random().toString(36).slice(2, 8)}
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 1020 180"
+  viewBox="0 0 200 225"
   height={height}
   role="img"
   aria-label="Extense LLC"
@@ -42,30 +49,34 @@ const gradientId = `extense-logo-amber-${Math.random().toString(36).slice(2, 8)}
   data-monochrome={monochrome ? "true" : undefined}
 >
   <defs>
-    <linearGradient id={gradientId} x1="15" y1="10" x2="155" y2="160" gradientUnits="userSpaceOnUse">
+    <linearGradient id={gradientId} x1="30" y1="10" x2="170" y2="160" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="var(--color-logo-gradient-1)" />
       <stop offset="50%" stop-color="var(--color-logo-gradient-2)" />
       <stop offset="100%" stop-color="var(--color-logo-gradient-3)" />
     </linearGradient>
   </defs>
+  <!-- Outer square (top-right) -->
   <rect
-    x="45" y="10" width="110" height="110" rx="4"
+    x="60" y="10" width="110" height="110" rx="4"
     fill="none"
     stroke={monochrome ? "currentColor" : `url(#${gradientId})`}
     stroke-width="5"
   />
+  <!-- Inner square (bottom-left, overlapping) -->
   <rect
-    x="15" y="60" width="100" height="100" rx="4"
+    x="30" y="60" width="100" height="100" rx="4"
     fill="none"
     stroke={monochrome ? "currentColor" : `url(#${gradientId})`}
     stroke-width="5"
   />
+  <!-- EXTENSE wordmark, centered below the squares -->
   <text
-    x="205" y="137"
+    x="100" y="210"
+    text-anchor="middle"
     font-family="'Montserrat', 'Helvetica Neue', Arial, sans-serif"
-    font-size="150"
+    font-size="30"
     font-weight="200"
-    letter-spacing="20"
+    letter-spacing="6"
     fill={monochrome ? "currentColor" : wordmarkColor}
   >EXTENSE</text>
 </svg>
@@ -76,8 +87,6 @@ const gradientId = `extense-logo-amber-${Math.random().toString(36).slice(2, 8)}
     width: auto;
   }
 
-  /* Monochrome variant inherits color from currentColor — useful for footer
-     where the whole wordmark + squares should match surrounding text. */
   .extense-logo[data-monochrome="true"] {
     color: currentColor;
   }

@@ -2,17 +2,18 @@
 /*
   Footer — shared, all pages.
 
-  Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (System / Shared)
+  Two-column layout (60/40 split on desktop):
+    LEFT  — 3 link groups (Capabilities, Audiences, Company) stacked above a
+            bottom utility row (LinkedIn icon, Privacy/Terms, copyright).
+    RIGHT — ShimmerLogo (deep glossy black background, animated brand mark).
 
-  Structure:
-    - Background color-surface-elevated, full-width edge-to-edge
-    - Top hairline border
-    - 4 columns desktop (~25% each), single column mobile
-    - Bottom row: copyright left | LinkedIn icon + Privacy/Terms right
-    - Footer is structural navigation only — no newsletter, no marketing CTAs.
+  Footer is structural navigation + brand presence. No newsletter, no
+  marketing CTAs, no tagline text — the shimmer carries the brand moment.
+
+  Mobile: stacks single-column. Shimmer sits below the link groups.
 */
 
-import Logo from "../brand/Logo.astro";
+import ShimmerLogo from "../brand/ShimmerLogo.astro";
 
 const year = new Date().getFullYear();
 
@@ -45,51 +46,54 @@ const columns = [
 ---
 
 <footer class="footer" aria-label="Site footer">
-  <div class="footer__inner container-page">
-    <div class="footer__columns">
-      <div class="footer__brand">
-        <Logo height={28} monochrome />
-        <p class="footer__tagline">XML content engineering for organizations whose documentation has to be right.</p>
-      </div>
-
-      {columns.map((col) => (
-        <div class="footer__column">
-          <h4 class="footer__heading">{col.heading}</h4>
-          <ul class="footer__links">
-            {col.links.map((link) => (
-              <li>
-                <a href={link.href} class="footer__link">{link.label}</a>
-              </li>
-            ))}
-          </ul>
+  <div class="footer__grid">
+    <div class="footer__left">
+      <div class="footer__left-inner container-page">
+        <div class="footer__columns">
+          {columns.map((col) => (
+            <div class="footer__column">
+              <h4 class="footer__heading">{col.heading}</h4>
+              <ul class="footer__links">
+                {col.links.map((link) => (
+                  <li>
+                    <a href={link.href} class="footer__link">{link.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-      ))}
+
+        <div class="footer__bottom">
+          <div class="footer__utility">
+            <a
+              href="https://www.linkedin.com/company/ex-tense"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer__linkedin"
+              aria-label="Extense LLC on LinkedIn"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.43v6.31zM5.34 7.43A2.06 2.06 0 113.27 5.36a2.06 2.06 0 012.07 2.07zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.28V1.72C24 .77 23.21 0 22.22 0z"></path>
+              </svg>
+            </a>
+            <a href="/privacy" class="footer__legal">Privacy</a>
+            <span class="footer__sep" aria-hidden="true">·</span>
+            <a href="/terms" class="footer__legal">Terms</a>
+          </div>
+          <p class="footer__copyright">© {year} Extense LLC. All rights reserved.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="footer__bottom">
-      <p class="footer__copyright">© {year} Extense LLC. All rights reserved.</p>
-      <div class="footer__utility">
-        <a
-          href="https://www.linkedin.com/company/ex-tense"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="footer__linkedin"
-          aria-label="Extense LLC on LinkedIn"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.43v6.31zM5.34 7.43A2.06 2.06 0 113.27 5.36a2.06 2.06 0 012.07 2.07zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.28V1.72C24 .77 23.21 0 22.22 0z"></path>
-          </svg>
-        </a>
-        <a href="/privacy" class="footer__legal">Privacy</a>
-        <span class="footer__sep" aria-hidden="true">·</span>
-        <a href="/terms" class="footer__legal">Terms</a>
-      </div>
+    <div class="footer__right">
+      <ShimmerLogo />
     </div>
   </div>
 </footer>
@@ -102,38 +106,46 @@ const columns = [
     margin-top: auto;
   }
 
-  .footer__inner {
-    padding-top: var(--space-16);
-    padding-bottom: var(--space-12);
+  /* Mobile: single-column stack. Left content above shimmer. */
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
-  /* Mobile: stacked single column */
-  .footer__columns {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-12);
-  }
-
-  /* Desktop: 4-column grid */
+  /* Desktop: 60/40 split — left column carries content, right column carries shimmer */
   @media (min-width: 1024px) {
-    .footer__columns {
-      display: grid;
-      grid-template-columns: 1.4fr repeat(3, 1fr);
-      gap: var(--space-12);
+    .footer__grid {
+      grid-template-columns: 3fr 2fr;
+      min-height: 360px;
     }
   }
 
-  .footer__brand {
+  /* Left column */
+  .footer__left {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
   }
 
-  .footer__tagline {
-    font-size: var(--text-body-sm);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-normal);
-    max-width: 28ch;
+  .footer__left-inner {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-12);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer__columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    margin-bottom: var(--space-12);
+  }
+
+  @media (min-width: 600px) {
+    .footer__columns {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
   }
 
   .footer__heading {
@@ -150,6 +162,9 @@ const columns = [
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .footer__link {
@@ -169,28 +184,23 @@ const columns = [
     text-underline-offset: 2px;
   }
 
-  /* Bottom row */
+  /* Bottom utility row inside the left column */
   .footer__bottom {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    align-items: flex-start;
-    margin-top: var(--space-12);
+    margin-top: auto;
     padding-top: var(--space-8);
     border-top: var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: flex-start;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     .footer__bottom {
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
     }
-  }
-
-  .footer__copyright {
-    font-size: var(--text-caption);
-    color: var(--color-text-muted);
   }
 
   .footer__utility {
@@ -234,5 +244,23 @@ const columns = [
   .footer__sep {
     color: var(--color-text-muted);
     font-size: var(--text-caption);
+  }
+
+  .footer__copyright {
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* Right column — shimmer */
+  .footer__right {
+    /* ShimmerLogo provides its own dark gradient background and centering. */
+    min-height: 280px;
+  }
+
+  @media (min-width: 1024px) {
+    .footer__right {
+      min-height: 0;
+    }
   }
 </style>

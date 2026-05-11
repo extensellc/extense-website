@@ -46,7 +46,7 @@ function isActive(item: NavItem): boolean {
 <header class="topnav" data-topnav>
   <div class="topnav__inner container-page">
     <a href="/" class="topnav__logo" aria-label="Extense LLC — home">
-      <Logo height={32} />
+      <Logo height={56} />
     </a>
 
     <nav class="topnav__nav" aria-label="Main navigation">
@@ -109,7 +109,7 @@ function isActive(item: NavItem): boolean {
     <div class="topnav__drawer-inner">
       <div class="topnav__drawer-head">
         <a href="/" class="topnav__drawer-logo" aria-label="Extense LLC — home">
-          <Logo height={28} />
+          <Logo height={48} />
         </a>
         <button
           type="button"
@@ -173,12 +173,12 @@ function isActive(item: NavItem): boolean {
     align-items: center;
     justify-content: space-between;
     gap: var(--space-6);
-    height: 56px;
+    height: 64px;
   }
 
   @media (min-width: 768px) {
     .topnav__inner {
-      height: 72px;
+      height: 80px;
     }
   }
 
@@ -191,6 +191,12 @@ function isActive(item: NavItem): boolean {
   .topnav__logo:focus-visible {
     color: var(--color-text-primary);
     text-decoration: none;
+  }
+  /* Mobile: scale the stacked logo down so it fits the shorter nav cleanly */
+  @media (max-width: 767px) {
+    .topnav__logo :global(.extense-logo) {
+      height: 48px;
+    }
   }
 
   /* Desktop nav */
