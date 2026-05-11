@@ -2,15 +2,16 @@
 /*
   Footer — shared, all pages.
 
-  Two-column layout (60/40 split on desktop):
-    LEFT  — 3 link groups (Capabilities, Audiences, Company) stacked above a
-            bottom utility row (LinkedIn icon, Privacy/Terms, copyright).
-    RIGHT — ShimmerLogo (deep glossy black background, animated brand mark).
+  Vertical stack (no column split):
+    1. Three link groups in a row: Capabilities | Audiences | Company
+    2. Hairline utility row: LinkedIn icon, Privacy · Terms, copyright
+    3. Full-width animated ShimmerLogo (deep glossy black background)
 
   Footer is structural navigation + brand presence. No newsletter, no
   marketing CTAs, no tagline text — the shimmer carries the brand moment.
 
-  Mobile: stacks single-column. Shimmer sits below the link groups.
+  Mobile: link groups stack vertically; utility row stacks; shimmer
+  remains full-width at the bottom.
 */
 
 import ShimmerLogo from "../brand/ShimmerLogo.astro";
@@ -46,55 +47,51 @@ const columns = [
 ---
 
 <footer class="footer" aria-label="Site footer">
-  <div class="footer__grid">
-    <div class="footer__left">
-      <div class="footer__left-inner container-page">
-        <div class="footer__columns">
-          {columns.map((col) => (
-            <div class="footer__column">
-              <h4 class="footer__heading">{col.heading}</h4>
-              <ul class="footer__links">
-                {col.links.map((link) => (
-                  <li>
-                    <a href={link.href} class="footer__link">{link.label}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+  <div class="footer__upper container-page">
+    <div class="footer__columns">
+      {columns.map((col) => (
+        <div class="footer__column">
+          <h4 class="footer__heading">{col.heading}</h4>
+          <ul class="footer__links">
+            {col.links.map((link) => (
+              <li>
+                <a href={link.href} class="footer__link">{link.label}</a>
+              </li>
+            ))}
+          </ul>
         </div>
+      ))}
+    </div>
 
-        <div class="footer__bottom">
-          <div class="footer__utility">
-            <a
-              href="https://www.linkedin.com/company/ex-tense"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer__linkedin"
-              aria-label="Extense LLC on LinkedIn"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                width="16"
-                height="16"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.43v6.31zM5.34 7.43A2.06 2.06 0 113.27 5.36a2.06 2.06 0 012.07 2.07zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.28V1.72C24 .77 23.21 0 22.22 0z"></path>
-              </svg>
-            </a>
-            <a href="/privacy" class="footer__legal">Privacy</a>
-            <span class="footer__sep" aria-hidden="true">·</span>
-            <a href="/terms" class="footer__legal">Terms</a>
-          </div>
-          <p class="footer__copyright">© {year} Extense LLC. All rights reserved.</p>
-        </div>
+    <div class="footer__utility">
+      <div class="footer__utility-left">
+        <a
+          href="https://www.linkedin.com/company/ex-tense"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer__linkedin"
+          aria-label="Extense LLC on LinkedIn"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.43v6.31zM5.34 7.43A2.06 2.06 0 113.27 5.36a2.06 2.06 0 012.07 2.07zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.28V1.72C24 .77 23.21 0 22.22 0z"></path>
+          </svg>
+        </a>
+        <a href="/privacy" class="footer__legal">Privacy</a>
+        <span class="footer__sep" aria-hidden="true">·</span>
+        <a href="/terms" class="footer__legal">Terms</a>
       </div>
+      <p class="footer__copyright">© {year} Extense LLC. All rights reserved.</p>
     </div>
+  </div>
 
-    <div class="footer__right">
-      <ShimmerLogo />
-    </div>
+  <div class="footer__shimmer">
+    <ShimmerLogo />
   </div>
 </footer>
 
@@ -104,36 +101,17 @@ const columns = [
     border-top: var(--border-hairline);
     color: var(--color-text-primary);
     margin-top: auto;
-  }
-
-  /* Mobile: single-column stack. Left content above shimmer. */
-  .footer__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  /* Desktop: 60/40 split — left column carries content, right column carries shimmer */
-  @media (min-width: 1024px) {
-    .footer__grid {
-      grid-template-columns: 3fr 2fr;
-      min-height: 360px;
-    }
-  }
-
-  /* Left column */
-  .footer__left {
     display: flex;
     flex-direction: column;
   }
 
-  .footer__left-inner {
+  /* Upper region — link groups + utility row, on the elevated surface */
+  .footer__upper {
     padding-top: var(--space-16);
     padding-bottom: var(--space-12);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
   }
 
+  /* Three link groups in a row on desktop; stacked on mobile */
   .footer__columns {
     display: grid;
     grid-template-columns: 1fr;
@@ -184,9 +162,8 @@ const columns = [
     text-underline-offset: 2px;
   }
 
-  /* Bottom utility row inside the left column */
-  .footer__bottom {
-    margin-top: auto;
+  /* Hairline utility row — LinkedIn + legal links left, copyright right */
+  .footer__utility {
     padding-top: var(--space-8);
     border-top: var(--border-hairline);
     display: flex;
@@ -196,14 +173,14 @@ const columns = [
   }
 
   @media (min-width: 600px) {
-    .footer__bottom {
+    .footer__utility {
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
     }
   }
 
-  .footer__utility {
+  .footer__utility-left {
     display: flex;
     align-items: center;
     gap: var(--space-3);
@@ -252,15 +229,9 @@ const columns = [
     margin: 0;
   }
 
-  /* Right column — shimmer */
-  .footer__right {
-    /* ShimmerLogo provides its own dark gradient background and centering. */
-    min-height: 280px;
-  }
-
-  @media (min-width: 1024px) {
-    .footer__right {
-      min-height: 0;
-    }
+  /* Shimmer band — full-width, sits below the utility row */
+  .footer__shimmer {
+    /* ShimmerLogo carries its own deep-black gradient background and centering. */
+    width: 100%;
   }
 </style>
