@@ -56,10 +56,11 @@
           <svg class="ops-stack__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M20 12 A8 8 0 0 1 6.5 17.5" />
             <path d="M4 12 A8 8 0 0 1 17.5 6.5" />
-            <!-- Chevron arrowheads aligned with each arc's clockwise tangent.
-                 Bigger and more obviously arrow-shaped than the prior L-brackets. -->
-            <path d="M7.5 21 L6.5 17.5 L10.5 18.5" />
-            <path d="M16.5 3 L17.5 6.5 L13.5 5.5" />
+            <!-- Filled triangle arrowheads. Base midpoint sits on each arc's
+                 terminus; tip extends 3 units further along the tangent so the
+                 arc visually flows into the arrow. -->
+            <path class="ops-stack__arrow-tip" d="M3.5 14.5 L8 16 L5 19 Z" />
+            <path class="ops-stack__arrow-tip" d="M20.5 9.5 L16 8 L19 5 Z" />
           </svg>
           <span class="ops-stack__num">03</span>
         </div>
@@ -152,6 +153,13 @@
     stroke-linejoin: round;
     fill: none;
     flex-shrink: 0;
+  }
+
+  /* Filled triangle arrowheads on the Automation icon. Inherited fill: none
+     from .ops-stack__icon would otherwise hide them. */
+  .ops-stack__icon .ops-stack__arrow-tip {
+    fill: var(--color-text-primary);
+    stroke: none;
   }
 
   /* Number plate — monospace, amber. Matches the FIG. 01 chrome in the hero SVG. */
