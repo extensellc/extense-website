@@ -3,15 +3,19 @@
   ContentOpsStack — homepage process-flow section.
 
   Spec ref: integration of the original ex-tense.co "Extense Content Ops Stack"
-  into the redesign, between the Pillars (capabilities) and Stats (outcomes)
-  sections. Narrative slot: "how we deliver" between "what we do" and "the results".
+  + "Content Engineering Lifecycle" into the redesign, between the Pillars
+  (capabilities) and Stats (outcomes) sections. Narrative slot: "how we
+  deliver" between "what we do" and "the results".
+
+  Five phases: Strategy -> Engineering -> Automation -> Delivery -> Analyze.
+  The Analyze phase closes the feedback loop back to Strategy.
 
   Visual treatment (redesign aesthetic, not the original colored tiles):
-    - 4-up grid: 1 col mobile, 2x2 tablet, 4 desktop. Matches PillarGrid breakpoints.
+    - 5-up grid: 1 col mobile, 2 cols tablet, 5 desktop.
     - Hairline border on every side. Page-bg fill. No solid color tiles.
-    - Phase number "01..04" rendered in amber monospace (matches FIG. 01 chrome in the
-      hero SVG) — this is the cue that the four cards form a sequence, no arrows.
-    - Small inline SVG glyph above the title. Strokes match the rest of the site.
+    - Phase number "01..05" rendered in amber monospace (matches FIG. 01 chrome
+      in the hero SVG) — this is the cue that the cards form a sequence.
+    - Small inline SVG glyph above each title. Strokes match the rest of the site.
 */
 ---
 
@@ -22,7 +26,7 @@
         The content ops stack.
       </h2>
       <p class="home-section__subdeck">
-        Four integrated layers. One seamless content operation.
+        Five integrated layers. One seamless content operation.
       </p>
     </div>
 
@@ -79,6 +83,20 @@
         <h3 class="ops-stack__label">Delivery</h3>
         <p class="ops-stack__desc">PDF, HTML5, Portal, API, Mobile</p>
       </li>
+
+      <li class="ops-stack__card">
+        <div class="ops-stack__head">
+          <svg class="ops-stack__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <line x1="3" y1="20" x2="21" y2="20" />
+            <rect x="5" y="14" width="3" height="6" />
+            <rect x="10.5" y="9" width="3" height="11" />
+            <rect x="16" y="5" width="3" height="15" />
+          </svg>
+          <span class="ops-stack__num">05</span>
+        </div>
+        <h3 class="ops-stack__label">Analyze</h3>
+        <p class="ops-stack__desc">Usage Metrics, Content Performance, Feedback Loop</p>
+      </li>
     </ol>
   </div>
 </section>
@@ -123,8 +141,8 @@
 
   @media (min-width: 1024px) {
     .ops-stack__grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-6);
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-4);
     }
   }
 
