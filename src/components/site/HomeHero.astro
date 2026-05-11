@@ -81,11 +81,13 @@
         <rect class="node node--root" x="162" y="38" width="56" height="22" style="--d: 240ms" />
         <text class="label label--root" x="190" y="49" style="--d: 240ms">&lt;map&gt;</text>
 
-        <!-- L1 → L2 edges (split into straight segments so corners render cleanly) -->
-        <path class="edge" pathLength="100" d="M 190 60 L 190 78"  style="--d: 380ms" />
+        <!-- L1 → L2 edges. Verticals overlap the bus by 1 unit on each side
+             so the half-stroke-width band of the bus is fully covered at each
+             T-junction (otherwise the exposed half reads as a gap). -->
+        <path class="edge" pathLength="100" d="M 190 60 L 190 79"  style="--d: 380ms" />
         <path class="edge" pathLength="100" d="M 95 78 L 285 78"   style="--d: 420ms" />
-        <path class="edge" pathLength="100" d="M 95 78 L 95 96"    style="--d: 460ms" />
-        <path class="edge" pathLength="100" d="M 285 78 L 285 96"  style="--d: 460ms" />
+        <path class="edge" pathLength="100" d="M 95 77 L 95 96"    style="--d: 460ms" />
+        <path class="edge" pathLength="100" d="M 285 77 L 285 96"  style="--d: 460ms" />
 
         <!-- L2 topics -->
         <rect class="node" x="63" y="96" width="64" height="22" style="--d: 560ms" />
@@ -93,15 +95,16 @@
         <rect class="node" x="253" y="96" width="64" height="22" style="--d: 560ms" />
         <text class="label" x="285" y="107" style="--d: 560ms">&lt;topic&gt;</text>
 
-        <!-- L2 → L3 edges (split into straight segments) -->
-        <path class="edge" pathLength="100" d="M 95 118 L 95 138"   style="--d: 700ms" />
+        <!-- L2 → L3 edges. Same overlap trick: trunks extend 1 unit past the
+             bus centerline, branches start 1 unit above it. -->
+        <path class="edge" pathLength="100" d="M 95 118 L 95 139"   style="--d: 700ms" />
         <path class="edge" pathLength="100" d="M 60 138 L 130 138"  style="--d: 740ms" />
-        <path class="edge" pathLength="100" d="M 60 138 L 60 160"   style="--d: 780ms" />
-        <path class="edge" pathLength="100" d="M 130 138 L 130 160" style="--d: 780ms" />
-        <path class="edge" pathLength="100" d="M 285 118 L 285 138" style="--d: 700ms" />
+        <path class="edge" pathLength="100" d="M 60 137 L 60 160"   style="--d: 780ms" />
+        <path class="edge" pathLength="100" d="M 130 137 L 130 160" style="--d: 780ms" />
+        <path class="edge" pathLength="100" d="M 285 118 L 285 139" style="--d: 700ms" />
         <path class="edge" pathLength="100" d="M 250 138 L 320 138" style="--d: 740ms" />
-        <path class="edge" pathLength="100" d="M 250 138 L 250 160" style="--d: 780ms" />
-        <path class="edge" pathLength="100" d="M 320 138 L 320 160" style="--d: 780ms" />
+        <path class="edge" pathLength="100" d="M 250 137 L 250 160" style="--d: 780ms" />
+        <path class="edge" pathLength="100" d="M 320 137 L 320 160" style="--d: 780ms" />
 
         <!-- L3 section/xref -->
         <rect class="node" x="30"  y="160" width="60" height="20" style="--d: 880ms" />
