@@ -11,8 +11,9 @@
     - Eyebrow → heading → description → "View [audience] →" link
 
   Variants:
-    .public-sector  — left border --color-gravitas-navy, eyebrow --color-gravitas-navy
-    .private-sector — left border --color-text-secondary (warm gray), eyebrow --color-text-secondary
+    Both variants share the brand amber left border (--color-accent-primary)
+    so the pair reads as one "where to next" pivot. Eyebrows keep their
+    distinct color (navy / warm gray) so the audiences remain visually labeled.
 
   Whole card wrapped in <a>. Stretched-link pattern via ::after to avoid nested-link
   accessibility issues.
@@ -67,12 +68,9 @@ const {
     background-color: var(--color-surface-elevated);
   }
 
-  .pivot-card--public-sector {
-    border-left-color: var(--color-gravitas-navy);
-  }
-
+  .pivot-card--public-sector,
   .pivot-card--private-sector {
-    border-left-color: var(--color-text-secondary);
+    border-left-color: var(--color-accent-primary);
   }
 
   .pivot-card__link {
