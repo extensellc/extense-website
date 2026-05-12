@@ -103,14 +103,17 @@ const areas: Area[] = [
 <style>
   .solutions-areas {
     padding-top: var(--section-pad-default);
-    padding-bottom: var(--section-pad-default);
+    /* Reduced bottom padding so the gap to the CTA below doesn't read
+       as dead space — the CTA's own padding-top (--space-32) already
+       provides substantial breathing room. */
+    padding-bottom: var(--space-8);
     border-top: var(--border-hairline);
   }
 
   @media (max-width: 767px) {
     .solutions-areas {
       padding-top: var(--space-16);
-      padding-bottom: var(--space-16);
+      padding-bottom: var(--space-6);
     }
   }
 
