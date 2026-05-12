@@ -54,7 +54,7 @@ const sortedPosts = allPosts.sort(
         {sortedPosts.map((post) => (
           <li data-topic={post.data.topic}>
             <PostListItem
-              href={`/insights/${post.id}`}
+              href={`/resources/${post.id}`}
               title={post.data.title}
               summary={post.data.summary}
               publishedAt={post.data.publishedAt}
@@ -65,7 +65,7 @@ const sortedPosts = allPosts.sort(
         ))}
       </ul>
       <p class="insights-section__empty" data-empty hidden>
-        No posts under this topic yet. <a href="/insights">View all posts</a>.
+        No posts under this topic yet. <a href="/resources">View all posts</a>.
       </p>
     </div>
   </section>

@@ -34,7 +34,7 @@ const topics: Topic[] = [
   <div class="container-prose topic-filter__inner">
     <ul class="topic-filter__list">
       {topics.map((t) => {
-        const href = t.value === "all" ? "/insights" : `/insights?topic=${encodeURIComponent(t.value)}`;
+        const href = t.value === "all" ? "/resources" : `/resources?topic=${encodeURIComponent(t.value)}`;
         return (
           <li>
             <a

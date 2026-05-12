@@ -17,7 +17,7 @@ export async function GET(context: APIContext) {
   );
 
   return rss({
-    title: "Extense LLC — Insights",
+    title: "Extense LLC — Resources",
     description:
       "Field notes, technical writing, and methodology dispatches from the Extense practice. DITA, S1000D, CCMS migration, RAG retrieval engineering, methodology.",
     site: context.site ?? "https://www.ex-tense.co",
@@ -25,7 +25,7 @@ export async function GET(context: APIContext) {
       title: post.data.title,
       pubDate: post.data.publishedAt,
       description: post.data.summary,
-      link: `/insights/${post.id}/`,
+      link: `/resources/${post.id}/`,
       categories: [post.data.topic],
     })),
     customData: `<language>en-us</language>`,
