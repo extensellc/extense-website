@@ -30,6 +30,8 @@
       </p>
     </div>
 
+    <div class="ops-stack__trace" aria-hidden="true"></div>
+
     <ol class="ops-stack__grid">
       <li class="ops-stack__card">
         <div class="ops-stack__head">
@@ -216,4 +218,153 @@
     margin: 0;
     text-wrap: pretty;
   }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Reveal animation — viewport-triggered.
+
+     A horizontal amber "trace" scales from left to right across the top
+     of the row. As it passes each card's center, that card reveals:
+       - card box fades + slides up
+       - phase number scale-pulses in
+       - icon strokes draw in via stroke-dasharray
+     The trace stays visible afterward as an amber accent rule.
+
+     Pattern (same as hero DITA tree):
+       Initial state lives under .animating  (added by JS so no-JS fails open)
+       Reveal triggered by .animating.drawn  (added by IntersectionObserver)
+     prefers-reduced-motion turns it all off.
+     ───────────────────────────────────────────────────────────────── */
+
+  .ops-stack__trace {
+    height: 1.5px;
+    margin-bottom: var(--space-8);
+    background-color: var(--color-accent-primary-hover);
+    transform-origin: left center;
+    transform: scaleX(1); /* default visible — no-JS fallback */
+  }
+
+  /* Hidden initial states applied only when JS has marked the section
+     for animation. Without JS the section reads normally. */
+  .home-section--ops-stack.animating .ops-stack__trace {
+    transform: scaleX(0);
+  }
+  .home-section--ops-stack.animating .ops-stack__card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .home-section--ops-stack.animating .ops-stack__num {
+    opacity: 0;
+    transform: scale(0.8);
+    display: inline-block; /* so scale takes effect on the span */
+  }
+  .home-section--ops-stack.animating .ops-stack__icon > * {
+    /* Generous dash length covers every shape in every icon. */
+    stroke-dasharray: 80;
+    stroke-dashoffset: 80;
+  }
+
+  /* Per-card stagger. Linear trace means times line up with the trace
+     position over each card's horizontal center. 1400 ms total trace
+     duration, 5 cards, centers at 10%/30%/50%/70%/90%. */
+  .home-section--ops-stack.animating .ops-stack__card:nth-child(1) { --reveal-delay: 140ms; }
+  .home-section--ops-stack.animating .ops-stack__card:nth-child(2) { --reveal-delay: 420ms; }
+  .home-section--ops-stack.animating .ops-stack__card:nth-child(3) { --reveal-delay: 700ms; }
+  .home-section--ops-stack.animating .ops-stack__card:nth-child(4) { --reveal-delay: 980ms; }
+  .home-section--ops-stack.animating .ops-stack__card:nth-child(5) { --reveal-delay: 1260ms; }
+
+  /* Drawn — turn on animations. */
+  .home-section--ops-stack.animating.drawn .ops-stack__trace {
+    transform: scaleX(1);
+    transition: transform 1400ms linear;
+  }
+
+  .home-section--ops-stack.animating.drawn .ops-stack__card {
+    animation: ops-card-reveal 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  .home-section--ops-stack.animating.drawn .ops-stack__num {
+    animation: ops-num-pulse 540ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  .home-section--ops-stack.animating.drawn .ops-stack__icon > * {
+    animation: ops-icon-draw 540ms ease-out forwards;
+    animation-delay: calc(var(--reveal-delay, 0ms) + 100ms);
+  }
+
+  @keyframes ops-card-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes ops-num-pulse {
+    0%   { opacity: 0; transform: scale(0.8); }
+    55%  { opacity: 1; transform: scale(1.15); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes ops-icon-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-section--ops-stack.animating .ops-stack__trace,
+    .home-section--ops-stack.animating .ops-stack__card,
+    .home-section--ops-stack.animating .ops-stack__num,
+    .home-section--ops-stack.animating .ops-stack__icon > * {
+      opacity: 1 !important;
+      transform: none !important;
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+      transition: none !important;
+    }
+  }
 </style>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // ContentOpsStack — viewport-triggered reveal cascade
+  // ─────────────────────────────────────────────────────────
+  function setupOpsStackReveal() {
+    const section = document.querySelector<HTMLElement>(".home-section--ops-stack");
+    if (!section) return;
+
+    // If JS has already run on this section (e.g. astro:page-load on
+    // back-forward navigation), don't re-trigger the entry.
+    if (section.dataset.opsRevealInit === "true") return;
+    section.dataset.opsRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) {
+      // Skip the animating + drawn dance entirely. Cards stay in their
+      // default (visible) state with no hidden phase.
+      return;
+    }
+
+    // Switch to the animating state — hides cards/trace/icons until drawn.
+    section.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            section.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(section);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupOpsStackReveal);
+  document.addEventListener("astro:page-load", setupOpsStackReveal);
+</script>
