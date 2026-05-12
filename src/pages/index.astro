@@ -101,7 +101,9 @@ const stats = [
   {
     number: "72%",
     label: "Translation cost savings",
-    context: "Single-source reuse cuts localization volume across markets.",
+    // Non-breaking spaces inside each phrase so the wrap can only happen at
+    // the regular space between "cuts" and "localization".
+    context: "Single-source reuse cuts localization volume across markets.",
   },
   {
     number: "85%",
@@ -256,6 +258,15 @@ const stats = [
     }
     .home-section--stats :global(.stat-block__item:nth-child(3)) {
       grid-column: 4;
+    }
+    /* Cap the context line width so 60/72/85 sub-copy wraps predictably at
+       any viewport width. Combined with non-breaking spaces inside the 72%
+       context, the wrap falls between "cuts" and "localization" — that
+       string has only one breakable space left. */
+    .home-section--stats :global(.stat-block__context) {
+      max-width: 32ch;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 
