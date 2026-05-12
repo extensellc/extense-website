@@ -4,34 +4,28 @@
 
   Spec ref: Solutions-page redesign brief.
 
-  Section order (work in progress; building section by section):
+  Section order:
     1. TopNav (BaseLayout)
-    2. SolutionsHero — thesis: "Content compounds. So does the cost of
-       getting it wrong." Asymmetric layout with the content-pipeline
-       diagram on the right.
-    3. [next] The problem at scale (DocumentRow stack)
-    4. [next] The approach (single principle, large type)
-    5. [next] Four solution areas (editorial sections, hairline-divided)
+    2. SolutionsHero — thesis ("Content compounds. So does the cost
+       of getting it wrong.") + content-pipeline visual.
+    3. SolutionsProblem — diagnosis ("The problem at scale.") — three
+       parallel constraints that take over once authorship stops being
+       the binding one.
+    4. SolutionsApproach — resolution ("Documentation is a SYSTEM, not
+       a deliverable.") — the single engineering principle.
+    5. SolutionsAreas — four editorial chapter-blocks for the four
+       solution sub-areas (TDP, Migration, Interop, AI-Ready), each
+       with body copy, a pull-quote curiosity hook, and a link to its
+       sub-page.
     6. [next] CTA (CTAModule)
     7. Footer (BaseLayout)
-
-  Temporary: while the lower sections are unbuilt, the four sub-page
-  links remain in a small hairline strip at the bottom so the page stays
-  navigable. They'll be replaced by the proper editorial-section
-  treatment in the next pass.
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SolutionsHero from "../../components/site/SolutionsHero.astro";
 import SolutionsProblem from "../../components/site/SolutionsProblem.astro";
 import SolutionsApproach from "../../components/site/SolutionsApproach.astro";
-
-const subpages = [
-  { name: "Technical Docs & Publishing", href: "/solutions/technical-docs-and-publishing" },
-  { name: "Content Migration",            href: "/solutions/content-migration" },
-  { name: "XML Data Interoperability",    href: "/solutions/xml-data-interoperability" },
-  { name: "AI-Ready Content",             href: "/solutions/ai-ready-content" },
-];
+import SolutionsAreas from "../../components/site/SolutionsAreas.astro";
 ---
 
 <BaseLayout
@@ -39,57 +33,7 @@ const subpages = [
   description="Extense engineers content as infrastructure: modeled, validated, machine-readable, ready for every output channel and every consumer — including AI."
 >
   <SolutionsHero />
-
   <SolutionsProblem />
-
   <SolutionsApproach />
-
-  <!-- TEMPORARY scaffold: sub-page links while the rest of the page is
-       being built. To be removed once the proper "four solution areas"
-       editorial section lands. -->
-  <section class="solutions-scaffold" aria-label="Solutions sub-pages (placeholder)">
-    <div class="container-prose solutions-scaffold__inner">
-      <p class="eyebrow solutions-scaffold__eyebrow">In progress — sub-pages available below</p>
-      <ul class="solutions-scaffold__list">
-        {subpages.map((s) => (
-          <li><a href={s.href}>{s.name} →</a></li>
-        ))}
-      </ul>
-    </div>
-  </section>
+  <SolutionsAreas />
 </BaseLayout>
-
-<style>
-  .solutions-scaffold {
-    padding-top: var(--space-16);
-    padding-bottom: var(--section-pad-default);
-    border-top: var(--border-hairline);
-  }
-  .solutions-scaffold__eyebrow {
-    margin-bottom: var(--space-6);
-    color: var(--color-text-muted);
-  }
-  .solutions-scaffold__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: var(--border-hairline);
-  }
-  .solutions-scaffold__list li {
-    border-bottom: var(--border-hairline);
-  }
-  .solutions-scaffold__list a {
-    display: block;
-    padding: var(--space-3) 0;
-    font-family: var(--font-body);
-    font-size: var(--text-body);
-    color: var(--color-text-primary);
-    text-decoration: none;
-    transition: color var(--duration-base) var(--easing-out);
-  }
-  .solutions-scaffold__list a:hover,
-  .solutions-scaffold__list a:focus-visible {
-    color: var(--color-link);
-    text-decoration: none;
-  }
-</style>
