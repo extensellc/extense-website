@@ -123,6 +123,13 @@
     margin-bottom: var(--space-8);
   }
 
+  /* Match the heading-to-subdeck gap used in other sections (.pillars etc.).
+     The global .home-section__subdeck { margin-top: --space-4 } rule lives in
+     index.astro and does not reach this section because of Astro scoping. */
+  .home-section--ops-stack .home-section__subdeck {
+    margin-top: var(--space-4);
+  }
+
   .ops-stack__grid {
     list-style: none;
     margin: 0;
