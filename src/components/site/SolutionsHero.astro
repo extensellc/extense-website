@@ -1,0 +1,494 @@
+---
+/*
+  SolutionsHero — hero for /solutions.
+
+  Spec ref: Solutions-page redesign brief.
+
+  Two-column layout (60/40 desktop, single column mobile):
+    LEFT  — kicker, asset/liability thesis, hairline, body paragraph
+    RIGHT — animated "content pipeline" diagram: stack of unstructured input
+            documents -> amber transformation thread -> structured schema ->
+            multi-channel outputs (PDF / HTML / API / RAG).
+
+  Visualizes the asset/liability framing the body copy makes in prose:
+  unstructured docs going into the pipeline, infrastructure (schema)
+  coming out, fanning into every output channel.
+
+  Animation: same vocabulary as the home page DITA tree. Viewport-triggered
+  cascade adds `.drawn` to the SVG; per-element delays staggered so the
+  diagram assembles itself top-to-bottom: corners -> input docs ->
+  convergence lines -> amber thread -> schema box + internals -> output
+  trunk + outputs -> bottom chrome.
+
+  prefers-reduced-motion: static render, no animation.
+*/
+---
+
+<section class="solutions-hero">
+  <div class="solutions-hero__inner">
+    <div class="solutions-hero__text">
+      <p class="solutions-hero__kicker">
+        MODEL<span class="solutions-hero__dot">·</span>MIGRATE<span class="solutions-hero__dot">·</span>INTEGRATE<span class="solutions-hero__dot">·</span>RETRIEVE
+      </p>
+      <h1 class="solutions-hero__title">
+        Content compounds. So does the cost of getting it wrong.
+      </h1>
+      <hr class="solutions-hero__rule" />
+      <p class="solutions-hero__body">
+        Every regulated organization holds millions of words of authoritative content — IFUs, procedures, manuals, policy guidance. As long as those documents stay unstructured and hand-authored, content is overhead. The moment they're modeled, validated, and machine-readable, content becomes infrastructure.
+      </p>
+    </div>
+
+    <div class="solutions-hero__visual">
+      <svg
+        class="pipeline-svg"
+        id="solutions-pipeline"
+        viewBox="0 0 320 420"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <defs>
+          <linearGradient id="pipeline-amber-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="var(--color-logo-gradient-1)" />
+            <stop offset="50%" stop-color="var(--color-logo-gradient-2)" />
+            <stop offset="100%" stop-color="var(--color-logo-gradient-3)" />
+          </linearGradient>
+        </defs>
+
+        <!-- Corner registration marks (amber chrome) -->
+        <g class="corner corner--accent" style="--d: 0ms">
+          <path d="M 10 20 L 10 10 L 20 10" />
+          <path d="M 300 10 L 310 10 L 310 20" />
+          <path d="M 10 400 L 10 410 L 20 410" />
+          <path d="M 300 410 L 310 410 L 310 400" />
+        </g>
+
+        <!-- Top chrome: pipeline header -->
+        <text class="chrome" x="30" y="22" style="--d: 80ms">in :: docs/*.xml docs/*.docx docs/*.fm</text>
+
+        <!-- Input docs: 3 unstructured documents -->
+        <g class="input-doc-group" style="--d: 200ms">
+          <rect class="input-doc" x="30"  y="44" width="60" height="64" />
+          <line class="input-line" x1="38" y1="56" x2="82" y2="56" />
+          <line class="input-line" x1="38" y1="65" x2="82" y2="65" />
+          <line class="input-line" x1="38" y1="74" x2="78" y2="74" />
+          <line class="input-line" x1="38" y1="83" x2="82" y2="83" />
+          <line class="input-line" x1="38" y1="92" x2="74" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 280ms">
+          <rect class="input-doc" x="130" y="44" width="60" height="64" />
+          <line class="input-line" x1="138" y1="56" x2="182" y2="56" />
+          <line class="input-line" x1="138" y1="65" x2="178" y2="65" />
+          <line class="input-line" x1="138" y1="74" x2="182" y2="74" />
+          <line class="input-line" x1="138" y1="83" x2="174" y2="83" />
+          <line class="input-line" x1="138" y1="92" x2="182" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 360ms">
+          <rect class="input-doc" x="230" y="44" width="60" height="64" />
+          <line class="input-line" x1="238" y1="56" x2="282" y2="56" />
+          <line class="input-line" x1="238" y1="65" x2="278" y2="65" />
+          <line class="input-line" x1="238" y1="74" x2="282" y2="74" />
+          <line class="input-line" x1="238" y1="83" x2="270" y2="83" />
+          <line class="input-line" x1="238" y1="92" x2="282" y2="92" />
+        </g>
+
+        <!-- Convergence lines: each doc bottom-center -> single point (160, 140) -->
+        <path class="converge" d="M 60 108 L 160 140"  style="--d: 540ms" />
+        <path class="converge" d="M 160 108 L 160 140" style="--d: 540ms" />
+        <path class="converge" d="M 260 108 L 160 140" style="--d: 540ms" />
+
+        <!-- Amber transformation thread (the engineering act) -->
+        <path class="amber-thread" d="M 160 140 L 160 200" style="--d: 760ms" />
+        <!-- Small arrowhead at the bottom of the thread, pointing into the schema -->
+        <path class="amber-tip" d="M 156 196 L 160 202 L 164 196 Z" style="--d: 760ms" />
+
+        <!-- Schema block: the engineered system -->
+        <rect class="schema" x="80" y="200" width="160" height="100" style="--d: 1280ms" />
+        <text class="schema-label" x="160" y="218" text-anchor="middle" style="--d: 1280ms">SCHEMA</text>
+
+        <!-- Schema internals: small structured elements arranged as a grid -->
+        <g class="schema-elements" style="--d: 1480ms">
+          <rect class="schema-elem" x="92"  y="232" width="32" height="14" />
+          <rect class="schema-elem" x="132" y="232" width="32" height="14" />
+          <rect class="schema-elem" x="172" y="232" width="40" height="14" />
+          <rect class="schema-elem" x="92"  y="252" width="20" height="14" />
+          <rect class="schema-elem" x="120" y="252" width="44" height="14" />
+          <rect class="schema-elem" x="172" y="252" width="40" height="14" />
+          <rect class="schema-elem" x="92"  y="272" width="72" height="14" />
+          <rect class="schema-elem" x="172" y="272" width="40" height="14" />
+        </g>
+
+        <!-- Output connection: trunk down from schema, then horizontal fan-out, then drops -->
+        <path class="output-line" d="M 160 300 L 160 320"  style="--d: 1820ms" />
+        <path class="output-line" d="M 58 320 L 262 320"   style="--d: 1900ms" />
+        <path class="output-line" d="M 58 320 L 58 340"    style="--d: 1980ms" />
+        <path class="output-line" d="M 126 320 L 126 340"  style="--d: 1980ms" />
+        <path class="output-line" d="M 194 320 L 194 340"  style="--d: 1980ms" />
+        <path class="output-line" d="M 262 320 L 262 340"  style="--d: 1980ms" />
+
+        <!-- 4 output channels: PDF / HTML / API / RAG -->
+        <g class="output" style="--d: 2120ms">
+          <rect class="output-box" x="30"  y="340" width="56" height="36" />
+          <text class="output-label" x="58" y="362" text-anchor="middle">PDF</text>
+        </g>
+        <g class="output" style="--d: 2200ms">
+          <rect class="output-box" x="98"  y="340" width="56" height="36" />
+          <text class="output-label" x="126" y="362" text-anchor="middle">HTML</text>
+        </g>
+        <g class="output" style="--d: 2280ms">
+          <rect class="output-box" x="166" y="340" width="56" height="36" />
+          <text class="output-label" x="194" y="362" text-anchor="middle">API</text>
+        </g>
+        <g class="output" style="--d: 2360ms">
+          <rect class="output-box" x="234" y="340" width="56" height="36" />
+          <text class="output-label" x="262" y="362" text-anchor="middle">RAG</text>
+        </g>
+
+        <!-- Bottom chrome: figure caption + build status -->
+        <line class="chrome-rule" x1="30" y1="392" x2="290" y2="392" style="--d: 2480ms" />
+        <text class="chrome chrome--strong" x="30" y="410" style="--d: 2520ms">FIG. 02</text>
+        <text class="chrome" x="80" y="410" style="--d: 2520ms">/</text>
+        <text class="chrome chrome--strong" x="88" y="410" style="--d: 2520ms">pipeline.ops</text>
+        <rect class="build-dot" x="240" y="404" width="6" height="6" style="--d: 2520ms" />
+        <text class="chrome chrome--strong" x="290" y="410" text-anchor="end" style="--d: 2520ms">BUILD OK</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ─────────────────────────────────────────────────────────────────
+     Layout — mirrors HomeHero's 60/40 split, stacked on mobile.
+     ───────────────────────────────────────────────────────────────── */
+  .solutions-hero {
+    width: 100%;
+  }
+
+  .solutions-hero__inner {
+    max-width: var(--container-page, 1240px);
+    margin: 0 auto;
+    padding: var(--space-32) var(--space-12);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .solutions-hero__inner {
+      grid-template-columns: 60% 40%;
+      gap: var(--space-12);
+      padding: var(--space-32) var(--space-12);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .solutions-hero__inner {
+      padding: var(--space-20) var(--space-6);
+      gap: var(--space-16);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Left: text column
+     ───────────────────────────────────────────────────────────────── */
+  .solutions-hero__text {
+    max-width: 640px;
+  }
+
+  .solutions-hero__kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .solutions-hero__dot {
+    color: var(--color-text-muted);
+    margin: 0 0.5em;
+  }
+
+  .solutions-hero__title {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+
+  @media (max-width: 960px) {
+    .solutions-hero__title {
+      font-size: 36px;
+    }
+  }
+
+  .solutions-hero__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    width: 64px;
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .solutions-hero__body {
+    font-family: var(--font-body);
+    font-weight: var(--weight-regular);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 560px;
+    text-wrap: pretty;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Right: pipeline SVG
+     ───────────────────────────────────────────────────────────────── */
+  .solutions-hero__visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pipeline-svg {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  /* Input docs: outlined rectangles with internal "text lines" */
+  .pipeline-svg .input-doc {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .pipeline-svg .input-line {
+    stroke: currentColor;
+    stroke-width: 1;
+    opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Convergence lines: hairline strokes */
+  .pipeline-svg .converge {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Amber thread: the transformation moment */
+  .pipeline-svg .amber-thread {
+    stroke: url(#pipeline-amber-gradient);
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: butt;
+    vector-effect: non-scaling-stroke;
+  }
+  .pipeline-svg .amber-tip {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* Schema: structured outline. Stroke ties to the amber gradient at top
+     edge (subtle), but rest is regular. Internal elements are filled at
+     low opacity so the schema looks "populated." */
+  .pipeline-svg .schema {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.75;
+    vector-effect: non-scaling-stroke;
+  }
+  .pipeline-svg .schema-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.18em;
+  }
+  .pipeline-svg .schema-elem {
+    fill: currentColor;
+    fill-opacity: 0.12;
+    stroke: currentColor;
+    stroke-width: 0.75;
+    stroke-opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Output lines: same vocabulary as input/converge */
+  .pipeline-svg .output-line {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Output channels: filled-bg outlined rectangles with mono labels */
+  .pipeline-svg .output-box {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .pipeline-svg .output-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    fill: currentColor;
+    text-anchor: middle;
+    dominant-baseline: central;
+    letter-spacing: 0.06em;
+  }
+
+  /* Chrome / corner / status — re-uses DITA tree vocabulary */
+  .pipeline-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-regular);
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .pipeline-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .pipeline-svg .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .pipeline-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .pipeline-svg .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Initial hidden states + reveal cascade.
+     Triggered when the SVG gets the .drawn class (added by JS on
+     viewport entry). Each element's --d delay controls when it appears.
+     ───────────────────────────────────────────────────────────────── */
+  .pipeline-svg .corner,
+  .pipeline-svg .input-doc,
+  .pipeline-svg .input-line,
+  .pipeline-svg .converge,
+  .pipeline-svg .amber-thread,
+  .pipeline-svg .amber-tip,
+  .pipeline-svg .schema,
+  .pipeline-svg .schema-label,
+  .pipeline-svg .schema-elem,
+  .pipeline-svg .output-line,
+  .pipeline-svg .output-box,
+  .pipeline-svg .output-label,
+  .pipeline-svg .chrome,
+  .pipeline-svg .chrome-rule,
+  .pipeline-svg .build-dot {
+    opacity: 0;
+  }
+  /* Group children inherit parent opacity (groups carry the delay
+     via their own --d); individual children inside groups will fade
+     in along with their parent group. */
+  .pipeline-svg .input-doc-group,
+  .pipeline-svg .schema-elements,
+  .pipeline-svg .output {
+    opacity: 0;
+  }
+
+  .pipeline-svg.drawn .corner,
+  .pipeline-svg.drawn .chrome,
+  .pipeline-svg.drawn .chrome-rule,
+  .pipeline-svg.drawn .build-dot,
+  .pipeline-svg.drawn .input-doc-group,
+  .pipeline-svg.drawn .input-doc,
+  .pipeline-svg.drawn .input-line,
+  .pipeline-svg.drawn .converge,
+  .pipeline-svg.drawn .amber-thread,
+  .pipeline-svg.drawn .amber-tip,
+  .pipeline-svg.drawn .schema,
+  .pipeline-svg.drawn .schema-label,
+  .pipeline-svg.drawn .schema-elements,
+  .pipeline-svg.drawn .schema-elem,
+  .pipeline-svg.drawn .output,
+  .pipeline-svg.drawn .output-line,
+  .pipeline-svg.drawn .output-box,
+  .pipeline-svg.drawn .output-label {
+    animation: pipeline-fade-in 320ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes pipeline-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pipeline-svg .corner,
+    .pipeline-svg .input-doc,
+    .pipeline-svg .input-line,
+    .pipeline-svg .converge,
+    .pipeline-svg .amber-thread,
+    .pipeline-svg .amber-tip,
+    .pipeline-svg .schema,
+    .pipeline-svg .schema-label,
+    .pipeline-svg .schema-elem,
+    .pipeline-svg .output-line,
+    .pipeline-svg .output-box,
+    .pipeline-svg .output-label,
+    .pipeline-svg .chrome,
+    .pipeline-svg .chrome-rule,
+    .pipeline-svg .build-dot,
+    .pipeline-svg .input-doc-group,
+    .pipeline-svg .schema-elements,
+    .pipeline-svg .output {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // SolutionsHero — viewport-triggered draw-in cascade
+  // Same pattern as the home page DITA tree.
+  // ─────────────────────────────────────────────────────────
+  function setupSolutionsHero() {
+    const svg = document.getElementById("solutions-pipeline") as SVGElement | null;
+    if (!svg) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupSolutionsHero);
+  document.addEventListener("astro:page-load", setupSolutionsHero);
+</script>

@@ -1,13 +1,28 @@
 ---
 /*
-  /solutions — placeholder index page.
+  /solutions — Solutions landing page.
 
-  Created as part of the Phase 4.5 nav restructure. Lists the four Solutions
-  sub-pages so they're navigable while the full content of each is being
-  written. Same placeholder vocabulary as /services and /industries.
+  Spec ref: Solutions-page redesign brief.
+
+  Section order (work in progress; building section by section):
+    1. TopNav (BaseLayout)
+    2. SolutionsHero — thesis: "Content compounds. So does the cost of
+       getting it wrong." Asymmetric layout with the content-pipeline
+       diagram on the right.
+    3. [next] The problem at scale (DocumentRow stack)
+    4. [next] The approach (single principle, large type)
+    5. [next] Four solution areas (editorial sections, hairline-divided)
+    6. [next] CTA (CTAModule)
+    7. Footer (BaseLayout)
+
+  Temporary: while the lower sections are unbuilt, the four sub-page
+  links remain in a small hairline strip at the bottom so the page stays
+  navigable. They'll be replaced by the proper editorial-section
+  treatment in the next pass.
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import SolutionsHero from "../../components/site/SolutionsHero.astro";
 
 const subpages = [
   { name: "Technical Docs & Publishing", href: "/solutions/technical-docs-and-publishing" },
@@ -19,18 +34,17 @@ const subpages = [
 
 <BaseLayout
   title="Solutions"
-  description="Industry- and use-case-specific solutions from Extense LLC. Coming soon."
+  description="Extense engineers content as infrastructure: modeled, validated, machine-readable, ready for every output channel and every consumer — including AI."
 >
-  <section class="placeholder-page">
-    <div class="container-prose placeholder-page__inner">
-      <p class="eyebrow placeholder-page__eyebrow">Solutions</p>
-      <h1 class="placeholder-page__heading">Coming soon.</h1>
-      <p class="placeholder-page__body">
-        Four solution areas, in progress. Use the links below to preview each
-        sub-page, or get in touch via <a href="/contact">Contact</a>.
-      </p>
+  <SolutionsHero />
 
-      <ul class="placeholder-page__sublist">
+  <!-- TEMPORARY scaffold: sub-page links while the rest of the page is
+       being built. To be removed once the proper "four solution areas"
+       editorial section lands. -->
+  <section class="solutions-scaffold" aria-label="Solutions sub-pages (placeholder)">
+    <div class="container-prose solutions-scaffold__inner">
+      <p class="eyebrow solutions-scaffold__eyebrow">In progress — sub-pages available below</p>
+      <ul class="solutions-scaffold__list">
         {subpages.map((s) => (
           <li><a href={s.href}>{s.name} →</a></li>
         ))}
@@ -40,52 +54,35 @@ const subpages = [
 </BaseLayout>
 
 <style>
-  .placeholder-page {
-    padding-top: var(--section-pad-default);
+  .solutions-scaffold {
+    padding-top: var(--space-16);
     padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
   }
-  .placeholder-page__eyebrow {
-    margin-bottom: var(--space-4);
+  .solutions-scaffold__eyebrow {
+    margin-bottom: var(--space-6);
+    color: var(--color-text-muted);
   }
-  .placeholder-page__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-6) 0;
-    text-wrap: balance;
-  }
-  .placeholder-page__body {
-    font-family: var(--font-body);
-    font-size: var(--text-body-lg);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-normal);
-    margin: 0 0 var(--space-12) 0;
-    text-wrap: pretty;
-  }
-  .placeholder-page__sublist {
+  .solutions-scaffold__list {
     list-style: none;
     margin: 0;
     padding: 0;
     border-top: var(--border-hairline);
   }
-  .placeholder-page__sublist li {
+  .solutions-scaffold__list li {
     border-bottom: var(--border-hairline);
   }
-  .placeholder-page__sublist a {
+  .solutions-scaffold__list a {
     display: block;
-    padding: var(--space-4) 0;
+    padding: var(--space-3) 0;
     font-family: var(--font-body);
-    font-size: var(--text-display-sm);
-    font-weight: var(--weight-medium);
+    font-size: var(--text-body);
     color: var(--color-text-primary);
     text-decoration: none;
     transition: color var(--duration-base) var(--easing-out);
   }
-  .placeholder-page__sublist a:hover,
-  .placeholder-page__sublist a:focus-visible {
+  .solutions-scaffold__list a:hover,
+  .solutions-scaffold__list a:focus-visible {
     color: var(--color-link);
     text-decoration: none;
   }
