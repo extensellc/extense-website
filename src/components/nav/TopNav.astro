@@ -80,27 +80,29 @@ function isActive(item: NavItem): boolean {
                 aria-haspopup={hasMenu ? "true" : undefined}
               >
                 {item.label}
-                {hasMenu && (
-                  <span class="topnav__caret" aria-hidden="true">▾</span>
-                )}
               </a>
               {hasMenu && (
-                <ul class="topnav__submenu" role="menu">
-                  {item.children!.map((child) => (
-                    <li role="none">
-                      <a
-                        role="menuitem"
-                        href={child.href}
-                        class:list={[
-                          "topnav__sublink",
-                          currentPath === child.href && "is-active",
-                        ]}
-                      >
-                        {child.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <div class="topnav__submenu" role="menu">
+                  <ul class="topnav__submenu-list">
+                    {item.children!.map((child, idx) => (
+                      <li role="none">
+                        <a
+                          role="menuitem"
+                          href={child.href}
+                          class:list={[
+                            "topnav__sublink",
+                            currentPath === child.href && "is-active",
+                          ]}
+                        >
+                          <span class="topnav__sublink-num" aria-hidden="true">
+                            {String(idx + 1).padStart(2, "0")}
+                          </span>
+                          <span class="topnav__sublink-label">{child.label}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </li>
           );
@@ -320,32 +322,21 @@ function isActive(item: NavItem): boolean {
     position: relative;
   }
 
-  .topnav__caret {
-    display: inline-block;
-    margin-left: 4px;
-    font-size: 9px;
-    transform: translateY(-1px);
-    transition: transform var(--duration-base) var(--easing-out);
-    color: currentColor;
-  }
-  .topnav__item--has-menu:hover .topnav__caret,
-  .topnav__item--has-menu:focus-within .topnav__caret {
-    transform: translateY(0) rotate(180deg);
-  }
+  /* Dropdown panel.
 
+     Document-grade overlay: no drop-shadow, no rounded corners, no gray
+     fill. Just a hairline border on top of the page-bg, an amber accent
+     stripe at the top to declare it as a brand element, and a list of
+     items prefixed by amber monospace 01-04 numbers — same chrome as the
+     Content Ops Stack on the homepage. */
   .topnav__submenu {
-    /* Hidden by default. Pointer-events:none so the gap between parent and
-       menu doesn't intercept hovers prematurely. */
     position: absolute;
-    top: 100%;
-    left: -16px;
-    min-width: 240px;
-    list-style: none;
-    margin: 0;
-    padding: var(--space-2) 0;
+    top: calc(100% + 8px);
+    left: -1px;
+    min-width: 320px;
     background-color: var(--color-page-bg);
     border: var(--border-hairline);
-    box-shadow: 0 8px 24px rgba(26, 24, 23, 0.08);
+    border-top: 2px solid var(--color-accent-primary-hover);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-4px);
@@ -355,6 +346,16 @@ function isActive(item: NavItem): boolean {
       visibility 0s linear var(--duration-base);
     z-index: calc(var(--z-sticky) + 1);
   }
+  /* A small invisible bridge above the dropdown so a quick mouse cursor
+     transition between the parent label and the dropdown panel doesn't
+     close the menu. */
+  .topnav__submenu::before {
+    content: "";
+    position: absolute;
+    inset: -10px 0 auto 0;
+    height: 10px;
+  }
+
   .topnav__item--has-menu:hover .topnav__submenu,
   .topnav__item--has-menu:focus-within .topnav__submenu {
     opacity: 1;
@@ -366,25 +367,44 @@ function isActive(item: NavItem): boolean {
       visibility 0s linear 0s;
   }
 
+  .topnav__submenu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .topnav__submenu-list > li + li {
+    border-top: var(--border-hairline);
+  }
+
   .topnav__sublink {
-    display: block;
-    padding: var(--space-3) var(--space-5);
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    font-weight: var(--weight-regular);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-6);
     color: var(--color-text-primary);
     text-decoration: none;
-    white-space: nowrap;
-    transition: color var(--duration-base) var(--easing-out),
-      background-color var(--duration-base) var(--easing-out);
+    transition: color var(--duration-base) var(--easing-out);
   }
   .topnav__sublink:hover,
   .topnav__sublink:focus-visible {
     color: var(--color-link);
-    background-color: var(--color-surface-elevated);
     text-decoration: none;
   }
-  .topnav__sublink.is-active {
+  .topnav__sublink-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-accent-primary);
+  }
+  .topnav__sublink-label {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+  }
+  .topnav__sublink.is-active .topnav__sublink-label {
     color: var(--color-link);
     font-weight: var(--weight-medium);
   }
