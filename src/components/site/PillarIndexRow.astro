@@ -1,0 +1,192 @@
+---
+/*
+  PillarIndexRow — homepage-only pillar presentation, used in place of PillarCard
+  on the / page. Same content + same badges, but laid out as a stacked
+  "capabilities index" rather than a 4-up card grid.
+
+  Each row:
+    [ 01 ] [ badge ] [ name + scope ] [ Read more -> ]
+
+  Hairline rule above every row (drawn by CSS, not duplicated per row).
+  Hover replays the badge's draw-in animation — the badge animations are
+  triggered by :global(.pillar-card__link:hover) inside each badge SVG, so
+  this row keeps the .pillar-card__link class on its anchor to preserve them.
+
+  PillarCard is untouched: it stays in use on /capabilities and the pillar
+  pages where the 4-up card grid still makes sense.
+*/
+
+import PillarBadgeIA from "../icons/PillarBadgeIA.astro";
+import PillarBadgeMigration from "../icons/PillarBadgeMigration.astro";
+import PillarBadgeCCMS from "../icons/PillarBadgeCCMS.astro";
+import PillarBadgeAIReady from "../icons/PillarBadgeAIReady.astro";
+
+interface Props {
+  num: string;            // "01" .. "04"
+  pillar: "ia" | "migration" | "ccms" | "ai-ready";
+  name: string;
+  scope: string;
+  href: string;
+  linkLabel?: string;
+}
+
+const { num, pillar, name, scope, href, linkLabel = "Read more" } = Astro.props;
+
+const badges = {
+  ia: PillarBadgeIA,
+  migration: PillarBadgeMigration,
+  ccms: PillarBadgeCCMS,
+  "ai-ready": PillarBadgeAIReady,
+};
+
+const BadgeIcon = badges[pillar];
+---
+
+<li class="pillar-row">
+  <a href={href} class="pillar-row__link pillar-card__link">
+    <span class="pillar-row__num">{num}</span>
+    <span class="pillar-row__badge pillar-card__badge" aria-hidden="true">
+      <BadgeIcon />
+    </span>
+    <div class="pillar-row__text">
+      <h3 class="pillar-row__name">{name}</h3>
+      <p class="pillar-row__scope">{scope}</p>
+    </div>
+    <span class="pillar-row__cta">
+      {linkLabel} <span class="pillar-row__arrow" aria-hidden="true">→</span>
+    </span>
+  </a>
+</li>
+
+<style>
+  .pillar-row {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: var(--border-hairline);
+  }
+
+  .pillar-row:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  .pillar-row__link {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding: var(--space-8) 0;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: opacity var(--duration-base) var(--easing-out);
+  }
+
+  .pillar-row__link:hover,
+  .pillar-row__link:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+  }
+
+  /* Desktop: 4-column row — index, badge, text, CTA. */
+  @media (min-width: 1024px) {
+    .pillar-row__link {
+      grid-template-columns: auto 64px 1fr auto;
+      gap: var(--space-8);
+      align-items: center;
+      padding: var(--space-8) 0;
+    }
+  }
+
+  /* Tablet: index + badge inline, text + CTA underneath. */
+  @media (min-width: 600px) and (max-width: 1023px) {
+    .pillar-row__link {
+      grid-template-columns: auto 1fr;
+      column-gap: var(--space-6);
+      row-gap: var(--space-4);
+      align-items: start;
+    }
+    .pillar-row__num,
+    .pillar-row__badge {
+      grid-row: 1;
+    }
+    .pillar-row__text,
+    .pillar-row__cta {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .pillar-row__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary);
+    letter-spacing: 0.08em;
+    align-self: start;
+  }
+  @media (min-width: 1024px) {
+    .pillar-row__num {
+      align-self: center;
+    }
+  }
+
+  /* Inherits .pillar-card__badge color transition rule from PillarCard's
+     scoped styles? No — Astro scoping prevents that. Define locally. */
+  .pillar-row__badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    color: var(--color-text-primary);
+    transition: color 240ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .pillar-row__link:hover .pillar-row__badge,
+  .pillar-row__link:focus-visible .pillar-row__badge {
+    color: var(--color-accent-primary-hover);
+  }
+
+  .pillar-row__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+    text-wrap: balance;
+  }
+
+  .pillar-row__scope {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+    max-width: 64ch;
+  }
+
+  .pillar-row__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    white-space: nowrap;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .pillar-row__link:hover .pillar-row__cta,
+  .pillar-row__link:focus-visible .pillar-row__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .pillar-row__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+
+  .pillar-row__link:hover .pillar-row__arrow {
+    transform: translateX(2px);
+  }
+</style>

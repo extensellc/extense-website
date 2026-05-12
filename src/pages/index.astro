@@ -29,7 +29,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HomeHero from "../components/site/HomeHero.astro";
 import DocumentRow from "../components/site/DocumentRow.astro";
-import PillarCard from "../components/site/PillarCard.astro";
+import PillarIndexRow from "../components/site/PillarIndexRow.astro";
 import ContentOpsStack from "../components/site/ContentOpsStack.astro";
 import StatBlock from "../components/site/StatBlock.astro";
 import TrustBadges from "../components/site/TrustBadges.astro";
@@ -146,16 +146,17 @@ const stats = [
           Most engagements move through more than one. Architecture sets the foundation; migration recovers what's there; CCMS and publishing operate the system; AI-ready content extends it.
         </p>
       </div>
-      <div class="home-section__pillar-grid">
-        {pillars.map((p) => (
-          <PillarCard
+      <ol class="home-section__pillar-index">
+        {pillars.map((p, i) => (
+          <PillarIndexRow
+            num={String(i + 1).padStart(2, "0")}
             pillar={p.pillar}
             name={p.name}
             scope={p.scope}
             href={p.href}
           />
         ))}
-      </div>
+      </ol>
     </div>
   </section>
 
@@ -217,6 +218,17 @@ const stats = [
     padding-bottom: var(--section-pad-default);
   }
 
+
+  /* Hairline section dividers — surgical, not zebra-striped. Sections that
+     follow another light section get a top hairline; sections after the dark
+     failure-modes band don't need one (color change is the divider); the
+     trust-badges strip already has both top + bottom borders of its own.
+     (Ops Stack's border lives in its own component because Astro CSS scoping
+     prevents this stylesheet from reaching a section rendered there.) */
+  .home-section--stats,
+  .home-section--pivot {
+    border-top: var(--border-hairline);
+  }
 
   /* Align the 60/72/85 outcome stats with the trust badges underneath them,
      so 60% sits above 13+, 72% above 11+, 85% above WOSB. The badges run on
@@ -292,6 +304,31 @@ const stats = [
     margin-bottom: var(--space-12);
   }
 
+  /* Failure modes as a dark band — the page's one moment of visual gravity.
+     Inverts the ink color so the section reads as a strong rhythmic break
+     between the hero and the rest of the white sections. DocumentRow is
+     unchanged; we re-tint its text and hairline rules with :global() since
+     they live inside a scoped component. */
+  .home-section--failure-modes {
+    background-color: #1a1817; /* matches --color-text-primary; the page ink */
+    color: #fffaf3;
+  }
+  .home-section--failure-modes .home-section__heading {
+    color: #fffaf3;
+  }
+  .home-section--failure-modes :global(.doc-row__rule) {
+    border-color: rgba(255, 251, 243, 0.14);
+  }
+  .home-section--failure-modes :global(.doc-row__eyebrow) {
+    color: var(--color-accent-primary);
+  }
+  .home-section--failure-modes :global(.doc-row__heading) {
+    color: #fffaf3;
+  }
+  .home-section--failure-modes :global(.doc-row__body) {
+    color: #c4bbb1;
+  }
+
   /* Failure modes grid — 5 industry scenarios.
        Mobile (<600):     single column stack
        Tablet (600-1023): 2 columns
@@ -335,6 +372,13 @@ const stats = [
   }
 
   /* Pillars grid: 4-up desktop, 2×2 tablet, single column mobile */
+  .home-section__pillar-index {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Legacy 4-up pillar grid (kept for any future use) */
   .home-section__pillar-grid {
     display: grid;
     grid-template-columns: 1fr;
