@@ -322,10 +322,14 @@ const stats = [
   .home-section--failure-modes :global(.doc-row__eyebrow) {
     color: var(--color-accent-primary);
   }
-  .home-section--failure-modes :global(.doc-row__heading) {
+  /* DocumentRow's own .doc-row--failureMode .doc-row__heading rule has
+     specificity (0,4,0). Match that chain so this override wins on cascade
+     order rather than getting beaten by specificity. Same fix for body
+     and rule, for symmetry. */
+  .home-section--failure-modes :global(.doc-row--failureMode .doc-row__heading) {
     color: #fffaf3;
   }
-  .home-section--failure-modes :global(.doc-row__body) {
+  .home-section--failure-modes :global(.doc-row--failureMode .doc-row__body) {
     color: #c4bbb1;
   }
 
