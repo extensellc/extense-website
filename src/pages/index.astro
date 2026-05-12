@@ -53,6 +53,16 @@ const failureModes = [
     heading: "A dealer service-manual error voids OEM warranty exposure.",
     body: "Claims liability moves from the dealer back to the manufacturer. A single procedure error, replicated across a service network, becomes a multi-million-dollar claim event.",
   },
+  {
+    eyebrow: "GOVERNMENT",
+    heading: "A regulatory-instruction error invalidates filings across a fiscal year.",
+    body: "Guidance documents that carry a schema-level error propagate into every downstream form, audit reference, and submission. Errata can't reach all of them in time. Penalties and amendments follow.",
+  },
+  {
+    eyebrow: "SEMICONDUCTORS",
+    heading: "A datasheet spec error propagates to every system integrator.",
+    body: "Reference designs anchor to incorrect parameters. Field failures cluster across customers months after launch — and the traceability trail leads back to the source document.",
+  },
 ];
 
 const pillars = [
@@ -108,7 +118,7 @@ const stats = [
   <HomeHero />
 
   <section class="home-section home-section--failure-modes" aria-labelledby="failure-modes-heading">
-    <div class="container-prose home-section__inner">
+    <div class="container-data home-section__inner">
       <h2 id="failure-modes-heading" class="home-section__heading">
         What happens when documentation is wrong.
       </h2>
@@ -282,8 +292,46 @@ const stats = [
     margin-bottom: var(--space-12);
   }
 
+  /* Failure modes grid — 5 industry scenarios.
+       Mobile (<600):     single column stack
+       Tablet (600-1023): 2 columns
+       Desktop (1024+):   6-column underlying grid; each card spans 2 cols.
+                          Row 1: cards 1-3 at cols 1-2, 3-4, 5-6 (3 across).
+                          Row 2: cards 4-5 at cols 2-3 and 4-5 (centered 2). */
   .home-section__failure-stack {
-    /* DocumentRow handles its own spacing (space-12 between rows) */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 600px) {
+    .home-section__failure-stack {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .home-section__failure-stack {
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--space-8);
+    }
+    .home-section__failure-stack > :global(.doc-row) {
+      grid-column: span 2;
+    }
+    .home-section__failure-stack > :global(.doc-row:nth-child(4)) {
+      grid-column: 2 / span 2;
+    }
+    .home-section__failure-stack > :global(.doc-row:nth-child(5)) {
+      grid-column: 4 / span 2;
+    }
+  }
+
+  /* Disable DocumentRow's stacked-sibling margin inside the grid -- the grid
+     handles spacing now. Without this, cards 2-5 would shift down by the
+     --space-12 margin-top within their grid cells. */
+  .home-section__failure-stack :global(.doc-row + .doc-row) {
+    margin-top: 0;
   }
 
   /* Pillars grid: 4-up desktop, 2×2 tablet, single column mobile */
