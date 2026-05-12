@@ -23,6 +23,7 @@
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SolutionsHero from "../../components/site/SolutionsHero.astro";
+import SolutionsProblem from "../../components/site/SolutionsProblem.astro";
 
 const subpages = [
   { name: "Technical Docs & Publishing", href: "/solutions/technical-docs-and-publishing" },
@@ -37,6 +38,8 @@ const subpages = [
   description="Extense engineers content as infrastructure: modeled, validated, machine-readable, ready for every output channel and every consumer — including AI."
 >
   <SolutionsHero />
+
+  <SolutionsProblem />
 
   <!-- TEMPORARY scaffold: sub-page links while the rest of the page is
        being built. To be removed once the proper "four solution areas"

@@ -1,0 +1,228 @@
+---
+/*
+  SolutionsProblem — the diagnosis section on /solutions.
+
+  Sequenced after the hero (asset/liability framing) and before the
+  approach section (engineering framing). This section carries the
+  scale framing: at scale, authorship stops being the binding
+  constraint — reuse, validation, and propagation take over.
+
+  Layout
+    - container-data for the section
+    - heading + subdeck on the left at container-prose width (narrow)
+    - three diagnostic items in a 3-column grid on desktop, stacked on
+      mobile, each separated by hairline rules at the top of each card
+    - no boxes; just hairline + type doing the structural work
+
+  Animation
+    - Section adds .animating on JS init (no-JS fails open).
+    - .in-view added on viewport entry via IntersectionObserver
+      (threshold 0.15).
+    - Heading block fades up, then three items fade up in sequence at
+      200/320/440 ms delays.
+    - prefers-reduced-motion: static.
+*/
+---
+
+<section class="solutions-problem" aria-labelledby="problem-heading">
+  <div class="container-data solutions-problem__inner">
+    <div class="solutions-problem__heading-block">
+      <h2 id="problem-heading" class="solutions-problem__heading">
+        The problem at scale.
+      </h2>
+      <p class="solutions-problem__subdeck">
+        Once volume crosses a threshold, the binding constraints shift. Authorship is no longer where the work compounds — reuse, validation, and propagation are.
+      </p>
+    </div>
+
+    <ol class="solutions-problem__grid">
+      <li class="problem-item">
+        <h3 class="problem-item__heading">
+          More products, more jurisdictions, more languages.
+        </h3>
+        <p class="problem-item__body">
+          Each new market or product line multiplies the existing content estate by a constant. Hand-authored documentation can't keep up — the same instruction gets rewritten five different ways across five different deliverables.
+        </p>
+      </li>
+      <li class="problem-item">
+        <h3 class="problem-item__heading">
+          Six output channels per source document.
+        </h3>
+        <p class="problem-item__body">
+          PDF, responsive HTML5, EPUB, mobile help, portal article, retrieval index. Each used to be a copy-and-rebuild cycle. A single source authored once should produce all six — at every release.
+        </p>
+      </li>
+      <li class="problem-item">
+        <h3 class="problem-item__heading">
+          Errata that never catch up.
+        </h3>
+        <p class="problem-item__body">
+          Regulatory and version updates have to propagate through every downstream document. Hand-tracking that across thousands of documents means corrections always lag the change — and audit trails leak.
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .solutions-problem {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .solutions-problem {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* Heading block: narrower than the data container so the heading and
+     subdeck read as setup before the wider 3-up grid below. */
+  .solutions-problem__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-12);
+  }
+
+  .solutions-problem__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .solutions-problem__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* 3-column grid on desktop, stacks on mobile/tablet. Each item has a
+     hairline at the top to delineate it without using a card box. */
+  .solutions-problem__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .solutions-problem__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  .problem-item {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-6);
+  }
+
+  .problem-item__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .problem-item__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Reveal animation — viewport-triggered. JS adds .animating immediately
+     (so no-JS users see the section in default visible state) and .in-view
+     when scrolled to. Heading-block fades up first, then the three items
+     stagger in.
+     ───────────────────────────────────────────────────────────────── */
+  .solutions-problem.animating .solutions-problem__heading-block {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .solutions-problem.animating .problem-item {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .solutions-problem.animating .problem-item:nth-child(1) { --reveal-delay: 200ms; }
+  .solutions-problem.animating .problem-item:nth-child(2) { --reveal-delay: 320ms; }
+  .solutions-problem.animating .problem-item:nth-child(3) { --reveal-delay: 440ms; }
+
+  .solutions-problem.animating.in-view .solutions-problem__heading-block {
+    animation: problem-fade-in 480ms ease-out forwards;
+  }
+  .solutions-problem.animating.in-view .problem-item {
+    animation: problem-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes problem-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .solutions-problem.animating .solutions-problem__heading-block,
+    .solutions-problem.animating .problem-item {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // SolutionsProblem — viewport-triggered reveal cascade
+  // ─────────────────────────────────────────────────────────
+  function setupSolutionsProblem() {
+    const sec = document.querySelector<HTMLElement>(".solutions-problem");
+    if (!sec) return;
+    if (sec.dataset.problemRevealInit === "true") return;
+    sec.dataset.problemRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupSolutionsProblem);
+  document.addEventListener("astro:page-load", setupSolutionsProblem);
+</script>
