@@ -48,17 +48,9 @@
         aria-hidden="true"
         role="presentation"
       >
-        <defs>
-          <linearGradient
-            id="pipeline-amber-gradient"
-            x1="160" y1="140" x2="160" y2="200"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop offset="0%" stop-color="var(--color-logo-gradient-1)" />
-            <stop offset="50%" stop-color="var(--color-logo-gradient-2)" />
-            <stop offset="100%" stop-color="var(--color-logo-gradient-3)" />
-          </linearGradient>
-        </defs>
+        <!-- No gradient needed — thread and tip both render in the same
+             solid amber (--color-accent-primary-hover) as the BUILD OK dot
+             and the corner registration marks. -->
 
         <!-- Corner registration marks (amber chrome) -->
         <g class="corner corner--accent" style="--d: 0ms">
@@ -102,10 +94,12 @@
         <path class="converge" d="M 160 108 L 160 140" style="--d: 540ms" />
         <path class="converge" d="M 260 108 L 160 140" style="--d: 540ms" />
 
-        <!-- Amber transformation thread (the engineering act) -->
-        <path class="amber-thread" d="M 160 140 L 160 200" style="--d: 760ms" />
-        <!-- Small arrowhead at the bottom of the thread, pointing into the schema -->
-        <path class="amber-tip" d="M 156 196 L 160 202 L 164 196 Z" style="--d: 760ms" />
+        <!-- Amber transformation thread + arrowhead.
+             Tip lands at y=198 — just above the schema's top edge at y=200
+             so the arrow is clearly visible, not obscured by the schema
+             rect's white fill/stroke. -->
+        <path class="amber-thread" d="M 160 140 L 160 191" style="--d: 760ms" />
+        <path class="amber-tip" d="M 155 191 L 160 198 L 165 191 Z" style="--d: 760ms" />
 
         <!-- Schema block: the engineered system -->
         <rect class="schema" x="80" y="200" width="160" height="100" style="--d: 1280ms" />
@@ -298,9 +292,10 @@
     vector-effect: non-scaling-stroke;
   }
 
-  /* Amber thread: the transformation moment */
+  /* Amber thread: the transformation moment. Solid amber matches the
+     build-dot and corner registration marks. */
   .pipeline-svg .amber-thread {
-    stroke: url(#pipeline-amber-gradient);
+    stroke: var(--color-accent-primary-hover);
     stroke-width: 2.5;
     fill: none;
     stroke-linecap: butt;
