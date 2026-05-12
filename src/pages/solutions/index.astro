@@ -1,0 +1,92 @@
+---
+/*
+  /solutions — placeholder index page.
+
+  Created as part of the Phase 4.5 nav restructure. Lists the four Solutions
+  sub-pages so they're navigable while the full content of each is being
+  written. Same placeholder vocabulary as /services and /industries.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const subpages = [
+  { name: "Technical Docs & Publishing", href: "/solutions/technical-docs-and-publishing" },
+  { name: "Content Migration",            href: "/solutions/content-migration" },
+  { name: "XML Data Interoperability",    href: "/solutions/xml-data-interoperability" },
+  { name: "AI-Ready Content",             href: "/solutions/ai-ready-content" },
+];
+---
+
+<BaseLayout
+  title="Solutions"
+  description="Industry- and use-case-specific solutions from Extense LLC. Coming soon."
+>
+  <section class="placeholder-page">
+    <div class="container-prose placeholder-page__inner">
+      <p class="eyebrow placeholder-page__eyebrow">Solutions</p>
+      <h1 class="placeholder-page__heading">Coming soon.</h1>
+      <p class="placeholder-page__body">
+        Four solution areas, in progress. Use the links below to preview each
+        sub-page, or get in touch via <a href="/contact">Contact</a>.
+      </p>
+
+      <ul class="placeholder-page__sublist">
+        {subpages.map((s) => (
+          <li><a href={s.href}>{s.name} →</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .placeholder-page {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+  }
+  .placeholder-page__eyebrow {
+    margin-bottom: var(--space-4);
+  }
+  .placeholder-page__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+  .placeholder-page__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-12) 0;
+    text-wrap: pretty;
+  }
+  .placeholder-page__sublist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: var(--border-hairline);
+  }
+  .placeholder-page__sublist li {
+    border-bottom: var(--border-hairline);
+  }
+  .placeholder-page__sublist a {
+    display: block;
+    padding: var(--space-4) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .placeholder-page__sublist a:hover,
+  .placeholder-page__sublist a:focus-visible {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+</style>
