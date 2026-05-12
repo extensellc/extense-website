@@ -23,12 +23,23 @@ interface NavItem {
   href: string;
   matchPaths?: RegExp[];
   emphasis?: boolean;
+  children?: NavItem[];
 }
 
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Capabilities", href: "/capabilities", matchPaths: [/^\/capabilities/] },
-  { label: "Solutions", href: "/solutions" },
+  {
+    label: "Solutions",
+    href: "/solutions",
+    matchPaths: [/^\/solutions/],
+    children: [
+      { label: "Technical Docs & Publishing", href: "/solutions/technical-docs-and-publishing" },
+      { label: "Content Migration",            href: "/solutions/content-migration" },
+      { label: "XML Data Interoperability",    href: "/solutions/xml-data-interoperability" },
+      { label: "AI-Ready Content",             href: "/solutions/ai-ready-content" },
+    ],
+  },
   { label: "Services", href: "/services" },
   { label: "Industries", href: "/industries" },
   { label: "Resources", href: "/resources", matchPaths: [/^\/resources/] },
@@ -55,8 +66,9 @@ function isActive(item: NavItem): boolean {
       <ul class="topnav__list">
         {navItems.map((item) => {
           const active = isActive(item);
+          const hasMenu = !!item.children && item.children.length > 0;
           return (
-            <li>
+            <li class:list={["topnav__item", hasMenu && "topnav__item--has-menu"]}>
               <a
                 href={item.href}
                 class:list={[
@@ -65,9 +77,31 @@ function isActive(item: NavItem): boolean {
                   item.emphasis && "is-emphasis",
                 ]}
                 aria-current={active ? "page" : undefined}
+                aria-haspopup={hasMenu ? "true" : undefined}
               >
                 {item.label}
+                {hasMenu && (
+                  <span class="topnav__caret" aria-hidden="true">▾</span>
+                )}
               </a>
+              {hasMenu && (
+                <ul class="topnav__submenu" role="menu">
+                  {item.children!.map((child) => (
+                    <li role="none">
+                      <a
+                        role="menuitem"
+                        href={child.href}
+                        class:list={[
+                          "topnav__sublink",
+                          currentPath === child.href && "is-active",
+                        ]}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           );
         })}
@@ -146,6 +180,24 @@ function isActive(item: NavItem): boolean {
               >
                 {item.label}
               </a>
+              {item.children && item.children.length > 0 && (
+                <ul class="topnav__drawer-sublist">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class:list={[
+                          "topnav__drawer-link",
+                          "topnav__drawer-link--sub",
+                          currentPath === child.href && "is-active",
+                        ]}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           );
         })}
@@ -256,6 +308,87 @@ function isActive(item: NavItem): boolean {
     font-weight: var(--weight-semibold);
   }
 
+  /* ─────────────────────────────────────────────────────────────────
+     Desktop dropdown menu (Solutions / any nav item with children)
+
+     Pure CSS show/hide via :hover and :focus-within on the parent <li>.
+     Sub-items remain in the tab order — focusing into them keeps the
+     menu open via :focus-within. No JS needed for keyboard access.
+     Click on the parent link still navigates to the parent index page.
+     ───────────────────────────────────────────────────────────────── */
+  .topnav__item {
+    position: relative;
+  }
+
+  .topnav__caret {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 9px;
+    transform: translateY(-1px);
+    transition: transform var(--duration-base) var(--easing-out);
+    color: currentColor;
+  }
+  .topnav__item--has-menu:hover .topnav__caret,
+  .topnav__item--has-menu:focus-within .topnav__caret {
+    transform: translateY(0) rotate(180deg);
+  }
+
+  .topnav__submenu {
+    /* Hidden by default. Pointer-events:none so the gap between parent and
+       menu doesn't intercept hovers prematurely. */
+    position: absolute;
+    top: 100%;
+    left: -16px;
+    min-width: 240px;
+    list-style: none;
+    margin: 0;
+    padding: var(--space-2) 0;
+    background-color: var(--color-page-bg);
+    border: var(--border-hairline);
+    box-shadow: 0 8px 24px rgba(26, 24, 23, 0.08);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition:
+      opacity var(--duration-base) var(--easing-out),
+      transform var(--duration-base) var(--easing-out),
+      visibility 0s linear var(--duration-base);
+    z-index: calc(var(--z-sticky) + 1);
+  }
+  .topnav__item--has-menu:hover .topnav__submenu,
+  .topnav__item--has-menu:focus-within .topnav__submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition:
+      opacity var(--duration-base) var(--easing-out),
+      transform var(--duration-base) var(--easing-out),
+      visibility 0s linear 0s;
+  }
+
+  .topnav__sublink {
+    display: block;
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--duration-base) var(--easing-out),
+      background-color var(--duration-base) var(--easing-out);
+  }
+  .topnav__sublink:hover,
+  .topnav__sublink:focus-visible {
+    color: var(--color-link);
+    background-color: var(--color-surface-elevated);
+    text-decoration: none;
+  }
+  .topnav__sublink.is-active {
+    color: var(--color-link);
+    font-weight: var(--weight-medium);
+  }
+
   /* Hamburger */
   .topnav__hamburger {
     display: flex;
@@ -344,6 +477,23 @@ function isActive(item: NavItem): boolean {
   .topnav__drawer-link.is-active {
     font-weight: var(--weight-semibold);
     color: var(--color-link);
+  }
+
+  /* Mobile drawer — sub-items rendered as an inline indented list under
+     their parent. Smaller type than the top-level items so the hierarchy
+     reads. The parent link still navigates to its index page. */
+  .topnav__drawer-sublist {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 var(--space-3) var(--space-4);
+    border-bottom: var(--border-hairline);
+  }
+  .topnav__drawer-sublist > li > .topnav__drawer-link--sub {
+    padding: var(--space-2) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    border-bottom: none;
   }
 
   /* Lock scroll on body when drawer is open */
