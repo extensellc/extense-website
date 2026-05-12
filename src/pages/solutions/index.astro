@@ -17,7 +17,7 @@
        solution sub-areas (TDP, Migration, Interop, AI-Ready), each
        with body copy, a pull-quote curiosity hook, and a link to its
        sub-page.
-    6. [next] CTA (CTAModule)
+    6. CTAModule (audience: general) — Sample Content Assessment.
     7. Footer (BaseLayout)
 */
 
@@ -26,6 +26,7 @@ import SolutionsHero from "../../components/site/SolutionsHero.astro";
 import SolutionsProblem from "../../components/site/SolutionsProblem.astro";
 import SolutionsApproach from "../../components/site/SolutionsApproach.astro";
 import SolutionsAreas from "../../components/site/SolutionsAreas.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
 ---
 
 <BaseLayout
@@ -36,4 +37,9 @@ import SolutionsAreas from "../../components/site/SolutionsAreas.astro";
   <SolutionsProblem />
   <SolutionsApproach />
   <SolutionsAreas />
+
+  <CTAModule
+    audience="general"
+    body="Bring us a 20-page sample document. We'll return what it would look like as engineered content — conversion feasibility, reuse percentage, and the pipeline that would produce it — within two business days. No obligation to proceed."
+  />
 </BaseLayout>
