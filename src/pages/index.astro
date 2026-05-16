@@ -396,8 +396,18 @@ const stats = [
 
   /* Disable DocumentRow's stacked-sibling margin inside the grid -- the grid
      handles spacing now. Without this, cards 2-5 would shift down by the
-     --space-12 margin-top within their grid cells. */
-  .home-section__failure-stack :global(.doc-row + .doc-row) {
+     --space-12 margin-top within their grid cells.
+
+     Specificity bump (same root cause as the heading-color fix below):
+     DocumentRow's own .doc-row + .doc-row rule compiles to (0,4,0) once
+     Astro adds the scope attributes. In production, Astro inlines
+     DocumentRow's <style> AFTER the homepage's external CSS link, so an
+     equal-specificity homepage override loses by source order and the
+     stacked-margin reasserts itself — pushing the DEFENSE and AUTOMOTIVE
+     cards (and the row-2 cards) down by var(--space-12) inside their grid
+     cells. Repeating .doc-row in the selector lifts this rule to (0,5,0)
+     so it wins regardless of source order. */
+  .home-section__failure-stack :global(.doc-row + .doc-row.doc-row) {
     margin-top: 0;
   }
 
