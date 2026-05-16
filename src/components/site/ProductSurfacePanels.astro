@@ -1,0 +1,400 @@
+---
+/*
+  ProductSurfacePanels — Technology vertical visualization.
+
+  Centerpiece for /industries/technology. Three side-by-side document-grade
+  artifact panels showing the genuinely different shapes of the three
+  product-documentation surfaces: hardware (datasheet, tabular spec-sheet
+  treatment), software (API reference, code-style mono treatment), and
+  security/compliance (SOC 2 control narrative, prose treatment).
+
+  All three panels share the brand-distinctive document-fragment treatment
+  (bordered + #fcd34d left bar + mono labels — same language as SOW/Order
+  Form/SLA panels and the Insurance VariantPolicyForm), but each carries
+  its own internal typographic register to convey the genuine difference
+  between the three documentation types.
+
+  Build-in animation triggered once on scroll into view: panels cascade
+  left-to-right with stagger; sections within each panel reveal
+  top-to-bottom.
+
+  Mobile: panels stack vertically (single column).
+*/
+
+interface PanelEntry {
+  /** Optional key — present in datasheet/api entries, omitted in narrative */
+  key?: string;
+  /** Entry value — always present */
+  value: string;
+}
+
+interface PanelSection {
+  /** Section header (mono uppercase) */
+  label: string;
+  entries: PanelEntry[];
+}
+
+interface SurfacePanel {
+  docRef: string;
+  title: string;
+  subtitle: string;
+  /** Visual treatment for this panel's entry content */
+  treatment: "datasheet" | "api" | "narrative";
+  sections: PanelSection[];
+}
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  panels: SurfacePanel[];
+  footnote: string;
+}
+
+const { eyebrow, heading, lead, panels, footnote } = Astro.props;
+---
+
+<section class="psp-section" aria-labelledby="psp-heading">
+  <div class="container-data psp-section__inner">
+    <p class="eyebrow psp-section__eyebrow">{eyebrow}</p>
+    <h2 id="psp-heading" class="psp-section__heading">{heading}</h2>
+    <p class="psp-section__lead">{lead}</p>
+
+    <figure class="psp" id="psp" aria-label="Three product documentation surfaces">
+      <div class="psp__row">
+        {panels.map((panel, panelIdx) => (
+          <article
+            class:list={["psp__panel", `psp__panel--${panel.treatment}`]}
+            data-panel-index={panelIdx}
+          >
+            <header class="psp__panel-header">
+              <p class="psp__doc-ref">{panel.docRef}</p>
+            </header>
+            <h3 class="psp__title">{panel.title}</h3>
+            <p class="psp__subtitle">{panel.subtitle}</p>
+            <hr class="psp__rule" />
+            <div class="psp__sections">
+              {panel.sections.map((section, sectionIdx) => (
+                <div
+                  class="psp__section"
+                  data-section-index={sectionIdx}
+                  style={`transition-delay: ${300 + panelIdx * 200 + sectionIdx * 80}ms`}
+                >
+                  <h4 class="psp__section-label">{section.label}</h4>
+                  <ul class="psp__entries">
+                    {section.entries.map((entry) => (
+                      <li class="psp__entry">
+                        {entry.key && <span class="psp__entry-key">{entry.key}</span>}
+                        <span class="psp__entry-value">{entry.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <figcaption class="psp__footnote">{footnote}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .psp-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .psp-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .psp-section__eyebrow {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .psp-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+    text-wrap: balance;
+  }
+
+  .psp-section__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-12);
+    text-wrap: pretty;
+    max-width: 75ch;
+  }
+
+  .psp {
+    margin: 0;
+    padding: 0;
+  }
+
+  .psp__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 1024px) {
+    .psp__row {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      align-items: stretch;
+    }
+  }
+
+  /* ─── Panel (document-fragment treatment, shared across all three) ─── */
+  .psp__panel {
+    position: relative;
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-6) var(--space-6) var(--space-6);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .psp__panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #fcd34d;
+    pointer-events: none;
+  }
+
+  .psp__panel-header {
+    margin-bottom: var(--space-4);
+  }
+
+  .psp__doc-ref {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .psp__title {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-1) 0;
+    text-wrap: balance;
+  }
+
+  .psp__subtitle {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-snug);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: balance;
+  }
+
+  .psp__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0 0 var(--space-5) 0;
+  }
+
+  .psp__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    flex-grow: 1;
+  }
+
+  .psp__section {
+    /* Build-in: each section fades in; per-panel + per-section delay set inline */
+    opacity: 0;
+    transform: translateY(-3px);
+    transition:
+      opacity 220ms cubic-bezier(0, 0, 0.2, 1),
+      transform 220ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .psp__section-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .psp__entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .psp__entry {
+    line-height: var(--leading-snug);
+  }
+
+  /* ─── Datasheet treatment: tabular key-value pairs in mono ─── */
+  .psp__panel--datasheet .psp__entry {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+
+  .psp__panel--datasheet .psp__entry-key {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .psp__panel--datasheet .psp__entry-value {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    word-break: break-word;
+  }
+
+  /* ─── API treatment: code-style mono blocks ─── */
+  .psp__panel--api .psp__entry {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.45;
+    background-color: rgb(229 223 215 / 0.25);
+    padding: 6px 8px;
+    border-radius: 2px;
+    color: var(--color-text-primary);
+    word-break: break-word;
+  }
+
+  .psp__panel--api .psp__entry-key {
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
+    margin-right: 8px;
+  }
+
+  .psp__panel--api .psp__entry-value {
+    color: var(--color-text-primary);
+  }
+
+  /* ─── Narrative treatment: prose paragraphs ─── */
+  .psp__panel--narrative .psp__entry {
+    display: block;
+  }
+
+  .psp__panel--narrative .psp__entry-key {
+    display: none;
+  }
+
+  .psp__panel--narrative .psp__entry-value {
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .psp__footnote {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    max-width: 75ch;
+  }
+
+  /* ─── Build-in animation: cascade once is-built is added ─── */
+  .psp__panel {
+    /* Build-in: panels themselves fade in too */
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+      opacity 320ms cubic-bezier(0, 0, 0.2, 1),
+      transform 320ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .psp.is-built .psp__panel {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .psp.is-built .psp__panel[data-panel-index="0"] { transition-delay: 0ms; }
+  .psp.is-built .psp__panel[data-panel-index="1"] { transition-delay: 200ms; }
+  .psp.is-built .psp__panel[data-panel-index="2"] { transition-delay: 400ms; }
+
+  .psp.is-built .psp__section {
+    opacity: 1;
+    transform: translateY(0);
+    /* Per-section transition-delay set inline in template */
+  }
+
+  /* Reduced motion: show everything at rest, no transitions */
+  @media (prefers-reduced-motion: reduce) {
+    .psp__panel,
+    .psp__section {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  const psp = document.getElementById('psp');
+  if (!psp) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    psp.classList.add('is-built');
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        psp.classList.add('is-built');
+        observer.disconnect();
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -10% 0px',
+  });
+
+  observer.observe(psp);
+})();
+</script>

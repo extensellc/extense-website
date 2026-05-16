@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80">
-  <rect width="160" height="80" fill="none"/>
-  <g transform="translate(20,15)">
-    <text x="0" y="36" font-family="sans-serif" font-weight="900" font-size="38" fill="#000" letter-spacing="-1">AMD</text>
-    <rect x="0" y="42" width="108" height="3" fill="#00a651"/>
-    <polygon points="108,0 120,0 108,12" fill="#00a651"/>
-  </g>
-</svg>

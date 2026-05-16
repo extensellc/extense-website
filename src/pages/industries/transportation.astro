@@ -1,0 +1,190 @@
+---
+import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+---
+
+<IndustryPageLayout
+  pageTitle="Transportation — Industries"
+  pageDescription="Service and maintenance documentation engineering across transportation modes — automotive (OEMs and Tier-1 suppliers), commercial aviation, rail, and maritime. Translation cost as the largest ROI lever; warranty and safety exposure as the cost-of-being-wrong."
+  heroTitle="Transportation"
+  heroSubdeck="Documentation across automotive, rail, commercial aviation, and maritime — modes that share a service-network spine. Field assets, technician-facing maintenance content, warranty and safety exposure when procedures are wrong, regulator scrutiny across DOT/NHTSA, FAA, FRA, USCG, and IMO. The chain of evidence in audits and incident investigations runs through the maintenance documentation."
+  industryHref="/industries/transportation"
+  documentTypes={[
+    {
+      label: "Maintenance manuals",
+      description: "Procedure-level technical content for technicians across modes — automotive service repair manuals, aviation Aircraft Maintenance Manuals (AMMs) and Component Maintenance Manuals (CMMs), rail equipment maintenance instructions and locomotive shop manuals, marine machinery and structural maintenance documentation.",
+    },
+    {
+      label: "Service bulletins",
+      description: "Field-issued guidance for service procedures, modifications, and safety actions. Auto: Technical Service Bulletins (TSBs); aviation: Service Bulletins (SBs) and Airworthiness Directives (ADs); rail: equipment service notices; marine: classification-society safety circulars.",
+    },
+    {
+      label: "Parts catalogs",
+      description: "Identification, ordering, and supersession data integrated with PIM, parts-database, and ERP systems. Aviation IPCs (Illustrated Parts Catalogs), automotive parts catalogs, rail spare-parts manuals, marine spare-parts reference documents — patterns repeat, format conventions vary.",
+    },
+    {
+      label: "Operator and crew manuals",
+      description: "Customer- or operator-facing documentation. Automotive owner's manuals, aviation Aircraft Flight Manuals (AFMs) and crew operating manuals, rail locomotive operating manuals, marine bridge and engine-room operating procedures.",
+    },
+    {
+      label: "Technician and crew training materials",
+      description: "Procedure-driven training across modes — dealer-network certification curricula, A&P/IA certification support content, rail qualification programs, marine STCW-aligned training documentation.",
+    },
+    {
+      label: "Compliance and warranty documentation",
+      description: "Warranty content tied to service-procedure accuracy; safety case documentation; configuration-management records that satisfy regulator audit. The connection between procedure accuracy and claim approval — or accident-investigation defense — runs through these documents.",
+    },
+  ]}
+  standards={[
+    {
+      label: "S1000D (Issues 4.x – 6.0)",
+      description: "International specification for technical publications. Originated in defense-aerospace; now load-bearing in commercial aviation, defense vehicles, and increasingly heavy commercial automotive and rail.",
+    },
+    {
+      label: "ATA Spec 2200 / iSpec 2200",
+      description: "Air Transport Association specification for commercial aviation technical documentation — the spec aviation MROs and airframers run on for non-defense aircraft programs.",
+    },
+    {
+      label: "SAE J2008",
+      description: "Society of Automotive Engineers digital service-information specification. Used across passenger and commercial vehicle programs.",
+    },
+    {
+      label: "AAR M-1003 and FRA Title 49 CFR (rail)",
+      description: "Association of American Railroads quality-system standard plus federal regulations governing rail equipment documentation. Compliance documentation surfaces as M-1003 audit responses and FRA-required configuration records.",
+    },
+    {
+      label: "FAA AC 43.13 and Part 43/145 (aviation maintenance)",
+      description: "FAA standards for aircraft maintenance documentation and for the certificated repair stations that perform it. EASA Part-145 carries the equivalent in European jurisdictions.",
+    },
+    {
+      label: "IMO MSC and IACS Common Structural Rules (maritime)",
+      description: "International Maritime Organization Maritime Safety Committee circulars and IACS Common Structural Rules — govern shipbuilding and operating documentation across classification societies.",
+    },
+    {
+      label: "USCG NVIC and ISM Code (maritime operations)",
+      description: "U.S. Coast Guard Navigation and Vessel Inspection Circulars; International Safety Management Code requirements for shipboard operating documentation.",
+    },
+    {
+      label: "OEM, classification-society, and agency-specific standards",
+      description: "Each vehicle program, airframer, classification society, and rail authority carries its own conventions on top of the named standards. Engagements adapt to the program's actual requirements.",
+    },
+  ]}
+  crossModeComparison={{
+    eyebrow: "CROSS-MODE PATTERNS — TRANSPORTATION",
+    heading: "The same artifact, named differently.",
+    lead: "Across automotive, commercial aviation, rail, and maritime, the documentation patterns repeat — service manuals, service bulletins, parts catalogs, operator manuals, compliance evidence. The artifact is structurally the same; the name and the governing regulator change. Engineering knowledge transfers across modes; the language and the audit body have to translate.",
+    modes: [
+      { label: "Automotive" },
+      { label: "Aviation" },
+      { label: "Rail" },
+      { label: "Maritime" },
+    ],
+    rows: [
+      {
+        category: "Maintenance manuals",
+        cells: [
+          "Service repair manuals · ASE-aligned procedures",
+          "Aircraft Maintenance Manual (AMM) · Component Maintenance Manual (CMM)",
+          "Locomotive shop manuals · equipment maintenance instructions",
+          "Machinery and structural maintenance documentation",
+        ],
+      },
+      {
+        category: "Service bulletins",
+        cells: [
+          "Technical Service Bulletin (TSB)",
+          "Service Bulletin (SB) · Airworthiness Directive (AD)",
+          "Equipment service notice · field bulletin",
+          "Classification-society safety circular",
+        ],
+      },
+      {
+        category: "Parts catalogs",
+        cells: [
+          "Parts catalog · IPL",
+          "Illustrated Parts Catalog (IPC)",
+          "Spare-parts manual",
+          "Spare-parts reference document",
+        ],
+      },
+      {
+        category: "Operator / crew manuals",
+        cells: [
+          "Owner's manual",
+          "Aircraft Flight Manual (AFM) · crew operating manual",
+          "Locomotive operating manual",
+          "Bridge and engine-room operating procedures",
+        ],
+      },
+      {
+        category: "Compliance / regulator",
+        cells: [
+          "NHTSA defect reports · warranty docs",
+          "FAA Part 145 audit response · NTSB inputs",
+          "FRA inspection records · AAR M-1003 audit response",
+          "USCG inspection records · IMO MSC compliance docs",
+        ],
+      },
+    ],
+    footnote: "Common terms shown. Each mode carries deeper subdivisions — aviation alone splits AMM/CMM/SRM/IPC/SB/AD by ATA chapter; automotive splits TSBs by NHTSA campaign vs internal; rail and maritime each carry classification-society and regulator-specific format conventions on top of the patterns shown.",
+  }}
+  failureMode={{
+    eyebrow: "TRANSPORTATION / SAFETY & WARRANTY",
+    heading: "A service-procedure error becomes a warranty event or an accident-investigation finding.",
+    body: "Automotive: a single TSB error replicated across a dealer network becomes a multi-million-dollar warranty claim event and, in safety-relevant cases, a NHTSA-reportable defect. Aviation: a Maintenance Manual procedure error surfaces in an FAA Part 145 audit or, worse, in an NTSB accident report. Rail: an FRA inspection finding tied to maintenance documentation triggers a service-bulletin recall and AAR M-1003 review. Marine: a maintenance-record gap surfaces during port state control or in classification-society withdrawal of cover. The procedure-document chain is the chain of evidence in every one of these.",
+  }}
+  signals={[
+    {
+      line: "Translation costs across our dealer network are climbing faster than vehicle volume.",
+      body: "Automotive, tactical. Translation cost growth out of proportion to fleet or volume growth signals a lack of single-source authoring; every market variant is being translated independently. The fix is in the reuse architecture, not in translation procurement.",
+    },
+    {
+      line: "Our MRO's S1000D conversion has stalled at the data-module structure phase.",
+      body: "Aviation, operational. Stalled S1000D conversions in MRO contexts usually fail when the source content doesn't decompose into S1000D's required data module types (procedural vs descriptive vs wiring). The IA work has to come before the migration toolchain runs.",
+    },
+    {
+      line: "An FRA inspection found maintenance-documentation gaps tied to AAR M-1003 quality-system requirements.",
+      body: "Rail, tactical. M-1003 quality-system gaps tied to documentation usually mean configuration-management metadata is missing or inconsistent across maintenance work orders. The audit response runs through metadata architecture and CCMS workflow design.",
+    },
+    {
+      line: "Our classification society flagged inconsistent operating documentation across vessel classes after a port state control inspection.",
+      body: "Maritime, tactical. Class-society findings on documentation usually mean variant management is broken — different vessel classes carry different operating procedures and the variant control hasn't kept up with fleet additions. Conditional-content profiling under DITA is the structural fix.",
+    },
+  ]}
+  capabilityRelevance={[
+    {
+      pillarLabel: "Information Architecture",
+      pillarHref: "/capabilities/information-architecture",
+      context: "Asset-family and program-level content models across modes — vehicle families and platforms (auto), aircraft type-certificate variants (aviation), rolling-stock platforms (rail), vessel classes and shipyard programs (marine). Conditional content for variant management; integration architecture with parts catalogs and configuration-management systems.",
+      engagementShape: "Project-Based — asset-family content model work with named acceptance criteria, often the prerequisite for any cross-mode migration.",
+    },
+    {
+      pillarLabel: "Content Migration",
+      pillarHref: "/capabilities/content-migration",
+      context: "Often follows M&A, platform consolidation, or regulatory mandate to modernize. Legacy estates converged onto a single CCMS — automotive OEM platform consolidations, MRO toolchain migrations, rail OEM legacy estates from acquired product lines, shipyard documentation systems. Conversion handled at scale.",
+      engagementShape: "Project-Based — fixed scope, conversion-fidelity acceptance criteria. Often follows M&A or platform consolidation across modes.",
+    },
+    {
+      pillarLabel: "CCMS & Publishing",
+      pillarHref: "/capabilities/ccms-and-publishing",
+      context: "Heavy in this vertical across all four modes. Service-information libraries are large, frequently updated, and operationally critical; CCMS configuration and publishing automation are the operational backbone for every transportation OEM, MRO, and operator that ships maintenance documentation.",
+      engagementShape: "Project-Based for implementation; Managed Services for ongoing administration of the publishing pipeline once stable.",
+    },
+    {
+      pillarLabel: "AI-Ready Content",
+      pillarHref: "/capabilities/ai-ready-content",
+      context: "Service-technician-facing and crew-facing AI assistants are emerging use cases — automotive dealer-network technician tools, aviation MRO troubleshooting assistants, rail maintenance support, marine shipboard reference systems. Retrieval over service-information estates requires the same engineering discipline as regulated-industry RAG; provenance metadata matters more than recency.",
+      engagementShape: "Often starts as Staff Augmentation during technician-assistant exploratory work; converts to Project-Based once retrieval architecture firms up.",
+    },
+  ]}
+  caseStudies={[
+    {
+      framing: "A global automotive OEM consolidating dealer service information across 30+ markets.",
+      body: "Single-source DITA across vehicle programs with conditional content for market and trim variants. CCMS-driven workflows replaced parallel publishing chains; translation savings drove the business case across the global dealer network.",
+    },
+    {
+      framing: "A commercial aviation MRO modernizing maintenance documentation onto S1000D.",
+      body: "Migration from legacy FrameMaker manuals to an S1000D-conformant data module repository. Configuration management aligned to airframe type-certificate variants; publishing pipeline integrated with the MRO's work-card system. FAA Part 145 audit trail preserved through the migration.",
+    },
+  ]}
+  ctaBody="Submit a 20-page service or maintenance documentation sample — automotive, aviation, rail, or marine. We'll return a translation-savings assessment, conversion feasibility, and the architecture decisions that would shape a production migration. Two business days, no obligation to proceed."
+/>

@@ -1,0 +1,341 @@
+---
+/*
+  XmlDataInteropPipeline — approach section on
+  /solutions/xml-data-interoperability.
+
+  The technical centerpiece. Sequenced after the problem section,
+  before the integration-pattern chapter-blocks.
+
+  Layout
+    - container-data section, border-top hairline
+    - Manifesto-style opening: eyebrow + display-serif principle +
+      hairline + elaboration paragraph. Manifesto block widened to
+      900 px so the elaboration spans from the center of the INGEST
+      stage to the center of the DELIVER stage (matching the
+      Migration pipeline treatment).
+    - Horizontal 5-stage pipeline below at container-data width:
+        INGEST -> NORMALIZE -> VALIDATE -> ENRICH -> DELIVER
+        Each stage has num, name, mono tool list, and body-small detail.
+        Amber "->" arrow between stages on desktop; "v" on mobile.
+
+  Animation: viewport-triggered. Manifesto block fades up first, then
+  the five stages stagger in. prefers-reduced-motion: static.
+*/
+
+interface Stage {
+  num: string;
+  name: string;
+  tool: string;
+  detail: string;
+}
+
+const stages: Stage[] = [
+  {
+    num: "01",
+    name: "Ingest",
+    tool: "REST/Kafka consumers, XSLT for legacy, Doxygen / Swagger / OpenAPI parsers",
+    detail: "Sensors, APIs, legacy files, code repos. Whatever the input, the ingest is a parser, never a hand-key.",
+  },
+  {
+    num: "02",
+    name: "Normalize",
+    tool: "XSLT 3.0 + XQuery 3.1 via Saxon, BaseX, MarkLogic, eXist-db",
+    detail: "Source dialects transformed into the canonical XML schema. Streaming transforms for million-node documents; XQuery for cross-collection reshape.",
+  },
+  {
+    num: "03",
+    name: "Validate",
+    tool: "XSD, RelaxNG, Schematron rule sets, CI-integrated quality gates",
+    detail: "Schema validation AND business-rule validation on every commit. Failed records route to remediation, not to production.",
+  },
+  {
+    num: "04",
+    name: "Enrich",
+    tool: "Subject scheme, SKOS, RDF/OWL, JSON-LD, Schema.org annotations",
+    detail: "Metadata, taxonomy, and semantic-graph annotations added once. Every downstream consumer inherits them automatically.",
+  },
+  {
+    num: "05",
+    name: "Deliver",
+    tool: "REST + GraphQL APIs, OData connectors, RDF triplestore, event-driven webhooks",
+    detail: "Portals, chatbots, knowledge graphs, BI tools. Each consumer asks the schema, not the source system.",
+  },
+];
+---
+
+<section class="interop-pipeline" aria-labelledby="interop-pipeline-heading">
+  <div class="container-data interop-pipeline__inner">
+    <div class="interop-pipeline__manifesto">
+      <p class="eyebrow interop-pipeline__eyebrow">The pipeline</p>
+      <h2 id="interop-pipeline-heading" class="interop-pipeline__principle">
+        The schema is the <em>integration</em>.
+      </h2>
+      <hr class="interop-pipeline__rule" />
+      <p class="interop-pipeline__elaboration">
+        A canonical XML schema sits between the source systems and their consumers. Format-specific parsers handle ingest &mdash; REST polling, Kafka consumers, XSLT 3.0 streaming, code-comment extractors (Doxygen, Swagger, OpenAPI). Saxon, BaseX, and MarkLogic execute XSLT and XQuery transforms into the canonical model. Schematron rule sets validate semantics on every commit. Subject schemes, SKOS taxonomies, and RDF/OWL mappings enrich the canonical with shared vocabulary. The same canonical XML feeds REST and GraphQL endpoints, OData connectors, an RDF triplestore, and event-driven webhooks &mdash; each consumer reading the same fact in the dialect it expects. The transformation layer is the build artifact, not the integration plan.
+      </p>
+    </div>
+
+    <ol class="interop-pipeline__stages" aria-label="XML data interoperability pipeline">
+      {stages.map((stage, i) => (
+        <li class={`pipeline-stage pipeline-stage--${i + 1}`}>
+          <p class="pipeline-stage__num" aria-hidden="true">{stage.num}</p>
+          <h3 class="pipeline-stage__name">{stage.name}</h3>
+          <p class="pipeline-stage__tool">{stage.tool}</p>
+          <p class="pipeline-stage__detail">{stage.detail}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .interop-pipeline {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .interop-pipeline {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* Manifesto block — widened to 900 px so the elaboration spans
+     from the center of the INGEST stage to the center of the DELIVER
+     stage in the 1080 px stages grid below (matching the Migration
+     pipeline treatment). */
+  .interop-pipeline__manifesto {
+    max-width: 900px;
+    margin: 0 auto var(--space-20) auto;
+    text-align: center;
+  }
+
+  @media (max-width: 767px) {
+    .interop-pipeline__manifesto {
+      margin-bottom: var(--space-16);
+    }
+  }
+
+  .interop-pipeline__eyebrow {
+    margin: 0 0 var(--space-8) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .interop-pipeline__principle {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: var(--weight-regular);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .interop-pipeline__principle em {
+    font-style: italic;
+  }
+
+  @media (max-width: 767px) {
+    .interop-pipeline__principle {
+      font-size: 32px;
+    }
+  }
+
+  .interop-pipeline__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    width: 64px;
+    margin: var(--space-8) auto;
+  }
+
+  .interop-pipeline__elaboration {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0 auto;
+    max-width: 100%;
+    text-wrap: pretty;
+    text-align: left;
+  }
+
+  /* Pipeline stages — 5-column grid on desktop, stacked on mobile.
+     Identical visual vocabulary to TechDocsPipeline and
+     ContentMigrationPipeline. */
+  .interop-pipeline__stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 960px) {
+    .interop-pipeline__stages {
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .pipeline-stage {
+    border-top: 2px solid var(--color-text-primary);
+    padding-top: var(--space-4);
+    position: relative;
+  }
+
+  /* Amber arrow between stages. Mobile: "v" below each stage.
+     Desktop: "->" in the gap, vertically aligned to the stage name
+     row, +0 px nudge (same as TDP/Migration). */
+  .pipeline-stage:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    line-height: 1;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary-hover);
+    bottom: calc(-1 * var(--space-8) - 8px);
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+
+  @media (min-width: 960px) {
+    .pipeline-stage:not(:last-child)::after {
+      bottom: auto;
+      left: auto;
+      right: calc(-1 * var(--space-12) / 2 + 0px);
+      top: 38px;
+      transform: translate(50%, -50%) rotate(0deg);
+    }
+  }
+
+  .pipeline-stage__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    margin: 0 0 var(--space-2) 0;
+    line-height: 1;
+  }
+
+  .pipeline-stage__name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: var(--weight-medium);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .pipeline-stage__tool {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+  }
+
+  .pipeline-stage__detail {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Reveal animation — viewport-triggered. Manifesto block first,
+     then stages stagger in left-to-right. */
+  .interop-pipeline.animating .interop-pipeline__eyebrow,
+  .interop-pipeline.animating .interop-pipeline__principle,
+  .interop-pipeline.animating .interop-pipeline__rule,
+  .interop-pipeline.animating .interop-pipeline__elaboration,
+  .interop-pipeline.animating .pipeline-stage {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .interop-pipeline.animating.in-view .interop-pipeline__eyebrow {
+    animation: interop-pipe-fade-in 420ms ease-out forwards;
+  }
+  .interop-pipeline.animating.in-view .interop-pipeline__principle {
+    animation: interop-pipe-fade-in 520ms ease-out forwards;
+    animation-delay: 120ms;
+  }
+  .interop-pipeline.animating.in-view .interop-pipeline__rule {
+    animation: interop-pipe-fade-in 420ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+  .interop-pipeline.animating.in-view .interop-pipeline__elaboration {
+    animation: interop-pipe-fade-in 420ms ease-out forwards;
+    animation-delay: 420ms;
+  }
+  .interop-pipeline.animating.in-view .pipeline-stage:nth-child(1) { animation: interop-pipe-fade-in 420ms ease-out forwards; animation-delay: 640ms; }
+  .interop-pipeline.animating.in-view .pipeline-stage:nth-child(2) { animation: interop-pipe-fade-in 420ms ease-out forwards; animation-delay: 760ms; }
+  .interop-pipeline.animating.in-view .pipeline-stage:nth-child(3) { animation: interop-pipe-fade-in 420ms ease-out forwards; animation-delay: 880ms; }
+  .interop-pipeline.animating.in-view .pipeline-stage:nth-child(4) { animation: interop-pipe-fade-in 420ms ease-out forwards; animation-delay: 1000ms; }
+  .interop-pipeline.animating.in-view .pipeline-stage:nth-child(5) { animation: interop-pipe-fade-in 420ms ease-out forwards; animation-delay: 1120ms; }
+
+  @keyframes interop-pipe-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .interop-pipeline.animating .interop-pipeline__eyebrow,
+    .interop-pipeline.animating .interop-pipeline__principle,
+    .interop-pipeline.animating .interop-pipeline__rule,
+    .interop-pipeline.animating .interop-pipeline__elaboration,
+    .interop-pipeline.animating .pipeline-stage {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupXmlDataInteropPipeline() {
+    const sec = document.querySelector<HTMLElement>(".interop-pipeline");
+    if (!sec) return;
+    if (sec.dataset.pipelineRevealInit === "true") return;
+    sec.dataset.pipelineRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupXmlDataInteropPipeline);
+  document.addEventListener("astro:page-load", setupXmlDataInteropPipeline);
+</script>

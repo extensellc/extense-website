@@ -1,0 +1,164 @@
+---
+import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+---
+
+<IndustryPageLayout
+  pageTitle="Life Sciences — Industries"
+  pageDescription="Regulatory documentation engineering for medical device manufacturers, pharmaceutical companies, and biotech. IFU authoring, FDA submission components, 21 CFR Part 11-validated workflows, GxP-defensible methodology."
+  heroTitle="Life Sciences"
+  heroSubdeck="Where IFU errors trigger FDA Class I recalls. Patient safety, not paperwork. Regulatory documentation is the bottleneck on submission timelines and the surface where compliance and patient-safety failures originate."
+  industryHref="/industries/life-sciences"
+  documentTypes={[
+    {
+      label: "Instructions for Use (IFU) and labeling",
+      description: "Patient-facing and clinician-facing IFUs. Labeling content across global markets with single-source authoring and profiling.",
+    },
+    {
+      label: "Regulatory submission components",
+      description: "510(k), PMA, NDA, BLA, ANDA submission content. Module structure and component-level reuse across submissions.",
+    },
+    {
+      label: "Clinical study documentation",
+      description: "Clinical Study Reports (CSRs), study protocols, investigator brochures.",
+    },
+    {
+      label: "Validated documentation programs",
+      description: "21 CFR Part 11-compliant authoring workflows with electronic signatures and audit trails.",
+    },
+    {
+      label: "Training and procedural content",
+      description: "GxP-aligned training materials, standard operating procedures, manufacturing documentation.",
+    },
+  ]}
+  standards={[
+    {
+      label: "21 CFR Part 11",
+      description: "FDA electronic-records and electronic-signatures requirements. Validated authoring workflows that meet Part 11 controls.",
+    },
+    {
+      label: "GxP / cGMP / cGCP / cGLP",
+      description: "Good Practice frameworks for manufacturing, clinical, and laboratory operations. Documentation as a GxP control artifact.",
+    },
+    {
+      label: "ISO 13485",
+      description: "Medical device quality-management-system requirements. FDA-recognized standard for device documentation.",
+    },
+    {
+      label: "MedDRA",
+      description: "Medical Dictionary for Regulatory Activities — controlled terminology for adverse-event reporting and safety documentation.",
+    },
+    {
+      label: "SNOMED CT",
+      description: "Clinical terminology used in clinical documentation and regulatory submissions.",
+    },
+    {
+      label: "EU MDR (Medical Device Regulation)",
+      description: "Required for any medical device sold into the EU market. Documentation obligations span IFU/labeling, risk-management files, and post-market surveillance — distinct from FDA frameworks and increasingly load-bearing for global device portfolios.",
+    },
+    {
+      label: "ISO 14971",
+      description: "Risk management for medical devices. The standard FDA recognizes for device risk-management documentation; risk-control traceability runs through it.",
+    },
+  ]}
+  auditCycle={{
+    eyebrow: "AUDIT CYCLE — LIFE SCIENCES",
+    heading: "When the documentation gets tested.",
+    lead: "Documentation in life sciences gets tested on three different cadences. Submissions are episodic events; surveillance audits are continuous; recall and safety events are unpredictable. The same content estate has to satisfy all three.",
+    axisLabels: [
+      { position: 0,     label: "M0" },
+      { position: 16.67, label: "M6" },
+      { position: 33.33, label: "M12" },
+      { position: 50,    label: "M18" },
+      { position: 66.67, label: "M24" },
+      { position: 83.33, label: "M30" },
+      { position: 100,   label: "M36" },
+    ],
+    lanes: [
+      {
+        label: "Submissions",
+        type: "discrete",
+        events: [
+          { position: 16.67, label: "PMA" },
+          { position: 38.89, label: "ANDA" },
+          { position: 61.11, label: "510(k)" },
+          { position: 83.33, label: "BLA" },
+        ],
+      },
+      {
+        label: "Surveillance",
+        type: "continuous",
+        peakPositions: [33.33, 66.67, 100],
+        notes: "FDA QSR · ISO 13485 · EU MDR · ICH GCP",
+      },
+      {
+        label: "Safety events",
+        type: "ad-hoc",
+        events: [
+          { position: 44.44, label: "Form 483", annotation: "(unpredictable)" },
+          { position: 77.78, label: "Recall trigger", annotation: "(unpredictable)" },
+        ],
+      },
+    ],
+    footnote: "Representative cadence. Actual schedules vary by product class, regulatory geography, and program.",
+  }}
+  failureMode={{
+    eyebrow: "LIFE SCIENCES / FDA",
+    heading: "An IFU error triggers an FDA Class I recall.",
+    body: "Direct remediation runs into the millions. Brand damage lasts years. Class I recalls invoke notification cascades across distribution, customer-facing communications, regulatory reporting, and field-engineer deployment. The document was the safety control — and the safety control failed.",
+  }}
+  signals={[
+    {
+      line: "Our IFU just got flagged in an FDA inspection.",
+      body: "Tactical, immediate. A 483 observation tied to documentation usually means the IFU content didn't match the labeled use, the labeling didn't match the predicate device, or the IFU wasn't single-sourced and divergent versions surfaced in field copy. The fix runs through architecture before it runs through writing.",
+    },
+    {
+      line: "We're approaching an EU MDR submission and the IFUs aren't single-source.",
+      body: "Pre-submission. EU MDR's documentation requirements multiply if every market variant is independently maintained — translation cost, version control, post-market surveillance reporting all expand linearly with variant count. Single-sourcing under DITA profiling is the structural fix.",
+    },
+    {
+      line: "Our GxP-validated authoring environment is brittle and slowing submissions.",
+      body: "Operational. Validated environments tend to ossify — vendor consolidation, deprecated authoring tools, custom integrations holding the system together. Replacement requires GxP-defensible methodology, not just a new tool.",
+    },
+    {
+      line: "A Class III device recall triggered a documentation root-cause review.",
+      body: "Reactive, post-event. Recalls send investigators looking for the documentation failure. If the content estate isn't auditable — version history, approval chain, traceability to risk controls — the root cause becomes \"the entire documentation system\" rather than a single document.",
+    },
+  ]}
+  capabilityRelevance={[
+    {
+      pillarLabel: "Information Architecture",
+      pillarHref: "/capabilities/information-architecture",
+      context: "Device-family content models with regulatory-variant profiling. Controlled vocabulary aligned to MedDRA. Reuse strategy across IFUs and labeling.",
+      engagementShape: "Typically Project-Based with a defined acceptance gate against the new content model.",
+    },
+    {
+      pillarLabel: "Content Migration",
+      pillarHref: "/capabilities/content-migration",
+      context: "Heavy in this vertical. Legacy Word and FrameMaker IFU estates converted to clean DITA, with QA harnesses that surface pre-existing content errors as part of the migration.",
+      engagementShape: "Project-Based — fixed scope, fixed fee, conversion-fidelity acceptance criteria.",
+    },
+    {
+      pillarLabel: "CCMS & Publishing",
+      pillarHref: "/capabilities/ccms-and-publishing",
+      context: "CCMS adoption growing fast in regulated content. Validated authoring workflows; multi-format publishing across regulatory submissions and patient-facing surfaces.",
+      engagementShape: "Project-Based for the implementation; Managed Services for ongoing administration once stable.",
+    },
+    {
+      pillarLabel: "AI-Ready Content",
+      pillarHref: "/capabilities/ai-ready-content",
+      context: "Emerges carefully — validation requirements slow but don't stop deployment. RAG over regulated content estates requires evaluation discipline and provenance metadata that survives the pipeline.",
+      engagementShape: "Often starts as Staff Augmentation during exploratory work; converts to Project-Based once the architecture firms up.",
+    },
+  ]}
+  caseStudies={[
+    {
+      framing: "A Class III medical device manufacturer consolidating IFUs across global markets.",
+      body: "Single-source DITA across device families, regulatory-variant profiling for FDA-recognized markets, controlled vocabulary aligned to MedDRA. Translation costs reduced through reuse rather than retranslation; submissions accelerated by component-level approval.",
+    },
+    {
+      framing: "A pharmaceutical company restructuring regulatory submission components for FDA eCTD.",
+      body: "Component-level reuse across submission programs; metadata-driven assembly for module structure. Authoring workflows validated under 21 CFR Part 11; audit trails preserved through publication.",
+    },
+  ]}
+  ctaBody="Submit a 20-page sample (IFU, labeling, or submission component). We'll return a content-readiness assessment — what's recoverable, what's at risk, and what GxP-defensible methodology would change. Two business days, no obligation to proceed."
+/>

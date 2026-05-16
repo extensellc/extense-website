@@ -26,6 +26,12 @@ interface Props {
   heading?: string;
   body: string;
   buttonLabel?: string;
+  /**
+   * Opt into reduced top/bottom padding (96 px / 60 px instead of the default
+   * 128 px / 80 px). Used by the /solutions sub-pages where the prior section
+   * already provides its own breathing room before the CTA.
+   */
+  compact?: boolean;
 }
 
 const {
@@ -33,12 +39,13 @@ const {
   heading = "Sample Content Assessment",
   body,
   buttonLabel = "Submit a sample →",
+  compact = false,
 } = Astro.props;
 
 const href = `/contact?audience=${audience}`;
 ---
 
-<section class="cta-module" aria-label="Sample Content Assessment">
+<section class:list={["cta-module", { "cta-module--compact": compact }]} aria-label="Sample Content Assessment">
   <div class="container-page cta-module__inner">
     <div class="cta-module__content">
       <h2 class="cta-module__heading">{heading}</h2>
@@ -58,10 +65,22 @@ const href = `/contact?audience=${audience}`;
     padding-bottom: var(--space-32);
   }
 
+  /* Compact variant: 25% padding trim, opt-in via the `compact` prop.
+     Used on the /solutions sub-pages where the preceding section already
+     carries enough breathing room before the CTA. */
+  .cta-module--compact {
+    padding-top: var(--space-24);
+    padding-bottom: var(--space-24);
+  }
+
   @media (max-width: 767px) {
     .cta-module {
       padding-top: var(--space-20);
       padding-bottom: var(--space-20);
+    }
+    .cta-module--compact {
+      padding-top: 60px;
+      padding-bottom: 60px;
     }
   }
 
@@ -97,7 +116,8 @@ const href = `/contact?audience=${audience}`;
   .cta-module__button {
     display: inline-block;
     font-family: var(--font-body);
-    font-size: var(--text-body);
+    /* ~10% reduction from the default cta button (17px / 16×32 padding). */
+    font-size: 15px;
     font-weight: var(--weight-semibold);
     color: var(--color-text-primary);
     background-color: var(--color-accent-primary);
@@ -106,7 +126,7 @@ const href = `/contact?audience=${audience}`;
       var(--color-logo-gradient-1) 0%,
       var(--color-accent-primary) 100%
     );
-    padding: var(--space-4) var(--space-8);
+    padding: 14px 28px;
     border-radius: var(--radius-sm);
     text-decoration: none;
     transition: background-color var(--duration-base) var(--easing-out),

@@ -1,0 +1,75 @@
+---
+/*
+  CrossPillarLink — small "RELATED — X →" section that bridges a
+  /solutions/[area] sub-page to its corresponding /capabilities/[pillar]
+  reference page (or any other related page).
+
+  Used on the four /solutions/[area].astro pages between the closing
+  prose section and the CTAModule. Matches the visual treatment of the
+  inline `pillar-section--cross` block on the four /capabilities/[pillar]
+  pages (rendered in PillarPageLayout.astro) so the same cross-link
+  pattern reads consistent in both directions.
+
+  border-bottom only on the section itself: the previous section
+  (Closing prose on the /solutions/* pages) already carries a
+  border-bottom which serves as this section's top divider.
+*/
+
+interface Props {
+  href: string;
+  label: string;
+  /** Defaults to "Related". */
+  eyebrow?: string;
+}
+
+const { href, label, eyebrow = "Related" } = Astro.props;
+---
+
+<section class="cross-pillar-link" aria-label={`Related: ${label}`}>
+  <div class="container-prose cross-pillar-link__inner">
+    <p class="eyebrow cross-pillar-link__eyebrow">{eyebrow}</p>
+    <a href={href} class="cross-pillar-link__link">
+      {label}
+      <span class="cross-pillar-link__arrow" aria-hidden="true">&nbsp;&rarr;</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .cross-pillar-link {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    /* No border-top: the preceding closing-prose section on the
+       /solutions/* pages already carries a border-bottom. */
+    border-bottom: var(--border-hairline);
+  }
+
+  .cross-pillar-link__eyebrow {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .cross-pillar-link__link {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .cross-pillar-link__link:hover,
+  .cross-pillar-link__link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .cross-pillar-link__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .cross-pillar-link__link:hover .cross-pillar-link__arrow {
+    transform: translateX(2px);
+  }
+</style>

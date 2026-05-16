@@ -1,61 +1,52 @@
 ---
 /*
-  /solutions/ai-ready-content — placeholder sub-page.
+  /solutions/ai-ready-content
 
-  Created as part of the Phase 4.5 nav restructure. Content to be
-  filled out in a later pass.
+  Sub-page deep-dive on the AI-Ready Content solution area.
+
+  Structurally similar to TDP / Migration / Interop, with ONE major
+  difference: section 3 is a side-by-side pipeline comparison
+  (unstructured vs. structured), replacing the standard 3-up problem
+  diagnostic — because the before/after frame IS the argument here.
+
+  Sections (building piece by piece):
+    1. Hero — "Retrievable, by design." + precision-gauge SVG
+    2. Siblings nav
+    3. Two pipelines — side-by-side unstructured vs. structured (TODO)
+    4. The pipeline — manifesto + 5-stage diagram (TODO)
+    5. Use cases — five editorial chapter-blocks (TODO)
+    6. Closing prose — 85% precision as the punchline (TODO)
+    7. CTA (TODO)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import AiReadyHero from "../../components/site/AiReadyHero.astro";
+import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
+import AiReadyComparison from "../../components/site/AiReadyComparison.astro";
+import AiReadyPipeline from "../../components/site/AiReadyPipeline.astro";
+import AiReadyUseCases from "../../components/site/AiReadyUseCases.astro";
+import AiReadyClosing from "../../components/site/AiReadyClosing.astro";
+import CrossPillarLink from "../../components/site/CrossPillarLink.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
 ---
 
-<BaseLayout title="AI-Ready Content" description="Chunking, metadata, and retrieval architecture for AI-consumed content. Coming soon.">
-  <section class="placeholder-page">
-    <div class="container-prose placeholder-page__inner">
-      <p class="eyebrow placeholder-page__eyebrow">Solutions</p>
-      <h1 class="placeholder-page__heading">AI-Ready Content</h1>
-      <p class="placeholder-page__body">
-        This page is in progress. For an overview of what Extense does today, see
-        <a href="/capabilities">Capabilities</a>, or get in touch via
-        <a href="/contact">Contact</a>.
-      </p>
-      <p class="placeholder-page__back">
-        <a href="/solutions">&larr; Back to all Solutions</a>
-      </p>
-    </div>
-  </section>
+<BaseLayout
+  title="AI-Ready Content"
+  description="Retrievable by design. Chunking strategy, typed DITA topics, metadata filters, and section-ID stability that turn 85% RAG precision into a measurable property of the corpus — not a model parameter."
+>
+  <AiReadyHero />
+  <SolutionsSiblings currentSlug="ai-ready-content" />
+  <AiReadyComparison />
+  <AiReadyPipeline />
+  <AiReadyUseCases />
+  <AiReadyClosing />
+  <CrossPillarLink
+    href="/capabilities/ai-ready-content"
+    label="See AI-Ready Content deliverables and standards"
+  />
+  <CTAModule
+    audience="general"
+    compact
+    body="Send us 20 topics from your current documentation. We’ll score them on 7 AI-readiness dimensions and return a gap analysis with the next concrete steps — within two business days."
+  />
 </BaseLayout>
-
-<style>
-  .placeholder-page {
-    padding-top: var(--section-pad-default);
-    padding-bottom: var(--section-pad-default);
-  }
-  .placeholder-page__eyebrow {
-    margin-bottom: var(--space-4);
-  }
-  .placeholder-page__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-6) 0;
-    text-wrap: balance;
-  }
-  .placeholder-page__body {
-    font-family: var(--font-body);
-    font-size: var(--text-body-lg);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-normal);
-    margin: 0 0 var(--space-8) 0;
-    text-wrap: pretty;
-  }
-  .placeholder-page__back {
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    font-weight: var(--weight-medium);
-    margin: 0;
-  }
-</style>

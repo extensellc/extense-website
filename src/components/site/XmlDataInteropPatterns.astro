@@ -1,0 +1,364 @@
+---
+/*
+  XmlDataInteropPatterns — five editorial chapter-blocks on
+  /solutions/xml-data-interoperability.
+
+  Sequenced after the pipeline section. Each block is one integration
+  pattern Extense ships — four engineering capabilities plus a fifth
+  block that names the industry standards delivered against:
+
+    01  Cross-system data sync.
+    02  Event-driven content pipelines.
+    03  REST + GraphQL content APIs.
+    04  Semantic graphs & knowledge layers.
+    05  Industry standards in production.
+
+  Per-block structure (mirrors TechDocsOutputs and ContentMigrationSources)
+    - amber monospace number prefix (left column, narrow)
+    - display-serif name + italic subtitle + body + pull-quote hook
+      (right column, wide)
+    - hairline rule at the top of each block; last block also gets a
+      hairline at the bottom so the section ends cleanly
+    - no "Explore" link affordance: these blocks are the destination
+
+  Animation: per-block IntersectionObserver, same pattern as
+  TechDocsOutputs. prefers-reduced-motion: static.
+*/
+
+interface Pattern {
+  num: string;
+  name: string;
+  subtitle: string;
+  body: string;
+  hook: string;
+}
+
+const patterns: Pattern[] = [
+  {
+    num: "01",
+    name: "Cross-system data sync",
+    subtitle: "Canonical XML as the source of truth.",
+    body: "When CCMS, PIM, ERP, CMS, and LMS each speak their own dialect, the canonical XML schema sits between them. Bidirectional XSLT and XQuery transforms keep every system reading the same fact in the dialect it expects. Change once; the propagation is the build, not a sync job.",
+    hook: "When four systems need the same product description, who’s the source of truth?",
+  },
+  {
+    num: "02",
+    name: "Event-driven content pipelines",
+    subtitle: "Real-time propagation, no batch lag.",
+    body: "Apache Kafka, AWS EventBridge, and webhook-triggered XSLT carry content updates through the pipeline as they happen. A safety-paragraph edit in the CCMS reaches the customer portal in seconds, not at midnight in a batch job. The pipeline is the integration; cron is not.",
+    hook: "What does the portal show, when the CCMS has the new safety paragraph and the ERP doesn’t?",
+  },
+  {
+    num: "03",
+    name: "REST + GraphQL content APIs",
+    subtitle: "Structured content, modern query layer.",
+    body: "Expose XML topics as REST endpoints or GraphQL schemas without re-authoring them in a separate CMS. Federated content graphs unify CCMS repositories, taxonomy services, and asset stores behind a single query layer. Clients request exactly the fields they need; the canonical XML answers.",
+    hook: "Why are you maintaining a parallel content model in your headless CMS?",
+  },
+  {
+    num: "04",
+    name: "Semantic graphs & knowledge layers",
+    subtitle: "XML as a queryable dataset.",
+    body: "DITA keys, subject schemes, and product taxonomies map to RDF triples and OWL ontologies. Knowledge graphs answer cross-system queries that no single application can — “which procedures cite this assembly, in which manuals, for which regions, in which languages.” Your documentation becomes a dataset, not a collection of files.",
+    hook: "What questions can you answer when your documentation is queryable, not browsable?",
+  },
+  {
+    num: "05",
+    name: "Industry standards in production",
+    subtitle: "S1000D, HL7 FHIR, XBRL, OPC-UA, code-spec integration.",
+    body: "Schema-conformant delivery against the standards each vertical runs on: defense (S1000D Issue 5.0, ATA iSpec 2200, MIL-STD-40051, BREX validation), healthcare (HL7 FHIR resources, SPL drug labels, FDA eSTAR), finance (XBRL for SEC/ESMA, FpML, FIX), and manufacturing (OPC-UA, MQTT, ISA-95). Validated on every build.",
+    hook: "When the regulator asks for the BREX validation report, what does your build pipeline already have ready?",
+  },
+];
+---
+
+<section class="interop-patterns" aria-labelledby="interop-patterns-heading">
+  <div class="container-data interop-patterns__inner">
+    <div class="interop-patterns__heading-block">
+      <h2 id="interop-patterns-heading" class="interop-patterns__heading">
+        Five integration patterns, <em>one canonical layer.</em>
+      </h2>
+      <p class="interop-patterns__subdeck">
+        Four engineering capabilities and one standards-conformance roundup. Each is a transform, a connector, or a validation pass against the same canonical XML.
+      </p>
+    </div>
+
+    <ol class="interop-patterns__list">
+      {patterns.map((pattern) => (
+        <li class="pattern-area">
+          <div class="pattern-area__num" aria-hidden="true">{pattern.num}</div>
+          <div class="pattern-area__content">
+            <h3 class="pattern-area__name">{pattern.name}.</h3>
+            <p class="pattern-area__subtitle">{pattern.subtitle}</p>
+            <p class="pattern-area__body">{pattern.body}</p>
+            <p class="pattern-area__hook">{pattern.hook}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .interop-patterns {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .interop-patterns {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .interop-patterns__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-16);
+  }
+
+  .interop-patterns__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .interop-patterns__heading em {
+    font-style: italic;
+  }
+
+  .interop-patterns__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* List of areas — flat list, no bullets. Each area separated by a
+     hairline at its top. Last area also gets a hairline at the bottom
+     so the section ends cleanly. */
+  .interop-patterns__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .pattern-area {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  .pattern-area:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .pattern-area {
+      grid-template-columns: 96px 1fr;
+      gap: var(--space-8);
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .pattern-area__num {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-accent-primary);
+    line-height: 1;
+    padding-top: 8px;
+  }
+
+  .pattern-area__content {
+    max-width: 72ch;
+  }
+
+  .pattern-area__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+    text-wrap: balance;
+  }
+
+  .pattern-area__subtitle {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: pretty;
+  }
+
+  .pattern-area__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: pretty;
+  }
+
+  /* Pull-quote hook: italic with a 2 px amber bar on the left. */
+  .pattern-area__hook {
+    position: relative;
+    margin: 0;
+    padding-left: var(--space-6);
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+    max-width: 60ch;
+  }
+  .pattern-area__hook::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--color-accent-primary-hover);
+    transform-origin: top center;
+  }
+
+  /* Reveal animation — per-block, same pattern as TechDocsOutputs. */
+  .interop-patterns.animating .interop-patterns__heading-block {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .interop-patterns.animating .pattern-area__num,
+  .interop-patterns.animating .pattern-area__name,
+  .interop-patterns.animating .pattern-area__subtitle,
+  .interop-patterns.animating .pattern-area__body,
+  .interop-patterns.animating .pattern-area__hook {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .interop-patterns.animating .pattern-area__hook::before {
+    transform: scaleY(0);
+  }
+
+  .interop-patterns.animating.in-view .interop-patterns__heading-block {
+    animation: interop-patterns-fade-in 480ms ease-out forwards;
+  }
+
+  .interop-patterns.animating .pattern-area.in-view .pattern-area__num {
+    animation: interop-patterns-fade-in 420ms ease-out forwards;
+  }
+  .interop-patterns.animating .pattern-area.in-view .pattern-area__name {
+    animation: interop-patterns-fade-in 420ms ease-out forwards;
+    animation-delay: 80ms;
+  }
+  .interop-patterns.animating .pattern-area.in-view .pattern-area__subtitle {
+    animation: interop-patterns-fade-in 420ms ease-out forwards;
+    animation-delay: 140ms;
+  }
+  .interop-patterns.animating .pattern-area.in-view .pattern-area__body {
+    animation: interop-patterns-fade-in 420ms ease-out forwards;
+    animation-delay: 220ms;
+  }
+  .interop-patterns.animating .pattern-area.in-view .pattern-area__hook {
+    animation: interop-patterns-fade-in 420ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+  .interop-patterns.animating .pattern-area.in-view .pattern-area__hook::before {
+    animation: interop-patterns-bar-grow 520ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+
+  @keyframes interop-patterns-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes interop-patterns-bar-grow {
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .interop-patterns.animating .interop-patterns__heading-block,
+    .interop-patterns.animating .pattern-area__num,
+    .interop-patterns.animating .pattern-area__name,
+    .interop-patterns.animating .pattern-area__subtitle,
+    .interop-patterns.animating .pattern-area__body,
+    .interop-patterns.animating .pattern-area__hook {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .interop-patterns.animating .pattern-area__hook::before {
+      transform: scaleY(1) !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupXmlDataInteropPatterns() {
+    const sec = document.querySelector<HTMLElement>(".interop-patterns");
+    if (!sec) return;
+    if (sec.dataset.patternsRevealInit === "true") return;
+    sec.dataset.patternsRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            sectionObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    sectionObserver.observe(sec);
+
+    const areaObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            areaObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    const areas = sec.querySelectorAll<HTMLElement>(".pattern-area");
+    areas.forEach((area) => areaObserver.observe(area));
+  }
+
+  document.addEventListener("DOMContentLoaded", setupXmlDataInteropPatterns);
+  document.addEventListener("astro:page-load", setupXmlDataInteropPatterns);
+</script>

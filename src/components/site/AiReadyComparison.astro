@@ -1,0 +1,377 @@
+---
+/*
+  AiReadyComparison — side-by-side pipeline comparison on
+  /solutions/ai-ready-content. REPLACES the standard 3-up problem
+  section used on TDP / Migration / Interop, because the before/after
+  frame IS the argument for AI-Ready.
+
+  Layout
+    - container-data section
+    - heading + subdeck on the left at container-prose width
+    - 2-column grid (50/50 desktop, stacked mobile)
+        LEFT  — UNSTRUCTURED pipeline, all stages in subdued styling
+        RIGHT — STRUCTURED pipeline, final outcome stage in amber
+    - each column is a vertical stack of 6 stages with down-arrow
+      connectors between them
+    - same brand vocabulary as the rest of the site: hairline borders,
+      2 px top borders on stages (matching the horizontal pipelines
+      on other sub-pages), mono labels, single amber accent on the
+      structured-pipeline final outcome only
+
+  No border-top on the section itself: the siblings row above
+  already carries a border-bottom.
+
+  Animation: viewport-triggered. Heading + subdeck fade up first,
+  then the two columns reveal stage-by-stage from top to bottom in
+  parallel (so for each stage row, both sides land together —
+  reinforcing the "same input, different outcome" frame).
+  prefers-reduced-motion: static.
+*/
+
+interface PipelineStage {
+  name: string;
+  detail: string;
+  outcome?: boolean;
+}
+
+const unstructuredStages: PipelineStage[] = [
+  {
+    name: "Content sources",
+    detail: "Word · PDF · Wiki · Markdown",
+  },
+  {
+    name: "Flat ingestion",
+    detail: "no typing · no metadata · no IDs",
+  },
+  {
+    name: "Arbitrary chunking",
+    detail: "667-word splits · mid-sentence cuts · broken tables",
+  },
+  {
+    name: "Vector store",
+    detail: "no metadata filters · all content ranked equally",
+  },
+  {
+    name: "LLM context window",
+    detail: "outdated + irrelevant chunks mixed in · model averages conflicting signals",
+  },
+  {
+    name: "Outcome: 25–35% precision",
+    detail: "wrong answers · hallucinations · escalated tickets",
+    outcome: true,
+  },
+];
+
+const structuredStages: PipelineStage[] = [
+  {
+    name: "Content sources",
+    detail: "Word · PDF · FrameMaker · Wiki · Markdown",
+  },
+  {
+    name: "Typed DITA topics",
+    detail: "concept · task · reference · troubleshooting",
+  },
+  {
+    name: "Metadata + section IDs",
+    detail: "audience · difficulty · domain · intent · stable IDs everywhere",
+  },
+  {
+    name: "Semantic chunking",
+    detail: "section-ID boundaries · self-contained · chunks.jsonl + glossary-index.json",
+  },
+  {
+    name: "Vector store + metadata filters",
+    detail: "audience/type/domain pre-filter · top-k reranked before the LLM sees anything",
+  },
+  {
+    name: "Outcome: 85%+ precision",
+    detail: "correct answers · cited sources · reduced support load",
+    outcome: true,
+  },
+];
+---
+
+<section class="airdy-pipelines" aria-labelledby="airdy-pipelines-heading">
+  <div class="container-data airdy-pipelines__inner">
+    <div class="airdy-pipelines__heading-block">
+      <h2 id="airdy-pipelines-heading" class="airdy-pipelines__heading">
+        Two pipelines. <em>One measurement.</em>
+      </h2>
+      <p class="airdy-pipelines__subdeck">
+        Same query, same LLM, same vector store. What the model retrieves is determined entirely by whether the content was engineered for retrieval.
+      </p>
+    </div>
+
+    <div class="airdy-pipelines__grid">
+      <div class="pipeline-col pipeline-col--unstructured" aria-label="Unstructured pipeline">
+        <p class="pipeline-col__caption">UNSTRUCTURED</p>
+        <ol class="pipeline-col__stages">
+          {unstructuredStages.map((stage) => (
+            <li class={`pipeline-step ${stage.outcome ? "pipeline-step--outcome" : ""}`}>
+              <p class="pipeline-step__name">{stage.name}</p>
+              <p class="pipeline-step__detail">{stage.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="pipeline-col pipeline-col--structured" aria-label="Structured pipeline">
+        <p class="pipeline-col__caption">STRUCTURED</p>
+        <ol class="pipeline-col__stages">
+          {structuredStages.map((stage) => (
+            <li class={`pipeline-step ${stage.outcome ? "pipeline-step--outcome pipeline-step--outcome-amber" : ""}`}>
+              <p class="pipeline-step__name">{stage.name}</p>
+              <p class="pipeline-step__detail">{stage.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .airdy-pipelines {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    /* No border-top: the siblings row above already carries a
+       border-bottom; doubling would render as a 2 px line. */
+  }
+
+  @media (max-width: 767px) {
+    .airdy-pipelines {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .airdy-pipelines__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-16);
+  }
+
+  .airdy-pipelines__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .airdy-pipelines__heading em {
+    font-style: italic;
+  }
+
+  .airdy-pipelines__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* 2-column grid on desktop, stacked on mobile. */
+  .airdy-pipelines__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .airdy-pipelines__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+    }
+  }
+
+  /* Column header: small mono uppercase caption above the stack. */
+  .pipeline-col__caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  /* Stage list — vertical stack, no bullets. */
+  .pipeline-col__stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    /* Vertical gap leaves room for the down-arrow ::after between
+       consecutive stages. */
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  /* Stage box — same vocabulary as the horizontal pipeline stages on
+     TDP/Migration/Interop: 2 px top border, padding-top, name + detail. */
+  .pipeline-step {
+    border-top: 2px solid var(--color-text-primary);
+    padding-top: var(--space-3);
+    position: relative;
+  }
+
+  /* Down-arrow connector between consecutive stages. Mono mid-size
+     for legibility. Color is muted on the unstructured side so the
+     amber stays reserved for the structured-outcome stage. */
+  .pipeline-step:not(:last-child)::after {
+    content: "↓";
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 16px;
+    line-height: 1;
+    font-weight: var(--weight-medium);
+    bottom: calc(-1 * var(--space-8) + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-text-muted);
+  }
+
+  .pipeline-step__name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+    text-wrap: pretty;
+  }
+
+  .pipeline-step__detail {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Unstructured side — final outcome stays subdued (no special
+     treatment beyond a slightly heavier name color, to mark it as
+     the "endpoint"). */
+  .pipeline-col--unstructured .pipeline-step--outcome .pipeline-step__name {
+    color: var(--color-text-primary);
+  }
+
+  /* Structured side — final outcome gets the single amber accent for
+     this section: filled background, page-bg text, no top border.
+     This is the page's single brand-presence moment in section 3. */
+  .pipeline-step--outcome-amber {
+    background: var(--color-accent-primary-hover);
+    border-top: 2px solid var(--color-accent-primary-hover);
+    padding: var(--space-4);
+    /* Pull padding down (was just padding-top: --space-3) to give the
+       filled box equal spacing on all sides. */
+  }
+  .pipeline-step--outcome-amber .pipeline-step__name {
+    color: var(--color-page-bg);
+    font-size: 14px;
+  }
+  .pipeline-step--outcome-amber .pipeline-step__detail {
+    color: var(--color-page-bg);
+    opacity: 0.92;
+  }
+
+  /* Reveal animation — viewport-triggered. Heading reveals first,
+     then both columns' stages reveal in parallel (matching row by
+     matching row) so the "same input, different outcome" framing
+     reads as paired comparison, not sequential narrative. */
+  .airdy-pipelines.animating .airdy-pipelines__heading-block,
+  .airdy-pipelines.animating .pipeline-col__caption,
+  .airdy-pipelines.animating .pipeline-step {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .airdy-pipelines.animating.in-view .airdy-pipelines__heading-block {
+    animation: airdy-comp-fade-in 480ms ease-out forwards;
+  }
+  .airdy-pipelines.animating.in-view .pipeline-col__caption {
+    animation: airdy-comp-fade-in 420ms ease-out forwards;
+    animation-delay: 200ms;
+  }
+  .airdy-pipelines.animating.in-view .pipeline-step:nth-child(1) {
+    animation: airdy-comp-fade-in 420ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+  .airdy-pipelines.animating.in-view .pipeline-step:nth-child(2) {
+    animation: airdy-comp-fade-in 420ms ease-out forwards;
+    animation-delay: 440ms;
+  }
+  .airdy-pipelines.animating.in-view .pipeline-step:nth-child(3) {
+    animation: airdy-comp-fade-in 420ms ease-out forwards;
+    animation-delay: 560ms;
+  }
+  .airdy-pipelines.animating.in-view .pipeline-step:nth-child(4) {
+    animation: airdy-comp-fade-in 420ms ease-out forwards;
+    animation-delay: 680ms;
+  }
+  .airdy-pipelines.animating.in-view .pipeline-step:nth-child(5) {
+    animation: airdy-comp-fade-in 420ms ease-out forwards;
+    animation-delay: 800ms;
+  }
+  .airdy-pipelines.animating.in-view .pipeline-step:nth-child(6) {
+    animation: airdy-comp-fade-in 420ms ease-out forwards;
+    animation-delay: 920ms;
+  }
+
+  @keyframes airdy-comp-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .airdy-pipelines.animating .airdy-pipelines__heading-block,
+    .airdy-pipelines.animating .pipeline-col__caption,
+    .airdy-pipelines.animating .pipeline-step {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupAiReadyComparison() {
+    const sec = document.querySelector<HTMLElement>(".airdy-pipelines");
+    if (!sec) return;
+    if (sec.dataset.compRevealInit === "true") return;
+    sec.dataset.compRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupAiReadyComparison);
+  document.addEventListener("astro:page-load", setupAiReadyComparison);
+</script>

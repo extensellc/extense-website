@@ -265,17 +265,17 @@ const rows: PillarRow[] = [
     padding: var(--space-4) var(--space-4);
     border-bottom: var(--border-hairline);
     scroll-snap-align: start;
+    position: relative;
   }
 
   .matrix__cell:not(:last-child) {
     border-right: var(--border-hairline);
   }
 
-  /* Primary-load shading: subtle navy at low opacity. Reproduces in B&W
-     for print (browsers darken the background uniformly). */
+  /* Primary-load shading: yellow tint at 6% + solid #fcd34d left edge bar. */
   .matrix__cell--primary {
-    background-color: rgb(31 45 61 / 0.06); /* color-gravitas-navy at ~6% */
-    box-shadow: inset 2px 0 0 var(--color-gravitas-navy);
+    background-color: rgb(253 224 71 / 0.06); /* logo-gradient-2 yellow at 6% */
+    box-shadow: inset 2px 0 0 #fcd34d;
   }
 
   .matrix__cell-text {

@@ -1,0 +1,502 @@
+---
+/*
+  /industries — consolidated landing for the five regulated verticals.
+
+  Spec ref: EXTENSE_DESIGN_BRIEF.md §8 (industries)
+
+  Section order:
+    1. Hero (Hero.universal) — load-bearing claim
+    2. Narrative — 4 paragraphs combining (a) compliance engineering frame,
+       (b) audit reality, (c) per-vertical specificity, (d) pivot to cards
+    3. Industry × Regulatory-Framework table (centerpiece)
+       - Build-in animation on first scroll into view
+    4. Two-card pivot — Public Sector (direct) + Private Sector (disclosure)
+    5. Adjacent industries callout
+    6. CTA
+
+  Industry sub-pages live at /industries/[industry] (flat — no public/
+  private split in URL). The audience split is preserved as a card pattern
+  on this page and on the home page Where-to-next section.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import AudiencePivotCard from "../../components/site/AudiencePivotCard.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
+import ComplianceReferenceCard from "../../components/site/ComplianceReferenceCard.astro";
+
+interface IndustryRow {
+  industry: string;
+  industryHref: string;
+  regulators: string;
+  documentTypes: string;
+  standards: string;
+  auditCadence: string;
+}
+
+const rows: IndustryRow[] = [
+  {
+    industry: "Government & Defense",
+    industryHref: "/industries/government-and-defense",
+    regulators: "DoD · DLA · MDA · NSA · NARA · GSA",
+    documentTypes: "IETMs · Technical Manuals · Maintenance Procedures · Training materials",
+    standards: "S1000D · MIL-STD-40051 · IETP · CSDB",
+    auditCadence: "Per-program; major reviews at PDR, CDR, FCA, PCA",
+  },
+  {
+    industry: "Financial Services",
+    industryHref: "/industries/financial-services",
+    regulators: "SEC · FDIC · FRB · OCC · FINRA",
+    documentTypes: "10-K/10-Q · XBRL filings · Policy docs · Audit-trail logs · Disclosures",
+    standards: "XBRL · SOX 404 · Basel III · FINRA 4530 · ISO 20022",
+    auditCadence: "Quarterly (10-Q) · Annual (10-K, SOX) · Continuous (FINRA)",
+  },
+  {
+    industry: "Insurance",
+    industryHref: "/industries/insurance",
+    regulators: "NAIC · State Insurance Commissioners · IAIS",
+    documentTypes: "Product Disclosure Statements · Claim SOPs · Policy variants by state · Underwriting docs",
+    standards: "NAIC ORSA · ACORD · ISO Forms · State-specific PDS schemas",
+    auditCadence: "Annual ORSA · State filings on rate change · Continuous policy updates",
+  },
+  {
+    industry: "Life Sciences",
+    industryHref: "/industries/life-sciences",
+    regulators: "FDA (CDER, CDRH) · EMA · NMPA · Health Canada",
+    documentTypes: "IFUs · Clinical Study Reports · eCTD/IDMP submissions · SPLs · Risk Management Files",
+    standards: "21 CFR Part 11 · ISO 13485 · ICH E3/E6 · FDA SPL · EU MDR · ISO 14971",
+    auditCadence: "Per-submission · Annual surveillance · Recall events trigger ad-hoc",
+  },
+  {
+    industry: "Transportation",
+    industryHref: "/industries/transportation",
+    regulators: "FAA · FRA · DOT/NHTSA · USCG · ICAO · IMO",
+    documentTypes: "Maintenance manuals · Service bulletins · Owner's manuals · Safety case documentation",
+    standards: "S1000D · ATA Spec 2200 (aviation) · AAR M-1003 (rail) · FMVSS (auto) · IMO MSC",
+    auditCadence: "Per-modification · Per-incident · Annual fleet inspection cycles",
+  },
+  {
+    industry: "Technology",
+    industryHref: "/industries/technology",
+    regulators: "FCC · FTC · NIST · CISA · ITAR (defense-tech)",
+    documentTypes: "Datasheets · Application notes · Reference designs · API/SDK docs · Security attestations",
+    standards: "IEEE · IPC · SOC 2 · ISO 27001 · NIST 800-series · ITAR",
+    auditCadence: "Annual SOC 2 · Per-release product docs · Continuous CI/CD-driven publishing",
+  },
+];
+
+const columnLabels = ["Industry", "Primary Regulators", "Key Document Types", "Standards Engineered To", "Audit Cadence"];
+---
+
+<BaseLayout
+  title="Industries — Five regulated verticals — Extense LLC"
+  description="Documentation in regulated industries is compliance engineering, not writing. Extense holds domain depth across five verticals — Government & Defense, Financial Services, Insurance, Life Sciences, and Transportation — each named in the standards their audits require."
+>
+  <Hero
+    variant="universal"
+    title="Six regulated verticals."
+    subdeck="Documentation in regulated industries isn't writing — it's compliance engineering. Each vertical names different standards. Domain depth, not generic technical writing skill, is what bridges them."
+  >
+    <ComplianceReferenceCard
+      cards={[
+        {
+          vertical: "Government & Defense",
+          standard: "S1000D Issue 5.0",
+          artifact: "IETM data module",
+          auditor: "DoD",
+          cadence: "PDR · CDR · FCA · PCA",
+          note: "S1000D conformance to procurement-graded depth.",
+        },
+        {
+          vertical: "Financial Services",
+          standard: "SOX 404",
+          artifact: "Policy library",
+          auditor: "SEC · external auditor",
+          cadence: "Annual + continuous",
+          note: "Policy libraries engineered as SOX 404 control artifacts.",
+        },
+        {
+          vertical: "Insurance",
+          standard: "NAIC ORSA",
+          artifact: "Annual filing",
+          auditor: "State DOI",
+          cadence: "Annual + per rate change",
+          note: "State-DOI variant management at 50-jurisdiction scale.",
+        },
+        {
+          vertical: "Life Sciences",
+          standard: "21 CFR Part 11",
+          artifact: "IFU",
+          auditor: "FDA",
+          cadence: "Per submission · annual",
+          note: "GxP-defensible authoring through FDA submission.",
+        },
+        {
+          vertical: "Transportation",
+          standard: "ATA Spec 2200",
+          artifact: "AMM (aviation)",
+          auditor: "FAA · NTSB",
+          cadence: "Per modification · annual",
+          note: "Service-information operations across modes.",
+        },
+        {
+          vertical: "Technology",
+          standard: "SOC 2 Type II",
+          artifact: "Control narrative",
+          auditor: "External CPA firm",
+          cadence: "Annual",
+          note: "Three product surfaces, one engineering discipline.",
+        },
+      ]}
+    />
+  </Hero>
+
+  <AnimatedDivider />
+
+  <section class="ind-section ind-section--narrative" aria-labelledby="narrative-heading">
+    <div class="container-prose ind-section__inner">
+      <h2 id="narrative-heading" class="ind-section__heading">Documentation in regulated industries is compliance engineering.</h2>
+      <div class="ind-section__prose">
+        <p>
+          Documentation in regulated industries isn't writing — it's compliance engineering. The artifacts produced are tested against named standards by auditors, regulators, attorneys, and ops teams. Stylistic prose is downstream of conformance; the artifact either meets the standard or it doesn't.
+        </p>
+        <p>
+          What gets shipped is what gets audited. The cost of a miss isn't a stylistic edit; it's a regulatory finding, a delayed approval, a recall, a fine, a claims dispute, a contract default. Documentation engineering is risk engineering through a particular surface — the page, the topic, the data module.
+        </p>
+        <p>
+          Each vertical names different standards. FDA SPL and 21 CFR Part 11 in life sciences. S1000D and MIL-STD-40051 in defense. XBRL and SOX in financial services. AAR M-1003 and FAA AC 43.13 in transportation. NAIC ORSA and state-specific PDS in insurance. SOC 2 and ISO 27001 in technology. Generic technical writing doesn't bridge these. Domain depth — knowing which standard applies to which artifact, knowing the audit cadence, knowing what gets tested when — does.
+        </p>
+        <p>
+          Where Extense applies that depth is named below. Five verticals, each with its own standards landscape and audit cadence.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ind-section ind-section--matrix" aria-labelledby="matrix-heading">
+    <div class="container-data ind-section__inner">
+      <h2 id="matrix-heading" class="ind-section__heading">Industry &times; regulatory framework.</h2>
+      <p class="ind-section__lead">
+        The standards landscape for each vertical, in one table. Click any industry name to read the deep practice page.
+      </p>
+
+      <div class="ind-matrix-wrap">
+        <table class="ind-matrix" id="ind-matrix" aria-label="Industry by regulatory framework">
+          <thead>
+            <tr>
+              {columnLabels.map((label, i) => (
+                <th scope="col" class:list={["ind-matrix__th", `ind-matrix__th--${i}`]} data-col-index={i}>{label}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, rowIdx) => (
+              <tr class="ind-matrix__row" data-row-index={rowIdx}>
+                <th scope="row" class="ind-matrix__cell ind-matrix__cell--industry" data-col-index="0">
+                  <a href={row.industryHref} class="ind-matrix__industry-link">{row.industry}</a>
+                </th>
+                <td class="ind-matrix__cell" data-col-index="1">{row.regulators}</td>
+                <td class="ind-matrix__cell" data-col-index="2">{row.documentTypes}</td>
+                <td class="ind-matrix__cell" data-col-index="3">{row.standards}</td>
+                <td class="ind-matrix__cell" data-col-index="4">{row.auditCadence}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ind-section ind-section--pivot" aria-labelledby="pivot-heading">
+    <div class="container-data ind-section__inner">
+      <h2 id="pivot-heading" class="ind-section__heading ind-section__heading--center">Where to next?</h2>
+      <div class="ind-section__pivot-grid">
+        <AudiencePivotCard
+          variant="public-sector"
+          eyebrow="Public Sector"
+          heading="For federal agencies and contractors."
+          description="S1000D programs, MIL-STD compliance, defense and aerospace maintenance documentation, civilian agency content modernization."
+          href="/industries/government-and-defense"
+          linkLabel="View Agencies"
+        />
+        <AudiencePivotCard
+          variant="private-sector"
+          eyebrow="Private Sector"
+          heading="For commercial buyers and partners."
+          description="Regulated-industry programs across financial services, life sciences, transportation, and insurance. Standards-driven documentation engineering at audit-grade depth."
+          linkLabel="View Industries"
+          industries={[
+            { label: "Financial Services", href: "/industries/financial-services" },
+            { label: "Life Sciences",      href: "/industries/life-sciences" },
+            { label: "Transportation",     href: "/industries/transportation" },
+            { label: "Insurance",          href: "/industries/insurance" },
+            { label: "Technology",         href: "/industries/technology" },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="ind-section ind-section--adjacent" aria-labelledby="adjacent-heading">
+    <div class="container-prose ind-section__inner">
+      <h2 id="adjacent-heading" class="ind-section__heading">Industries we serve outside our deepest six.</h2>
+      <p class="ind-section__prose-single">
+        Six named verticals are where Extense holds deepest standards depth. Adjacent industries &mdash; Telecom (3GPP standards), Energy (NERC CIP, API specs), Manufacturing (ISO 9001, machinery directive) &mdash; share enough technical-documentation surface that we serve them under bounded-scope engagements. Talk to us if your vertical isn't named here.
+      </p>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <CTAModule
+    audience="general"
+    body="Tell us your vertical and the standards your audit faces. We'll map our depth to your specific regulatory landscape and return a representative engagement scope within five business days. No obligation to proceed."
+  />
+</BaseLayout>
+
+<style>
+  .ind-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  .ind-section--narrative {
+    border-top: none;
+  }
+
+  @media (max-width: 767px) {
+    .ind-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .ind-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-8);
+    text-wrap: balance;
+  }
+
+  .ind-section__heading--small {
+    font-size: var(--text-display-md);
+    margin-bottom: var(--space-4);
+  }
+
+  .ind-section__heading--center {
+    text-align: center;
+  }
+
+  .ind-section__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-12);
+    text-wrap: pretty;
+    max-width: 60ch;
+  }
+
+  .ind-section__prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+  }
+
+  .ind-section__prose p {
+    text-wrap: pretty;
+  }
+
+  .ind-section__prose-single {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+    max-width: 80ch;
+  }
+
+  /* ─── Industry × Regulatory-Framework matrix ─── */
+  .ind-matrix-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ind-matrix {
+    width: 100%;
+    min-width: 880px;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .ind-matrix__th {
+    text-align: left;
+    vertical-align: bottom;
+    padding: var(--space-4) var(--space-4) var(--space-3) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-gravitas-navy);
+    /* Build-in: hidden until row 0 plays */
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity 240ms cubic-bezier(0, 0, 0.2, 1),
+      transform 240ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .ind-matrix__th:not(:last-child) {
+    padding-right: var(--space-4);
+  }
+
+  .ind-matrix__th--0 { width: 18%; }
+  .ind-matrix__th--1 { width: 18%; }
+  .ind-matrix__th--2 { width: 24%; }
+  .ind-matrix__th--3 { width: 22%; }
+  .ind-matrix__th--4 { width: 18%; }
+
+  .ind-matrix__row {
+    /* Row hairline drawn left-to-right via transform */
+    border-top: 1px solid transparent;
+    transition: border-color 300ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .ind-matrix__cell {
+    padding: var(--space-4) var(--space-4) var(--space-4) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+    vertical-align: top;
+    /* Build-in: hidden until staggered reveal */
+    opacity: 0;
+    transform: translateY(-3px);
+    transition:
+      opacity 220ms cubic-bezier(0, 0, 0.2, 1),
+      transform 220ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .ind-matrix__cell--industry {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    text-align: left;
+  }
+
+  .ind-matrix__industry-link {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .ind-matrix__industry-link:hover,
+  .ind-matrix__industry-link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* Animation-played state (added by JS once IntersectionObserver fires).
+     Headers reveal first, then rows + cells stagger in. */
+  .ind-matrix.is-built .ind-matrix__th {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .ind-matrix.is-built .ind-matrix__th--0 { transition-delay: 0ms; }
+  .ind-matrix.is-built .ind-matrix__th--1 { transition-delay: 60ms; }
+  .ind-matrix.is-built .ind-matrix__th--2 { transition-delay: 120ms; }
+  .ind-matrix.is-built .ind-matrix__th--3 { transition-delay: 180ms; }
+  .ind-matrix.is-built .ind-matrix__th--4 { transition-delay: 240ms; }
+
+  .ind-matrix.is-built .ind-matrix__row {
+    border-color: var(--color-border-subtle);
+  }
+  /* Row stagger — each row's hairline draws ~80ms after the previous */
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="0"] { transition-delay: 320ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="1"] { transition-delay: 400ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="2"] { transition-delay: 480ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="3"] { transition-delay: 560ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="4"] { transition-delay: 640ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="5"] { transition-delay: 720ms; }
+
+  /* Cells: revealed per-row with column stagger */
+  .ind-matrix.is-built .ind-matrix__cell {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="0"] .ind-matrix__cell { transition-delay: 380ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="1"] .ind-matrix__cell { transition-delay: 460ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="2"] .ind-matrix__cell { transition-delay: 540ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="3"] .ind-matrix__cell { transition-delay: 620ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="4"] .ind-matrix__cell { transition-delay: 700ms; }
+  .ind-matrix.is-built .ind-matrix__row[data-row-index="5"] .ind-matrix__cell { transition-delay: 780ms; }
+
+  /* Reduced motion — show table immediately, no transitions */
+  @media (prefers-reduced-motion: reduce) {
+    .ind-matrix__th,
+    .ind-matrix__cell {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .ind-matrix__row {
+      border-color: var(--color-border-subtle);
+    }
+  }
+
+  /* ─── Two-card pivot ─── */
+  .ind-section__pivot-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    margin-top: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .ind-section__pivot-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+
+<script>
+(function () {
+  const matrix = document.getElementById('ind-matrix');
+  if (!matrix) return;
+
+  // Reduced motion: skip observer; CSS already shows the table.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    matrix.classList.add('is-built');
+    return;
+  }
+
+  // IntersectionObserver: trigger build-in once when the matrix scrolls into view.
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        matrix.classList.add('is-built');
+        observer.disconnect();
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -10% 0px',
+  });
+
+  observer.observe(matrix);
+})();
+</script>

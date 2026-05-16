@@ -1,0 +1,497 @@
+---
+/*
+  CareersHeroFigure — multi-domain technical-figure exhibit (animated).
+
+  2×2 grid of small hairline technical drawings, each representing a
+  different industry Extense serves:
+    FIG. 01 — Rotorcraft        (aerospace / defense)
+    FIG. 02 — Meshing gears      (automotive / mechanical)
+    FIG. 03 — Molecular ring     (life sciences)
+    FIG. 04 — Integrated circuit (electronics / technology)
+
+  Motion contract:
+    Entry — on viewport intersection each cell draws in via
+      stroke-dashoffset, staggered 200ms per cell (FIG. 01 → 04).
+
+    Continuous (each figure does its thing after drawing in):
+      FIG. 01 — Rotor blade rotates around the static amber hub
+                (spinning up for takeoff, 1.2s per revolution).
+      FIG. 02 — Large gear rotates clockwise, small gear counter-
+                clockwise; speeds ratioed to size (≈1.86:1) so they
+                read as meshing. Small gear is positioned at the
+                meshing distance from the large gear.
+      FIG. 03 — Each atom vibrates ±~1px around its equilibrium
+                position (thermal vibration). Atoms have varied
+                periods and phase offsets so they read as random
+                jitter, not synchronized pulse. The bonds and the
+                ring itself stay still.
+      FIG. 04 — Two amber current pulses travel the external traces.
+                Upper trace: outside → chip (input). Lower trace:
+                chip → pad (output). Staggered begin times read as
+                "data in, data out."
+
+    prefers-reduced-motion: continuous animations stop; entry shows
+    the static final state immediately.
+
+  Every stroked element carries pathLength="100" so a single
+  stroke-dasharray rule governs the draw-in regardless of geometry.
+*/
+---
+
+<figure
+  class="careers-hero-figure"
+  data-careers-figure
+  aria-label="Exhibit of four hairline technical figures representing the industries Extense serves: rotorcraft, gear assembly, molecular structure, and integrated circuit"
+>
+  <!-- ── FIG. 01 — Rotorcraft (aerospace / defense) ── -->
+  <div class="careers-hero-figure__cell">
+    <p class="careers-hero-figure__cell-label" aria-hidden="true">FIG. 01</p>
+    <svg
+      class="careers-hero-figure__svg"
+      viewBox="0 0 200 130"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <!-- Rotating rotor assembly (blade + tip dots) — spins around (105,32) -->
+      <g class="chf-rotor">
+        <line x1="50" y1="32" x2="160" y2="32" pathLength="100" />
+        <circle class="chf-fill" cx="50" cy="32" r="2" fill="currentColor" stroke="none" />
+        <circle class="chf-fill" cx="160" cy="32" r="2" fill="currentColor" stroke="none" />
+      </g>
+
+      <!-- Mast -->
+      <line x1="105" y1="32" x2="105" y2="55" pathLength="100" />
+
+      <!-- Fuselage -->
+      <path
+        pathLength="100"
+        d="
+          M 145 55
+          C 130 50, 115 50, 100 55
+          L 75 55
+          C 65 60, 58 70, 56 80
+          L 30 80
+          L 22 73
+          L 14 82
+          L 22 90
+          L 30 88
+          L 56 90
+          C 58 96, 65 102, 75 102
+          L 150 102
+          C 162 102, 172 94, 172 84
+          C 172 72, 160 58, 145 55
+          Z
+        "
+      />
+
+      <!-- Cockpit canopy -->
+      <path pathLength="100" d="M 145 56 C 152 64, 162 73, 168 84" />
+
+      <!-- Tail rotor -->
+      <circle cx="18" cy="82" r="4" pathLength="100" />
+      <line x1="18" y1="77" x2="18" y2="87" pathLength="100" />
+      <line x1="13" y1="82" x2="23" y2="82" pathLength="100" />
+
+      <!-- Skid struts + rail -->
+      <line x1="82" y1="102" x2="82" y2="113" pathLength="100" />
+      <line x1="140" y1="102" x2="140" y2="113" pathLength="100" />
+      <line x1="68" y1="113" x2="155" y2="113" pathLength="100" />
+
+      <!-- Static amber hub (rotor rotates around it) -->
+      <circle
+        class="chf-fill"
+        cx="105"
+        cy="32"
+        r="4"
+        fill="var(--color-accent-primary)"
+        stroke="none"
+      />
+    </svg>
+    <p class="careers-hero-figure__cell-caption" aria-hidden="true">Rotorcraft</p>
+  </div>
+
+  <!-- ── FIG. 02 — Meshing gears (automotive / mechanical) ── -->
+  <div class="careers-hero-figure__cell">
+    <p class="careers-hero-figure__cell-label" aria-hidden="true">FIG. 02</p>
+    <svg
+      class="careers-hero-figure__svg"
+      viewBox="0 0 200 130"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <!-- Large gear (rotates CW around (78, 65)) -->
+      <g class="chf-gear chf-gear--large">
+        <circle cx="78" cy="65" r="26" pathLength="100" />
+        <circle cx="78" cy="65" r="9" pathLength="100" />
+        <circle class="chf-fill" cx="78" cy="65" r="1.5" fill="currentColor" stroke="none" />
+        <g transform="translate(78 65)">
+          <line x1="0" y1="-26" x2="0" y2="-32" pathLength="100" />
+          <line x1="18.4" y1="-18.4" x2="22.6" y2="-22.6" pathLength="100" />
+          <line x1="26" y1="0" x2="32" y2="0" pathLength="100" />
+          <line x1="18.4" y1="18.4" x2="22.6" y2="22.6" pathLength="100" />
+          <line x1="0" y1="26" x2="0" y2="32" pathLength="100" />
+          <line x1="-18.4" y1="18.4" x2="-22.6" y2="22.6" pathLength="100" />
+          <line x1="-26" y1="0" x2="-32" y2="0" pathLength="100" />
+          <line x1="-18.4" y1="-18.4" x2="-22.6" y2="-22.6" pathLength="100" />
+        </g>
+        <line x1="78" y1="42" x2="78" y2="56" pathLength="100" />
+        <line x1="78" y1="74" x2="78" y2="88" pathLength="100" />
+        <line x1="55" y1="65" x2="69" y2="65" pathLength="100" />
+        <line x1="87" y1="65" x2="101" y2="65" pathLength="100" />
+      </g>
+
+      <!-- Small gear (rotates CCW around (119, 84)) — positioned
+           at meshing distance from the large gear -->
+      <g class="chf-gear chf-gear--small">
+        <circle cx="119" cy="84" r="14" pathLength="100" />
+        <circle cx="119" cy="84" r="5" pathLength="100" />
+        <circle class="chf-fill" cx="119" cy="84" r="1.2" fill="currentColor" stroke="none" />
+        <g transform="translate(119 84)">
+          <line x1="0" y1="-14" x2="0" y2="-19" pathLength="100" />
+          <line x1="9.9" y1="-9.9" x2="13.4" y2="-13.4" pathLength="100" />
+          <line x1="14" y1="0" x2="19" y2="0" pathLength="100" />
+          <line x1="9.9" y1="9.9" x2="13.4" y2="13.4" pathLength="100" />
+          <line x1="0" y1="14" x2="0" y2="19" pathLength="100" />
+          <line x1="-9.9" y1="9.9" x2="-13.4" y2="13.4" pathLength="100" />
+          <line x1="-14" y1="0" x2="-19" y2="0" pathLength="100" />
+          <line x1="-9.9" y1="-9.9" x2="-13.4" y2="-13.4" pathLength="100" />
+        </g>
+      </g>
+    </svg>
+    <p class="careers-hero-figure__cell-caption" aria-hidden="true">Assembly</p>
+  </div>
+
+  <!-- ── FIG. 03 — Molecular structure (life sciences) ── -->
+  <div class="careers-hero-figure__cell">
+    <p class="careers-hero-figure__cell-label" aria-hidden="true">FIG. 03</p>
+    <svg
+      class="careers-hero-figure__svg"
+      viewBox="0 0 200 130"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <!-- Rotating molecule (around ring center ≈ (100, 65.5)) -->
+      <g class="chf-molecule">
+        <!-- Hexagonal ring bonds -->
+        <line x1="100" y1="40" x2="123" y2="53" pathLength="100" />
+        <line x1="123" y1="53" x2="123" y2="78" pathLength="100" />
+        <line x1="123" y1="78" x2="100" y2="91" pathLength="100" />
+        <line x1="100" y1="91" x2="77" y2="78" pathLength="100" />
+        <line x1="77" y1="78" x2="77" y2="53" pathLength="100" />
+        <line x1="77" y1="53" x2="100" y2="40" pathLength="100" />
+
+        <!-- Double-bond inner strokes -->
+        <line x1="103" y1="45" x2="119" y2="54" pathLength="100" />
+        <line x1="119" y1="77" x2="103" y2="86" pathLength="100" />
+        <line x1="81" y1="55" x2="81" y2="76" pathLength="100" />
+
+        <!-- Substituents -->
+        <line x1="100" y1="40" x2="100" y2="22" pathLength="100" />
+        <line x1="123" y1="78" x2="146" y2="91" pathLength="100" />
+
+        <!-- Atom nodes -->
+        <circle class="chf-fill" cx="100" cy="40" r="3.5" fill="var(--color-page-bg)" stroke="currentColor" stroke-width="1.5" />
+        <circle class="chf-fill" cx="123" cy="53" r="3.5" fill="var(--color-page-bg)" stroke="currentColor" stroke-width="1.5" />
+        <circle class="chf-fill" cx="123" cy="78" r="3.5" fill="var(--color-page-bg)" stroke="currentColor" stroke-width="1.5" />
+        <circle class="chf-fill" cx="100" cy="91" r="3.5" fill="var(--color-page-bg)" stroke="currentColor" stroke-width="1.5" />
+        <circle class="chf-fill" cx="77" cy="78" r="3.5" fill="var(--color-page-bg)" stroke="currentColor" stroke-width="1.5" />
+        <circle class="chf-fill" cx="77" cy="53" r="3.5" fill="var(--color-page-bg)" stroke="currentColor" stroke-width="1.5" />
+        <circle class="chf-fill" cx="100" cy="22" r="3.5" fill="var(--color-page-bg)" stroke="currentColor" stroke-width="1.5" />
+        <circle class="chf-fill" cx="146" cy="91" r="3.5" fill="var(--color-page-bg)" stroke="currentColor" stroke-width="1.5" />
+      </g>
+    </svg>
+    <p class="careers-hero-figure__cell-caption" aria-hidden="true">Molecular</p>
+  </div>
+
+  <!-- ── FIG. 04 — Integrated circuit (technology) ── -->
+  <div class="careers-hero-figure__cell">
+    <p class="careers-hero-figure__cell-label" aria-hidden="true">FIG. 04</p>
+    <svg
+      class="careers-hero-figure__svg"
+      viewBox="0 0 200 130"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <!-- Invisible upper-trace path (reversed direction) — provides
+           the route for the input pulse animation only. -->
+      <path
+        id="chf-trace-upper-anim"
+        d="M 170 22 L 42 22 L 42 50 L 55 50"
+        fill="none"
+        stroke="none"
+        pointer-events="none"
+      />
+
+      <!-- IC chip body -->
+      <rect x="65" y="40" width="70" height="52" pathLength="100" />
+
+      <!-- Orientation notch -->
+      <path d="M 95 40 A 5 5 0 0 0 105 40" pathLength="100" />
+
+      <!-- Pin 1 indicator dot -->
+      <circle class="chf-fill" cx="73" cy="48" r="1.5" fill="currentColor" stroke="none" />
+
+      <!-- Left-side pins -->
+      <line x1="55" y1="50" x2="65" y2="50" pathLength="100" />
+      <line x1="55" y1="62" x2="65" y2="62" pathLength="100" />
+      <line x1="55" y1="74" x2="65" y2="74" pathLength="100" />
+      <line x1="55" y1="86" x2="65" y2="86" pathLength="100" />
+
+      <!-- Right-side pins -->
+      <line x1="135" y1="50" x2="145" y2="50" pathLength="100" />
+      <line x1="135" y1="62" x2="145" y2="62" pathLength="100" />
+      <line x1="135" y1="74" x2="145" y2="74" pathLength="100" />
+      <line x1="135" y1="86" x2="145" y2="86" pathLength="100" />
+
+      <!-- Upper-left external trace (input) -->
+      <polyline points="55,50 42,50 42,22 170,22" pathLength="100" />
+
+      <!-- Lower-right external trace (output) -->
+      <polyline id="chf-trace-lower" points="145,74 160,74 160,108 30,108" pathLength="100" />
+
+      <!-- Pad target -->
+      <circle class="chf-fill" cx="30" cy="108" r="2" fill="currentColor" stroke="none" />
+
+      <!-- Amber current pulse #1 (output): chip → pad along lower trace -->
+      <circle class="chf-pulse" r="2.5" fill="var(--color-accent-primary)" stroke="none">
+        <animateMotion dur="3.2s" repeatCount="indefinite" begin="2s">
+          <mpath href="#chf-trace-lower" />
+        </animateMotion>
+      </circle>
+
+      <!-- Amber current pulse #2 (input): outside → chip along upper trace -->
+      <circle class="chf-pulse" r="2.5" fill="var(--color-accent-primary)" stroke="none">
+        <animateMotion dur="3.2s" repeatCount="indefinite" begin="3.6s">
+          <mpath href="#chf-trace-upper-anim" />
+        </animateMotion>
+      </circle>
+    </svg>
+    <p class="careers-hero-figure__cell-caption" aria-hidden="true">Circuit</p>
+  </div>
+</figure>
+
+<style>
+  .careers-hero-figure {
+    margin: 0;
+    width: clamp(320px, 34vw, 460px);
+    aspect-ratio: 480 / 320;
+    color: var(--color-text-primary);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--space-3);
+  }
+
+  .careers-hero-figure__cell {
+    position: relative;
+    border: var(--border-hairline);
+    padding: var(--space-2) var(--space-2) var(--space-1);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .careers-hero-figure__cell-label,
+  .careers-hero-figure__cell-caption {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .careers-hero-figure__cell-caption {
+    text-align: right;
+  }
+
+  .careers-hero-figure__svg {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    display: block;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Entry animation (draw-in + fade-in)
+     ───────────────────────────────────────────────────────────────── */
+
+  .careers-hero-figure__svg :is(line, path, rect, polyline, circle):not(.chf-fill):not(.chf-pulse) {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    transition: stroke-dashoffset 1100ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .careers-hero-figure__svg .chf-fill,
+  .careers-hero-figure__svg .chf-pulse {
+    opacity: 0;
+    transition: opacity 700ms ease-out;
+  }
+
+  .careers-hero-figure.is-visible .careers-hero-figure__svg :is(line, path, rect, polyline, circle):not(.chf-fill):not(.chf-pulse) {
+    stroke-dashoffset: 0;
+  }
+
+  .careers-hero-figure.is-visible .careers-hero-figure__svg .chf-fill,
+  .careers-hero-figure.is-visible .careers-hero-figure__svg .chf-pulse {
+    opacity: 1;
+  }
+
+  /* Cell-level stagger on transitions only (does not affect animations) */
+  .careers-hero-figure__cell:nth-child(1) .careers-hero-figure__svg :is(line, path, rect, polyline, circle) { transition-delay: 0ms; }
+  .careers-hero-figure__cell:nth-child(2) .careers-hero-figure__svg :is(line, path, rect, polyline, circle) { transition-delay: 200ms; }
+  .careers-hero-figure__cell:nth-child(3) .careers-hero-figure__svg :is(line, path, rect, polyline, circle) { transition-delay: 400ms; }
+  .careers-hero-figure__cell:nth-child(4) .careers-hero-figure__svg :is(line, path, rect, polyline, circle) { transition-delay: 600ms; }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Continuous motion — each figure does its thing after drawing in.
+
+     transform-box: view-box anchors transform-origin to the SVG's
+     viewBox coordinate system, so the rotation pivots are
+     specified directly in user units.
+     ───────────────────────────────────────────────────────────────── */
+
+  /* FIG. 01 — rotor spin */
+  .chf-rotor {
+    transform-box: view-box;
+    transform-origin: 105px 32px;
+  }
+  .careers-hero-figure.is-visible .chf-rotor {
+    animation: chf-rotor-spin 1.2s linear 1.4s infinite;
+  }
+  @keyframes chf-rotor-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* FIG. 02 — meshing gears */
+  .chf-gear--large {
+    transform-box: view-box;
+    transform-origin: 78px 65px;
+  }
+  .chf-gear--small {
+    transform-box: view-box;
+    transform-origin: 119px 84px;
+  }
+  .careers-hero-figure.is-visible .chf-gear--large {
+    animation: chf-gear-cw 16s linear 1.6s infinite;
+  }
+  .careers-hero-figure.is-visible .chf-gear--small {
+    /* Period = 16s × (14 / 26) ≈ 8.6s — small gear turns ~1.86×
+       faster than the large, matching the radius ratio. */
+    animation: chf-gear-ccw 8.6s linear 1.6s infinite;
+  }
+  @keyframes chf-gear-cw {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes chf-gear-ccw {
+    to { transform: rotate(-360deg); }
+  }
+
+  /* FIG. 03 — subtle thermal vibration of atoms.
+     Each of the 8 atoms jitters independently around its position.
+     Varied durations and start delays break sync so the cluster
+     looks like real thermal noise rather than a synchronized pulse.
+     The bonds (lines) and the ring itself stay still. */
+  .chf-molecule circle {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .careers-hero-figure.is-visible .chf-molecule circle:nth-of-type(1) { animation: chf-atom-jitter 1.5s ease-in-out 1.8s infinite; }
+  .careers-hero-figure.is-visible .chf-molecule circle:nth-of-type(2) { animation: chf-atom-jitter 1.7s ease-in-out 1.92s infinite; }
+  .careers-hero-figure.is-visible .chf-molecule circle:nth-of-type(3) { animation: chf-atom-jitter 1.4s ease-in-out 2.05s infinite; }
+  .careers-hero-figure.is-visible .chf-molecule circle:nth-of-type(4) { animation: chf-atom-jitter 1.6s ease-in-out 1.85s infinite; }
+  .careers-hero-figure.is-visible .chf-molecule circle:nth-of-type(5) { animation: chf-atom-jitter 1.8s ease-in-out 1.97s infinite; }
+  .careers-hero-figure.is-visible .chf-molecule circle:nth-of-type(6) { animation: chf-atom-jitter 1.5s ease-in-out 1.88s infinite; }
+  .careers-hero-figure.is-visible .chf-molecule circle:nth-of-type(7) { animation: chf-atom-jitter 1.7s ease-in-out 2.0s infinite; }
+  .careers-hero-figure.is-visible .chf-molecule circle:nth-of-type(8) { animation: chf-atom-jitter 1.6s ease-in-out 1.9s infinite; }
+  @keyframes chf-atom-jitter {
+    0%, 100% { transform: translate(0, 0); }
+    20%      { transform: translate(0.8px, -0.6px); }
+    40%      { transform: translate(-0.7px, 0.5px); }
+    60%      { transform: translate(0.5px, 0.8px); }
+    80%      { transform: translate(-0.4px, -0.6px); }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Reduced motion — static final state, no transitions, no
+     animations.
+     ───────────────────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .careers-hero-figure__svg :is(line, path, rect, polyline, circle):not(.chf-fill):not(.chf-pulse),
+    .careers-hero-figure__svg .chf-fill,
+    .careers-hero-figure__svg .chf-pulse,
+    .chf-rotor,
+    .chf-gear,
+    .careers-hero-figure.is-visible .chf-molecule circle {
+      transition: none;
+      animation: none;
+    }
+    .careers-hero-figure__svg :is(line, path, rect, polyline, circle):not(.chf-fill):not(.chf-pulse) {
+      stroke-dashoffset: 0;
+    }
+    .careers-hero-figure__svg .chf-fill { opacity: 1; }
+    .careers-hero-figure__svg .chf-pulse { opacity: 0; }
+  }
+
+  /* Mobile: stacked below hero, smaller */
+  @media (max-width: 1023px) {
+    .careers-hero-figure {
+      width: min(100%, 380px);
+      margin-top: var(--space-12);
+    }
+  }
+</style>
+
+<script>
+  /*
+    Entry trigger — adds .is-visible to the figure on viewport entry,
+    kicking off the cell-staggered draw-in and the continuous motion.
+    Mirrors the AnimatedDivider pattern.
+  */
+  (function () {
+    const figs = document.querySelectorAll('[data-careers-figure]');
+    if (!figs.length) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      figs.forEach((f) => f.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -5% 0px' }
+    );
+
+    figs.forEach((f) => observer.observe(f));
+  })();
+</script>

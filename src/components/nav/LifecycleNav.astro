@@ -9,20 +9,39 @@
   Document-grade quiet — single line, no ornamentation.
 */
 
+type PillarId = "ia" | "migration" | "ccms" | "ai-ready";
+type ServiceModelId = "project" | "staff-aug" | "managed";
+
 interface Props {
-  currentPillar: "ia" | "migration" | "ccms" | "ai-ready";
+  /** Pillar variant — backwards-compatible call signature. */
+  currentPillar?: PillarId;
+  /** Services variant — engagement-model sequencing. */
+  currentModel?: ServiceModelId;
 }
 
-const sequence = [
+const pillarSequence = [
   { id: "ia", label: "Information Architecture", href: "/capabilities/information-architecture" },
   { id: "migration", label: "Content Migration", href: "/capabilities/content-migration" },
   { id: "ccms", label: "CCMS & Publishing", href: "/capabilities/ccms-and-publishing" },
   { id: "ai-ready", label: "AI-Ready Content", href: "/capabilities/ai-ready-content" },
 ];
 
-const { currentPillar } = Astro.props;
-const currentIndex = sequence.findIndex((p) => p.id === currentPillar);
-const next = currentIndex < sequence.length - 1 ? sequence[currentIndex + 1] : null;
+const serviceSequence = [
+  { id: "project", label: "Project-Based", href: "/services/project-based" },
+  { id: "staff-aug", label: "Staff Augmentation", href: "/services/staff-augmentation" },
+  { id: "managed", label: "Managed Services", href: "/services/managed-services" },
+];
+
+const { currentPillar, currentModel } = Astro.props;
+
+const isServices = !!currentModel;
+const sequence = isServices ? serviceSequence : pillarSequence;
+const currentId = isServices ? currentModel : currentPillar;
+const indexHref = isServices ? "/services" : "/capabilities";
+const indexLabel = isServices ? "all engagement models" : "all capabilities";
+
+const currentIndex = sequence.findIndex((p) => p.id === currentId);
+const next = currentIndex >= 0 && currentIndex < sequence.length - 1 ? sequence[currentIndex + 1] : null;
 ---
 
 <nav class="lifecycle-nav" aria-label="Lifecycle progression">
@@ -33,8 +52,8 @@ const next = currentIndex < sequence.length - 1 ? sequence[currentIndex + 1] : n
         <span class="lifecycle-nav__arrow" aria-hidden="true">→</span>
       </a>
     ) : (
-      <a href="/capabilities" class="lifecycle-nav__link">
-        Back to <span class="lifecycle-nav__pillar">all capabilities</span>
+      <a href={indexHref} class="lifecycle-nav__link">
+        Back to <span class="lifecycle-nav__pillar">{indexLabel}</span>
         <span class="lifecycle-nav__arrow" aria-hidden="true">→</span>
       </a>
     )}

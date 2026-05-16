@@ -1,0 +1,402 @@
+---
+/*
+  /company/careers/[slug] — per-role detail page.
+
+  One page per open position. Slug = the role's `id` field in
+  src/data/careers.ts. The role-list index lives at /company/careers.
+
+  Each detail page is job-specific only. The shared boilerplate (About
+  the practice / Citizenship & clearance / What we offer / EEO) lives on
+  the index page; a small footer link below points back there for those
+  terms.
+
+  Universal additions in this template:
+    - U.S. citizenship + federal background investigation is prepended
+      as the first Required Qualification on every role (from
+      UNIVERSAL_CITIZENSHIP_REQ in src/data/careers.ts).
+    - A salary note appears below the salary band on every role
+      explaining the width of the range.
+*/
+
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Hero from "../../../components/site/Hero.astro";
+import AnimatedDivider from "../../../components/site/AnimatedDivider.astro";
+import {
+  jobs,
+  CAREERS_EMAIL,
+  SALARY_NOTE,
+  UNIVERSAL_CITIZENSHIP_REQ,
+} from "../../../data/careers";
+
+export async function getStaticPaths() {
+  return jobs.map((job) => ({
+    params: { slug: job.id },
+    props: { job },
+  }));
+}
+
+const { job } = Astro.props;
+
+const requiredWithUniversal = [UNIVERSAL_CITIZENSHIP_REQ, ...job.requiredQualifications];
+
+const heroEyebrow = `Position ${job.number} · ${job.postingRef}`;
+---
+
+<BaseLayout
+  title={`${job.title} — Careers — Extense LLC`}
+  description={job.subtitle}
+>
+  <Hero
+    variant="universal"
+    eyebrow={heroEyebrow}
+    title={job.title}
+    subdeck={job.subtitle}
+  />
+
+  <section class="car-section car-section--back" aria-label="Back to all open roles">
+    <div class="container-prose car-section__inner">
+      <a href="/company/careers" class="car-back">
+        <span class="car-back__arrow" aria-hidden="true">←</span>
+        <span>All open roles</span>
+      </a>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="car-section car-section--detail" aria-label={`${job.title} — full description`}>
+    <div class="container-prose car-section__inner">
+      <article class="car-job">
+
+        <dl class="car-job__meta">
+          <div class="car-job__meta-row">
+            <dt class="car-job__meta-label">Department</dt>
+            <dd class="car-job__meta-value">{job.department}</dd>
+          </div>
+          <div class="car-job__meta-row">
+            <dt class="car-job__meta-label">Employment</dt>
+            <dd class="car-job__meta-value">{job.employmentType}</dd>
+          </div>
+          <div class="car-job__meta-row">
+            <dt class="car-job__meta-label">Work</dt>
+            <dd class="car-job__meta-value">{job.workArrangement}</dd>
+          </div>
+          <div class="car-job__meta-row">
+            <dt class="car-job__meta-label">Salary band</dt>
+            <dd class="car-job__meta-value">{job.salaryBand}</dd>
+          </div>
+          <div class="car-job__meta-row">
+            <dt class="car-job__meta-label">Reference</dt>
+            <dd class="car-job__meta-value car-job__meta-value--mono">{job.postingRef}</dd>
+          </div>
+        </dl>
+
+        <p class="car-job__salary-note">{SALARY_NOTE}</p>
+
+        <div class="car-job__section">
+          <h2 class="car-job__section-heading">About the role</h2>
+          <p class="car-job__prose">{job.aboutRole}</p>
+        </div>
+
+        <div class="car-job__section">
+          <h2 class="car-job__section-heading">Key responsibilities</h2>
+          <ul class="car-job__list">
+            {job.keyResponsibilities.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+
+        <div class="car-job__section">
+          <h2 class="car-job__section-heading">Required qualifications</h2>
+          <ul class="car-job__list">
+            {requiredWithUniversal.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+
+        <div class="car-job__section">
+          <h2 class="car-job__section-heading">Preferred qualifications</h2>
+          <ul class="car-job__list">
+            {job.preferredQualifications.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+
+        {job.bonusPoints && (
+          <div class="car-job__section">
+            <h2 class="car-job__section-heading">Bonus points</h2>
+            <ul class="car-job__list">
+              {job.bonusPoints.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        )}
+
+        <div class="car-job__section">
+          <h2 class="car-job__section-heading">Education</h2>
+          <p class="car-job__prose">{job.education}</p>
+        </div>
+
+        <div class="car-job__apply">
+          <p class="car-job__apply-label">Apply for this role</p>
+          <p class="car-job__apply-text">
+            Email <a href={`mailto:${CAREERS_EMAIL}?subject=${encodeURIComponent(job.postingRef + " — " + job.title)}`}>{CAREERS_EMAIL}</a> with the subject line <span class="car-job__apply-subject">{job.postingRef} — {job.title}</span>. Include your résumé, a short cover note describing your most relevant project, and (where applicable) two or three representative work samples or anonymized excerpts.
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="car-section car-section--terms" aria-label="Full terms">
+    <div class="container-prose car-section__inner">
+      <p class="car-terms__eyebrow">Benefits, citizenship &amp; equal-employment terms</p>
+      <p class="car-terms__body">
+        Full details on what Extense offers, citizenship and clearance requirements, how to apply, and equal employment opportunity are listed on the <a href="/company/careers">careers index</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ─── Section spacing ─── */
+  .car-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .car-section {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+  }
+
+  .car-section--back {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+
+  .car-section--terms {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-12);
+  }
+
+  /* ─── Back link ─── */
+  .car-back {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .car-back:hover,
+  .car-back:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .car-back__arrow {
+    font-family: var(--font-body);
+    font-size: 14px;
+  }
+
+  /* ─── Job detail ─── */
+  .car-job__meta {
+    margin: 0 0 var(--space-6) 0;
+    padding: var(--space-4) 0;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .car-job__meta-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  @media (min-width: 640px) {
+    .car-job__meta-row {
+      grid-template-columns: 140px 1fr;
+      gap: var(--space-4);
+      align-items: baseline;
+    }
+  }
+
+  .car-job__meta-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .car-job__meta-value {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .car-job__meta-value--mono {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum";
+  }
+
+  /* Salary note — sits directly below the metadata strip. Small,
+     italic, color-text-muted to read as an inline footnote rather
+     than a normal paragraph. */
+  .car-job__salary-note {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-style: italic;
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-12) 0;
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--color-border-subtle);
+    text-wrap: pretty;
+  }
+
+  /* Job sections */
+  .car-job__section {
+    margin-bottom: var(--space-8);
+  }
+
+  .car-job__section-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    padding-bottom: var(--space-2);
+    border-bottom: var(--border-hairline);
+  }
+
+  .car-job__prose {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .car-job__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .car-job__list li {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-4);
+    position: relative;
+    text-wrap: pretty;
+  }
+
+  .car-job__list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-text-muted);
+  }
+
+  /* Apply block */
+  .car-job__apply {
+    margin-top: var(--space-8);
+    padding: var(--space-6) 0;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+  }
+
+  .car-job__apply-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .car-job__apply-text {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .car-job__apply-text a {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .car-job__apply-text a:hover,
+  .car-job__apply-text a:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .car-job__apply-subject {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-text-primary);
+  }
+
+  /* ─── Terms footer ─── */
+  .car-terms__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .car-terms__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .car-terms__body a {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .car-terms__body a:hover,
+  .car-terms__body a:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+</style>

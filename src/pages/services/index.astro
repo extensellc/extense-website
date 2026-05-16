@@ -1,0 +1,893 @@
+---
+/*
+  /services — engagement model overview page.
+
+  Three engagement shapes — Project-Based, Staff Augmentation, Managed
+  Services — rendered as procurement-document fragments (SOW / Order Form /
+  SLA excerpts) followed by a lifecycle narrative + timeline visualization
+  showing how a typical client moves through models as the work itself
+  evolves.
+
+  Load-bearing claim: the right engagement model is a function of where
+  the work is in its own lifecycle, not a property of the client.
+
+  Field values in fragments and bar positions on the timeline are
+  illustrative placeholders — Phase 4 practitioner pass will replace with
+  representative numbers from the engagement-history dataset.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+interface FragmentField {
+  label: string;
+  value: string;
+  emphasis?: string;
+}
+
+interface Fragment {
+  docRef: string;
+  title: string;
+  tagline: string;
+  fields: FragmentField[];
+  formLabel: string;
+  pageRef: string;
+}
+
+const fragments: Fragment[] = [
+  {
+    docRef: "Statement of Work · SOW-2026-0142",
+    title: "Project-Based",
+    tagline: "Fixed scope. Fixed fee. Defined endpoint.",
+    fields: [
+      {
+        label: "Scope",
+        value: "Information architecture design and DITA migration for the regulated-IFU content estate — 14 device families, 5 markets.",
+      },
+      {
+        label: "Deliverables",
+        value: "Content model · Taxonomy · Migration toolchain · ~60,000 topic conversion · Author runbook",
+      },
+      {
+        label: "Acceptance Criteria",
+        value: "Conversion fidelity ≥ 99.5%. All topics validated against target DTD. Runbook accepted by Client publishing lead.",
+      },
+      {
+        label: "Term",
+        value: "12 weeks · Effective 2026–06–01 → 2026–08–24",
+      },
+      {
+        label: "Fee",
+        value: "$XXX,XXX fixed · 30% kickoff / 40% midpoint / 30% on acceptance",
+      },
+    ],
+    formLabel: "Form: SOW v3.2",
+    pageRef: "Page 1 of 9",
+  },
+  {
+    docRef: "Order Form #07 · under MSA-2024-0388",
+    title: "Staff Augmentation",
+    tagline: "Embedded specialists on your direction.",
+    fields: [
+      {
+        label: "Resource Profile",
+        value: "Senior DITA Information Architect (1.0 FTE) · Senior XML Engineer (0.5 FTE)",
+      },
+      {
+        label: "Direction",
+        value: "Resources work to Client's project plan, attend Client standups, report to Client engineering lead.",
+        emphasis: "No fixed deliverable.",
+      },
+      {
+        label: "Term",
+        value: "6-month minimum · 2026–06–15 → 2026–12–15 · 30-day extension notice",
+      },
+      {
+        label: "Rate",
+        value: "$XXX / hour · billed monthly against timesheet · 40 hr/week target utilization",
+      },
+      {
+        label: "Reporting",
+        value: "Weekly timesheet · Monthly utilization summary · Quarterly performance review",
+      },
+    ],
+    formLabel: "Form: Order Form v2.1",
+    pageRef: "Page 1 of 4",
+  },
+  {
+    docRef: "Service Level Agreement · MSA-2026-0091",
+    title: "Managed Services",
+    tagline: "Operated for you. Continuously.",
+    fields: [
+      {
+        label: "Services in Scope",
+        value: "CCMS administration · Publishing pipeline operation · Schema governance · Tier 2/3 support · Content-model evolution",
+      },
+      {
+        label: "Coverage",
+        value: "Business days · 8am–6pm ET · After-hours on-call for Severity 1",
+      },
+      {
+        label: "Response Targets",
+        value: "Sev 1 < 1 hr · Sev 2 < 4 hrs · Sev 3 < 1 business day · Sev 4 < 5 business days",
+      },
+      {
+        label: "Term",
+        value: "12-month initial · Auto-renew annually · 60-day termination for convenience",
+      },
+      {
+        label: "Fee",
+        value: "$XX,XXX monthly · Reviewed annually for scope adjustment",
+      },
+    ],
+    formLabel: "Form: SLA v4.0",
+    pageRef: "Page 1 of 12",
+  },
+];
+
+interface TimelineTrack {
+  name: string;
+  barLeft: number;
+  barWidth: number;
+  note: string;
+  ongoing?: boolean;
+}
+
+const tracks: TimelineTrack[] = [
+  {
+    name: "Project-Based",
+    barLeft: 0,
+    barWidth: 48,
+    note: "IA refactor · migration · pipeline build",
+  },
+  {
+    name: "Staff Augmentation",
+    barLeft: 36,
+    barWidth: 38,
+    note: "CCMS rollout · author training · client-led extensions",
+  },
+  {
+    name: "Managed Services",
+    barLeft: 62,
+    barWidth: 38,
+    note: "CCMS administration · publishing operation · governance",
+    ongoing: true,
+  },
+];
+
+const axisLabels = [
+  { left: 0, text: "Month 0", align: "start" },
+  { left: 25, text: "M 6", align: "center" },
+  { left: 50, text: "M 12", align: "center" },
+  { left: 75, text: "M 18", align: "center" },
+  { left: 100, text: "M 24+", align: "end" },
+];
+
+interface Signal {
+  line: string;
+  body: string;
+}
+
+interface SignalGroup {
+  name: string;
+  signals: Signal[];
+}
+
+const signalGroups: SignalGroup[] = [
+  {
+    name: "Project-Based",
+    signals: [
+      {
+        line: "We have a clear deliverable and need a fixed price.",
+        body: "Bounded scope, defined acceptance criteria, procurement comfortable with a firm SOW. Project structure de-risks both sides — you know what you're getting, we know what we're delivering.",
+      },
+      {
+        line: "We need this done by a fixed date.",
+        body: "Regulatory deadline, product launch, contract expiration. Fixed-fee structure with milestone payments concentrates execution against a schedule everyone has agreed to in writing.",
+      },
+      {
+        line: "We've tried twice with other vendors. We need someone to actually finish.",
+        body: "Failed migrations and stalled IA refactors usually fail because scope was unclear or constantly changing. A project SOW with explicit acceptance criteria fixes both.",
+      },
+    ],
+  },
+  {
+    name: "Staff Augmentation",
+    signals: [
+      {
+        line: "We have the strategy. We need execution capacity.",
+        body: "Internal team owns the direction. We supply senior specialists who work to your plan, your timelines, your standards. Best when you know the work but not the headcount.",
+      },
+      {
+        line: "Headcount freeze. We can't hire but we can contract.",
+        body: "Common at calendar boundaries and during reorgs. Contract spend lives under a different budget line than FTE additions; an Order Form bridges what hiring can't.",
+      },
+      {
+        line: "Scope is going to evolve. We need flexibility.",
+        body: "When the work is exploratory or the architecture is being discovered week-to-week, a fixed-scope SOW becomes a change-order treadmill. T&M staffing carries the uncertainty.",
+      },
+    ],
+  },
+  {
+    name: "Managed Services",
+    signals: [
+      {
+        line: "We don't have the staff to operate this in-house.",
+        body: "CCMS administration, schema governance, publishing-pipeline ops — these are functions, not projects. Hiring for them is hard; running them through SLA is straightforward.",
+      },
+      {
+        line: "We need SLA on publishing. Authors can't wait when something breaks.",
+        body: "When the pipeline is critical-path for authors and content shipping is on a daily or weekly cadence, response-time targets are the right contractual mechanism.",
+      },
+      {
+        line: "The architecture is stable. We need someone to keep it running.",
+        body: "After the build is done, the work shifts to operating, evolving, and supporting. That's a different commercial structure than the project that built it.",
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Services — Three ways to engage Extense"
+  description="Extense LLC engagement models: Project-Based, Staff Augmentation, and Managed Services. The right model is a function of where the work is in its own lifecycle."
+>
+  <Hero
+    variant="universal"
+    title="Three ways to engage."
+    subdeck="Project-based work, embedded specialists, or operated as a service. The right model isn't a property of the client. It's a property of where the work is in its own lifecycle."
+  />
+
+  <section class="svc-section svc-section--thesis" aria-label="Engagement model thesis">
+    <div class="container-prose svc-section__inner">
+      <p class="svc-thesis">
+        What lands in your inbox is a document. Here are the three documents.
+      </p>
+    </div>
+  </section>
+
+  <section class="svc-section svc-section--fragments" aria-labelledby="fragments-heading">
+    <div class="container-page svc-section__inner">
+      <h2 id="fragments-heading" class="sr-only">Engagement model document fragments</h2>
+      <div class="svc-fragments">
+        {fragments.map((f) => (
+          <article class="svc-fragment" aria-labelledby={`frag-${f.title.toLowerCase().replace(/\s+/g, '-')}`}>
+            <p class="svc-fragment__ref">{f.docRef}</p>
+            <h3 class="svc-fragment__title" id={`frag-${f.title.toLowerCase().replace(/\s+/g, '-')}`}>{f.title}</h3>
+            <p class="svc-fragment__tagline">{f.tagline}</p>
+            <hr class="svc-fragment__rule" />
+            <ul class="svc-fragment__fields">
+              {f.fields.map((field) => (
+                <li>
+                  <span class="svc-field__label">{field.label}</span>
+                  <span class="svc-field__value">
+                    {field.value}
+                    {field.emphasis && <> <em>{field.emphasis}</em></>}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div class="svc-fragment__footer">
+              <span>{f.formLabel}</span>
+              <span>{f.pageRef}</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-section svc-section--lifecycle" aria-labelledby="lifecycle-heading">
+    <div class="container-prose svc-section__inner">
+      <h2 id="lifecycle-heading" class="svc-section__heading">The shape of an engagement evolves.</h2>
+
+      <div class="svc-section__prose">
+        <p>
+          Most engagements start project-based. The architecture work, the migration, the initial CCMS implementation — these have clear scopes, clear outcomes, clear endpoints. Project structure fits.
+        </p>
+        <p>
+          Staff augmentation enters when scope is harder to define upfront — when the client's team is building something new alongside ours, when the work is exploratory, when the duration is known but the deliverables aren't.
+        </p>
+        <p>
+          Managed services enter once the architecture has stabilized and the work shifts from building to operating. CCMS administration, publishing pipelines, governance enforcement, ongoing content-model evolution — SLA-bounded, recurring, no natural endpoint.
+        </p>
+        <p>
+          A long-running client relationship usually moves through all three. The right model isn't a property of the client. It's a property of where the work is in its own lifecycle.
+        </p>
+      </div>
+    </div>
+
+    <div class="container-page svc-section__inner svc-section__inner--timeline">
+      <figure class="svc-timeline" aria-label="Typical multi-year client engagement journey">
+        <figcaption class="svc-timeline__caption">A typical client journey</figcaption>
+
+        <div class="svc-timeline__chart">
+          {tracks.map((t) => (
+            <div class="svc-track">
+              <span class="svc-track__label">{t.name}</span>
+              <div class="svc-track__plot">
+                <div class="svc-track__line"></div>
+                {[0, 25, 50, 75, 100].map((pct) => (
+                  <div class="svc-track__tick" style={`left: ${pct}%`}></div>
+                ))}
+                <div
+                  class:list={["svc-track__bar", t.ongoing && "svc-track__bar--ongoing"]}
+                  style={`left: ${t.barLeft}%; width: ${t.barWidth}%`}
+                ></div>
+                {t.ongoing && <div class="svc-track__continues" aria-hidden="true">→</div>}
+                <div class="svc-track__note" style={`left: ${t.barLeft}%`}>{t.note}</div>
+              </div>
+            </div>
+          ))}
+
+          <div class="svc-timeline__axis" aria-hidden="true">
+            <span></span>
+            <div class="svc-timeline__axis-scale">
+              {axisLabels.map((l) => (
+                <span
+                  class:list={[
+                    "svc-timeline__axis-label",
+                    l.align === "start" && "svc-timeline__axis-label--start",
+                    l.align === "end" && "svc-timeline__axis-label--end",
+                  ]}
+                  style={`left: ${l.left}%`}
+                >{l.text}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <p class="svc-timeline__footnote">
+          Illustrative. Actual durations and transitions vary per engagement — some clients skip a model, some stay in one indefinitely, some run two in parallel. The pattern is the point, not the timing.
+        </p>
+      </figure>
+    </div>
+  </section>
+
+  <section
+    class="svc-section svc-section--signals"
+    aria-labelledby="signals-heading"
+    data-svc-scroll-section
+  >
+    <div class="svc-scroll-indicator" aria-hidden="true">
+      <div class="svc-scroll-indicator__fill"></div>
+    </div>
+    <div class="container-prose svc-section__inner">
+      <h2 id="signals-heading" class="svc-section__heading">When you&rsquo;d pick each.</h2>
+      <p class="svc-section__lead">
+        The model follows the work. Here are the buyer-side phrases that point to each — phrases real procurement and engineering leads recognize in their own situation.
+      </p>
+
+      {signalGroups.map((group) => (
+        <div class="svc-signal-group">
+          <h3 class="svc-signal-group__name">{group.name}.</h3>
+          <ol class="svc-signal-list">
+            {group.signals.map((s) => (
+              <li class="svc-signal">
+                <p class="svc-signal__line">&ldquo;{s.line}&rdquo;</p>
+                <p class="svc-signal__body">{s.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    body="Tell us about the work. We'll recommend the engagement model that fits and return a representative document — SOW, Order Form, or SLA — so you can see exactly what would land in your inbox."
+  />
+</BaseLayout>
+
+<style>
+  .svc-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .svc-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Thesis pull-quote section ─── */
+  .svc-section--thesis {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .svc-thesis {
+    padding: var(--space-6);
+    border-left: 2px solid var(--color-bar-yellow, #fcd34d);
+    background-color: rgb(253 224 71 / 0.06);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 20px;
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  /* ─── Document fragments ─── */
+  .svc-fragments {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 900px) {
+    .svc-fragments {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+  }
+
+  .svc-fragment {
+    position: relative;
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-8) var(--space-6) var(--space-6);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .svc-fragment::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #fcd34d;
+  }
+
+  .svc-fragment__ref {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin-bottom: var(--space-6);
+  }
+
+  .svc-fragment__title {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: 30px;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .svc-fragment__tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-snug);
+    margin-bottom: var(--space-6);
+    text-wrap: balance;
+  }
+
+  .svc-fragment__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .svc-fragment__fields {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+  }
+
+  .svc-field__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .svc-field__value {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    line-height: var(--leading-normal);
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+
+  .svc-field__value em {
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+
+  .svc-fragment__footer {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ─── Lifecycle narrative + timeline ─── */
+  .svc-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-8);
+    text-wrap: balance;
+  }
+
+  .svc-section__prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+  }
+
+  .svc-section__prose p {
+    text-wrap: pretty;
+  }
+
+  .svc-section__inner--timeline {
+    margin-top: var(--space-16);
+  }
+
+  .svc-timeline {
+    margin: 0;
+    padding: 0;
+  }
+
+  .svc-timeline__caption {
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    letter-spacing: var(--tracking-wide);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+  }
+
+  .svc-timeline__chart {
+    padding: var(--space-4) 0 var(--space-6);
+  }
+
+  .svc-track {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-6);
+    align-items: start;
+    padding: var(--space-4) 0;
+    border-top: var(--border-hairline);
+  }
+
+  .svc-track:last-of-type {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (max-width: 599px) {
+    .svc-track {
+      grid-template-columns: 110px 1fr;
+      gap: var(--space-3);
+    }
+  }
+
+  .svc-track__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    padding-top: 2px;
+  }
+
+  .svc-track__plot {
+    position: relative;
+    min-height: 80px;
+  }
+
+  .svc-track__line {
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--color-border-subtle);
+  }
+
+  .svc-track__tick {
+    position: absolute;
+    top: 14px;
+    width: 1px;
+    height: 9px;
+    background-color: var(--color-border-subtle);
+  }
+
+  .svc-track__bar {
+    position: absolute;
+    top: 11px;
+    height: 14px;
+    background-color: #fcd34d;
+    border-radius: 1px;
+  }
+
+  .svc-track__bar--ongoing {
+    background: linear-gradient(
+      to right,
+      #fcd34d 0%,
+      #fcd34d 88%,
+      rgb(252 211 77 / 0) 100%
+    );
+  }
+
+  .svc-track__continues {
+    position: absolute;
+    top: 7px;
+    right: -4px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: #fcd34d;
+    line-height: 1;
+  }
+
+  .svc-track__note {
+    position: absolute;
+    top: 32px;
+    max-width: 100%;
+    padding-right: 4px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13.5px;
+    color: var(--color-text-secondary);
+    line-height: 1.3;
+    text-wrap: pretty;
+  }
+
+  .svc-timeline__axis {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-6);
+    padding-top: var(--space-3);
+  }
+
+  @media (max-width: 599px) {
+    .svc-timeline__axis {
+      grid-template-columns: 110px 1fr;
+      gap: var(--space-3);
+    }
+  }
+
+  .svc-timeline__axis-scale {
+    position: relative;
+    height: 16px;
+  }
+
+  .svc-timeline__axis-label {
+    position: absolute;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .svc-timeline__axis-label--start {
+    transform: translateX(0);
+  }
+
+  .svc-timeline__axis-label--end {
+    transform: translateX(-100%);
+  }
+
+  .svc-timeline__footnote {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    max-width: 60ch;
+  }
+
+  /* ─── Signals section — grouped by engagement model ─── */
+  /* Tighten the bottom padding so the section's closing hairline reads
+     as the top edge of the CTA, rather than floating in white space. */
+  .svc-section--signals {
+    padding-bottom: var(--space-8);
+    /* Establishes the positioning context for the absolute-positioned
+       scroll-progress indicator below. */
+    position: relative;
+  }
+
+  /* Vertical scroll-progress indicator pinned to the section.
+     Hidden below desktop — there's not enough gutter room to place it
+     without crowding the prose column. */
+  .svc-scroll-indicator {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .svc-scroll-indicator {
+      display: block;
+      position: absolute;
+      top: 0;
+      /* Stop at the section's closing hairline (the border-bottom of the
+         last signal-group). The signals section sets padding-bottom:
+         var(--space-8); inset the indicator by the same so its bottom
+         edge lands on the hairline, not below it. */
+      bottom: var(--space-8);
+      /* Sits in the left gutter beside the centered prose column. max()
+         guards against the indicator falling off the left edge at
+         narrower tablet widths (e.g. 768px). */
+      left: max(16px, calc(50% - var(--container-prose) / 2 - 40px));
+      width: 2px;
+      background-color: var(--color-border-subtle);
+      pointer-events: none;
+    }
+  }
+
+  .svc-scroll-indicator__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: #fcd34d;
+    will-change: height;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc-scroll-indicator__fill {
+      height: 100%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .svc-section--signals {
+      padding-bottom: var(--space-8);
+    }
+  }
+
+  .svc-section__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-16);
+    text-wrap: pretty;
+  }
+
+  .svc-signal-group {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    border-top: var(--border-hairline);
+  }
+
+  .svc-signal-group:last-of-type {
+    border-bottom: var(--border-hairline);
+  }
+
+  .svc-signal-group__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+  }
+
+  .svc-signal-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .svc-signal {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+    border-top: var(--border-hairline);
+  }
+
+  .svc-signal:first-of-type {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .svc-signal:last-of-type {
+    padding-bottom: 0;
+  }
+
+  .svc-signal__line {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .svc-signal__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+</style>
+
+<script>
+  /*
+    Vertical scroll-progress indicator on the signals section.
+    Fill height = (viewport-center − section-top) / section-height,
+    clamped 0–1. Updates per requestAnimationFrame on scroll/resize.
+    Respects prefers-reduced-motion by no-op'ing (CSS sets height: 100%).
+  */
+  (function () {
+    const section = document.querySelector<HTMLElement>('[data-svc-scroll-section]');
+    if (!section) return;
+    const fill = section.querySelector<HTMLElement>('.svc-scroll-indicator__fill');
+    if (!fill) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    let ticking = false;
+    function update() {
+      ticking = false;
+      const rect = section!.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const centerWithinSection = viewportCenter - rect.top;
+      const ratio = Math.max(0, Math.min(1, centerWithinSection / rect.height));
+      fill!.style.height = `${(ratio * 100).toFixed(2)}%`;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  })();
+</script>

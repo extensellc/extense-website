@@ -1,0 +1,322 @@
+---
+/*
+  CaseStudyRecordCard — hero side-panel for /resources/case-studies.
+
+  Renders all three case-study summary views in the DOM at SSR. A small
+  inline script picks one at random on first paint and adds .is-active to
+  it; the others are display:none. No on-screen cycling — deliberate
+  distinction from ComplianceReferenceCard on /industries.
+
+  Whole card is an <a> linking to the featured case study. Hovers darken
+  the hairline border and widen the amber spine (2px → 3px).
+
+  Hidden below 1024px. Mobile shows the hero text alone; the case index
+  list below the hero does the navigational work.
+*/
+
+interface ArtifactLedgerItem {
+  number: string;
+  label: string;
+}
+
+interface CaseRecord {
+  href: string;
+  sector: string;
+  title: string;
+  frame: string;
+  artifacts: ArtifactLedgerItem[];
+}
+
+interface Props {
+  cards: CaseRecord[];
+}
+
+const { cards } = Astro.props;
+const total = String(cards.length).padStart(2, "0");
+---
+
+<aside class="csrc" id="csrc" aria-label="Featured case study record">
+  <div class="csrc__stack">
+    {cards.map((card, i) => (
+      <a
+        href={card.href}
+        class:list={["csrc__panel", i === 0 && "is-active"]}
+        data-view-index={i}
+        aria-hidden={i !== 0 ? "true" : undefined}
+        tabindex={i !== 0 ? -1 : undefined}
+      >
+        <header class="csrc__header">
+          <p class="csrc__doc-ref">Case Record</p>
+          <p class="csrc__counter">
+            <span class="csrc__counter-current">{String(i + 1).padStart(2, "0")}</span>
+            <span class="csrc__counter-sep">/</span>
+            <span class="csrc__counter-total">{total}</span>
+          </p>
+        </header>
+        <hr class="csrc__rule" />
+
+        <p class="csrc__sector">{card.sector}</p>
+        <h3 class="csrc__title">{card.title}</h3>
+        <p class="csrc__frame">{card.frame}</p>
+
+        <hr class="csrc__rule" />
+
+        <p class="csrc__ledger-label">Artifact Ledger</p>
+        <ul class="csrc__ledger">
+          {card.artifacts.map((a) => (
+            <li class="csrc__ledger-row">
+              <span class="csrc__ledger-num">{a.number}</span>
+              <span class="csrc__ledger-label-text">{a.label}</span>
+            </li>
+          ))}
+        </ul>
+
+        <hr class="csrc__rule" />
+
+        <p class="csrc__cta">
+          Read the case study <span aria-hidden="true">→</span>
+        </p>
+
+        <footer class="csrc__footer">
+          <span>Form: CASE-RECORD v1.0</span>
+          <span class="csrc__sampled">Sampled per visit</span>
+        </footer>
+      </a>
+    ))}
+  </div>
+</aside>
+
+<style>
+  /* Hidden by default; shown only at desktop */
+  .csrc {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .csrc {
+      display: block;
+      width: 360px;
+      flex-shrink: 0;
+    }
+  }
+
+  .csrc__stack {
+    position: relative;
+  }
+
+  .csrc__panel {
+    display: none;
+    position: relative;
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-4) var(--space-6) var(--space-3);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+
+  .csrc__panel.is-active {
+    display: block;
+  }
+
+  /* Amber spine */
+  .csrc__panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #fcd34d;
+    pointer-events: none;
+    transition: width var(--duration-base) var(--easing-out);
+  }
+
+  .csrc__panel:hover,
+  .csrc__panel:focus-visible {
+    border-color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .csrc__panel:hover::before,
+  .csrc__panel:focus-visible::before {
+    width: 3px;
+  }
+
+  .csrc__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .csrc__doc-ref {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .csrc__counter {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    margin: 0;
+    font-feature-settings: "tnum";
+  }
+
+  .csrc__counter-current {
+    color: var(--color-link);
+    font-weight: var(--weight-semibold);
+  }
+
+  .csrc__counter-sep {
+    color: var(--color-text-muted);
+    margin: 0 2px;
+  }
+
+  .csrc__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: var(--space-3) 0;
+  }
+
+  .csrc__sector {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .csrc__title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .csrc__frame {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .csrc__ledger-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .csrc__ledger {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .csrc__ledger-row {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+
+  .csrc__ledger-num {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: var(--weight-regular);
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    line-height: 1;
+    text-align: right;
+  }
+
+  .csrc__ledger-label-text {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--color-text-secondary);
+    line-height: 1.3;
+  }
+
+  .csrc__cta {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin: 0;
+  }
+
+  .csrc__panel:hover .csrc__cta,
+  .csrc__panel:focus-visible .csrc__cta {
+    color: var(--color-link-hover);
+  }
+
+  .csrc__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: var(--border-hairline);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .csrc__sampled {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+</style>
+
+<script>
+  (function () {
+    const csrc = document.getElementById("csrc");
+    if (!csrc) return;
+
+    const panels = csrc.querySelectorAll<HTMLElement>(".csrc__panel");
+    if (panels.length <= 1) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Pick: random under default motion preferences; first under reduced motion.
+    const pick = reduced ? 0 : Math.floor(Math.random() * panels.length);
+
+    panels.forEach((p, i) => {
+      const active = i === pick;
+      p.classList.toggle("is-active", active);
+      if (active) {
+        p.removeAttribute("aria-hidden");
+        p.removeAttribute("tabindex");
+      } else {
+        p.setAttribute("aria-hidden", "true");
+        p.setAttribute("tabindex", "-1");
+      }
+    });
+  })();
+</script>

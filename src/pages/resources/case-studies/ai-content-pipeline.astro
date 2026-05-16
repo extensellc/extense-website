@@ -1,0 +1,282 @@
+---
+import CaseStudyPageLayout from "../../../layouts/CaseStudyPageLayout.astro";
+import DocumentRow from "../../../components/site/DocumentRow.astro";
+
+const beforeAfter = {
+  before: {
+    label: "Before — unstructured XML",
+    items: [
+      "Generic <article> and <section> elements",
+      "No topic typing — AI cannot distinguish explanations from procedures",
+      "Zero metadata fields per topic",
+      "No section IDs — chunking breaks at arbitrary points",
+      "Keyword-only search; no intent or audience filtering",
+      "AI-readiness score: ~2/10",
+    ],
+  },
+  after: {
+    label: "After — AI-ready DITA",
+    items: [
+      "Formal DITA types (concept, task, reference) with semantic elements",
+      "Intent routing: concept → 'What is X?', task → 'How do I X?'",
+      "10+ metadata fields per topic (audience, difficulty, duration, intent, domain, chatbot-priority)",
+      "150+ addressable section IDs with stable anchors",
+      "Metadata-filtered vector search with intent classification",
+      "AI-readiness score: ~9/10",
+    ],
+  },
+};
+
+const tools = [
+  {
+    heading: "enrich-metadata.py",
+    body: "Dictionary-driven Python script that batch-applies prolog metadata to every topic file. Maps each topic to its audience, difficulty, duration, content domain, content intent, chatbot priority, prerequisites, and service line — using normalized values from the controlled vocabulary.",
+  },
+  {
+    heading: "dita-to-chatbot-json.py",
+    body: "Exports DITA topics to JSONL chunks for vector store ingestion. Section-aware chunking respects semantic boundaries. Generates a content manifest, glossary index with synonym lookup, and an ingestion report with quality metrics.",
+  },
+];
+
+const vocabularyFacets = [
+  { facet: "Audience", values: "technical-writer · developer · build-engineer · manager · all" },
+  { facet: "Difficulty", values: "beginner · intermediate · advanced · expert" },
+  { facet: "Content domain", values: "dita-fundamentals · authoring · content-reuse · publishing · customization · xslt · devops · architecture" },
+  { facet: "Content intent", values: "explain · how-to · reference · troubleshoot · best-practice · tutorial" },
+  { facet: "Service line", values: "dita-engineering · publishing-engineering · ccms-services · content-migration · xml-engineering" },
+];
+---
+
+<CaseStudyPageLayout
+  caseNumber="02"
+  caseTotal="03"
+  year="2025"
+  sector="Enterprise documentation"
+  title="AI-Ready Content Pipeline"
+  frame="Unstructured legacy XML transformed into chunk-safe, metadata-enriched DITA — with measurable AI-readiness scoring."
+  challenge="Legacy documentation existed as generic XML and Markdown with no semantic typing, no metadata, and no section identifiers. AI systems treated all content as undifferentiated plain text — chatbot retrieval precision was roughly 25%, and there was no way to filter by audience, difficulty, or intent. Content chunking broke at arbitrary points because there were no semantic boundaries."
+  approach="We built a metadata enrichment pipeline using Python tooling that batch-applies a 5-facet controlled vocabulary (audience, difficulty, content domain, content intent, and service line) to every topic. A DITA subject scheme enforces normalized values — preventing the inconsistency that breaks AI filtering. Every section received a stable ID and question-phrased title to match natural-language queries."
+  artifacts={[
+    { number: "100%", label: "metadata coverage" },
+    { number: "150+", label: "section IDs" },
+    { number: "5", label: "classification facets" },
+    { number: "2", label: "conversion tools" },
+  ]}
+  engagement={{
+    duration: "12 weeks",
+    team: "1 architect · 1 conversion engineer · 1 retrieval engineer",
+    engagement: "Project-based, fixed scope",
+    status: "Shipped · powering production RAG retrieval",
+  }}
+  stack={[
+    { label: "Schema",      value: "DITA 1.3 · custom 5-facet subject scheme" },
+    { label: "Tooling",     value: "Python 3.12 · lxml · Pydantic validation models" },
+    { label: "Vector store",value: "Vendor-neutral integration (JSONL export contract)" },
+    { label: "Validation",  value: "Schematron · subject scheme validator · pre-commit hooks" },
+    { label: "Export",      value: "JSONL chunks · content manifest · synonym glossary index" },
+  ]}
+  decisions={[
+    {
+      decision: "Schema for AI corpus",
+      chosen: "DITA 1.3 + custom subject scheme",
+      rejected: "Markdown + YAML frontmatter",
+      why: "DITA schema rejects invalid metadata at author-time. Frontmatter drifts within weeks; the corpus stays trustworthy only if invalidity is impossible by construction.",
+    },
+    {
+      decision: "Chunking unit",
+      chosen: "Section element with stable @id",
+      rejected: "Sliding-window character chunks",
+      why: "Semantic boundaries beat arbitrary character spans on retrieval precision. The retrieval engine returns sections, the LLM cites them, the citation maps back to a stable anchor in source.",
+    },
+    {
+      decision: "Section title phrasing",
+      chosen: "Question-phrased ('How do I configure X?')",
+      rejected: "Statement-phrased ('X configuration')",
+      why: "Natural-language user queries match question titles. Statement titles fail title-match heuristics and degrade rank in mixed retrieval pipelines.",
+    },
+    {
+      decision: "Metadata enforcement",
+      chosen: "Subject scheme validation in pre-commit hook",
+      rejected: "Run-time metadata cleanup pass",
+      why: "Cleanup at run-time hides drift and lets bad metadata propagate downstream. Rejecting at author-time keeps the corpus honest, and the failure surfaces where the cost to fix is lowest.",
+    },
+  ]}
+  metaTitle="Case Study — AI-Ready Content Pipeline"
+  metaDescription="Engagement record: unstructured legacy XML transformed into AI-ready DITA with 100% metadata coverage, 150+ addressable section IDs, and a 5-facet controlled vocabulary that lifts retrieval precision from ~25% to production-grade."
+>
+  <section class="cs-body cs-body--ba" aria-labelledby="ba-heading">
+    <div class="container-prose cs-body__inner">
+      <h2 id="ba-heading" class="cs-body__heading">Before &amp; after.</h2>
+      <div class="cs-ba-grid">
+        <article class="cs-ba">
+          <p class="cs-ba__label">{beforeAfter.before.label}</p>
+          <ul class="cs-ba__list">
+            {beforeAfter.before.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </article>
+        <article class="cs-ba">
+          <p class="cs-ba__label">{beforeAfter.after.label}</p>
+          <ul class="cs-ba__list">
+            {beforeAfter.after.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-body cs-body--tools" aria-labelledby="tools-heading">
+    <div class="container-prose cs-body__inner">
+      <h2 id="tools-heading" class="cs-body__heading">Tools built.</h2>
+      <div class="cs-body__rows">
+        {tools.map((t) => (
+          <DocumentRow variant="entry" heading={t.heading} body={t.body} headingLevel={3} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-body cs-body--vocab" aria-labelledby="vocab-heading">
+    <div class="container-prose cs-body__inner">
+      <p class="cs-body__eyebrow" id="vocab-heading">Controlled vocabulary (subject scheme)</p>
+      <hr class="cs-body__rule" />
+      <dl class="cs-vocab">
+        {vocabularyFacets.map((f) => (
+          <div class="cs-vocab__row">
+            <dt class="cs-vocab__facet">{f.facet}</dt>
+            <dd class="cs-vocab__values">{f.values}</dd>
+          </div>
+        ))}
+      </dl>
+      <hr class="cs-body__rule" />
+    </div>
+  </section>
+</CaseStudyPageLayout>
+
+<style>
+  .cs-body {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .cs-body {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+  }
+
+  .cs-body__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: balance;
+  }
+
+  .cs-body__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .cs-body__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0;
+  }
+
+  /* Before / after */
+  .cs-ba-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .cs-ba-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+    }
+  }
+
+  .cs-ba__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+    padding-bottom: var(--space-3);
+    border-bottom: var(--border-hairline);
+  }
+
+  .cs-ba__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .cs-ba__list li {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.45;
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  /* Controlled vocabulary */
+  .cs-vocab {
+    margin: 0;
+    padding: var(--space-6) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .cs-vocab__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 768px) {
+    .cs-vocab__row {
+      grid-template-columns: 160px 1fr;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+  }
+
+  .cs-vocab__facet {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .cs-vocab__values {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+</style>

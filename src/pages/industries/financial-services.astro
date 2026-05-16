@@ -1,0 +1,154 @@
+---
+import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+---
+
+<IndustryPageLayout
+  pageTitle="Financial Services — Industries"
+  pageDescription="Policy, procedure, and regulatory documentation as control infrastructure. SOX 404 control documentation, RAG over policy libraries for compliance assistants, audit-ready content programs."
+  heroTitle="Financial Services"
+  heroSubdeck="Where policy and procedure documentation is part of the SOX 404 control environment. The document is the control; the writing is regulated speech."
+  industryHref="/industries/financial-services"
+  documentTypes={[
+    {
+      label: "Policies and procedures",
+      description: "Enterprise-wide policy libraries, business-line procedures, control documentation.",
+    },
+    {
+      label: "Regulatory disclosures and filings",
+      description: "Annual report content, regulatory filing components, customer-facing disclosures.",
+    },
+    {
+      label: "Compliance documentation",
+      description: "AML / KYC procedures, regulatory examination response materials, internal control documentation.",
+    },
+    {
+      label: "Risk and audit content",
+      description: "Risk register documentation, internal audit findings and responses, control attestations.",
+    },
+    {
+      label: "Software and platform documentation",
+      description: "API documentation, integration guides, and customer-facing technical content for fintech and platform providers.",
+    },
+  ]}
+  standards={[
+    {
+      label: "SOX (Sarbanes-Oxley)",
+      description: "Section 404 internal-control documentation requirements. Document control as a SOX 404 control.",
+    },
+    {
+      label: "FINRA / SEC requirements",
+      description: "Regulatory communication and disclosure standards for broker-dealers and investment advisers.",
+    },
+    {
+      label: "Banking regulator examination standards",
+      description: "OCC, FRB, FDIC examination materials and response documentation requirements.",
+    },
+    {
+      label: "Internal audit standards",
+      description: "IIA standards for audit documentation, IT general controls (ITGC) documentation requirements.",
+    },
+    {
+      label: "ISO 20022",
+      description: "International standard for financial-services messaging. Increasingly load-bearing for payments platforms, securities reporting, and the global migration off legacy SWIFT MT formats. Documentation surfaces: message-schema reference content, integration guides, and migration playbooks.",
+    },
+  ]}
+  controlChain={{
+    eyebrow: "CONTROL CHAIN — FINANCIAL SERVICES",
+    heading: "Documentation as a SOX control.",
+    lead: "Policy and procedure content in financial services functions as a SOX 404 control — not just as informational text. Auditors trace a chain of evidence from authorship through external disclosure. The chain has five stages; a break in any one becomes a material weakness in the 10-K.",
+    stages: [
+      {
+        number: "01",
+        name: "Authorship",
+        description: "SMEs draft policy and procedure; regulatory-framework references tagged; controlled vocabulary applied.",
+        artifact: "Draft document + metadata",
+      },
+      {
+        number: "02",
+        name: "Approval",
+        description: "Multi-tier review — legal, compliance, business owner. Sign-off timestamps captured electronically.",
+        artifact: "Approval record + reviewer chain",
+      },
+      {
+        number: "03",
+        name: "Version Control",
+        description: "Published into CCMS with version tracking and change history. Prior version superseded; both retained for audit.",
+        artifact: "Version history + audit trail",
+      },
+      {
+        number: "04",
+        name: "Audit & Attestation",
+        description: "SOX 404 testing samples the documentation control; internal audit tests effectiveness; management certifies.",
+        artifact: "Test results + management attestation",
+      },
+      {
+        number: "05",
+        name: "External Disclosure",
+        description: "10-K certification, SOC 2 report, or regulator filing. The chain of evidence becomes externally visible.",
+        artifact: "10-K · SOC 2 report · regulator submission",
+      },
+    ],
+    callout: "A break anywhere in the chain becomes a SOX 404 material weakness in the 10-K.",
+    footnote: "Stages illustrative. Actual control-evidence chains carry more granularity — sub-stages within approval, multi-cycle audit testing, regulator-specific filing variants — but the five named stages cover the core SOX 404 testing surface.",
+  }}
+  failureMode={{
+    eyebrow: "FINANCIAL SERVICES / SOX",
+    heading: "A SOX deficiency surfaces as a material weakness disclosure in the 10-K.",
+    body: "Document control is a SOX 404 control. Weakness in the control surfaces as a material weakness disclosure — stock-price hit, increased audit fees, regulatory scrutiny, board-level remediation. The trace runs from version control gaps in policy documentation back to the control deficiency the auditor flagged.",
+  }}
+  signals={[
+    {
+      line: "A SOX 404 deficiency is surfacing in our 10-K disclosure prep.",
+      body: "Tactical, immediate. SOX deficiencies tied to documentation usually mean the version-control chain broke, approvals didn't capture timestamps consistently, or supersession wasn't tracked. The audit response runs through the documentation architecture, not through better policy writing.",
+    },
+    {
+      line: "Our SOC 2 audit is in six weeks and our control narratives don't match the actual controls.",
+      body: "Tactical, pre-audit. SOC 2 control narratives drift from operational reality when the documentation system is separate from how the controls actually run. Reconciling the narrative to the control surface — and getting evidence collection automated — is structural work, not editorial.",
+    },
+    {
+      line: "Examiners flagged our policy library as fragmented across business lines.",
+      body: "Operational, post-exam. Policy fragmentation usually means parallel libraries by business unit (often acquisition residue), inconsistent terminology, and version drift. Consolidation requires both target architecture and migration program — not just better governance committee meetings.",
+    },
+    {
+      line: "Our compliance assistant is giving advisers inconsistent regulatory guidance.",
+      body: "Operational, AI-readiness. RAG over policy libraries fails when the source content has implicit regulatory-framework linkage that the chunking strategy breaks. Provenance metadata has to survive the pipeline; otherwise the assistant cites outdated or wrong-jurisdiction policy.",
+    },
+  ]}
+  capabilityRelevance={[
+    {
+      pillarLabel: "Information Architecture",
+      pillarHref: "/capabilities/information-architecture",
+      context: "Policy libraries designed as control artifacts. Reuse strategy for procedures that share regulatory references; metadata for audit-traceable change control.",
+      engagementShape: "Project-Based — policy architecture work with named acceptance criteria against the control-chain requirements.",
+    },
+    {
+      pillarLabel: "Content Migration",
+      pillarHref: "/capabilities/content-migration",
+      context: "Consolidation of policy libraries across acquired entities; conversion from Word-document-based control documentation to single-source DITA.",
+      engagementShape: "Project-Based — fixed scope, conversion-fidelity acceptance criteria. Often post-M&A consolidation across acquired entities.",
+    },
+    {
+      pillarLabel: "CCMS & Publishing",
+      pillarHref: "/capabilities/ccms-and-publishing",
+      context: "CCMS-driven workflows with audit-traceable approval and publishing — version control as a control artifact, not an afterthought.",
+      engagementShape: "Project-Based for implementation; Managed Services for ongoing administration of audit-traceable workflows.",
+    },
+    {
+      pillarLabel: "AI-Ready Content",
+      pillarHref: "/capabilities/ai-ready-content",
+      context: "Banks and asset managers deploying RAG over policy libraries for compliance assistants and adviser-facing tools — increasingly load-bearing in this vertical.",
+      engagementShape: "Often starts as Staff Augmentation during compliance-assistant exploratory work; converts to Project-Based once retrieval architecture firms up.",
+    },
+  ]}
+  caseStudies={[
+    {
+      framing: "A top-five U.S. brokerage consolidating policy libraries across acquired entities.",
+      body: "Mixed source formats and control regimes converged into a single DITA-based system with audit-traceable change control. Reuse strategy reduced policy duplication; controlled vocabulary aligned regulatory references across business lines.",
+    },
+    {
+      framing: "A fintech firm establishing SOC 2-defensible documentation operations.",
+      body: "Documentation control patterns engineered as part of the SOC 2 readiness program. Single-source authoring with version-controlled approvals; publishing automation across customer-facing and internal documentation surfaces.",
+    },
+  ]}
+  ctaBody="Submit a 20-page sample. We'll return a documentation-control assessment — what would change if your policy library were engineered as the control artifact it actually is. Two business days, no obligation to proceed."
+/>

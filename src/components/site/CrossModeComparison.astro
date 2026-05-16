@@ -1,0 +1,323 @@
+---
+/*
+  CrossModeComparison — Transportation vertical visualization.
+
+  Centerpiece for /industries/transportation. A 5-row × 4-column comparison
+  table showing how the same documentation artifact categories repeat
+  across the four transportation modes (automotive, commercial aviation,
+  rail, maritime) with mode-specific terminology and regulators.
+
+  Visual treatment shares the brand-distinctive document-grade language
+  (hairline construction, mono labels, sparing #fcd34d for accents) but
+  introduces a comparison-table shape distinct from the AuditCycle 3-lane
+  timeline, the VariantPolicyForm artifact panel, the FederalProgramLifecycle
+  two-track lifecycle, and the ControlChain card row.
+
+  Build-in animation triggered once on scroll into view: column headers
+  reveal left-to-right; rows cascade top-to-bottom; cells within each
+  row stagger left-to-right.
+
+  Mobile: horizontal scroll on overflow (same pattern as /industries matrix).
+*/
+
+interface ModeColumn {
+  label: string;
+}
+
+interface ComparisonRow {
+  /** Row label (mono uppercase semibold) on the left */
+  category: string;
+  /** One cell per mode column — must match modes.length */
+  cells: string[];
+}
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  modes: ModeColumn[];
+  rows: ComparisonRow[];
+  footnote: string;
+}
+
+const { eyebrow, heading, lead, modes, rows, footnote } = Astro.props;
+---
+
+<section class="cmc-section" aria-labelledby="cmc-heading">
+  <div class="container-data cmc-section__inner">
+    <p class="eyebrow cmc-section__eyebrow">{eyebrow}</p>
+    <h2 id="cmc-heading" class="cmc-section__heading">{heading}</h2>
+    <p class="cmc-section__lead">{lead}</p>
+
+    <figure class="cmc" id="cmc" aria-label="Cross-mode documentation comparison">
+      <div class="cmc__wrap">
+        <table class="cmc__table" aria-label="Documentation patterns across transportation modes">
+          <thead>
+            <tr>
+              <th scope="col" class="cmc__th cmc__th--category" data-col-index="0">Document category</th>
+              {modes.map((mode, i) => (
+                <th scope="col" class="cmc__th cmc__th--mode" data-col-index={i + 1}>
+                  <span class="cmc__th-bar" aria-hidden="true"></span>
+                  <span class="cmc__th-label">{mode.label}</span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, rowIdx) => (
+              <tr class="cmc__row" data-row-index={rowIdx}>
+                <th scope="row" class="cmc__cell cmc__cell--category">{row.category}</th>
+                {row.cells.map((cell, cellIdx) => (
+                  <td class="cmc__cell cmc__cell--mode" data-cell-index={cellIdx}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <figcaption class="cmc__footnote">{footnote}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .cmc-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .cmc-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .cmc-section__eyebrow {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .cmc-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+    text-wrap: balance;
+  }
+
+  .cmc-section__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-12);
+    text-wrap: pretty;
+    max-width: 75ch;
+  }
+
+  .cmc {
+    margin: 0;
+    padding: 0;
+  }
+
+  .cmc__wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cmc__table {
+    width: 100%;
+    min-width: 880px;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  /* ─── Column headers ─── */
+  .cmc__th {
+    text-align: left;
+    vertical-align: bottom;
+    padding: var(--space-4) var(--space-4) var(--space-3) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    border-bottom: var(--border-hairline);
+    /* Build-in: hidden until is-built */
+    opacity: 0;
+    transform: translateY(-3px);
+    transition:
+      opacity 240ms cubic-bezier(0, 0, 0.2, 1),
+      transform 240ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .cmc__th--category {
+    width: 18%;
+  }
+
+  .cmc__th--mode {
+    width: 20.5%;
+    color: var(--color-gravitas-navy);
+    position: relative;
+    padding-left: var(--space-3);
+  }
+
+  /* Small amber left-bar on each mode column header */
+  .cmc__th-bar {
+    position: absolute;
+    left: 0;
+    top: var(--space-4);
+    bottom: var(--space-3);
+    width: 2px;
+    background-color: #fcd34d;
+  }
+
+  .cmc__th-label {
+    display: block;
+  }
+
+  /* ─── Cells ─── */
+  .cmc__row {
+    border-top: var(--border-hairline);
+  }
+  .cmc__row:first-child {
+    border-top: none;
+  }
+
+  .cmc__cell {
+    padding: var(--space-4) var(--space-4) var(--space-4) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+    vertical-align: top;
+    /* Build-in: hidden until is-built */
+    opacity: 0;
+    transform: translateY(-2px);
+    transition:
+      opacity 220ms cubic-bezier(0, 0, 0.2, 1),
+      transform 220ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .cmc__cell--category {
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    text-align: left;
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+  }
+
+  .cmc__cell--mode {
+    padding-left: var(--space-3);
+  }
+
+  .cmc__footnote {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    max-width: 75ch;
+  }
+
+  /* ─── Build-in animation: cascade once is-built is added ─── */
+  /* Column headers reveal first, left-to-right with 80ms stagger */
+  .cmc.is-built .cmc__th {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .cmc.is-built .cmc__th[data-col-index="0"] { transition-delay: 0ms; }
+  .cmc.is-built .cmc__th[data-col-index="1"] { transition-delay: 80ms; }
+  .cmc.is-built .cmc__th[data-col-index="2"] { transition-delay: 160ms; }
+  .cmc.is-built .cmc__th[data-col-index="3"] { transition-delay: 240ms; }
+  .cmc.is-built .cmc__th[data-col-index="4"] { transition-delay: 320ms; }
+
+  /* Rows cascade top-to-bottom; cells inside each row stagger left-to-right.
+     Row base delay: 480ms. Row stagger: 120ms. Cell stagger within row: 30ms. */
+  .cmc.is-built .cmc__cell {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Row 0 (450 base) */
+  .cmc.is-built .cmc__row[data-row-index="0"] .cmc__cell--category { transition-delay: 480ms; }
+  .cmc.is-built .cmc__row[data-row-index="0"] .cmc__cell--mode[data-cell-index="0"] { transition-delay: 510ms; }
+  .cmc.is-built .cmc__row[data-row-index="0"] .cmc__cell--mode[data-cell-index="1"] { transition-delay: 540ms; }
+  .cmc.is-built .cmc__row[data-row-index="0"] .cmc__cell--mode[data-cell-index="2"] { transition-delay: 570ms; }
+  .cmc.is-built .cmc__row[data-row-index="0"] .cmc__cell--mode[data-cell-index="3"] { transition-delay: 600ms; }
+
+  /* Row 1 */
+  .cmc.is-built .cmc__row[data-row-index="1"] .cmc__cell--category { transition-delay: 600ms; }
+  .cmc.is-built .cmc__row[data-row-index="1"] .cmc__cell--mode[data-cell-index="0"] { transition-delay: 630ms; }
+  .cmc.is-built .cmc__row[data-row-index="1"] .cmc__cell--mode[data-cell-index="1"] { transition-delay: 660ms; }
+  .cmc.is-built .cmc__row[data-row-index="1"] .cmc__cell--mode[data-cell-index="2"] { transition-delay: 690ms; }
+  .cmc.is-built .cmc__row[data-row-index="1"] .cmc__cell--mode[data-cell-index="3"] { transition-delay: 720ms; }
+
+  /* Row 2 */
+  .cmc.is-built .cmc__row[data-row-index="2"] .cmc__cell--category { transition-delay: 720ms; }
+  .cmc.is-built .cmc__row[data-row-index="2"] .cmc__cell--mode[data-cell-index="0"] { transition-delay: 750ms; }
+  .cmc.is-built .cmc__row[data-row-index="2"] .cmc__cell--mode[data-cell-index="1"] { transition-delay: 780ms; }
+  .cmc.is-built .cmc__row[data-row-index="2"] .cmc__cell--mode[data-cell-index="2"] { transition-delay: 810ms; }
+  .cmc.is-built .cmc__row[data-row-index="2"] .cmc__cell--mode[data-cell-index="3"] { transition-delay: 840ms; }
+
+  /* Row 3 */
+  .cmc.is-built .cmc__row[data-row-index="3"] .cmc__cell--category { transition-delay: 840ms; }
+  .cmc.is-built .cmc__row[data-row-index="3"] .cmc__cell--mode[data-cell-index="0"] { transition-delay: 870ms; }
+  .cmc.is-built .cmc__row[data-row-index="3"] .cmc__cell--mode[data-cell-index="1"] { transition-delay: 900ms; }
+  .cmc.is-built .cmc__row[data-row-index="3"] .cmc__cell--mode[data-cell-index="2"] { transition-delay: 930ms; }
+  .cmc.is-built .cmc__row[data-row-index="3"] .cmc__cell--mode[data-cell-index="3"] { transition-delay: 960ms; }
+
+  /* Row 4 */
+  .cmc.is-built .cmc__row[data-row-index="4"] .cmc__cell--category { transition-delay: 960ms; }
+  .cmc.is-built .cmc__row[data-row-index="4"] .cmc__cell--mode[data-cell-index="0"] { transition-delay: 990ms; }
+  .cmc.is-built .cmc__row[data-row-index="4"] .cmc__cell--mode[data-cell-index="1"] { transition-delay: 1020ms; }
+  .cmc.is-built .cmc__row[data-row-index="4"] .cmc__cell--mode[data-cell-index="2"] { transition-delay: 1050ms; }
+  .cmc.is-built .cmc__row[data-row-index="4"] .cmc__cell--mode[data-cell-index="3"] { transition-delay: 1080ms; }
+
+  /* Reduced motion: show everything at rest, no transitions */
+  @media (prefers-reduced-motion: reduce) {
+    .cmc__th,
+    .cmc__cell {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  const cmc = document.getElementById('cmc');
+  if (!cmc) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    cmc.classList.add('is-built');
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        cmc.classList.add('is-built');
+        observer.disconnect();
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -10% 0px',
+  });
+
+  observer.observe(cmc);
+})();
+</script>

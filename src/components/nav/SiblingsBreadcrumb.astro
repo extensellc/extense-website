@@ -7,6 +7,7 @@
   Variants follow .audienceCategory naming pattern (extensible):
     .pillars    — IA · Migration · CCMS · AI-Ready (lifecycle order, meaningful)
     .industries — Financial Services · Life Sciences · Automotive · Insurance (stable order)
+    .services   — Project-Based · Staff Augmentation · Managed Services (work-state order)
 
   Visual treatment:
     - container-prose centered, hairline rules above and below, internal padding space-3
@@ -28,7 +29,7 @@ interface Sibling {
 }
 
 interface Props {
-  variant: "pillars" | "industries";
+  variant: "pillars" | "industries" | "services";
   current: string; // matches one sibling's href (or label)
 }
 
@@ -40,16 +41,30 @@ const pillarSiblings: Sibling[] = [
 ];
 
 const industrySiblings: Sibling[] = [
-  { label: "Financial Services", href: "/private-sector/financial-services" },
-  { label: "Life Sciences", href: "/private-sector/life-sciences" },
-  { label: "Automotive", href: "/private-sector/automotive" },
-  { label: "Insurance", href: "/private-sector/insurance" },
+  { label: "Government & Defense", href: "/industries/government-and-defense" },
+  { label: "Financial Services",   href: "/industries/financial-services" },
+  { label: "Life Sciences",        href: "/industries/life-sciences" },
+  { label: "Transportation",       href: "/industries/transportation" },
+  { label: "Insurance",            href: "/industries/insurance" },
+  { label: "Technology",           href: "/industries/technology" },
+];
+
+const serviceSiblings: Sibling[] = [
+  { label: "Project-Based", href: "/services/project-based" },
+  { label: "Staff Augmentation", href: "/services/staff-augmentation" },
+  { label: "Managed Services", href: "/services/managed-services" },
 ];
 
 const { variant, current } = Astro.props;
-const siblings = variant === "pillars" ? pillarSiblings : industrySiblings;
+const siblings =
+  variant === "pillars" ? pillarSiblings :
+  variant === "services" ? serviceSiblings :
+  industrySiblings;
 
-const navLabel = variant === "pillars" ? "Capability lifecycle navigation" : "Industries navigation";
+const navLabel =
+  variant === "pillars" ? "Capability lifecycle navigation" :
+  variant === "services" ? "Engagement model navigation" :
+  "Industries navigation";
 ---
 
 <nav class="siblings-breadcrumb" aria-label={navLabel}>

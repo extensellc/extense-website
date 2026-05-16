@@ -1,34 +1,50 @@
 ---
 /*
-  AudiencePivotCard — used as a pair on / homepage.
+  AudiencePivotCard — used as a pair on the / homepage and on /industries.
 
   Spec ref: EXTENSE_DESIGN_BRIEF.md §9 (Cards)
 
-  Structure:
+  Two interaction modes:
+
+    Direct-link mode (default) — the whole card is a link to `href`. Used
+    when the card pivots to a single destination (e.g., Public Sector card
+    pointing to /industries/government-and-defense).
+
+    Disclosure mode — pass an `industries` array. The card becomes a <div>
+    (not a link); the CTA at the bottom is a <details>/<summary>
+    disclosure that expands to a list of industries. Used when the card
+    pivots to multiple destinations (e.g., Private Sector card listing the
+    four private-sector industries).
+
+  Visual treatment:
     - Hairline border on right and bottom
     - 4px accent left border (color depends on variant)
     - radius-none, color-page-bg background, padding space-8 all sides
-    - Eyebrow → heading → description → "View [audience] →" link
+    - Eyebrow → heading → description → CTA (link or disclosure)
 
   Variants:
     Both variants share the brand amber left border (--color-accent-primary)
     so the pair reads as one "where to next" pivot. Eyebrows keep their
-    distinct color (navy / warm gray) so the audiences remain visually labeled.
-
-  Whole card wrapped in <a>. Stretched-link pattern via ::after to avoid nested-link
-  accessibility issues.
-
-  Card visual itself does not change on hover (document-grade restraint).
-  Only the inner CTA reflects hover state.
+    distinct color (navy / warm gray) so the audiences remain visually
+    labeled.
 */
+
+interface IndustryItem {
+  label: string;
+  href: string;
+}
 
 interface Props {
   variant: "public-sector" | "private-sector";
   eyebrow: string;
   heading: string;
   description: string;
-  href: string;
+  /** Required in direct-link mode; ignored in disclosure mode */
+  href?: string;
+  /** CTA label (e.g., "View Agencies", "View Industries") */
   linkLabel?: string;
+  /** If provided, renders disclosure mode with these items in the dropdown */
+  industries?: IndustryItem[];
 }
 
 const {
@@ -37,20 +53,49 @@ const {
   heading,
   description,
   href,
-  linkLabel = `View ${variant === "public-sector" ? "Public Sector" : "Private Sector"}`,
+  linkLabel,
+  industries,
 } = Astro.props;
+
+const isDisclosure = !!industries && industries.length > 0;
+const ctaLabel = linkLabel ?? `View ${variant === "public-sector" ? "Public Sector" : "Private Sector"}`;
 ---
 
-<article class:list={["pivot-card", `pivot-card--${variant}`]}>
-  <a href={href} class="pivot-card__link">
-    <p class="eyebrow pivot-card__eyebrow">{eyebrow}</p>
-    <h3 class="pivot-card__heading">{heading}</h3>
-    <p class="pivot-card__description">{description}</p>
-    <span class="pivot-card__cta">
-      {linkLabel} <span class="pivot-card__arrow" aria-hidden="true">→</span>
-    </span>
-  </a>
-</article>
+{isDisclosure ? (
+  <article class:list={["pivot-card", `pivot-card--${variant}`, "pivot-card--disclosure"]}>
+    <div class="pivot-card__body">
+      <p class="eyebrow pivot-card__eyebrow">{eyebrow}</p>
+      <h3 class="pivot-card__heading">{heading}</h3>
+      <p class="pivot-card__description">{description}</p>
+      <details class="pivot-card__disclosure">
+        <summary class="pivot-card__cta">
+          {ctaLabel} <span class="pivot-card__caret" aria-hidden="true">→</span>
+        </summary>
+        <ul class="pivot-card__industry-list">
+          {industries!.map((it) => (
+            <li>
+              <a href={it.href} class="pivot-card__industry-link">
+                {it.label}
+                <span class="pivot-card__industry-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
+    </div>
+  </article>
+) : (
+  <article class:list={["pivot-card", `pivot-card--${variant}`]}>
+    <a href={href} class="pivot-card__link">
+      <p class="eyebrow pivot-card__eyebrow">{eyebrow}</p>
+      <h3 class="pivot-card__heading">{heading}</h3>
+      <p class="pivot-card__description">{description}</p>
+      <span class="pivot-card__cta">
+        {ctaLabel} <span class="pivot-card__arrow" aria-hidden="true">→</span>
+      </span>
+    </a>
+  </article>
+)}
 
 <style>
   .pivot-card {
@@ -73,7 +118,8 @@ const {
     border-left-color: var(--color-accent-primary);
   }
 
-  .pivot-card__link {
+  .pivot-card__link,
+  .pivot-card__body {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -142,6 +188,81 @@ const {
   }
 
   .pivot-card__link:hover .pivot-card__arrow {
+    transform: translateX(2px);
+  }
+
+  /* ─── Disclosure mode ─── */
+  .pivot-card__disclosure {
+    margin-top: auto;
+  }
+
+  .pivot-card__disclosure > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: var(--space-1) 0;
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .pivot-card__disclosure > summary::-webkit-details-marker { display: none; }
+
+  .pivot-card__disclosure > summary:hover,
+  .pivot-card__disclosure > summary:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    outline: none;
+  }
+
+  .pivot-card__caret {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .pivot-card__disclosure[open] .pivot-card__caret {
+    transform: rotate(90deg);
+  }
+
+  .pivot-card__industry-list {
+    list-style: none;
+    margin: var(--space-4) 0 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pivot-card__industry-list > li {
+    border-top: var(--border-hairline);
+  }
+
+  .pivot-card__industry-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .pivot-card__industry-link:hover,
+  .pivot-card__industry-link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: none;
+  }
+
+  .pivot-card__industry-arrow {
+    color: var(--color-link);
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+
+  .pivot-card__industry-link:hover .pivot-card__industry-arrow {
     transform: translateX(2px);
   }
 </style>

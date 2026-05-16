@@ -1,0 +1,216 @@
+---
+/*
+  ContentMigrationProblem — diagnosis section on
+  /solutions/content-migration.
+
+  Sequenced after the hero + siblings row, before the pipeline
+  (approach) section. Names three failure modes that turn a migration
+  into an open-ended engagement — each visible at the audit stage,
+  each one survives into the new repository if the conversion is
+  hand-rekeyed instead of engineered.
+
+  Layout: same vocabulary as TechDocsProblem.
+    - container-data section
+    - heading + subdeck on the left at container-prose width
+    - three diagnostic items in a 3-column grid on desktop, stacked
+      on mobile, each separated by a hairline at the top of the card
+    - no border-top on the section itself: the siblings row above
+      already carries a border-bottom
+
+  Animation: viewport-triggered fade-up, heading then three items in
+  sequence at 200/320/440 ms delays. prefers-reduced-motion: static.
+*/
+---
+
+<section class="cm-problem" aria-labelledby="cm-problem-heading">
+  <div class="container-data cm-problem__inner">
+    <div class="cm-problem__heading-block">
+      <h2 id="cm-problem-heading" class="cm-problem__heading">
+        Why manual conversion never finishes.
+      </h2>
+      <p class="cm-problem__subdeck">
+        Three failure modes turn a migration into an open-ended engagement. Each one compounds the others, and all three are visible at the audit &mdash; if anyone looks.
+      </p>
+    </div>
+
+    <ol class="cm-problem__grid">
+      <li class="problem-item">
+        <h3 class="problem-item__heading">
+          The estate is bigger than the team thinks.
+        </h3>
+        <p class="problem-item__body">
+          Every audit reveals more legacy formats than the migration plan accounted for. A &ldquo;FrameMaker to DITA&rdquo; project quietly absorbs a parallel Word estate, three RoboHelp microsites, and procedure PDFs nobody indexed. The work expands faster than the team converts it.
+        </p>
+      </li>
+      <li class="problem-item">
+        <h3 class="problem-item__heading">
+          Hand-rekeying loses structure.
+        </h3>
+        <p class="problem-item__body">
+          When a human re-authors a 200-page FrameMaker book into DITA, the only structure that survives is the structure that was already legible. Implicit hierarchies &mdash; page break, running header, indentation level &mdash; get translated as paragraphs of body text. Months later, the topics still read as Word docs.
+        </p>
+      </li>
+      <li class="problem-item">
+        <h3 class="problem-item__heading">
+          Nobody finds the duplicates.
+        </h3>
+        <p class="problem-item__body">
+          Across a 50,000-topic estate, 15&ndash;30% of paragraphs are exact or near-duplicate of paragraphs elsewhere. Hand-rekeying catches none of them. The new DITA repository inherits the same redundancy the legacy estate had &mdash; minus the format conversion fee.
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .cm-problem {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    /* No border-top: the siblings row above already carries a
+       border-bottom; doubling would render as a 2 px line. */
+  }
+
+  @media (max-width: 767px) {
+    .cm-problem {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .cm-problem__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-12);
+  }
+
+  .cm-problem__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .cm-problem__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  .cm-problem__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .cm-problem__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  .problem-item {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-6);
+  }
+
+  .problem-item__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .problem-item__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Reveal animation — viewport-triggered, same pattern as
+     TechDocsProblem. */
+  .cm-problem.animating .cm-problem__heading-block {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .cm-problem.animating .problem-item {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .cm-problem.animating .problem-item:nth-child(1) { --reveal-delay: 200ms; }
+  .cm-problem.animating .problem-item:nth-child(2) { --reveal-delay: 320ms; }
+  .cm-problem.animating .problem-item:nth-child(3) { --reveal-delay: 440ms; }
+
+  .cm-problem.animating.in-view .cm-problem__heading-block {
+    animation: cm-problem-fade-in 480ms ease-out forwards;
+  }
+  .cm-problem.animating.in-view .problem-item {
+    animation: cm-problem-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes cm-problem-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cm-problem.animating .cm-problem__heading-block,
+    .cm-problem.animating .problem-item {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupContentMigrationProblem() {
+    const sec = document.querySelector<HTMLElement>(".cm-problem");
+    if (!sec) return;
+    if (sec.dataset.problemRevealInit === "true") return;
+    sec.dataset.problemRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupContentMigrationProblem);
+  document.addEventListener("astro:page-load", setupContentMigrationProblem);
+</script>

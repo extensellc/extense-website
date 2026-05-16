@@ -2,15 +2,21 @@
 /*
   Footer — shared, all pages.
 
-  Vertical stack (no column split):
-    1. Three link groups in a row: Capabilities | Audiences | Company
-    2. Hairline utility row: LinkedIn icon, Privacy · Terms, copyright
-    3. Full-width animated ShimmerLogo (deep glossy black background)
+  Vertical stack:
+    1. Seven link columns mirroring the top-nav structure:
+       Capabilities | Solutions | Services | Industries | Resources |
+       Company | Legal.
+       Each heading is a link to its section index (where one exists).
+       Legal heading is plain text — there's no /legal index page.
+    2. Centered single-line copyright on its own hairline-separated row.
+    3. Full-width animated ShimmerLogo (deep glossy black background).
 
   Footer is structural navigation + brand presence. No newsletter, no
   marketing CTAs, no tagline text — the shimmer carries the brand moment.
+  Tight typographic register: small uppercase headings, body-sm links,
+  compressed vertical rhythm.
 
-  Mobile: link groups stack vertically; utility row stacks; shimmer
+  Mobile: columns reflow to 2-up; copyright stays centered. Shimmer
   remains full-width at the bottom.
 */
 
@@ -18,29 +24,85 @@ import ShimmerLogo from "../brand/ShimmerLogo.astro";
 
 const year = new Date().getFullYear();
 
-const columns = [
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+interface FooterColumn {
+  heading: string;
+  /** Section-index URL. Omit for sections without an index (e.g. Legal). */
+  headingHref?: string;
+  links: FooterLink[];
+}
+
+const columns: FooterColumn[] = [
   {
     heading: "Capabilities",
+    headingHref: "/capabilities",
     links: [
       { label: "Information Architecture", href: "/capabilities/information-architecture" },
-      { label: "Content Migration", href: "/capabilities/content-migration" },
-      { label: "CCMS & Publishing", href: "/capabilities/ccms-and-publishing" },
-      { label: "AI-Ready Content", href: "/capabilities/ai-ready-content" },
+      { label: "Content Migration",        href: "/capabilities/content-migration" },
+      { label: "CCMS & Publishing",        href: "/capabilities/ccms-and-publishing" },
+      { label: "AI-Ready Content",         href: "/capabilities/ai-ready-content" },
     ],
   },
   {
-    heading: "Audiences",
+    heading: "Solutions",
+    headingHref: "/solutions",
     links: [
-      { label: "Public Sector", href: "/public-sector" },
-      { label: "Private Sector", href: "/private-sector" },
+      { label: "Technical Docs & Publishing", href: "/solutions/technical-docs-and-publishing" },
+      { label: "Content Migration",            href: "/solutions/content-migration" },
+      { label: "XML Data Interoperability",    href: "/solutions/xml-data-interoperability" },
+      { label: "AI-Ready Content",             href: "/solutions/ai-ready-content" },
+    ],
+  },
+  {
+    heading: "Services",
+    headingHref: "/services",
+    links: [
+      { label: "Project-Based",      href: "/services/project-based" },
+      { label: "Staff Augmentation", href: "/services/staff-augmentation" },
+      { label: "Managed Services",   href: "/services/managed-services" },
+    ],
+  },
+  {
+    heading: "Industries",
+    headingHref: "/industries",
+    links: [
+      { label: "Government & Defense", href: "/industries/government-and-defense" },
+      { label: "Financial Services",   href: "/industries/financial-services" },
+      { label: "Life Sciences",        href: "/industries/life-sciences" },
+      { label: "Transportation",       href: "/industries/transportation" },
+      { label: "Insurance",            href: "/industries/insurance" },
+      { label: "Technology",           href: "/industries/technology" },
+    ],
+  },
+  {
+    heading: "Resources",
+    headingHref: "/resources",
+    links: [
+      { label: "Case Studies",       href: "/resources/case-studies" },
+      { label: "AI Readiness",       href: "/resources/ai-readiness" },
+      { label: "Migration Playbook", href: "/resources/migration-playbook" },
+      { label: "Automation Guide",   href: "/resources/automation-guide" },
     ],
   },
   {
     heading: "Company",
+    headingHref: "/company",
     links: [
-      { label: "About", href: "/company" },
-      { label: "Insights", href: "/resources" },
-      { label: "Contact", href: "/contact" },
+      { label: "FAQs",    href: "/company/faqs" },
+      { label: "Careers", href: "/company/careers" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/ex-tense", external: true },
+    ],
+  },
+  {
+    heading: "Legal",
+    links: [
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms",   href: "/terms" },
     ],
   },
 ];
@@ -51,11 +113,28 @@ const columns = [
     <div class="footer__columns">
       {columns.map((col) => (
         <div class="footer__column">
-          <h4 class="footer__heading">{col.heading}</h4>
+          <h4 class="footer__heading">
+            {col.headingHref ? (
+              <a href={col.headingHref} class="footer__heading-link">{col.heading}</a>
+            ) : (
+              col.heading
+            )}
+          </h4>
           <ul class="footer__links">
             {col.links.map((link) => (
               <li>
-                <a href={link.href} class="footer__link">{link.label}</a>
+                {link.external ? (
+                  <a
+                    href={link.href}
+                    class="footer__link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <a href={link.href} class="footer__link">{link.label}</a>
+                )}
               </li>
             ))}
           </ul>
@@ -64,28 +143,6 @@ const columns = [
     </div>
 
     <div class="footer__utility">
-      <div class="footer__utility-left">
-        <a
-          href="https://www.linkedin.com/company/ex-tense"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="footer__linkedin"
-          aria-label="Extense LLC on LinkedIn"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.43v6.31zM5.34 7.43A2.06 2.06 0 113.27 5.36a2.06 2.06 0 012.07 2.07zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.28V1.72C24 .77 23.21 0 22.22 0z"></path>
-          </svg>
-        </a>
-        <a href="/privacy" class="footer__legal">Privacy</a>
-        <span class="footer__sep" aria-hidden="true">·</span>
-        <a href="/terms" class="footer__legal">Terms</a>
-      </div>
       <p class="footer__copyright">© {year} Extense LLC. All rights reserved.</p>
     </div>
   </div>
@@ -105,48 +162,79 @@ const columns = [
     flex-direction: column;
   }
 
-  /* Upper region — link groups + utility row, on the elevated surface */
+  /* Tight vertical rhythm — less breathing room than before. */
   .footer__upper {
-    padding-top: var(--space-16);
-    padding-bottom: var(--space-12);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-6);
   }
 
-  /* Three link groups in a row on desktop; stacked on mobile.
-     Content centered within each column per design call. */
+  /* Seven link columns on desktop, reflowing on smaller widths.
+     Compact gaps so the column packing feels dense. */
   .footer__columns {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-12);
-    margin-bottom: var(--space-12);
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6) var(--space-4);
+    margin-bottom: var(--space-8);
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: 640px) {
     .footer__columns {
       grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer__columns {
+      /* Size each column to its content so the visible gap between any
+         two columns is exactly the `gap` value — not "gap + each column's
+         leftover internal whitespace" (which made COMPANY↔LEGAL look
+         further apart than INDUSTRIES↔RESOURCES under fixed 1fr widths). */
+      grid-template-columns: repeat(7, max-content);
       gap: var(--space-8);
+      justify-content: center;
+      /* Slight optical nudge left of true-center (~2mm). The track
+         centers within (full width − margin-right), so a 16px margin
+         on the right shifts the visible track ~8px to the left. */
+      margin-right: var(--space-4);
     }
   }
 
   .footer__column {
+    /* Centered contents — masks the uneven column heights and the
+       label wraps that come with the 7-column packing. */
     text-align: center;
+    min-width: 0;
   }
 
+  /* Heading — always an <h4>. If the section has an index page, an
+     inner <a class="footer__heading-link"> wraps the text. Typography
+     and bottom margin live on the h4 so both variants align identically. */
   .footer__heading {
     font-family: var(--font-body);
-    font-size: var(--text-caption);
+    font-size: 12px;
     font-weight: var(--weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
     color: var(--color-text-secondary);
-    margin-bottom: var(--space-4);
-    /* Heading is a block; text-align: center on parent handles alignment. */
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .footer__heading-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .footer__heading-link:hover,
+  .footer__heading-link:focus-visible {
+    color: var(--color-link);
   }
 
   .footer__links {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-1);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -154,9 +242,10 @@ const columns = [
 
   .footer__link {
     display: inline-block;
-    font-size: var(--text-body-sm);
+    font-size: 11px;
     font-weight: var(--weight-regular);
-    color: var(--color-text-primary);
+    line-height: 1.4;
+    color: #555555;
     text-decoration: none;
     transition: color var(--duration-base) var(--easing-out);
   }
@@ -169,65 +258,11 @@ const columns = [
     text-underline-offset: 2px;
   }
 
-  /* Hairline utility row — LinkedIn + legal links left, copyright right */
+  /* Utility row — centered single-line copyright on its own hairline row. */
   .footer__utility {
-    padding-top: var(--space-8);
+    padding-top: var(--space-4);
     border-top: var(--border-hairline);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    align-items: flex-start;
-  }
-
-  @media (min-width: 600px) {
-    .footer__utility {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-
-  .footer__utility-left {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .footer__linkedin {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    color: var(--color-text-muted);
-    border-radius: var(--radius-sm);
-    transition: color var(--duration-base) var(--easing-out),
-      background-color var(--duration-base) var(--easing-out);
-  }
-
-  .footer__linkedin:hover,
-  .footer__linkedin:focus-visible {
-    color: var(--color-link);
-    background-color: var(--color-page-bg);
-  }
-
-  .footer__legal {
-    font-size: var(--text-caption);
-    color: var(--color-text-muted);
-    text-decoration: none;
-  }
-
-  .footer__legal:hover,
-  .footer__legal:focus-visible {
-    color: var(--color-link);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
-  }
-
-  .footer__sep {
-    color: var(--color-text-muted);
-    font-size: var(--text-caption);
+    text-align: center;
   }
 
   .footer__copyright {
@@ -236,9 +271,8 @@ const columns = [
     margin: 0;
   }
 
-  /* Shimmer band — full-width, sits below the utility row */
+  /* Shimmer band — full-width, sits below the utility row. */
   .footer__shimmer {
-    /* ShimmerLogo carries its own deep-black gradient background and centering. */
     width: 100%;
   }
 </style>

@@ -1,0 +1,200 @@
+---
+import CaseStudyPageLayout from "../../../layouts/CaseStudyPageLayout.astro";
+import DocumentRow from "../../../components/site/DocumentRow.astro";
+
+const deliverables = [
+  {
+    heading: "Content architecture",
+    body: "Master bookmap with 10 submaps, a shared resource library, and four appendices. Three role-based learning paths with phase checkpoints and time estimates — 25 to 50 hours depending on role.",
+  },
+  {
+    heading: "Before / after samples",
+    body: "Five unstructured XML files transformed into six fully typed DITA topics — demonstrating content splitting, semantic markup, and metadata enrichment at every step of the conversion.",
+  },
+  {
+    heading: "Assessment materials",
+    body: "Eighty interview questions with reference answers organized by skill level. A structured learner study guide with five phases, prerequisites, and a vocabulary glossary for onboarding.",
+  },
+];
+
+const curriculumParts = [
+  "Why Intelligent Content",
+  "Content Preparation",
+  "Authoring",
+  "Information Architecture",
+  "Metadata Enrichment",
+  "Publishing Automation",
+  "DITA-OT Development",
+  "XSLT Customization",
+  "AI Pipeline Integration",
+  "Benefits & Impact Measurement",
+];
+---
+
+<CaseStudyPageLayout
+  caseNumber="01"
+  caseTotal="03"
+  year="2024"
+  sector="Consulting practice"
+  title="Enterprise DITA Training Curriculum"
+  frame="From a blank repository to a 76-topic, 10-part progressive learning program — authored, enriched, and published entirely in DITA."
+  challenge="A growing consulting practice needed a comprehensive, hands-on DITA training program that could serve three distinct audiences — technical writers, software engineers, and content strategists — with different learning paths, difficulty levels, and time commitments. Existing materials were scattered across Markdown files, slide decks, and tribal knowledge with no reuse, no metadata, and no structured publishing pipeline."
+  approach="We designed a 10-part bookmap architecture covering the full content lifecycle: from 'Why Intelligent Content Matters' through authoring, information architecture, metadata enrichment, publishing automation, DITA-OT development, XSLT customization, and AI pipeline integration. Every topic was formally typed (concept, task, or reference), enriched with 10+ metadata fields, and validated against a controlled vocabulary subject scheme."
+  artifacts={[
+    { number: "76", label: "DITA topics" },
+    { number: "10", label: "learning parts" },
+    { number: "12", label: "hands-on labs" },
+    { number: "218", label: "PDF pages" },
+  ]}
+  engagement={{
+    duration: "16 weeks",
+    team: "1 lead architect · 2 content engineers · 1 publishing engineer",
+    engagement: "Project-based, fixed scope",
+    status: "Shipped · in production across three learner audiences",
+  }}
+  stack={[
+    { label: "Schema",      value: "DITA 1.3 · custom subject scheme" },
+    { label: "Authoring",   value: "Oxygen XML Editor · Schematron rules" },
+    { label: "Tooling",     value: "Python 3.12 (metadata enrichment)" },
+    { label: "Publishing",  value: "DITA-OT 4.2 · Apache FOP 2.9 · XSL-FO" },
+    { label: "Build",       value: "Containerized shell scripts · single-command HTML5 + PDF" },
+  ]}
+  decisions={[
+    {
+      decision: "Topic typing",
+      chosen: "Formal DITA concept / task / reference",
+      rejected: "Generic <article> / <section> structure",
+      why: "Formal types let authors and tooling distinguish 'what is X' from 'how to do X' — essential for learner-path routing and downstream AI retrieval, but also for human navigability across a 76-topic corpus.",
+    },
+    {
+      decision: "Bookmap organization",
+      chosen: "10 thematic parts (progressive curriculum)",
+      rejected: "Flat topic library indexed by tags",
+      why: "Curriculum needs sequence dependency and prerequisite expression; a flat library can't carry phase-by-phase ordering without manual cross-references that drift the moment the content is edited.",
+    },
+    {
+      decision: "Metadata strategy",
+      chosen: "Controlled-vocabulary subject scheme",
+      rejected: "Free-text tags applied at author discretion",
+      why: "Ad-hoc tags accrete inconsistent values within months. A subject scheme rejects invalid metadata at validation time and gives downstream filters something they can rely on.",
+    },
+    {
+      decision: "PDF generation",
+      chosen: "Custom DITA-OT plugin with XSL-FO",
+      rejected: "Default DITA-OT PDF transform",
+      why: "Default PDF output is procurement-unreadable. A branded plugin produced the same 218-page output suitable for client distribution without manual reformatting cycles.",
+    },
+  ]}
+  metaTitle="Case Study — Enterprise DITA Training Curriculum"
+  metaDescription="Engagement record: a 76-topic, 10-part DITA training program with 12 hands-on labs and 218-page branded PDF output, authored and published from a single DITA source."
+>
+  <section class="cs-body" aria-labelledby="delivered-heading">
+    <div class="container-prose cs-body__inner">
+      <h2 id="delivered-heading" class="cs-body__heading">What we delivered.</h2>
+      <div class="cs-body__rows">
+        {deliverables.map((d) => (
+          <DocumentRow variant="entry" heading={d.heading} body={d.body} headingLevel={3} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-body cs-body--coverage" aria-labelledby="coverage-heading">
+    <div class="container-prose cs-body__inner">
+      <p class="cs-body__eyebrow" id="coverage-heading">Curriculum coverage</p>
+      <hr class="cs-body__rule" />
+      <ol class="cs-coverage">
+        {curriculumParts.map((part, i) => (
+          <li class="cs-coverage__item">
+            <span class="cs-coverage__num">{String(i + 1).padStart(2, "0")}</span>
+            <span class="cs-coverage__label">{part}</span>
+          </li>
+        ))}
+      </ol>
+      <hr class="cs-body__rule" />
+    </div>
+  </section>
+</CaseStudyPageLayout>
+
+<style>
+  .cs-body {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .cs-body {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+  }
+
+  .cs-body__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: balance;
+  }
+
+  .cs-body__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .cs-body__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0;
+  }
+
+  /* Curriculum coverage — numbered list of parts, hairline-divided */
+  .cs-coverage {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-6) 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 768px) {
+    .cs-coverage {
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--space-12);
+    }
+  }
+
+  .cs-coverage__item {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding: var(--space-2) 0;
+    border-bottom: var(--border-hairline);
+  }
+
+  .cs-coverage__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+  }
+
+  .cs-coverage__label {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+  }
+</style>

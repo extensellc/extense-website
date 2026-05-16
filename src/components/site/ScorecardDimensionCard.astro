@@ -1,0 +1,232 @@
+---
+/*
+  ScorecardDimensionCard — hero side panel for /resources/ai-readiness.
+
+  A single, static sample-dimension card. Document-grade hairline + amber-spine
+  vocabulary shared with CaseStudyRecordCard and ComplianceReferenceCard, but
+  no rotation — distinct rhetoric. The Case Studies card "samples per visit"
+  through engagement records; this card displays one fixed entry from a
+  scoring instrument the reader is about to see in full below.
+
+  Hidden below 1024px (desktop-only enhancement).
+*/
+
+interface ScoreLevel {
+  level: "0" | "1" | "2";
+  body: string;
+}
+
+interface Props {
+  number: string;
+  total: string;
+  dimension: string;
+  question: string;
+  scores: ScoreLevel[];
+}
+
+const { number, total, dimension, question, scores } = Astro.props;
+---
+
+<aside class="scrd" aria-label="Sample scorecard dimension">
+  <div class="scrd__panel">
+    <header class="scrd__header">
+      <p class="scrd__doc-ref">AI-Readiness Scorecard</p>
+      <p class="scrd__counter">
+        <span class="scrd__counter-current">{number}</span>
+        <span class="scrd__counter-sep">/</span>
+        <span class="scrd__counter-total">{total}</span>
+      </p>
+    </header>
+    <hr class="scrd__rule" />
+
+    <p class="scrd__label">Dimension</p>
+    <h3 class="scrd__title">{dimension}</h3>
+    <p class="scrd__question">{question}</p>
+
+    <hr class="scrd__rule" />
+
+    <p class="scrd__scoring-label">Scoring</p>
+    <ul class="scrd__scores">
+      {scores.map((s) => (
+        <li class="scrd__score">
+          <span class="scrd__score-num">{s.level}</span>
+          <span class="scrd__score-body">{s.body}</span>
+        </li>
+      ))}
+    </ul>
+
+    <hr class="scrd__rule" />
+
+    <footer class="scrd__footer">
+      <span>Form: SCORECARD-DIM v1.0</span>
+      <span class="scrd__hint">Sample entry</span>
+    </footer>
+  </div>
+</aside>
+
+<style>
+  .scrd {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .scrd {
+      display: block;
+      width: 360px;
+      flex-shrink: 0;
+    }
+  }
+
+  .scrd__panel {
+    position: relative;
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-4) var(--space-6) var(--space-3);
+  }
+
+  .scrd__panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #fcd34d;
+    pointer-events: none;
+  }
+
+  .scrd__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .scrd__doc-ref {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .scrd__counter {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    margin: 0;
+    font-feature-settings: "tnum";
+  }
+
+  .scrd__counter-current {
+    color: var(--color-link);
+    font-weight: var(--weight-semibold);
+  }
+
+  .scrd__counter-sep {
+    color: var(--color-text-muted);
+    margin: 0 2px;
+  }
+
+  .scrd__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: var(--space-3) 0;
+  }
+
+  .scrd__label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .scrd__title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .scrd__question {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .scrd__scoring-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .scrd__scores {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .scrd__score {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+
+  .scrd__score-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+  }
+
+  .scrd__score-body {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .scrd__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .scrd__hint {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+</style>

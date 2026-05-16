@@ -1,0 +1,469 @@
+---
+/*
+  TechDocsHero — hero for /solutions/technical-docs-and-publishing.
+
+  Two-column layout (60/40 desktop, single column mobile):
+    LEFT  — kicker, "One source. Every output channel." thesis, hairline,
+            body paragraph naming DITA-OT and the six outputs.
+    RIGHT — animated "starburst" diagram: a single DITA source node ->
+            amber transformation thread -> DITA-OT BUILD block (with
+            abstract internals) -> trunk + horizontal bar -> 6 output
+            channels fanning out (PDF / HTML5 / EPUB3 / IETM / SCORM / RAG).
+
+  Visualizes the "one source, every output" thesis. Sister diagram to
+  the Solutions-page pipeline: where Solutions shows unstructured chaos
+  resolving into schema, TDP shows the inverse — a single authoritative
+  source proliferating into many channels via DITA-OT.
+
+  Animation: same vocabulary as the home page DITA tree and the
+  Solutions hero pipeline. Viewport-triggered cascade adds `.drawn` to
+  the SVG; per-element delays staggered so the diagram assembles itself
+  top-to-bottom.
+
+  prefers-reduced-motion: static render, no animation.
+*/
+---
+
+<section class="tdp-hero">
+  <div class="tdp-hero__inner">
+    <div class="tdp-hero__text">
+      <p class="tdp-hero__kicker">
+        AUTHOR<span class="tdp-hero__dot">·</span>VALIDATE<span class="tdp-hero__dot">·</span>BUILD<span class="tdp-hero__dot">·</span>PUBLISH
+      </p>
+      <h1 class="tdp-hero__title">
+        <em>One source.</em> Every output channel.
+      </h1>
+      <hr class="tdp-hero__rule" />
+      <p class="tdp-hero__body">
+        One repository of DITA-authored topics. One DITA-OT build pipeline triggered on every merge. Six outputs &mdash; print PDF, responsive HTML5, EPUB3, IETM, SCORM, and RAG-grounded retrieval &mdash; emitted from the same source, validated by the same schema, localized through the same translation memory.
+      </p>
+    </div>
+
+    <div class="tdp-hero__visual">
+      <svg
+        class="starburst-svg"
+        id="tdp-starburst"
+        viewBox="0 0 320 420"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <!-- Corner registration marks (amber chrome) -->
+        <g class="corner corner--accent" style="--d: 0ms">
+          <path d="M 10 20 L 10 10 L 20 10" />
+          <path d="M 300 10 L 310 10 L 310 20" />
+          <path d="M 10 400 L 10 410 L 20 410" />
+          <path d="M 300 410 L 310 410 L 310 400" />
+        </g>
+
+        <!-- Top chrome: source path -->
+        <text class="chrome" x="30" y="22" style="--d: 80ms">in :: src/topics/*.dita</text>
+
+        <!-- DITA SOURCE block: single prominent rectangle, centered. -->
+        <g class="source-block" style="--d: 200ms">
+          <rect class="source-box" x="100" y="40" width="120" height="70" />
+          <text class="source-label" x="160" y="58" text-anchor="middle">DITA SOURCE</text>
+          <line class="source-line" x1="112" y1="72" x2="208" y2="72" />
+          <line class="source-line" x1="112" y1="82" x2="200" y2="82" />
+          <line class="source-line" x1="112" y1="92" x2="208" y2="92" />
+          <line class="source-line" x1="112" y1="102" x2="192" y2="102" />
+        </g>
+
+        <!-- Amber transformation thread. Tip lands at y=198, just above
+             the DITA-OT box's top edge at y=200, mirroring the Solutions
+             hero's arrow into the schema. -->
+        <path class="amber-thread" d="M 160 110 L 160 191" style="--d: 540ms" />
+        <path class="amber-tip" d="M 155 191 L 160 198 L 165 191 Z" style="--d: 540ms" />
+
+        <!-- DITA-OT BUILD block: the transformation moment. Same visual
+             vocabulary as the Solutions hero schema. -->
+        <rect class="schema" x="80" y="200" width="160" height="90" style="--d: 1000ms" />
+        <text class="schema-label" x="160" y="218" text-anchor="middle" style="--d: 1000ms">DITA-OT BUILD</text>
+
+        <!-- Schema internals: 2 rows x 3 cols of abstract transtype cells -->
+        <g class="schema-elements" style="--d: 1200ms">
+          <rect class="schema-elem" x="92"  y="232" width="44" height="16" />
+          <rect class="schema-elem" x="140" y="232" width="40" height="16" />
+          <rect class="schema-elem" x="184" y="232" width="44" height="16" />
+          <rect class="schema-elem" x="92"  y="256" width="40" height="16" />
+          <rect class="schema-elem" x="136" y="256" width="48" height="16" />
+          <rect class="schema-elem" x="188" y="256" width="40" height="16" />
+        </g>
+
+        <!-- Output trunk + horizontal bar + 6 vertical drops -->
+        <path class="output-line" d="M 160 290 L 160 310" style="--d: 1620ms" />
+        <path class="output-line" d="M 40 310 L 280 310" style="--d: 1700ms" />
+        <path class="output-line" d="M 40  310 L 40  330" style="--d: 1780ms" />
+        <path class="output-line" d="M 88  310 L 88  330" style="--d: 1780ms" />
+        <path class="output-line" d="M 136 310 L 136 330" style="--d: 1780ms" />
+        <path class="output-line" d="M 184 310 L 184 330" style="--d: 1780ms" />
+        <path class="output-line" d="M 232 310 L 232 330" style="--d: 1780ms" />
+        <path class="output-line" d="M 280 310 L 280 330" style="--d: 1780ms" />
+
+        <!-- 6 output channels: PDF / HTML5 / EPUB3 / IETM / SCORM / RAG -->
+        <g class="output" style="--d: 1900ms">
+          <rect class="output-box" x="20"  y="330" width="40" height="34" />
+          <text class="output-label" x="40"  y="352" text-anchor="middle">PDF</text>
+        </g>
+        <g class="output" style="--d: 1960ms">
+          <rect class="output-box" x="68"  y="330" width="40" height="34" />
+          <text class="output-label" x="88"  y="352" text-anchor="middle">HTML5</text>
+        </g>
+        <g class="output" style="--d: 2020ms">
+          <rect class="output-box" x="116" y="330" width="40" height="34" />
+          <text class="output-label" x="136" y="352" text-anchor="middle">EPUB3</text>
+        </g>
+        <g class="output" style="--d: 2080ms">
+          <rect class="output-box" x="164" y="330" width="40" height="34" />
+          <text class="output-label" x="184" y="352" text-anchor="middle">IETM</text>
+        </g>
+        <g class="output" style="--d: 2140ms">
+          <rect class="output-box" x="212" y="330" width="40" height="34" />
+          <text class="output-label" x="232" y="352" text-anchor="middle">SCORM</text>
+        </g>
+        <g class="output" style="--d: 2200ms">
+          <rect class="output-box" x="260" y="330" width="40" height="34" />
+          <text class="output-label" x="280" y="352" text-anchor="middle">RAG</text>
+        </g>
+
+        <!-- Bottom chrome: figure caption + build status -->
+        <line class="chrome-rule" x1="30" y1="392" x2="290" y2="392" style="--d: 2360ms" />
+        <text class="chrome chrome--strong" x="30"  y="410" style="--d: 2400ms">FIG. 03</text>
+        <text class="chrome"                 x="80"  y="410" style="--d: 2400ms">/</text>
+        <text class="chrome chrome--strong" x="88"  y="410" style="--d: 2400ms">publish.outputs</text>
+        <rect class="build-dot" x="215" y="404" width="6" height="6" style="--d: 2400ms" />
+        <text class="chrome chrome--strong" x="290" y="410" text-anchor="end" style="--d: 2400ms">BUILD OK</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ─────────────────────────────────────────────────────────────────
+     Layout — mirrors SolutionsHero's 60/40 split, stacked on mobile.
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-hero {
+    width: 100%;
+  }
+
+  .tdp-hero__inner {
+    max-width: var(--container-page, 1240px);
+    margin: 0 auto;
+    padding: var(--space-32) var(--space-12);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  @media (min-width: 960px) {
+    .tdp-hero__inner {
+      grid-template-columns: 60% 40%;
+      gap: var(--space-12);
+      padding: var(--space-32) var(--space-12);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .tdp-hero__inner {
+      padding: var(--space-20) var(--space-6);
+      gap: var(--space-16);
+    }
+  }
+
+  /* Left: text column */
+  .tdp-hero__text {
+    max-width: 640px;
+  }
+
+  .tdp-hero__kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .tdp-hero__dot {
+    color: var(--color-text-muted);
+    margin: 0 0.5em;
+  }
+
+  .tdp-hero__title {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+  .tdp-hero__title em {
+    font-style: italic;
+  }
+
+  @media (max-width: 960px) {
+    .tdp-hero__title {
+      font-size: 36px;
+    }
+  }
+
+  .tdp-hero__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    width: 64px;
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .tdp-hero__body {
+    font-family: var(--font-body);
+    font-weight: var(--weight-regular);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 560px;
+    text-wrap: pretty;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Right: starburst SVG
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-hero__visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .starburst-svg {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  /* DITA SOURCE block: outlined rectangle with internal "text lines",
+     same vocabulary as Solutions hero input docs. */
+  .starburst-svg .source-box {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .starburst-svg .source-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.18em;
+  }
+  .starburst-svg .source-line {
+    stroke: currentColor;
+    stroke-width: 1;
+    opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Amber transformation thread + arrow tip */
+  .starburst-svg .amber-thread {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: butt;
+    vector-effect: non-scaling-stroke;
+  }
+  .starburst-svg .amber-tip {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* DITA-OT BUILD block: same as Solutions hero schema */
+  .starburst-svg .schema {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.75;
+    vector-effect: non-scaling-stroke;
+  }
+  .starburst-svg .schema-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.18em;
+  }
+  .starburst-svg .schema-elem {
+    fill: currentColor;
+    fill-opacity: 0.12;
+    stroke: currentColor;
+    stroke-width: 0.75;
+    stroke-opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Output trunk + drops */
+  .starburst-svg .output-line {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Output channels: filled-bg outlined rectangles with mono labels */
+  .starburst-svg .output-box {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .starburst-svg .output-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: currentColor;
+    text-anchor: middle;
+    dominant-baseline: central;
+    letter-spacing: 0.06em;
+  }
+
+  /* Chrome / corner / status */
+  .starburst-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-regular);
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .starburst-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .starburst-svg .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .starburst-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .starburst-svg .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Initial hidden states + reveal cascade.
+     Triggered when the SVG gets the .drawn class (added by JS on
+     viewport entry). Each element's --d delay controls when it appears.
+     ───────────────────────────────────────────────────────────────── */
+  .starburst-svg .corner,
+  .starburst-svg .source-box,
+  .starburst-svg .source-label,
+  .starburst-svg .source-line,
+  .starburst-svg .amber-thread,
+  .starburst-svg .amber-tip,
+  .starburst-svg .schema,
+  .starburst-svg .schema-label,
+  .starburst-svg .schema-elem,
+  .starburst-svg .output-line,
+  .starburst-svg .output-box,
+  .starburst-svg .output-label,
+  .starburst-svg .chrome,
+  .starburst-svg .chrome-rule,
+  .starburst-svg .build-dot {
+    opacity: 0;
+  }
+  .starburst-svg .source-block,
+  .starburst-svg .schema-elements,
+  .starburst-svg .output {
+    opacity: 0;
+  }
+
+  .starburst-svg.drawn .corner,
+  .starburst-svg.drawn .chrome,
+  .starburst-svg.drawn .chrome-rule,
+  .starburst-svg.drawn .build-dot,
+  .starburst-svg.drawn .source-block,
+  .starburst-svg.drawn .source-box,
+  .starburst-svg.drawn .source-label,
+  .starburst-svg.drawn .source-line,
+  .starburst-svg.drawn .amber-thread,
+  .starburst-svg.drawn .amber-tip,
+  .starburst-svg.drawn .schema,
+  .starburst-svg.drawn .schema-label,
+  .starburst-svg.drawn .schema-elements,
+  .starburst-svg.drawn .schema-elem,
+  .starburst-svg.drawn .output,
+  .starburst-svg.drawn .output-line,
+  .starburst-svg.drawn .output-box,
+  .starburst-svg.drawn .output-label {
+    animation: starburst-fade-in 320ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes starburst-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .starburst-svg .corner,
+    .starburst-svg .source-box,
+    .starburst-svg .source-label,
+    .starburst-svg .source-line,
+    .starburst-svg .amber-thread,
+    .starburst-svg .amber-tip,
+    .starburst-svg .schema,
+    .starburst-svg .schema-label,
+    .starburst-svg .schema-elem,
+    .starburst-svg .output-line,
+    .starburst-svg .output-box,
+    .starburst-svg .output-label,
+    .starburst-svg .chrome,
+    .starburst-svg .chrome-rule,
+    .starburst-svg .build-dot,
+    .starburst-svg .source-block,
+    .starburst-svg .schema-elements,
+    .starburst-svg .output {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // TechDocsHero — viewport-triggered draw-in cascade
+  // Same pattern as the home page DITA tree and Solutions hero.
+  // ─────────────────────────────────────────────────────────
+  function setupTechDocsHero() {
+    const svg = document.getElementById("tdp-starburst") as SVGElement | null;
+    if (!svg) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTechDocsHero);
+  document.addEventListener("astro:page-load", setupTechDocsHero);
+</script>

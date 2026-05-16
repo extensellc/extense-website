@@ -1,0 +1,335 @@
+---
+/*
+  AiReadyPipeline — approach section on /solutions/ai-ready-content.
+
+  Sequenced after the two-pipeline comparison (section 3), before the
+  AI use-case chapter-blocks.
+
+  Layout
+    - container-data section, border-top hairline
+    - Manifesto-style opening at 900 px width (matching Migration and
+      Interop pipelines) so the elaboration paragraph spans from the
+      center of the AUDIT stage to the center of the VALIDATE stage
+      in the 1080 px stages grid below.
+    - Horizontal 5-stage pipeline at container-data width:
+        AUDIT -> STRUCTURE -> ENRICH -> BUILD -> VALIDATE
+
+  Animation: same as the other pipeline sections. prefers-reduced-motion: static.
+*/
+
+interface Stage {
+  num: string;
+  name: string;
+  tool: string;
+  detail: string;
+}
+
+const stages: Stage[] = [
+  {
+    num: "01",
+    name: "Audit & Score",
+    tool: "7-dimension AI-readiness scorecard",
+    detail: "Content typing, metadata coverage, addressability, vocabulary control, semantic markup, reuse architecture, pipeline maturity. The corpus is quoted on what is recoverable for retrieval, not on raw topic count.",
+  },
+  {
+    num: "02",
+    name: "Structure & Type",
+    tool: "DITA 1.3 specialization, controlled topic types, stable section IDs",
+    detail: "Word / PDF / FrameMaker / wiki content converted to typed DITA. Every section gets an addressable, version-stable ID so retrieval can cite — not approximate.",
+  },
+  {
+    num: "03",
+    name: "Enrich Metadata",
+    tool: "Subject scheme, SKOS taxonomy, audience / difficulty / domain / intent",
+    detail: "Controlled vocabulary applied at scale. 100 % coverage gate on every topic. Validation rules prevent vocabulary drift on every commit.",
+  },
+  {
+    num: "04",
+    name: "Build Pipeline",
+    tool: "DITA-OT, chunks.jsonl, glossary-index.json, content-manifest.json",
+    detail: "A single build emits semantic chunks alongside the HTML/PDF outputs. Every chunk is metadata-tagged, citation-ready, and tied back to its source section ID.",
+  },
+  {
+    num: "05",
+    name: "Integrate & Validate",
+    tool: "Pinecone / Weaviate / pgvector, metadata-filtered retrieval, replay tests",
+    detail: "Audience and domain filter applied before similarity scoring runs. Precision measured against real user queries before the engagement closes — not promised.",
+  },
+];
+---
+
+<section class="airdy-pipeline" aria-labelledby="airdy-pipeline-heading">
+  <div class="container-data airdy-pipeline__inner">
+    <div class="airdy-pipeline__manifesto">
+      <p class="eyebrow airdy-pipeline__eyebrow">The pipeline</p>
+      <h2 id="airdy-pipeline-heading" class="airdy-pipeline__principle">
+        Precision is a <em>content engineering</em> problem.
+      </h2>
+      <hr class="airdy-pipeline__rule" />
+      <p class="airdy-pipeline__elaboration">
+        AI retrieval precision is a function of how the content was structured, not how the model was tuned. The 7-dimension AI-readiness scorecard quantifies the gap. Word / PDF / FrameMaker content gets converted to typed DITA with stable section IDs. A subject scheme and SKOS-based controlled vocabulary tag every topic &mdash; audience, difficulty, domain, intent. The DITA-OT build emits <code>chunks.jsonl</code> and <code>glossary-index.json</code> alongside the HTML/PDF outputs. The corpus lands in Pinecone, Weaviate, or pgvector with metadata filters that pre-scope the search before similarity scoring runs. Retrieval precision is measured against real user queries before the engagement closes.
+      </p>
+    </div>
+
+    <ol class="airdy-pipeline__stages" aria-label="AI-ready content pipeline">
+      {stages.map((stage, i) => (
+        <li class={`pipeline-stage pipeline-stage--${i + 1}`}>
+          <p class="pipeline-stage__num" aria-hidden="true">{stage.num}</p>
+          <h3 class="pipeline-stage__name">{stage.name}</h3>
+          <p class="pipeline-stage__tool">{stage.tool}</p>
+          <p class="pipeline-stage__detail">{stage.detail}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .airdy-pipeline {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .airdy-pipeline {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* Manifesto block widened to 900 px (matching Migration and Interop
+     pipelines) so the elaboration spans the inner stages. */
+  .airdy-pipeline__manifesto {
+    max-width: 900px;
+    margin: 0 auto var(--space-20) auto;
+    text-align: center;
+  }
+
+  @media (max-width: 767px) {
+    .airdy-pipeline__manifesto {
+      margin-bottom: var(--space-16);
+    }
+  }
+
+  .airdy-pipeline__eyebrow {
+    margin: 0 0 var(--space-8) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .airdy-pipeline__principle {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: var(--weight-regular);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .airdy-pipeline__principle em {
+    font-style: italic;
+  }
+
+  @media (max-width: 767px) {
+    .airdy-pipeline__principle {
+      font-size: 32px;
+    }
+  }
+
+  .airdy-pipeline__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    width: 64px;
+    margin: var(--space-8) auto;
+  }
+
+  .airdy-pipeline__elaboration {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0 auto;
+    max-width: 100%;
+    text-wrap: pretty;
+    text-align: left;
+  }
+  .airdy-pipeline__elaboration code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--color-surface-elevated);
+    padding: 0.05em 0.4em;
+    color: var(--color-text-primary);
+  }
+
+  /* Pipeline stages — same vocabulary as TDP/Migration/Interop. */
+  .airdy-pipeline__stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 960px) {
+    .airdy-pipeline__stages {
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .pipeline-stage {
+    border-top: 2px solid var(--color-text-primary);
+    padding-top: var(--space-4);
+    position: relative;
+  }
+
+  .pipeline-stage:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    line-height: 1;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary-hover);
+    bottom: calc(-1 * var(--space-8) - 8px);
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+
+  @media (min-width: 960px) {
+    .pipeline-stage:not(:last-child)::after {
+      bottom: auto;
+      left: auto;
+      right: calc(-1 * var(--space-12) / 2 + 0px);
+      top: 38px;
+      transform: translate(50%, -50%) rotate(0deg);
+    }
+  }
+
+  .pipeline-stage__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    margin: 0 0 var(--space-2) 0;
+    line-height: 1;
+  }
+
+  .pipeline-stage__name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: var(--weight-medium);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .pipeline-stage__tool {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+  }
+
+  .pipeline-stage__detail {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Reveal animation — viewport-triggered. */
+  .airdy-pipeline.animating .airdy-pipeline__eyebrow,
+  .airdy-pipeline.animating .airdy-pipeline__principle,
+  .airdy-pipeline.animating .airdy-pipeline__rule,
+  .airdy-pipeline.animating .airdy-pipeline__elaboration,
+  .airdy-pipeline.animating .pipeline-stage {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .airdy-pipeline.animating.in-view .airdy-pipeline__eyebrow {
+    animation: airdy-pipe-fade-in 420ms ease-out forwards;
+  }
+  .airdy-pipeline.animating.in-view .airdy-pipeline__principle {
+    animation: airdy-pipe-fade-in 520ms ease-out forwards;
+    animation-delay: 120ms;
+  }
+  .airdy-pipeline.animating.in-view .airdy-pipeline__rule {
+    animation: airdy-pipe-fade-in 420ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+  .airdy-pipeline.animating.in-view .airdy-pipeline__elaboration {
+    animation: airdy-pipe-fade-in 420ms ease-out forwards;
+    animation-delay: 420ms;
+  }
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(1) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 640ms; }
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(2) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 760ms; }
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(3) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 880ms; }
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(4) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 1000ms; }
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(5) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 1120ms; }
+
+  @keyframes airdy-pipe-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .airdy-pipeline.animating .airdy-pipeline__eyebrow,
+    .airdy-pipeline.animating .airdy-pipeline__principle,
+    .airdy-pipeline.animating .airdy-pipeline__rule,
+    .airdy-pipeline.animating .airdy-pipeline__elaboration,
+    .airdy-pipeline.animating .pipeline-stage {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupAiReadyPipeline() {
+    const sec = document.querySelector<HTMLElement>(".airdy-pipeline");
+    if (!sec) return;
+    if (sec.dataset.pipelineRevealInit === "true") return;
+    sec.dataset.pipelineRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupAiReadyPipeline);
+  document.addEventListener("astro:page-load", setupAiReadyPipeline);
+</script>

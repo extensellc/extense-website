@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: process.env.PUBLIC_SITE_URL ?? 'https://www.ex-tense.co',
+  site: process.env.PUBLIC_SITE_URL ?? 'https://www.extense.co',
   output: 'static',
   adapter: vercel({
     webAnalytics: { enabled: false },
@@ -21,7 +21,7 @@ export default defineConfig({
       lastmod: new Date(),
       serialize(item) {
         // Boost homepage and primary landing pages
-        if (item.url === 'https://www.ex-tense.co/') {
+        if (item.url === 'https://www.extense.co/') {
           return { ...item, priority: 1.0 };
         }
         if (item.url.match(/\/(public-sector|private-sector|capabilities|about|insights|contact)\/?$/)) {

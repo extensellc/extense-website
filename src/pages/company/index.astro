@@ -1,0 +1,744 @@
+---
+/*
+  /company — load-bearing identity page.
+
+  The canonical Company page. No certification claims; the firm holds
+  none of those yet. Identity = methodology + practice + journey +
+  procurement-ready firm record.
+
+  Section order:
+    1. Hero (universal, with FirmRecordCard side panel)
+    2. AnimatedDivider
+    3. How we work — 5-phase methodology (DocumentRow.entry × 5)
+    4. AnimatedDivider
+    5. The practice — aggregate team framing (CompactList)
+    6. AnimatedDivider
+    7. Our journey — timeline of firm milestones
+    8. AnimatedDivider
+    9. Firm record — procurement-ready vendor details
+   10. AnimatedDivider
+   11. CTAModule (general)
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import ContentEngineeringGlossary from "../../components/site/ContentEngineeringGlossary.astro";
+import DocumentRow from "../../components/site/DocumentRow.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
+
+const glossaryMarkets = [
+  {
+    number: "01",
+    name: "Technical Publishing",
+    body: "Raw information rendered as usable manuals, guides, and help systems.",
+  },
+  {
+    number: "02",
+    name: "Content Technology",
+    body: "The infrastructure that stores, manages, and transforms content across platforms and formats.",
+  },
+  {
+    number: "03",
+    name: "Intelligent Content",
+    body: "Self-aware, adaptive content that understands its purpose, relationships, and context.",
+  },
+];
+
+const principlesInPractice = [
+  {
+    name: "Agile delivery.",
+    body: "The work ships in two-week increments, not six-month black boxes. Each sprint produces output the team can review — schema fragments, converted samples, plugin builds. Progress is visible from Sprint 1; scope adjustments happen mid-engagement, not at the end.",
+  },
+  {
+    name: "Prototype-first.",
+    body: "A fifty-page conversion pilot before the fifty-thousand-page batch. A PDF spread before the branded plugin. The discipline is to invalidate the architecture before scaling production against it — proof before investment.",
+  },
+  {
+    name: "Built-in enablement.",
+    body: "Training isn't a Phase 5 deliverable; it begins in Phase 1 and runs alongside every sprint. Discovery interviews are themselves teaching moments. Architecture documentation becomes the team's runbook. The handover is a continuous discipline, not a single event.",
+  },
+];
+
+const methodologyPhases = [
+  {
+    phase: "Discovery",
+    body: "We don't move past Discovery until the constraints that would otherwise sink a content model have surfaced. That includes interviewing the people who will produce, edit, and consume the content, auditing what exists today, and mapping the use cases the system has to support. The goal isn't to gather requirements; it's to find the constraints the architecture has to obey.",
+  },
+  {
+    phase: "Architecture",
+    body: "The architecture is the leverage point. Schema design, taxonomy, metadata strategy, and reuse decisions made here determine what's possible in every downstream phase. We design against the use cases Discovery surfaced, not against generic structured-content principles. The architecture has to work for this client's content, not for a textbook example of DITA.",
+  },
+  {
+    phase: "Migration",
+    body: "Migration is recovery, not transcription. The conversion engine identifies reusable assets in legacy content and lifts them into the target schema; what isn't recoverable gets retired or rewritten with intent. We design the QA harness before the first batch runs — failing migrations fail because the validation strategy was an afterthought.",
+  },
+  {
+    phase: "Implementation",
+    body: "Implementation makes the architecture operational across the toolchain — CCMS configuration, publishing pipelines, integration points. The discipline at this phase is to resist scope expansion: every feature added during implementation is a feature the team has to maintain afterward. We deliver the smallest implementation that runs.",
+  },
+  {
+    phase: "Enablement",
+    body: "Enablement runs through every phase, not at the end. Discovery teaches the practitioner how the program works. Architecture documentation becomes the team's runbook. Migration training transitions authors. CCMS rollout becomes the operating manual. The handover isn't a phase — it's a discipline applied throughout.",
+  },
+];
+
+const practiceAreas = [
+  {
+    label: "DITA architects",
+    description: "Practicing across DITA 1.3 specializations, custom DTDs and constraints, taxonomy and subject scheme design. Versions 5.0 / 6.0 of S1000D for defense and aerospace-adjacent programs.",
+  },
+  {
+    label: "S1000D specialists",
+    description: "Issue 5.0 / 6.0 conformance work for defense primes and federal civilian agencies. Data module design, CSDB integration, IETM/IETP publishing.",
+  },
+  {
+    label: "CCMS implementers",
+    description: "Hands-on implementation experience across IXIASOFT, Heretto, Paligo, and Tridion Docs. Multi-platform fluency that's rare in this market — and informed opinions about which platform fits which problem.",
+  },
+  {
+    label: "Conversion engineers",
+    description: "XSLT 2.0 / 3.0 pipelines, custom converters, off-the-shelf tools where appropriate. QA harnesses designed before production conversion runs, not after.",
+  },
+  {
+    label: "Publishing engineers",
+    description: "DITA-OT customization, branded PDF (XSL-FO), responsive HTML5, S1000D IETP output, CI/CD integration with Jenkins / GitHub Actions / Azure DevOps. Containerized builds for reproducibility.",
+  },
+  {
+    label: "AI / retrieval-engineering practitioners",
+    description: "Chunking strategy, metadata schema, retrieval evaluation. Specialization in regulated-industry RAG where precision matters more than recall.",
+  },
+];
+
+interface Milestone {
+  year: string;
+  heading: string;
+  body: string;
+}
+
+const journey: Milestone[] = [
+  {
+    year: "2012",
+    heading: "Extense LLC founded.",
+    body: "Incorporated in 2012 as an XML and publishing consulting firm in Maryland, focused on structured content for technical documentation.",
+  },
+  {
+    year: "2013",
+    heading: "First federal contract.",
+    body: "Awarded the firm's first government contract — DITA engineering and publishing-automation services to a major federal agency. The engagement established the model for downstream federal work.",
+  },
+  {
+    year: "2016",
+    heading: "Strategic growth phase.",
+    body: "Expanded the technical team and service offerings to support Fortune 500 enterprise clients in regulated industries, alongside continued federal civilian agency engagements.",
+  },
+  {
+    year: "2018",
+    heading: "CCMS practice launched.",
+    body: "Added full CCMS implementation, integration, and ongoing support to the service line. The expansion was driven by client demand for production-grade content operations on platforms like IXIASOFT and Heretto.",
+  },
+  {
+    year: "2020",
+    heading: "Fortune 500 commercial practice.",
+    body: "Grew the commercial practice to serve Fortune 500 clients in automotive, financial services, and life sciences — industries where documentation operates as a regulatory artifact, not a marketing one.",
+  },
+  {
+    year: "2024",
+    heading: "AI-readiness and publishing automation.",
+    body: "Launched the AI-ready content practice — metadata enrichment, section-aware chunking, controlled vocabulary, and JSONL export for RAG pipelines — alongside containerized DITA-OT publishing with Docker and CI/CD.",
+  },
+  {
+    year: "Present",
+    heading: "Full-stack content engineering.",
+    body: "Today, Extense delivers end-to-end content operations — strategy and IA through DITA engineering, CCMS, AI-ready output, and automated multi-channel publishing — across government, commercial, and non-profit sectors.",
+  },
+];
+
+const companyDetails = [
+  { label: "Registered name",   value: "Extense LLC" },
+  { label: "Year incorporated", value: "2012" },
+  { label: "State",             value: "Maryland" },
+  { label: "Corporation type",  value: "S Corporation" },
+  { label: "D-U-N-S number",    value: "064989191" },
+  { label: "CAGE code",         value: "8FGJ9" },
+];
+
+interface NaicsCode {
+  code: string;
+  description: string;
+}
+
+const naicsCodes: NaicsCode[] = [
+  { code: "561410", description: "Document Preparation Services" },
+  { code: "541990", description: "Professional, Scientific & Technical Services" },
+  { code: "541430", description: "Graphic Design Services" },
+  { code: "541511", description: "Custom Computer Programming" },
+  { code: "541330", description: "Engineering Services" },
+  { code: "511120", description: "Periodical Publishers" },
+  { code: "519130", description: "Internet Publishing & Broadcasting" },
+  { code: "518210", description: "Data Processing & Hosting" },
+];
+---
+
+<BaseLayout
+  title="Extense LLC"
+  description="Extense provides Intelligent Technical Content Services for organizations whose documentation cannot be wrong. Content engineering across three markets — technical publishing, content technology, and intelligent content. Founded 2012 in Maryland."
+>
+  <Hero
+    variant="universal"
+    title="Extense provides Intelligent Technical Content Services for organizations whose documentation cannot be wrong."
+    subdeck="Content engineering across three markets — technical publishing, content technology, and intelligent content — for federal agencies, Fortune 500 manufacturers, life sciences companies, financial institutions, and defense contractors."
+  >
+    <ContentEngineeringGlossary
+      headword="content engineering"
+      partOfSpeech="/n./"
+      definition="The engineering discipline of designing systems that produce technical information as a regulatory artifact, not a stylistic one."
+      markets={glossaryMarkets}
+      combinedAs="Intelligent Technical Content Services (ITCS)."
+      seeAlso="DITA · S1000D · DocBook · Markdown · CCMS · DITA-OT · JSONL chunking · NIEM"
+    />
+  </Hero>
+
+  <AnimatedDivider />
+
+  <section class="co-section co-section--methodology" aria-labelledby="methodology-heading">
+    <div class="container-data co-section__inner co-section__inner--spread">
+      <div class="co-spread__head">
+        <h2 id="methodology-heading" class="co-section__heading">How we work.</h2>
+        <p class="co-section__intro">
+          Five phases. Same shape on every engagement. The tone here is definitional — what each phase <em>is</em> in our practice, not what activities happen during it.
+        </p>
+      </div>
+      <div class="co-spread__rows">
+        {methodologyPhases.map((p) => (
+          <DocumentRow variant="entry" heading={p.phase} body={p.body} headingLevel={3} />
+        ))}
+
+        <div class="co-spread__principles">
+          <p class="co-spread__principles-eyebrow">Principles in practice</p>
+          <hr class="co-spread__principles-rule" />
+          {principlesInPractice.map((p) => (
+            <DocumentRow variant="entry" heading={p.name} body={p.body} headingLevel={3} />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="co-section co-section--practice" aria-labelledby="practice-heading">
+    <div class="container-data co-section__inner">
+      <h2 id="practice-heading" class="co-section__heading">The practice.</h2>
+      <p class="co-section__intro co-section__intro--bound">
+        Extense is a small firm of practitioners who have shipped structured-content systems for federal agencies, Fortune 500 manufacturers, life sciences companies, financial institutions, and defense contractors. We don't feature individual team members on this site — the work is the work, and clients evaluate firms by what those firms have shipped, not by team-page photography. The composition we describe below is what's behind every engagement.
+      </p>
+      <dl class="co-practice-grid">
+        {practiceAreas.map((area) => (
+          <div class="co-practice-item">
+            <dt class="co-practice-item__label">{area.label}</dt>
+            <dd class="co-practice-item__desc">{area.description}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="co-section co-section--journey" aria-labelledby="journey-heading">
+    <div class="container-data co-section__inner">
+      <h2 id="journey-heading" class="co-section__heading">Our journey.</h2>
+      <p class="co-section__intro co-section__intro--bound">
+        From a two-person consulting practice in Maryland to a full-stack content engineering firm. The arc of the practice, year by year.
+      </p>
+
+      <ol class="co-journey">
+        {journey.map((m) => (
+          <li class="co-milestone">
+            <span class="co-milestone__year">{m.year}</span>
+            <span class="co-milestone__marker" aria-hidden="true"></span>
+            <div class="co-milestone__body">
+              <h3 class="co-milestone__heading">{m.heading}</h3>
+              <p class="co-milestone__text">{m.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="co-section co-section--record" aria-labelledby="record-heading">
+    <div class="container-data co-section__inner">
+      <div class="co-record-head">
+        <h2 id="record-heading" class="co-section__heading">Firm record.</h2>
+        <p class="co-section__intro co-section__intro--bound">
+          Procurement-ready vendor details. Useful for contracting officers, vendor onboarding teams, and BD prospects researching the firm.
+        </p>
+      </div>
+
+      <div class="co-record-grid">
+        <div class="co-record-block">
+          <p class="co-record-block__eyebrow">Company details</p>
+          <hr class="co-rule" />
+          <dl class="co-record-list">
+            {companyDetails.map((row) => (
+              <div class="co-record-row">
+                <dt class="co-record-row__label">{row.label}</dt>
+                <dd class="co-record-row__value">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <hr class="co-rule" />
+        </div>
+
+        <div class="co-record-block co-record-block--naics">
+          <p class="co-record-block__eyebrow">NAICS codes</p>
+          <hr class="co-rule" />
+          <dl class="co-record-list co-record-list--two-col">
+            {naicsCodes.map((n) => (
+              <div class="co-record-row co-record-row--code">
+                <dt class="co-record-row__label co-record-row__label--code">{n.code}</dt>
+                <dd class="co-record-row__value">{n.description}</dd>
+              </div>
+            ))}
+          </dl>
+          <hr class="co-rule" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <CTAModule
+    audience="general"
+    body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
+  />
+</BaseLayout>
+
+<style>
+  .co-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .co-section {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+  }
+
+  .co-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+
+  .co-section__intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-12) 0;
+    text-wrap: pretty;
+  }
+
+  .co-section__intro em {
+    font-style: italic;
+  }
+
+  /* Bound intro paragraphs to a max width so they don't span the wide
+     container-data layouts used by Practice and Journey sections. */
+  .co-section__intro--bound {
+    max-width: 65ch;
+  }
+
+  .co-rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0;
+  }
+
+  /* ─── How we work: asymmetric editorial spread ─── */
+  .co-section__inner--spread {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 1024px) {
+    .co-section__inner--spread {
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+  }
+
+  .co-spread__head .co-section__heading {
+    margin-bottom: var(--space-6);
+  }
+
+  .co-spread__head .co-section__intro {
+    margin-bottom: 0;
+  }
+
+  /* Principles-in-practice subsection — sits below the 5 phases
+     in the right column of the editorial spread. Separated from the
+     phases by a mono eyebrow + hairline, giving it visual weight as
+     a distinct sub-section without breaking the column layout. */
+  .co-spread__principles {
+    margin-top: var(--space-12);
+  }
+
+  .co-spread__principles-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .co-spread__principles-rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  /* Sticky heading column at desktop — stays with reader as they
+     scroll past the methodology phases. Standard editorial spread
+     pattern; eliminates the perceived empty space below the intro. */
+  @media (min-width: 1024px) {
+    .co-spread__head {
+      position: sticky;
+      top: var(--space-12);
+      align-self: start;
+    }
+  }
+
+  /* ─── The practice: 2-column grid ─── */
+  .co-practice-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .co-practice-grid {
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--space-16);
+      row-gap: var(--space-12);
+    }
+  }
+
+  .co-practice-item {
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .co-practice-item__label {
+    font-family: var(--font-display);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .co-practice-item__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Our journey: vertical (mobile/tablet) / horizontal timeline (desktop) ─── */
+  .co-journey {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .co-milestone {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-8) 0;
+    border-top: var(--border-hairline);
+  }
+
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .co-milestone {
+      grid-template-columns: 120px 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  .co-milestone:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  .co-milestone__marker {
+    display: none;
+  }
+
+  .co-milestone__year {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #b45309;
+    font-feature-settings: "tnum";
+    padding-top: 4px;
+  }
+
+  .co-milestone__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .co-milestone__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .co-milestone__text {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Horizontal timeline at desktop — 4 columns × 2 rows.
+     Each milestone gets ~270px width so body text wraps in 3-4 lines
+     instead of being cramped into ~150px columns.
+     Row 1: 2012, 2013, 2016, 2018
+     Row 2: 2020, 2024, Present (col 4 of row 2 is empty by design). */
+  @media (min-width: 1024px) {
+    .co-journey {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto;
+      column-gap: 0;
+      row-gap: var(--space-16);
+      padding-top: 48px;
+    }
+
+    .co-milestone {
+      display: flex;
+      flex-direction: column;
+      padding: 0 var(--space-3);
+      border: 0;
+      position: relative;
+      gap: var(--space-3);
+    }
+
+    /* Per-milestone hairline — adjacent items in the same row share the
+       same y-position and visually connect into a continuous line. */
+    .co-milestone::before {
+      content: "";
+      position: absolute;
+      top: -4px;
+      left: 0;
+      right: 0;
+      border-top: var(--border-hairline);
+    }
+
+    .co-milestone:last-child {
+      border-bottom: 0;
+    }
+
+    .co-milestone__year {
+      position: absolute;
+      top: -36px;
+      left: 0;
+      right: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .co-milestone__marker {
+      display: block;
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--color-page-bg);
+      border: 1.5px solid #b45309;
+    }
+
+    .co-milestone__body {
+      padding-top: var(--space-6);
+      gap: var(--space-2);
+    }
+
+    .co-milestone__heading {
+      font-size: var(--text-body);
+      font-weight: var(--weight-medium);
+      text-align: left;
+    }
+
+    .co-milestone__text {
+      font-size: var(--text-body-sm);
+      line-height: 1.5;
+    }
+  }
+
+  /* ─── Firm record ─── */
+  /* Outer layout: heading/intro on left (1fr, narrow) + data zone on
+     right (3fr, wide) at desktop. DOM order is head-first for accessibility
+     and the visual order matches via grid-template-areas. */
+  @media (min-width: 1024px) {
+    .co-section--record .co-section__inner {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      grid-template-areas: "head data";
+      gap: var(--space-16);
+      align-items: start;
+    }
+
+    .co-record-head {
+      grid-area: head;
+    }
+
+    .co-record-grid {
+      grid-area: data;
+    }
+
+    .co-record-head .co-section__heading {
+      margin-bottom: var(--space-6);
+    }
+
+    .co-record-head .co-section__intro {
+      margin-bottom: 0;
+    }
+  }
+
+  .co-record-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  /* At tablet+: side-by-side, asymmetric — Company Details narrow,
+     NAICS Codes wider so its internal 2-column list has room to breathe. */
+  @media (min-width: 768px) {
+    .co-record-grid {
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-12);
+    }
+  }
+
+  /* ─── NAICS Codes: 2-column internal list ─── */
+  /* Class chained (.co-record-list.co-record-list--two-col) to outrank
+     the later .co-record-list base rule's `display: flex` declaration. */
+  .co-record-list.co-record-list--two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3) var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .co-record-list.co-record-list--two-col {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Narrower label column in NAICS rows (codes are only 6 chars).
+     Chained class to outrank the base .co-record-row column rule. */
+  .co-record-row.co-record-row--code {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .co-record-block__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .co-record-list {
+    margin: 0;
+    padding: var(--space-6) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .co-record-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  @media (min-width: 640px) {
+    .co-record-row {
+      grid-template-columns: 160px 1fr;
+      gap: var(--space-4);
+      align-items: baseline;
+    }
+  }
+
+  .co-record-row__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .co-record-row__label--code {
+    color: #b45309;
+    font-weight: var(--weight-semibold);
+    font-size: 12.5px;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  .co-record-row__value {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+</style>

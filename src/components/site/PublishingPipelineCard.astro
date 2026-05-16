@@ -1,0 +1,206 @@
+---
+/*
+  PublishingPipelineCard — hero side panel for /resources/automation-guide.
+
+  Static 8-stage pipeline preview, same document-grade vocabulary as
+  MigrationLifecycleCard (vertical stage strip with hairline-divided
+  numbered rows). Different content shape: a CI/CD pipeline arc instead
+  of a migration lifecycle.
+
+  Static. No rotation, no JS. Hidden below 1024px.
+*/
+
+interface Stage {
+  number: string;
+  name: string;
+  body: string;
+}
+
+interface Props {
+  stages: Stage[];
+}
+
+const { stages } = Astro.props;
+const total = String(stages.length).padStart(2, "0");
+---
+
+<aside class="ppc" aria-label="Documentation CI/CD pipeline">
+  <div class="ppc__panel">
+    <header class="ppc__header">
+      <p class="ppc__doc-ref">Documentation CI/CD</p>
+      <p class="ppc__counter">
+        <span class="ppc__counter-num">{total}</span>
+        <span class="ppc__counter-label">Stages</span>
+      </p>
+    </header>
+    <hr class="ppc__rule" />
+
+    <ol class="ppc__list">
+      {stages.map((s) => (
+        <li class="ppc__stage">
+          <span class="ppc__stage-num">{s.number}</span>
+          <div class="ppc__stage-body">
+            <p class="ppc__stage-name">{s.name}</p>
+            <p class="ppc__stage-desc">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <hr class="ppc__rule" />
+    <footer class="ppc__footer">
+      <span>Form: PIPELINE v1.0</span>
+      <span class="ppc__hint">Commit to production</span>
+    </footer>
+  </div>
+</aside>
+
+<style>
+  .ppc {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .ppc {
+      display: block;
+      width: 360px;
+      flex-shrink: 0;
+    }
+  }
+
+  .ppc__panel {
+    position: relative;
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-4) var(--space-6) var(--space-3);
+  }
+
+  .ppc__panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #fcd34d;
+    pointer-events: none;
+  }
+
+  .ppc__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .ppc__doc-ref {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .ppc__counter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    margin: 0;
+    font-feature-settings: "tnum";
+  }
+
+  .ppc__counter-num {
+    color: var(--color-link);
+    font-weight: var(--weight-semibold);
+  }
+
+  .ppc__counter-label {
+    color: var(--color-text-muted);
+  }
+
+  .ppc__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: var(--space-3) 0;
+  }
+
+  .ppc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ppc__stage {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    align-items: baseline;
+  }
+
+  .ppc__stage + .ppc__stage {
+    border-top: var(--border-hairline);
+  }
+
+  .ppc__stage-num {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: var(--weight-semibold);
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    line-height: 1.3;
+  }
+
+  .ppc__stage-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .ppc__stage-name {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .ppc__stage-desc {
+    font-family: var(--font-body);
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .ppc__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .ppc__hint {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+</style>

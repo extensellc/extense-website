@@ -1,0 +1,213 @@
+---
+/*
+  TechDocsProblem — diagnosis section on
+  /solutions/technical-docs-and-publishing.
+
+  Sequenced after the hero + siblings row, before the approach (pipeline)
+  section. Names the three compounding failure modes of unstructured,
+  single-format authoring.
+
+  Layout — same as SolutionsProblem
+    - container-data section
+    - heading + subdeck on the left at container-prose width
+    - three diagnostic items in a 3-column grid on desktop, stacked on
+      mobile, each separated by hairline rules at the top of each card
+    - no border-top on the section itself: the siblings row above already
+      carries a border-bottom
+
+  Animation: viewport-triggered fade-up, heading then three items in
+  sequence at 200/320/440 ms delays. prefers-reduced-motion: static.
+*/
+---
+
+<section class="tdp-problem" aria-labelledby="tdp-problem-heading">
+  <div class="container-data tdp-problem__inner">
+    <div class="tdp-problem__heading-block">
+      <h2 id="tdp-problem-heading" class="tdp-problem__heading">
+        What unstructured publishing costs.
+      </h2>
+      <p class="tdp-problem__subdeck">
+        Hand-authored, single-format documentation has three compounding failure modes. Each one gets worse with every product release, every new market, every added language.
+      </p>
+    </div>
+
+    <ol class="tdp-problem__grid">
+      <li class="problem-item">
+        <h3 class="problem-item__heading">
+          Authored five times, owned once.
+        </h3>
+        <p class="problem-item__body">
+          The same warning paragraph lives in the Word doc, the PDF, the help center, the slide deck, and the eLearning module. Five edits per change. Four of them get skipped &mdash; and the next auditor reads one of the four stale copies.
+        </p>
+      </li>
+      <li class="problem-item">
+        <h3 class="problem-item__heading">
+          Translation pays for redundancy.
+        </h3>
+        <p class="problem-item__body">
+          A 200-page manual with 35% reused content gets translated as if every page were unique. The same sentence pays for translation twelve times across the product line, and the inconsistencies between independent translators become the next compliance risk.
+        </p>
+      </li>
+      <li class="problem-item">
+        <h3 class="problem-item__heading">
+          Layout is a manual step.
+        </h3>
+        <p class="problem-item__body">
+          Page breaks, figure placement, running headers, change bars &mdash; every release, by hand, in InDesign or FrameMaker, by someone whose actual job is writing. The bottleneck isn't authoring. It's the four-day formatting cycle that follows it.
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .tdp-problem {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    /* No border-top: the siblings row above already carries a
+       border-bottom; doubling would render as a 2px line. */
+  }
+
+  @media (max-width: 767px) {
+    .tdp-problem {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .tdp-problem__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-12);
+  }
+
+  .tdp-problem__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .tdp-problem__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  .tdp-problem__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .tdp-problem__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  .problem-item {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-6);
+  }
+
+  .problem-item__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .problem-item__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Reveal animation — viewport-triggered, same pattern as SolutionsProblem. */
+  .tdp-problem.animating .tdp-problem__heading-block {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .tdp-problem.animating .problem-item {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .tdp-problem.animating .problem-item:nth-child(1) { --reveal-delay: 200ms; }
+  .tdp-problem.animating .problem-item:nth-child(2) { --reveal-delay: 320ms; }
+  .tdp-problem.animating .problem-item:nth-child(3) { --reveal-delay: 440ms; }
+
+  .tdp-problem.animating.in-view .tdp-problem__heading-block {
+    animation: tdp-problem-fade-in 480ms ease-out forwards;
+  }
+  .tdp-problem.animating.in-view .problem-item {
+    animation: tdp-problem-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes tdp-problem-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tdp-problem.animating .tdp-problem__heading-block,
+    .tdp-problem.animating .problem-item {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupTechDocsProblem() {
+    const sec = document.querySelector<HTMLElement>(".tdp-problem");
+    if (!sec) return;
+    if (sec.dataset.problemRevealInit === "true") return;
+    sec.dataset.problemRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTechDocsProblem);
+  document.addEventListener("astro:page-load", setupTechDocsProblem);
+</script>

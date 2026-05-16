@@ -1,182 +1,413 @@
 ---
 /*
-  /insights — editorial publication surface.
+  /resources — Resources hub.
 
-  Spec ref: EXTENSE_DESIGN_BRIEF.md §8 (/insights)
+  Four publications from the practice. Three guides + one collection of
+  case studies. Each entry below the hero is a substantial abstract — type
+  tag, title, thesis, inside list, and a read link — laid out as a
+  hairline-divided publication index. Document-grade, publication-oriented.
 
   Section order:
-    1. TopNav (BaseLayout)
-    2. Hero (Hero.universal — editorial register)
-    3. TopicFilter
-    4. Post list (PostListItem × N)
-    5. RSS link
-    6. Footer (BaseLayout)
-
-  Posts come from the insights content collection.
-
-  Filter implementation: page renders ALL posts statically; a small client-side
-  script reads ?topic= from the URL on page load and hides non-matching posts.
-  Filter chips are full-page links to ?topic=X — URL state is canonical and
-  shareable, search engines see all posts in the rendered HTML, performance is
-  static-page-fast.
-
-  Editorial bar enforced through what gets published; not self-declared on page.
+    1. Hero (universal, with PublicationDirectoryCard side panel)
+    2. AnimatedDivider
+    3. Framing prose
+    4. AnimatedDivider
+    5. The four publications (vertical entries, each with INSIDE column on desktop)
+    6. AnimatedDivider
+    7. CTAModule (general)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/site/Hero.astro";
-import TopicFilter from "../../components/site/TopicFilter.astro";
-import PostListItem from "../../components/site/PostListItem.astro";
-import { getCollection } from "astro:content";
+import EditorialBarCard from "../../components/site/EditorialBarCard.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
 
-// Fetch all published posts, sorted newest first
-const allPosts = await getCollection("insights", ({ data }) => !data.draft);
-const sortedPosts = allPosts.sort(
-  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
-);
+const editorialPrinciples = [
+  { number: "01", position: "Names tools and standards.",       contrast: "Not abstract patterns." },
+  { number: "02", position: "Takes positions.",                  contrast: "Not 'it depends' framings." },
+  { number: "03", position: "Useful to a working practitioner.", contrast: "Not skim-readable marketing." },
+];
+
+interface Publication {
+  number: string;
+  type: string;
+  title: string;
+  thesis: string;
+  inside: string[];
+  href: string;
+  linkLabel: string;
+}
+
+const publications: Publication[] = [
+  {
+    number: "01",
+    type: "Case studies",
+    title: "Engagement records.",
+    thesis: "Three engagements from the practice — Enterprise DITA Training Curriculum, AI-Ready Content Pipeline, Custom DITA-OT Publishing Automation. Anonymized; verifiable on request under NDA.",
+    inside: [
+      "Three case records, each with hero summary card and full artifact ledger",
+      "Engagement metadata: duration, team composition, scope, status",
+      "Standards & tooling stack named per case",
+      "Decisions and trade-offs: the architectural choices and what was rejected",
+    ],
+    href: "/resources/case-studies",
+    linkLabel: "Read the case studies",
+  },
+  {
+    number: "02",
+    type: "Practitioner guide",
+    title: "AI-readiness is a content engineering problem.",
+    thesis: "Retrieval precision is upstream of model selection. The seven dimensions of content engineering that determine whether an AI pipeline returns the right answer or the closest keyword match — with a 0-14 scorecard, an interpretation rubric, and worked examples of metadata, chunking, and vocabulary in practice.",
+    inside: [
+      "Seven-dimension scorecard with 0 / 1 / 2 rubric",
+      "Interpretation: what an aggregate 0-14 score means",
+      "Five-phase preparation roadmap with deliverables",
+      "Worked examples: metadata filtering, section-aware chunking, controlled vocabulary",
+      "JSONL output schema — the artifacts that ship to a vector store",
+    ],
+    href: "/resources/ai-readiness",
+    linkLabel: "Read the guide",
+  },
+  {
+    number: "03",
+    type: "Practitioner guide",
+    title: "Migration is recovery, not transcription.",
+    thesis: "A playbook for moving content from unstructured legacy formats — Word, FrameMaker, MadCap, RoboHelp, AuthorIT — into typed, validated DITA. Patterns drawn from two million pages of migration work across federal, defense, life sciences, and enterprise commercial engagements.",
+    inside: [
+      "Migration lifecycle: Audit → Map → Convert → Refine → Publish",
+      "Five disciplines: content audit, IA, pilot migration, batch conversion, dedup & enrichment",
+      "Thirteen source formats covered, named explicitly",
+      "Four field rules with the failure modes that justified them",
+    ],
+    href: "/resources/migration-playbook",
+    linkLabel: "Read the playbook",
+  },
+  {
+    number: "04",
+    type: "Practitioner guide",
+    title: "Manual publishing is a risk surface.",
+    thesis: "A guide to CI/CD for documentation — containerized builds, an eight-stage validated pipeline, parallel multi-format output, and chatbot-ready JSONL as a first-class artifact. Real code blocks, real platform recommendations, real validation gates.",
+    inside: [
+      "Eight-stage pipeline: commit to production, with validation integrated into every stage",
+      "Containerization principle + production Dockerfile",
+      "Four output formats — HTML5, branded PDF, JSONL, additional — with build-time data",
+      "Four CI/CD platforms — GitHub Actions, Azure DevOps, Jenkins, GitLab CI",
+      "Three custom DITA-OT plugins, versioned and maintained as Git artifacts",
+    ],
+    href: "/resources/automation-guide",
+    linkLabel: "Read the guide",
+  },
+];
 ---
 
 <BaseLayout
-  title="Insights — Field Notes from the Practice"
-  description="Field notes, technical writing, and methodology dispatches from the Extense practice. DITA, S1000D, CCMS migration, RAG, methodology — every post names tools and standards and takes a position."
+  title="Resources — Publications from the practice — Extense LLC"
+  description="Four publications from the Extense practice: three practitioner guides (AI readiness, migration, publishing automation) and one collection of anonymized engagement records. Each names tools and standards, takes positions, and is written for working practitioners."
 >
   <Hero
     variant="universal"
-    title="Field notes from the practice."
-    subdeck="Technical writing on DITA, S1000D, CCMS migration, RAG retrieval engineering, and methodology — every post names tools and standards and takes a position."
-  />
+    title="Publications from the practice."
+    subdeck="Four documents — three practitioner guides and one collection of engagement records. Each names tools and standards, takes positions, and is written to be read by a working architect or retrieval engineer — not skimmed for marketing copy."
+  >
+    <EditorialBarCard
+      imprint="Extense"
+      date="2026"
+      lead="Every publication in this section:"
+      principles={editorialPrinciples}
+    />
+  </Hero>
 
-  <TopicFilter />
+  <AnimatedDivider />
 
-  <section class="insights-section" aria-label="Posts">
-    <div class="container-prose insights-section__inner">
-      <ul class="insights-section__list" data-post-list>
-        {sortedPosts.map((post) => (
-          <li data-topic={post.data.topic}>
-            <PostListItem
-              href={`/resources/${post.id}`}
-              title={post.data.title}
-              summary={post.data.summary}
-              publishedAt={post.data.publishedAt}
-              readingTime={post.data.readingTime}
-              topic={post.data.topic}
-            />
+  <section class="res-section res-section--framing" aria-labelledby="framing-heading">
+    <div class="container-prose res-section__inner">
+      <h2 id="framing-heading" class="res-section__heading">What's in this section.</h2>
+      <div class="res-framing">
+        <p>
+          Most firms publish "resources" that read as competitively-bid content marketing — generic capability descriptions, problem-cost-opportunity frames, related-content sidebars. The four documents below are not that. They name tools and standards, take positions, and are written to be useful to a working DITA architect, conversion engineer, retrieval specialist, or publishing engineer — practitioners who can already disagree with us if they want to.
+        </p>
+        <p>
+          Three guides codify the methodology: AI readiness as a content engineering problem, migration as recovery rather than transcription, manual publishing as a risk surface that CI/CD reduces. The fourth is a record set — three anonymized engagement case studies that demonstrate the work the guides describe. Read the guide that maps to what you're trying to do; read the case studies to see what the same approach has produced.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="res-section res-section--publications" aria-labelledby="pub-heading">
+    <div class="container-data res-section__inner">
+      <h2 id="pub-heading" class="res-section__visually-hidden">The four publications</h2>
+
+      <ol class="res-pubs">
+        {publications.map((p) => (
+          <li class="res-pub">
+            <span class="res-pub__num" aria-hidden="true">{p.number}</span>
+            <div class="res-pub__body">
+              <p class="res-pub__type">{p.type}</p>
+              <h3 class="res-pub__title">
+                <a href={p.href} class="res-pub__title-link">{p.title}</a>
+              </h3>
+              <p class="res-pub__thesis">{p.thesis}</p>
+              <p class="res-pub__cta">
+                <a href={p.href} class="res-pub__cta-link">
+                  {p.linkLabel} <span aria-hidden="true">→</span>
+                </a>
+              </p>
+            </div>
+            <div class="res-pub__inside">
+              <p class="res-pub__inside-label">Inside</p>
+              <hr class="res-pub__inside-rule" />
+              <ul class="res-pub__inside-list">
+                {p.inside.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
           </li>
         ))}
-      </ul>
-      <p class="insights-section__empty" data-empty hidden>
-        No posts under this topic yet. <a href="/resources">View all posts</a>.
-      </p>
+      </ol>
     </div>
   </section>
 
-  <section class="insights-rss" aria-label="Subscribe">
-    <div class="container-prose insights-rss__inner">
-      <a href="/rss.xml" class="insights-rss__link">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M4 11a9 9 0 0 1 9 9"></path>
-          <path d="M4 4a16 16 0 0 1 16 16"></path>
-          <circle cx="5" cy="19" r="1"></circle>
-        </svg>
-        Subscribe via RSS
-      </a>
-    </div>
-  </section>
+  <AnimatedDivider />
+
+  <CTAModule
+    audience="general"
+    body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
+  />
 </BaseLayout>
 
 <style>
-  .insights-section {
-    padding-top: var(--section-pad-default);
-    padding-bottom: var(--space-12);
-  }
-
-  @media (max-width: 767px) {
-    .insights-section {
-      padding-top: var(--space-16);
-    }
-  }
-
-  .insights-section__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .insights-section__list li[hidden] {
-    display: none;
-  }
-
-  .insights-section__empty {
-    font-family: var(--font-body);
-    font-size: var(--text-body);
-    color: var(--color-text-secondary);
-    text-align: center;
-    padding-top: var(--space-12);
-    padding-bottom: var(--space-12);
-  }
-
-  .insights-rss {
-    padding-top: var(--space-12);
+  .res-section {
+    padding-top: var(--space-16);
     padding-bottom: var(--space-16);
   }
 
-  .insights-rss__inner {
-    text-align: center;
+  @media (min-width: 768px) {
+    .res-section {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
   }
 
-  .insights-rss__link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
+  .res-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+
+  .res-section__visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ─── Framing prose ─── */
+  .res-framing {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .res-framing p {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── The four publications (vertical entries) ─── */
+  .res-pubs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .res-pub {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-12) 0;
+    border-top: var(--border-hairline);
+  }
+
+  .res-pub:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .res-pub {
+      grid-template-columns: 64px 1fr;
+      gap: var(--space-6);
+      padding: var(--space-16) 0;
+    }
+  }
+
+  /* Desktop: number + body (2fr) + inside (1fr) */
+  @media (min-width: 1024px) {
+    .res-pub {
+      grid-template-columns: 80px minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: var(--space-12) var(--space-16);
+      align-items: start;
+    }
+  }
+
+  .res-pub__num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    padding-top: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .res-pub__num {
+      font-size: 48px;
+    }
+  }
+
+  .res-pub__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .res-pub__type {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .res-pub__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .res-pub__title-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .res-pub__title-link:hover,
+  .res-pub__title-link:focus-visible {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .res-pub__thesis {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .res-pub__cta {
+    margin: var(--space-2) 0 0 0;
+  }
+
+  .res-pub__cta-link {
     font-family: var(--font-body);
     font-size: var(--text-body-sm);
     font-weight: var(--weight-medium);
     color: var(--color-link);
     text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
   }
 
-  .insights-rss__link:hover,
-  .insights-rss__link:focus-visible {
+  .res-pub__cta-link:hover,
+  .res-pub__cta-link:focus-visible {
     color: var(--color-link-hover);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
   }
-</style>
 
-<script>
-  // Filter posts by ?topic= query parameter on page load.
-  // Page renders all posts statically; this script hides non-matching ones.
-  // URL is canonical and shareable; search engines see all posts.
-  function applyTopicFilter() {
-    const params = new URLSearchParams(window.location.search);
-    const topic = params.get("topic");
-    const items = document.querySelectorAll<HTMLLIElement>("[data-post-list] > li");
-    const empty = document.querySelector<HTMLElement>("[data-empty]");
+  /* INSIDE column — own section on mobile/tablet; right column on desktop */
+  .res-pub__inside {
+    grid-column: 2;
+    margin-top: var(--space-6);
+  }
 
-    let visibleCount = 0;
-    items.forEach((item) => {
-      const itemTopic = item.dataset.topic;
-      const matches = !topic || itemTopic === topic;
-      item.hidden = !matches;
-      if (matches) visibleCount++;
-    });
-
-    if (empty) {
-      empty.hidden = visibleCount > 0;
+  @media (min-width: 1024px) {
+    .res-pub__inside {
+      grid-column: 3;
+      margin-top: 0;
+      padding-top: 4px;
     }
   }
 
-  document.addEventListener("DOMContentLoaded", applyTopicFilter);
-  document.addEventListener("astro:page-load", applyTopicFilter);
-</script>
+  .res-pub__inside-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .res-pub__inside-rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .res-pub__inside-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .res-pub__inside-list li {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.45;
+    color: var(--color-text-secondary);
+    padding-left: var(--space-3);
+    position: relative;
+    text-wrap: pretty;
+  }
+
+  .res-pub__inside-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+</style>

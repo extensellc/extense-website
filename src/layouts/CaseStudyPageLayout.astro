@@ -1,0 +1,681 @@
+---
+/*
+  CaseStudyPageLayout — distinct Resources sub-page layout for case studies.
+
+  Reads as a technical brief / engagement record rather than a marketing
+  page. Typographically denser than Service/Solution/Industry layouts,
+  more hairlines, more mono labels.
+
+  Structure:
+    1. Topbar breadcrumb ("← Case studies")
+    2. Header — case number · year · sector, title, frame, engagement record table
+    3. AnimatedDivider
+    4. Challenge / Approach — two-column document treatment
+    5. Artifact ledger — stripped-down stat row, amber numbers + mono labels
+    6. Standards & tooling stack — typographic dl
+    7. <slot /> — case-specific body content (each case has different shape)
+    8. Decisions & trade-offs — numbered judgment record
+    9. "A Note on These Numbers" — honesty callout, consistent across all cases
+   10. CTAModule (general)
+*/
+
+import BaseLayout from "./BaseLayout.astro";
+import CTAModule from "../components/site/CTAModule.astro";
+import AnimatedDivider from "../components/site/AnimatedDivider.astro";
+
+interface ArtifactLedgerItem {
+  number: string;
+  label: string;
+}
+
+interface EngagementMeta {
+  duration: string;
+  team: string;
+  engagement: string;
+  status: string;
+}
+
+interface StackRow {
+  label: string;
+  value: string;
+}
+
+interface Decision {
+  decision: string;
+  chosen: string;
+  rejected: string;
+  why: string;
+}
+
+interface Props {
+  caseNumber: string;
+  caseTotal: string;
+  year: string;
+  sector: string;
+  title: string;
+  frame: string;
+  challenge: string;
+  approach: string;
+  artifacts: ArtifactLedgerItem[];
+  engagement: EngagementMeta;
+  stack: StackRow[];
+  decisions: Decision[];
+  /** Page meta */
+  metaTitle: string;
+  metaDescription: string;
+}
+
+const {
+  caseNumber,
+  caseTotal,
+  year,
+  sector,
+  title,
+  frame,
+  challenge,
+  approach,
+  artifacts,
+  engagement,
+  stack,
+  decisions,
+  metaTitle,
+  metaDescription,
+} = Astro.props;
+
+const engagementRows: { label: string; value: string }[] = [
+  { label: "Duration",   value: engagement.duration },
+  { label: "Team",       value: engagement.team },
+  { label: "Engagement", value: engagement.engagement },
+  { label: "Status",     value: engagement.status },
+];
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <section class="cs-header" aria-labelledby="cs-title">
+    <div class="container-prose cs-header__inner">
+      <p class="cs-header__breadcrumb">
+        <a href="/resources/case-studies" class="cs-header__back">← Case studies</a>
+      </p>
+
+      <p class="cs-header__meta">
+        <span class="cs-header__meta-item">CASE {caseNumber} / {caseTotal}</span>
+        <span class="cs-header__meta-sep" aria-hidden="true">·</span>
+        <span class="cs-header__meta-item">{year}</span>
+        <span class="cs-header__meta-sep" aria-hidden="true">·</span>
+        <span class="cs-header__meta-item">{sector}</span>
+      </p>
+
+      <h1 id="cs-title" class="cs-header__title">{title}</h1>
+      <p class="cs-header__frame">{frame}</p>
+
+      <dl class="cs-engagement" aria-label="Engagement record">
+        {engagementRows.map((row) => (
+          <div class="cs-engagement__row">
+            <dt class="cs-engagement__label">{row.label}</dt>
+            <dd class="cs-engagement__value">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="cs-section cs-section--ca" aria-labelledby="ca-heading">
+    <div class="container-prose cs-section__inner">
+      <h2 id="ca-heading" class="cs-section__visually-hidden">Challenge and approach</h2>
+      <div class="cs-ca-grid">
+        <article class="cs-ca">
+          <h3 class="cs-ca__label">The challenge</h3>
+          <p class="cs-ca__body">{challenge}</p>
+        </article>
+        <article class="cs-ca">
+          <h3 class="cs-ca__label">The approach</h3>
+          <p class="cs-ca__body">{approach}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section cs-section--ledger" aria-labelledby="ledger-heading">
+    <div class="container-prose cs-section__inner">
+      <p class="cs-ledger__eyebrow" id="ledger-heading">Artifact Ledger</p>
+      <hr class="cs-ledger__rule" />
+      <ul class="cs-ledger">
+        {artifacts.map((a) => (
+          <li class="cs-ledger__row">
+            <span class="cs-ledger__num">{a.number}</span>
+            <span class="cs-ledger__label">{a.label}</span>
+          </li>
+        ))}
+      </ul>
+      <hr class="cs-ledger__rule" />
+    </div>
+  </section>
+
+  <section class="cs-section cs-section--stack" aria-labelledby="stack-heading">
+    <div class="container-prose cs-section__inner">
+      <p class="cs-stack__eyebrow" id="stack-heading">Stack</p>
+      <hr class="cs-stack__rule" />
+      <dl class="cs-stack">
+        {stack.map((row) => (
+          <div class="cs-stack__row">
+            <dt class="cs-stack__label">{row.label}</dt>
+            <dd class="cs-stack__value">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <hr class="cs-stack__rule" />
+    </div>
+  </section>
+
+  <slot />
+
+  <AnimatedDivider />
+
+  <section class="cs-section cs-section--decisions" aria-labelledby="decisions-heading">
+    <div class="container-prose cs-section__inner">
+      <h2 id="decisions-heading" class="cs-decisions__heading">Decisions and trade-offs.</h2>
+      <p class="cs-decisions__intro">
+        The choices that shaped the engagement, recorded with the option taken and what was rejected. The reasoning matters more than the outcome.
+      </p>
+      <ol class="cs-decisions">
+        {decisions.map((d, i) => (
+          <li class="cs-decision">
+            <span class="cs-decision__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <div class="cs-decision__body">
+              <p class="cs-decision__title">{d.decision}</p>
+              <div class="cs-decision__grid">
+                <div class="cs-decision__col">
+                  <p class="cs-decision__col-label">Chosen</p>
+                  <p class="cs-decision__col-value">{d.chosen}</p>
+                </div>
+                <div class="cs-decision__col">
+                  <p class="cs-decision__col-label">Rejected</p>
+                  <p class="cs-decision__col-value">{d.rejected}</p>
+                </div>
+              </div>
+              <p class="cs-decision__why"><span class="cs-decision__why-tag">Why:</span> {d.why}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="cs-section cs-section--note" aria-labelledby="note-heading">
+    <div class="container-prose cs-section__inner">
+      <h2 id="note-heading" class="cs-note__heading">A note on these numbers.</h2>
+      <p class="cs-note__body">
+        The figures in the artifact ledger are direct counts from the deliverables shipped on this engagement — not ROI projections or aggregated averages. Outcome percentages referenced anywhere on this site reflect industry benchmarks published by OASIS, Gartner, and CIDM for organizations that achieve 40%+ content reuse with structured metadata. Your actual results depend on content volume, language count, update frequency, and current toolchain maturity. Every engagement begins by measuring your baseline so projections are defensible.
+      </p>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <CTAModule
+    audience="general"
+    body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Header ─── */
+  .cs-header {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .cs-header {
+      padding-top: var(--space-24);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .cs-header__breadcrumb {
+    margin: 0 0 var(--space-8) 0;
+  }
+
+  .cs-header__back {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .cs-header__back:hover,
+  .cs-header__back:focus-visible {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .cs-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: baseline;
+    margin: 0 0 var(--space-6) 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .cs-header__meta-item {
+    color: var(--color-text-muted);
+  }
+
+  .cs-header__meta-sep {
+    color: var(--color-text-muted);
+    opacity: 0.6;
+  }
+
+  .cs-header__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-xl);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+
+  .cs-header__frame {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: pretty;
+    max-width: 65ch;
+  }
+
+  /* ─── Engagement record table (in header) ─── */
+  .cs-engagement {
+    margin: var(--space-8) 0 0 0;
+    padding: var(--space-4) 0;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .cs-engagement__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  @media (min-width: 768px) {
+    .cs-engagement__row {
+      grid-template-columns: 140px 1fr;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+  }
+
+  .cs-engagement__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .cs-engagement__value {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.45;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  /* ─── Section spacing ─── */
+  .cs-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .cs-section {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+  }
+
+  .cs-section__visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ─── Challenge / Approach two-column ─── */
+  .cs-ca-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .cs-ca-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+    }
+  }
+
+  .cs-ca__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+    padding-bottom: var(--space-3);
+    border-bottom: var(--border-hairline);
+  }
+
+  .cs-ca__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Artifact ledger ─── */
+  .cs-ledger__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .cs-ledger__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0;
+  }
+
+  .cs-ledger {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-8) 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6) var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .cs-ledger {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .cs-ledger__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .cs-ledger__num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+  }
+
+  .cs-ledger__label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    line-height: 1.3;
+  }
+
+  /* ─── Standards & tooling stack ─── */
+  .cs-stack__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .cs-stack__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0;
+  }
+
+  .cs-stack {
+    margin: 0;
+    padding: var(--space-6) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .cs-stack__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 768px) {
+    .cs-stack__row {
+      grid-template-columns: 160px 1fr;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+  }
+
+  .cs-stack__label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .cs-stack__value {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* ─── Decisions & trade-offs ─── */
+  .cs-decisions__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+
+  .cs-decisions__intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-12) 0;
+    text-wrap: pretty;
+    max-width: 65ch;
+  }
+
+  .cs-decisions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cs-decision {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-8) 0;
+    border-top: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .cs-decision {
+      grid-template-columns: 64px 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  .cs-decision:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  .cs-decision__num {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    padding-top: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .cs-decision__num {
+      font-size: 28px;
+    }
+  }
+
+  .cs-decision__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .cs-decision__title {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .cs-decision__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .cs-decision__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+  }
+
+  .cs-decision__col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .cs-decision__col-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+    padding-bottom: var(--space-2);
+    border-bottom: var(--border-hairline);
+  }
+
+  .cs-decision__col-value {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.45;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .cs-decision__why {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: var(--text-body-sm);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .cs-decision__why-tag {
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-right: var(--space-2);
+  }
+
+  /* ─── Note on numbers ─── */
+  .cs-note__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+
+  .cs-note__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+</style>

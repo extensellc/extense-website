@@ -1,0 +1,207 @@
+---
+/*
+  MigrationLifecycleCard — hero side panel for /resources/migration-playbook.
+
+  A static lifecycle preview showing the five stages of a DITA migration:
+  Audit → Map → Convert → Refine → Publish. Same document-grade hairline
+  + amber-spine vocabulary as the other Resources hero cards, but the
+  content shape is different — a sequential process strip, not an entry
+  from a rotating record or a single sample from a scoring instrument.
+
+  Static. No rotation, no JS. Hidden below 1024px.
+*/
+
+interface Stage {
+  number: string;
+  name: string;
+  body: string;
+}
+
+interface Props {
+  stages: Stage[];
+}
+
+const { stages } = Astro.props;
+const total = String(stages.length).padStart(2, "0");
+---
+
+<aside class="mlc" aria-label="DITA migration lifecycle">
+  <div class="mlc__panel">
+    <header class="mlc__header">
+      <p class="mlc__doc-ref">DITA Migration Lifecycle</p>
+      <p class="mlc__counter">
+        <span class="mlc__counter-num">{total}</span>
+        <span class="mlc__counter-label">Stages</span>
+      </p>
+    </header>
+    <hr class="mlc__rule" />
+
+    <ol class="mlc__list">
+      {stages.map((s) => (
+        <li class="mlc__stage">
+          <span class="mlc__stage-num">{s.number}</span>
+          <div class="mlc__stage-body">
+            <p class="mlc__stage-name">{s.name}</p>
+            <p class="mlc__stage-desc">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <hr class="mlc__rule" />
+    <footer class="mlc__footer">
+      <span>Form: LIFECYCLE v1.0</span>
+      <span class="mlc__hint">The migration arc</span>
+    </footer>
+  </div>
+</aside>
+
+<style>
+  .mlc {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .mlc {
+      display: block;
+      width: 360px;
+      flex-shrink: 0;
+    }
+  }
+
+  .mlc__panel {
+    position: relative;
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-4) var(--space-6) var(--space-3);
+  }
+
+  .mlc__panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #fcd34d;
+    pointer-events: none;
+  }
+
+  .mlc__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .mlc__doc-ref {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .mlc__counter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    margin: 0;
+    font-feature-settings: "tnum";
+  }
+
+  .mlc__counter-num {
+    color: var(--color-link);
+    font-weight: var(--weight-semibold);
+  }
+
+  .mlc__counter-label {
+    color: var(--color-text-muted);
+  }
+
+  .mlc__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: var(--space-3) 0;
+  }
+
+  .mlc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mlc__stage {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    align-items: baseline;
+  }
+
+  .mlc__stage + .mlc__stage {
+    border-top: var(--border-hairline);
+  }
+
+  .mlc__stage-num {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: var(--weight-semibold);
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    line-height: 1.3;
+  }
+
+  .mlc__stage-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mlc__stage-name {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .mlc__stage-desc {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .mlc__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .mlc__hint {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+</style>

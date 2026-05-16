@@ -1,0 +1,514 @@
+---
+/*
+  /resources/migration-playbook — practitioner playbook for DITA migration.
+
+  Section order:
+    1. Hero (universal, with MigrationLifecycleCard side panel — static)
+    2. Framing prose — names the principle and the 2M+ pages context
+    3. AnimatedDivider
+    4. The five disciplines (vertical entries — like AI Readiness phases)
+    5. AnimatedDivider
+    6. Source formats covered (typographic 3-col mono grid)
+    7. AnimatedDivider
+    8. Field rules from the practice (horizontal-row, like Decisions section)
+    9. AnimatedDivider
+   10. CTAModule (general)
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import MigrationLifecycleCard from "../../components/site/MigrationLifecycleCard.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
+
+const lifecycleStages = [
+  { number: "01", name: "Audit",   body: "Catalog the corpus. Delete ROT before anything converts." },
+  { number: "02", name: "Map",     body: "Define topic types, taxonomy, and metadata before mapping styles." },
+  { number: "03", name: "Convert", body: "Run the refined engine across the full corpus in one pass." },
+  { number: "04", name: "Refine",  body: "Deduplicate, enrich, and resolve the structural exceptions." },
+  { number: "05", name: "Publish", body: "Validate outputs against the use cases that defined the architecture." },
+];
+
+interface Discipline {
+  number: string;
+  name: string;
+  stage: string;
+  body: string;
+}
+
+const disciplines: Discipline[] = [
+  {
+    number: "01",
+    name: "Content audit",
+    stage: "Audit",
+    body: "Catalog everything before converting anything. Count topics, count formats, identify duplicates, surface ROT — redundant, obsolete, trivial content that should not survive into the target system. Migration teams routinely move 40% dead content into a new CCMS, where it costs money to convert, money to maintain, and reduces retrieval signal downstream. The audit is the only opportunity to delete that content with the team's authorization intact.",
+  },
+  {
+    number: "02",
+    name: "Information architecture",
+    stage: "Map",
+    body: "Define topic types — concept, task, reference, troubleshooting — before scoping conversion rules. Define the metadata strategy and the controlled vocabulary before mapping a single style. The conversion engine cannot guess the right type from source markup; it follows rules that someone defined deliberately. Skipping IA means the conversion produces structured-garbage-out from unstructured-garbage-in — the type system is empty of meaning.",
+  },
+  {
+    number: "03",
+    name: "Pilot migration",
+    stage: "Map → Convert",
+    body: "Take fifty representative pages — chosen to span the difficult patterns in the source corpus, not the easy ones. Run them through the conversion manually or via script. Inspect every output for type fidelity, structural validity, and metadata coverage. Refine the conversion rules. Re-run. This pilot cycle prevents the most expensive migration failure: discovering a structural defect after running 50,000 pages through the wrong rule set.",
+  },
+  {
+    number: "04",
+    name: "Batch conversion",
+    stage: "Convert",
+    body: "Feed the full corpus through the refined engine. Context-based pattern matching distinguishes 'numbered steps in a task' from 'numbered lists in a reference topic' — a distinction that style-mapping tools cannot reach. The engine handles row-and-column-spanning tables, FrameMaker equations to MathML, embedded drawings to SVG, and the structurally awkward constructs that defeat lift-and-shift conversion.",
+  },
+  {
+    number: "05",
+    name: "Deduplication & enrichment",
+    stage: "Refine",
+    body: "After conversion, run exact-topic deduplication across the entire collection. Identify redundant topics and consolidate them into reusable warehouse topics that downstream content can conref. Inject metadata, keys, conref targets, and taxonomy attributes during the conversion pass — not after. Enriching post-conversion means inspecting every topic by hand; enriching during conversion lets the rule engine carry the load.",
+  },
+];
+
+const sourceFormats = [
+  "Microsoft Word",
+  "FrameMaker",
+  "InDesign",
+  "RoboHelp",
+  "MadCap Flare",
+  "DocBook",
+  "HTML",
+  "Markdown",
+  "AuthorIT",
+  "Confluence",
+  "SGML",
+  "Excel",
+  "PDF (OCR)",
+];
+
+interface FieldRule {
+  rule: string;
+  why: string;
+}
+
+const fieldRules: FieldRule[] = [
+  {
+    rule: "Delete ROT first.",
+    why: "Redundant, obsolete, and trivial content should never reach the conversion engine. Teams routinely migrate 40% dead content — that content costs money to convert, money to maintain, and reduces retrieval signal downstream. ROT is identified during audit and gets removed before anything else moves.",
+  },
+  {
+    rule: "Pilot with fifty pages. Not five. Not five hundred.",
+    why: "Five pages don't give statistical significance — defects don't surface until the long tail. Five hundred pages mean weeks of conversion work before the first structural defect is caught. Fifty pages is the empirically validated sweet spot — large enough to expose the difficult patterns, small enough that re-running the pilot is cheap.",
+  },
+  {
+    rule: "Don't fix formatting in source.",
+    why: "Source cleanup is wasted effort — the formatting won't survive conversion, and the conversion engine doesn't depend on it. Fix typography and styling in DITA stylesheets after conversion, where the fix lives permanently and applies across the corpus, not just to the file someone happened to clean up.",
+  },
+  {
+    rule: "Convert all languages simultaneously.",
+    why: "Migrating English first and 'doing translations later' breaks TM (translation memory) alignment between source and target. The localization team ends up reconciling drift that didn't exist before migration. Run all locales through the same conversion engine in the same pass — the TM stays coherent.",
+  },
+];
+---
+
+<BaseLayout
+  title="Migration Playbook — Extense LLC"
+  description="A practitioner's playbook for moving content from Word, FrameMaker, MadCap, RoboHelp, AuthorIT and other unstructured legacy formats into typed, validated DITA. Five disciplines, the migration lifecycle, source-format coverage, and field rules from two million pages of practice."
+>
+  <Hero
+    variant="universal"
+    title="Migration is recovery, not transcription."
+    subdeck="A practitioner playbook for moving content from unstructured legacy formats — Word, FrameMaker, MadCap, RoboHelp, AuthorIT — into typed, validated DITA. The disciplines, the lifecycle, and the field rules drawn from the practice."
+  >
+    <MigrationLifecycleCard stages={lifecycleStages} />
+  </Hero>
+
+  <AnimatedDivider />
+
+  <section class="mp-section mp-section--framing" aria-labelledby="framing-heading">
+    <div class="container-prose mp-section__inner">
+      <h2 id="framing-heading" class="mp-section__heading">Why migration is recovery.</h2>
+      <div class="mp-framing">
+        <p>
+          A migration that copy-pastes source content into a new schema is not a migration — it's a lift-and-shift. The schema gets populated; the structural problems in the source travel intact into the target. The new system inherits the same redundancies, the same broken navigation, the same ungoverned metadata. Two years later, the team is asking why the CCMS investment didn't pay off.
+        </p>
+        <p>
+          Migration is recovery, not transcription. The conversion engine identifies reusable assets in legacy content and lifts them into the target schema; what isn't recoverable gets retired or rewritten with intent. The QA harness is designed before the first batch runs — failing migrations fail because the validation strategy was an afterthought. The architecture decisions get made before the conversion rules, not after.
+        </p>
+        <p>
+          The playbook below codifies the disciplines, the lifecycle, and the field rules — patterns drawn from two million pages of migration work across federal, defense, life sciences, and enterprise commercial engagements. None of it is theory; all of it is what a migration team has to do, not just what they have to know.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="mp-section mp-section--disciplines" aria-labelledby="disciplines-heading">
+    <div class="container-prose mp-section__inner">
+      <h2 id="disciplines-heading" class="mp-section__heading">The five disciplines.</h2>
+      <p class="mp-section__lead">
+        Each discipline maps to one or more stages of the migration lifecycle. They are sequential — skipping the foundation disciplines is the most common way migration programs fail.
+      </p>
+
+      <ol class="mp-disciplines">
+        {disciplines.map((d) => (
+          <li class="mp-discipline">
+            <span class="mp-discipline__num" aria-hidden="true">{d.number}</span>
+            <div class="mp-discipline__body">
+              <p class="mp-discipline__stage">Lifecycle stage · {d.stage}</p>
+              <h3 class="mp-discipline__name">{d.name}</h3>
+              <p class="mp-discipline__text">{d.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="mp-section mp-section--formats" aria-labelledby="formats-heading">
+    <div class="container-prose mp-section__inner">
+      <h2 id="formats-heading" class="mp-section__heading">Source formats covered.</h2>
+      <p class="mp-section__lead">
+        The conversion engine handles thirteen named source formats. Conversion rules differ by format — Word's style-driven model is not the same problem as FrameMaker's structural conditions or RoboHelp's compiled output — and each has named patterns the engine recognizes.
+      </p>
+
+      <p class="mp-formats__eyebrow">Formats</p>
+      <hr class="mp-rule" />
+      <ul class="mp-formats">
+        {sourceFormats.map((f) => (
+          <li class="mp-format">{f}</li>
+        ))}
+      </ul>
+      <hr class="mp-rule" />
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="mp-section mp-section--rules" aria-labelledby="rules-heading">
+    <div class="container-data mp-section__inner">
+      <h2 id="rules-heading" class="mp-section__heading">Field rules from the practice.</h2>
+      <p class="mp-section__lead">
+        Four positions taken — backed by named failure modes and measured costs. None of these are stylistic; all of them are reasoning a migration team has to apply, not just remember.
+      </p>
+
+      <ol class="mp-rules">
+        {fieldRules.map((r, i) => (
+          <li class="mp-rule-row">
+            <span class="mp-rule-row__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <p class="mp-rule-row__rule">{r.rule}</p>
+            <p class="mp-rule-row__why">
+              <span class="mp-rule-row__why-tag">Why:</span> {r.why}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <CTAModule
+    audience="general"
+    body="Submit a 20-page sample document. We'll return conversion feasibility, expected content recovery rate, ROT estimate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Section spacing ─── */
+  .mp-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .mp-section {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+  }
+
+  .mp-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+
+  .mp-section__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-12) 0;
+    text-wrap: pretty;
+    max-width: 65ch;
+  }
+
+  .mp-section__visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .mp-rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0;
+  }
+
+  /* ─── Framing prose ─── */
+  .mp-framing {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .mp-framing p {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── The five disciplines (vertical entries) ─── */
+  .mp-disciplines {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mp-discipline {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-8) 0;
+    border-top: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .mp-discipline {
+      grid-template-columns: 64px 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  .mp-discipline:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  .mp-discipline__num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    padding-top: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .mp-discipline__num {
+      font-size: 36px;
+    }
+  }
+
+  .mp-discipline__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .mp-discipline__stage {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .mp-discipline__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .mp-discipline__text {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Source formats (3-col mono grid) ─── */
+  .mp-formats__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .mp-formats {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-6) 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3) var(--space-8);
+  }
+
+  @media (min-width: 640px) {
+    .mp-formats {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .mp-formats {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .mp-format {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    padding: var(--space-2) 0;
+    border-bottom: var(--border-hairline);
+  }
+
+  /* ─── Field rules (horizontal-row layout) ─── */
+  .mp-rules {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mp-rule-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    padding: var(--space-8) 0;
+    border-top: var(--border-hairline);
+  }
+
+  .mp-rule-row:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .mp-rule-row {
+      grid-template-columns: 48px 1fr;
+      grid-template-rows: auto auto;
+      gap: var(--space-2) var(--space-6);
+      align-items: start;
+    }
+
+    .mp-rule-row__num {
+      grid-row: 1 / -1;
+      grid-column: 1;
+    }
+
+    .mp-rule-row__rule,
+    .mp-rule-row__why {
+      grid-column: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .mp-rule-row {
+      grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1.8fr);
+      grid-template-rows: auto;
+      gap: var(--space-8);
+      padding: var(--space-12) 0;
+      align-items: start;
+    }
+
+    .mp-rule-row__num {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .mp-rule-row__rule {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .mp-rule-row__why {
+      grid-row: 1;
+      grid-column: 3;
+    }
+  }
+
+  .mp-rule-row__num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    padding-top: 2px;
+    margin: 0;
+  }
+
+  .mp-rule-row__rule {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .mp-rule-row__why {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .mp-rule-row__why-tag {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-right: var(--space-2);
+  }
+</style>

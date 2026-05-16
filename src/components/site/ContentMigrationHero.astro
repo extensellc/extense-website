@@ -1,0 +1,556 @@
+---
+/*
+  ContentMigrationHero — hero for /solutions/content-migration.
+
+  Two-column layout (60/40 desktop, single column mobile):
+    LEFT  — kicker, "The conversion that finishes." thesis, hairline,
+            body paragraph naming the legacy formats and the recovery
+            arc.
+    RIGHT — animated "funnel" diagram: heterogeneous input documents
+            (FM / DOC / RH / XML / IDML / PDF) converge through an
+            amber transformation thread into a CONVERT engine block,
+            emerging as a clean grid of topic tiles below. Two row-2
+            tiles are grayed with amber upward arrows indicating
+            conref pointers to the retained row-1 tiles — the
+            deduplication story visualized.
+
+  Sister diagram to the TDP starburst. Where TDP shows one source
+  proliferating into many outputs, Migration shows many disparate
+  inputs converging into one clean repository.
+
+  Animation: same vocabulary as the TDP hero. Viewport-triggered
+  cascade adds `.drawn` to the SVG; per-element delays staggered so
+  the diagram assembles itself top-to-bottom.
+
+  prefers-reduced-motion: static render, no animation.
+*/
+---
+
+<section class="cm-hero">
+  <div class="cm-hero__inner">
+    <div class="cm-hero__text">
+      <p class="cm-hero__kicker">
+        AUDIT<span class="cm-hero__dot">·</span>CONVERT<span class="cm-hero__dot">·</span>DEDUPE<span class="cm-hero__dot">·</span>VALIDATE
+      </p>
+      <h1 class="cm-hero__title">
+        The conversion that <em>finishes.</em>
+      </h1>
+      <hr class="cm-hero__rule" />
+      <p class="cm-hero__body">
+        Twenty years of FrameMaker, Word, RoboHelp, InDesign, SGML, and unstructured XML &mdash; audited for what&rsquo;s recoverable, parsed into DITA topics, deduplicated against itself, and validated against your new content model. By the engineering, not by a typing pool.
+      </p>
+    </div>
+
+    <div class="cm-hero__visual">
+      <svg
+        class="funnel-svg"
+        id="cm-funnel"
+        viewBox="0 0 320 420"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <!-- Corner registration marks (amber chrome) -->
+        <g class="corner corner--accent" style="--d: 0ms">
+          <path d="M 10 20 L 10 10 L 20 10" />
+          <path d="M 300 10 L 310 10 L 310 20" />
+          <path d="M 10 400 L 10 410 L 20 410" />
+          <path d="M 300 410 L 310 410 L 310 400" />
+        </g>
+
+        <!-- Top chrome: source legacy estate -->
+        <text class="chrome" x="30" y="22" style="--d: 80ms">in :: legacy/*.fm,doc,rh,xml,idml,pdf</text>
+
+        <!-- 6 input docs in a row, each with a 2-3 char mono label and
+             slightly varied internal line patterns to signal heterogeneity. -->
+        <g class="input-doc-group" style="--d: 200ms">
+          <rect class="input-doc" x="20" y="44" width="40" height="60" />
+          <text class="input-doc-label" x="40" y="58" text-anchor="middle">FM</text>
+          <line class="input-line" x1="26" y1="68" x2="54" y2="68" />
+          <line class="input-line" x1="26" y1="76" x2="50" y2="76" />
+          <line class="input-line" x1="26" y1="84" x2="54" y2="84" />
+          <line class="input-line" x1="26" y1="92" x2="46" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 240ms">
+          <rect class="input-doc" x="68" y="44" width="40" height="60" />
+          <text class="input-doc-label" x="88" y="58" text-anchor="middle">DOC</text>
+          <line class="input-line" x1="74" y1="68" x2="102" y2="68" />
+          <line class="input-line" x1="78" y1="76" x2="102" y2="76" />
+          <line class="input-line" x1="74" y1="84" x2="98" y2="84" />
+          <line class="input-line" x1="78" y1="92" x2="102" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 280ms">
+          <rect class="input-doc" x="116" y="44" width="40" height="60" />
+          <text class="input-doc-label" x="136" y="58" text-anchor="middle">RH</text>
+          <line class="input-line" x1="122" y1="68" x2="150" y2="68" />
+          <line class="input-line" x1="122" y1="76" x2="146" y2="76" />
+          <rect class="input-doc-mark" x="122" y="82" width="10" height="6" />
+          <line class="input-line" x1="134" y1="92" x2="150" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 320ms">
+          <rect class="input-doc" x="164" y="44" width="40" height="60" />
+          <text class="input-doc-label" x="184" y="58" text-anchor="middle">XML</text>
+          <line class="input-line" x1="170" y1="68" x2="198" y2="68" />
+          <line class="input-line" x1="174" y1="76" x2="194" y2="76" />
+          <line class="input-line" x1="170" y1="84" x2="198" y2="84" />
+          <line class="input-line" x1="174" y1="92" x2="194" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 360ms">
+          <rect class="input-doc" x="212" y="44" width="40" height="60" />
+          <text class="input-doc-label" x="232" y="58" text-anchor="middle">IDML</text>
+          <rect class="input-doc-mark" x="218" y="66" width="28" height="14" />
+          <line class="input-line" x1="218" y1="84" x2="246" y2="84" />
+          <line class="input-line" x1="218" y1="92" x2="240" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 400ms">
+          <rect class="input-doc" x="260" y="44" width="40" height="60" />
+          <text class="input-doc-label" x="280" y="58" text-anchor="middle">PDF</text>
+          <line class="input-line" x1="266" y1="68" x2="294" y2="68" />
+          <line class="input-line" x1="266" y1="76" x2="290" y2="76" />
+          <line class="input-line" x1="266" y1="84" x2="294" y2="84" />
+          <line class="input-line" x1="270" y1="92" x2="286" y2="92" />
+        </g>
+
+        <!-- Convergence lines: each doc bottom-center -> (160, 140) -->
+        <path class="converge" d="M 40 104 L 160 140"  style="--d: 540ms" />
+        <path class="converge" d="M 88 104 L 160 140"  style="--d: 540ms" />
+        <path class="converge" d="M 136 104 L 160 140" style="--d: 540ms" />
+        <path class="converge" d="M 184 104 L 160 140" style="--d: 540ms" />
+        <path class="converge" d="M 232 104 L 160 140" style="--d: 540ms" />
+        <path class="converge" d="M 280 104 L 160 140" style="--d: 540ms" />
+
+        <!-- Amber transformation thread + arrow tip into CONVERT box -->
+        <path class="amber-thread" d="M 160 140 L 160 191" style="--d: 760ms" />
+        <path class="amber-tip" d="M 155 191 L 160 198 L 165 191 Z" style="--d: 760ms" />
+
+        <!-- CONVERT engine block -->
+        <rect class="schema" x="80" y="200" width="160" height="80" style="--d: 1100ms" />
+        <text class="schema-label" x="160" y="218" text-anchor="middle" style="--d: 1100ms">CONVERT</text>
+
+        <!-- Schema internals: abstract transform cells -->
+        <g class="schema-elements" style="--d: 1280ms">
+          <rect class="schema-elem" x="92"  y="232" width="44" height="14" />
+          <rect class="schema-elem" x="140" y="232" width="40" height="14" />
+          <rect class="schema-elem" x="184" y="232" width="44" height="14" />
+          <rect class="schema-elem" x="92"  y="252" width="40" height="14" />
+          <rect class="schema-elem" x="136" y="252" width="48" height="14" />
+          <rect class="schema-elem" x="188" y="252" width="40" height="14" />
+        </g>
+
+        <!-- Output trunk: from CONVERT bottom down to a horizontal bar,
+             then drops to the top of each row-1 tile. -->
+        <path class="output-line" d="M 160 280 L 160 296" style="--d: 1620ms" />
+        <path class="output-line" d="M 76 296 L 244 296"  style="--d: 1700ms" />
+        <path class="output-line" d="M 76  296 L 76  316" style="--d: 1780ms" />
+        <path class="output-line" d="M 132 296 L 132 316" style="--d: 1780ms" />
+        <path class="output-line" d="M 188 296 L 188 316" style="--d: 1780ms" />
+        <path class="output-line" d="M 244 296 L 244 316" style="--d: 1780ms" />
+
+        <!-- Topic warehouse: 4x2 grid of uniform tiles. Row 1 retained,
+             Row 2 tiles 1-2 grayed (deduplicated to row 1). -->
+        <g class="warehouse-tile" style="--d: 1900ms">
+          <rect class="warehouse-rect" x="54"  y="316" width="44" height="20" />
+        </g>
+        <g class="warehouse-tile" style="--d: 1940ms">
+          <rect class="warehouse-rect" x="110" y="316" width="44" height="20" />
+        </g>
+        <g class="warehouse-tile" style="--d: 1980ms">
+          <rect class="warehouse-rect" x="166" y="316" width="44" height="20" />
+        </g>
+        <g class="warehouse-tile" style="--d: 2020ms">
+          <rect class="warehouse-rect" x="222" y="316" width="44" height="20" />
+        </g>
+
+        <!-- Row 2 — first two are grayed (dedup'd), last two retained -->
+        <g class="warehouse-tile warehouse-tile--dup" style="--d: 2080ms">
+          <rect class="warehouse-rect warehouse-rect--dup" x="54"  y="354" width="44" height="20" />
+        </g>
+        <g class="warehouse-tile warehouse-tile--dup" style="--d: 2120ms">
+          <rect class="warehouse-rect warehouse-rect--dup" x="110" y="354" width="44" height="20" />
+        </g>
+        <g class="warehouse-tile" style="--d: 2160ms">
+          <rect class="warehouse-rect" x="166" y="354" width="44" height="20" />
+        </g>
+        <g class="warehouse-tile" style="--d: 2200ms">
+          <rect class="warehouse-rect" x="222" y="354" width="44" height="20" />
+        </g>
+
+        <!-- Conref arrows: from each grayed (row-2) tile's top-center
+             UP to the retained (row-1) tile's bottom-center. Amber,
+             with arrowhead pointing up. -->
+        <path class="conref-arrow" d="M 76 354 L 76 339"  style="--d: 2280ms" />
+        <path class="conref-tip"   d="M 72 339 L 76 333 L 80 339 Z" style="--d: 2280ms" />
+        <path class="conref-arrow" d="M 132 354 L 132 339" style="--d: 2320ms" />
+        <path class="conref-tip"   d="M 128 339 L 132 333 L 136 339 Z" style="--d: 2320ms" />
+
+        <!-- Bottom chrome: figure caption + dedup percentage -->
+        <line class="chrome-rule" x1="30" y1="392" x2="290" y2="392" style="--d: 2440ms" />
+        <text class="chrome chrome--strong" x="30"  y="410" style="--d: 2480ms">FIG. 04</text>
+        <text class="chrome"                 x="80"  y="410" style="--d: 2480ms">/</text>
+        <text class="chrome chrome--strong" x="88"  y="410" style="--d: 2480ms">migrate.warehouse</text>
+        <rect class="build-dot" x="215" y="404" width="6" height="6" style="--d: 2480ms" />
+        <text class="chrome chrome--strong" x="290" y="410" text-anchor="end" style="--d: 2480ms">DEDUP 24%</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Layout — mirrors TechDocsHero's 60/40 split, stacked on mobile. */
+  .cm-hero {
+    width: 100%;
+  }
+
+  .cm-hero__inner {
+    max-width: var(--container-page, 1240px);
+    margin: 0 auto;
+    padding: var(--space-32) var(--space-12);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  @media (min-width: 960px) {
+    .cm-hero__inner {
+      grid-template-columns: 60% 40%;
+      gap: var(--space-12);
+      padding: var(--space-32) var(--space-12);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .cm-hero__inner {
+      padding: var(--space-20) var(--space-6);
+      gap: var(--space-16);
+    }
+  }
+
+  /* Left: text column */
+  .cm-hero__text {
+    max-width: 640px;
+  }
+
+  .cm-hero__kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+  }
+  .cm-hero__dot {
+    color: var(--color-text-muted);
+    margin: 0 0.5em;
+  }
+
+  .cm-hero__title {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+  .cm-hero__title em {
+    font-style: italic;
+  }
+
+  @media (max-width: 960px) {
+    .cm-hero__title {
+      font-size: 36px;
+    }
+  }
+
+  .cm-hero__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    width: 64px;
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .cm-hero__body {
+    font-family: var(--font-body);
+    font-weight: var(--weight-regular);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 560px;
+    text-wrap: pretty;
+  }
+
+  /* Right: funnel SVG */
+  .cm-hero__visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .funnel-svg {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  /* Input docs: outlined rectangles, mono label at top, varying line
+     patterns inside to signal heterogeneity. */
+  .funnel-svg .input-doc {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .funnel-svg .input-doc-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.1em;
+  }
+  .funnel-svg .input-line {
+    stroke: currentColor;
+    stroke-width: 1;
+    opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+  .funnel-svg .input-doc-mark {
+    fill: currentColor;
+    fill-opacity: 0.18;
+    stroke: currentColor;
+    stroke-width: 0.5;
+    stroke-opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Convergence lines */
+  .funnel-svg .converge {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Amber transformation thread + tip */
+  .funnel-svg .amber-thread {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: butt;
+    vector-effect: non-scaling-stroke;
+  }
+  .funnel-svg .amber-tip {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* CONVERT engine block — same vocabulary as TDP DITA-OT BUILD box */
+  .funnel-svg .schema {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.75;
+    vector-effect: non-scaling-stroke;
+  }
+  .funnel-svg .schema-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.18em;
+  }
+  .funnel-svg .schema-elem {
+    fill: currentColor;
+    fill-opacity: 0.12;
+    stroke: currentColor;
+    stroke-width: 0.75;
+    stroke-opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Output trunk + horizontal bar + drops */
+  .funnel-svg .output-line {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Warehouse tiles: clean uniform topic rectangles */
+  .funnel-svg .warehouse-rect {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  /* Dedup'd tiles: grayed (lower opacity + lighter fill) to indicate
+     they've been consolidated into row-1 retained tiles via conref. */
+  .funnel-svg .warehouse-rect--dup {
+    fill: currentColor;
+    fill-opacity: 0.12;
+    stroke: currentColor;
+    stroke-opacity: 0.4;
+    stroke-width: 1;
+  }
+
+  /* Conref arrows: amber, thin, with up-pointing arrowhead */
+  .funnel-svg .conref-arrow {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: butt;
+    vector-effect: non-scaling-stroke;
+  }
+  .funnel-svg .conref-tip {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* Chrome / corner / status */
+  .funnel-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-regular);
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .funnel-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .funnel-svg .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .funnel-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .funnel-svg .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* Initial hidden states + reveal cascade */
+  .funnel-svg .corner,
+  .funnel-svg .input-doc,
+  .funnel-svg .input-doc-label,
+  .funnel-svg .input-line,
+  .funnel-svg .input-doc-mark,
+  .funnel-svg .converge,
+  .funnel-svg .amber-thread,
+  .funnel-svg .amber-tip,
+  .funnel-svg .schema,
+  .funnel-svg .schema-label,
+  .funnel-svg .schema-elem,
+  .funnel-svg .output-line,
+  .funnel-svg .warehouse-rect,
+  .funnel-svg .conref-arrow,
+  .funnel-svg .conref-tip,
+  .funnel-svg .chrome,
+  .funnel-svg .chrome-rule,
+  .funnel-svg .build-dot {
+    opacity: 0;
+  }
+  .funnel-svg .input-doc-group,
+  .funnel-svg .schema-elements,
+  .funnel-svg .warehouse-tile {
+    opacity: 0;
+  }
+
+  .funnel-svg.drawn .corner,
+  .funnel-svg.drawn .chrome,
+  .funnel-svg.drawn .chrome-rule,
+  .funnel-svg.drawn .build-dot,
+  .funnel-svg.drawn .input-doc-group,
+  .funnel-svg.drawn .input-doc,
+  .funnel-svg.drawn .input-doc-label,
+  .funnel-svg.drawn .input-line,
+  .funnel-svg.drawn .input-doc-mark,
+  .funnel-svg.drawn .converge,
+  .funnel-svg.drawn .amber-thread,
+  .funnel-svg.drawn .amber-tip,
+  .funnel-svg.drawn .schema,
+  .funnel-svg.drawn .schema-label,
+  .funnel-svg.drawn .schema-elements,
+  .funnel-svg.drawn .schema-elem,
+  .funnel-svg.drawn .output-line,
+  .funnel-svg.drawn .warehouse-tile,
+  .funnel-svg.drawn .warehouse-rect,
+  .funnel-svg.drawn .conref-arrow,
+  .funnel-svg.drawn .conref-tip {
+    animation: funnel-fade-in 320ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes funnel-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .funnel-svg .corner,
+    .funnel-svg .input-doc,
+    .funnel-svg .input-doc-label,
+    .funnel-svg .input-line,
+    .funnel-svg .input-doc-mark,
+    .funnel-svg .converge,
+    .funnel-svg .amber-thread,
+    .funnel-svg .amber-tip,
+    .funnel-svg .schema,
+    .funnel-svg .schema-label,
+    .funnel-svg .schema-elem,
+    .funnel-svg .output-line,
+    .funnel-svg .warehouse-rect,
+    .funnel-svg .conref-arrow,
+    .funnel-svg .conref-tip,
+    .funnel-svg .chrome,
+    .funnel-svg .chrome-rule,
+    .funnel-svg .build-dot,
+    .funnel-svg .input-doc-group,
+    .funnel-svg .schema-elements,
+    .funnel-svg .warehouse-tile {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // ContentMigrationHero — viewport-triggered draw-in cascade
+  // ─────────────────────────────────────────────────────────
+  function setupContentMigrationHero() {
+    const svg = document.getElementById("cm-funnel") as SVGElement | null;
+    if (!svg) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupContentMigrationHero);
+  document.addEventListener("astro:page-load", setupContentMigrationHero);
+</script>

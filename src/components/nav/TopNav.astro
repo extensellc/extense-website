@@ -28,7 +28,17 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "Capabilities", href: "/capabilities", matchPaths: [/^\/capabilities/] },
+  {
+    label: "Capabilities",
+    href: "/capabilities",
+    matchPaths: [/^\/capabilities/],
+    children: [
+      { label: "Information Architecture", href: "/capabilities/information-architecture" },
+      { label: "Content Migration",        href: "/capabilities/content-migration" },
+      { label: "CCMS & Publishing",        href: "/capabilities/ccms-and-publishing" },
+      { label: "AI-Ready Content",         href: "/capabilities/ai-ready-content" },
+    ],
+  },
   {
     label: "Solutions",
     href: "/solutions",
@@ -40,10 +50,49 @@ const navItems: NavItem[] = [
       { label: "AI-Ready Content",             href: "/solutions/ai-ready-content" },
     ],
   },
-  { label: "Services", href: "/services" },
-  { label: "Industries", href: "/industries" },
-  { label: "Resources", href: "/resources", matchPaths: [/^\/resources/] },
-  { label: "Company", href: "/company" },
+  {
+    label: "Services",
+    href: "/services",
+    matchPaths: [/^\/services/],
+    children: [
+      { label: "Project-Based",       href: "/services/project-based" },
+      { label: "Staff Augmentation",  href: "/services/staff-augmentation" },
+      { label: "Managed Services",    href: "/services/managed-services" },
+    ],
+  },
+  {
+    label: "Industries",
+    href: "/industries",
+    matchPaths: [/^\/industries/],
+    children: [
+      { label: "Government & Defense", href: "/industries/government-and-defense" },
+      { label: "Financial Services",   href: "/industries/financial-services" },
+      { label: "Life Sciences",        href: "/industries/life-sciences" },
+      { label: "Transportation",       href: "/industries/transportation" },
+      { label: "Insurance",            href: "/industries/insurance" },
+      { label: "Technology",           href: "/industries/technology" },
+    ],
+  },
+  {
+    label: "Resources",
+    href: "/resources",
+    matchPaths: [/^\/resources/],
+    children: [
+      { label: "Case Studies",       href: "/resources/case-studies" },
+      { label: "AI Readiness",       href: "/resources/ai-readiness" },
+      { label: "Migration Playbook", href: "/resources/migration-playbook" },
+      { label: "Automation Guide",   href: "/resources/automation-guide" },
+    ],
+  },
+  {
+    label: "Company",
+    href: "/company",
+    matchPaths: [/^\/company/],
+    children: [
+      { label: "FAQs",     href: "/company/faqs" },
+      { label: "Careers",  href: "/company/careers" },
+    ],
+  },
   { label: "Contact", href: "/contact", emphasis: true },
 ];
 
@@ -330,7 +379,10 @@ function isActive(item: NavItem): boolean {
     position: absolute;
     top: calc(100% + 8px);
     left: -1px;
-    min-width: 220px;
+    /* Each dropdown sizes to fit its widest item (label + padding).
+       Capabilities, Solutions, etc. will be wider; Company (FAQs / Careers)
+       will be narrower. */
+    width: max-content;
     background-color: var(--color-page-bg);
     border: var(--border-hairline);
     border-top: 2px solid var(--color-accent-primary-hover);

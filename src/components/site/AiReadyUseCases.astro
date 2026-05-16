@@ -1,0 +1,360 @@
+---
+/*
+  AiReadyUseCases — five editorial chapter-blocks on
+  /solutions/ai-ready-content.
+
+  Sequenced after the pipeline section. Each block is one AI use case
+  that the same engineered corpus serves:
+
+    01  Chatbot & RAG retrieval.
+    02  Semantic search.
+    03  AI-assisted translation.
+    04  LLM fine-tuning.
+    05  Personalization & compliance auditing.
+
+  Per-block structure (mirrors the other chapter-block components on
+  TDP / Migration / Interop)
+    - amber monospace number prefix (left column, narrow)
+    - display-serif name + italic subtitle + body + pull-quote hook
+      (right column, wide)
+    - hairline rule at the top of each block; last block also gets a
+      hairline at the bottom so the section ends cleanly
+    - no "Explore" link affordance: these blocks are the destination
+
+  Animation: per-block IntersectionObserver, same pattern as the other
+  chapter-block sections. prefers-reduced-motion: static.
+*/
+
+interface UseCase {
+  num: string;
+  name: string;
+  subtitle: string;
+  body: string;
+  hook: string;
+}
+
+const useCases: UseCase[] = [
+  {
+    num: "01",
+    name: "Chatbot & RAG retrieval",
+    subtitle: "Citation-ready answers, not averaged context.",
+    body: "Typed chunks with audience and domain filters. Top-k reranked before reaching the LLM context window. Each retrieved chunk carries its section ID, source URL, and provenance — so every answer is citable, traceable, and replayable against the exact paragraph that produced it.",
+    hook: "Why is your RAG hallucinating on a topic you’ve already documented?",
+  },
+  {
+    num: "02",
+    name: "Semantic search",
+    subtitle: "Filter before you rank.",
+    body: "Metadata-filtered semantic search returns the right level for the user before similarity scoring even runs. A beginner concept and an advanced reference don’t get blended into the same top-k. The filter is the relevance — similarity scoring is just the tiebreaker.",
+    hook: "Why is search “improving” without actually answering different questions?",
+  },
+  {
+    num: "03",
+    name: "AI-assisted translation",
+    subtitle: "Element-aware, not paragraph-blind.",
+    body: "Semantic DITA elements (<warning>, <step>, <shortdesc>) carry their own translation rules. Safety-critical phrasing fires the right NMT pipeline; reference content takes a different path; conref-driven reuse is translated once. The element type is the routing key.",
+    hook: "Why is the same warning translated five different ways across five LMS modules?",
+  },
+  {
+    num: "04",
+    name: "LLM fine-tuning",
+    subtitle: "High-signal corpus, not noisy concatenation.",
+    body: "Typed, deduplicated, voice-consistent training data. No copy-paste duplicates injecting contradictions. No format drift teaching the model that your tone is six different tones. The fine-tune learns your voice because the corpus has a voice.",
+    hook: "What did your model learn when 30% of the training examples disagreed with each other?",
+  },
+  {
+    num: "05",
+    name: "Personalization & compliance auditing",
+    subtitle: "Audience and intent metadata, not slide-deck theory.",
+    body: "Role, level, product-line, and locale metadata on every topic make personalization a delivery property, not a marketing slide. The same metadata enables compliance auditing — the system names which warnings are missing, which prerequisites are untagged, which sections lack the required audit attributes.",
+    hook: "When the auditor asks what your AI told a regulated user, can you reproduce the answer?",
+  },
+];
+---
+
+<section class="airdy-usecases" aria-labelledby="airdy-usecases-heading">
+  <div class="container-data airdy-usecases__inner">
+    <div class="airdy-usecases__heading-block">
+      <h2 id="airdy-usecases-heading" class="airdy-usecases__heading">
+        Five AI use cases, <em>one foundation.</em>
+      </h2>
+      <p class="airdy-usecases__subdeck">
+        Same engineering, different surface. The corpus you build for RAG is the same corpus that powers semantic search, AI translation, fine-tuning, and compliance auditing &mdash; one substrate, five consumers.
+      </p>
+    </div>
+
+    <ol class="airdy-usecases__list">
+      {useCases.map((area) => (
+        <li class="usecase-area">
+          <div class="usecase-area__num" aria-hidden="true">{area.num}</div>
+          <div class="usecase-area__content">
+            <h3 class="usecase-area__name">{area.name}.</h3>
+            <p class="usecase-area__subtitle">{area.subtitle}</p>
+            <p class="usecase-area__body">{area.body}</p>
+            <p class="usecase-area__hook">{area.hook}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .airdy-usecases {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .airdy-usecases {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .airdy-usecases__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-16);
+  }
+
+  .airdy-usecases__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .airdy-usecases__heading em {
+    font-style: italic;
+  }
+
+  .airdy-usecases__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  .airdy-usecases__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .usecase-area {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  .usecase-area:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .usecase-area {
+      grid-template-columns: 96px 1fr;
+      gap: var(--space-8);
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .usecase-area__num {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-accent-primary);
+    line-height: 1;
+    padding-top: 8px;
+  }
+
+  .usecase-area__content {
+    max-width: 72ch;
+  }
+
+  .usecase-area__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+    text-wrap: balance;
+  }
+
+  .usecase-area__subtitle {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: pretty;
+  }
+
+  .usecase-area__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: pretty;
+  }
+
+  .usecase-area__hook {
+    position: relative;
+    margin: 0;
+    padding-left: var(--space-6);
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+    max-width: 60ch;
+  }
+  .usecase-area__hook::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--color-accent-primary-hover);
+    transform-origin: top center;
+  }
+
+  /* Reveal animation — per-block, same pattern as other chapter-blocks. */
+  .airdy-usecases.animating .airdy-usecases__heading-block {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .airdy-usecases.animating .usecase-area__num,
+  .airdy-usecases.animating .usecase-area__name,
+  .airdy-usecases.animating .usecase-area__subtitle,
+  .airdy-usecases.animating .usecase-area__body,
+  .airdy-usecases.animating .usecase-area__hook {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .airdy-usecases.animating .usecase-area__hook::before {
+    transform: scaleY(0);
+  }
+
+  .airdy-usecases.animating.in-view .airdy-usecases__heading-block {
+    animation: airdy-usecases-fade-in 480ms ease-out forwards;
+  }
+
+  .airdy-usecases.animating .usecase-area.in-view .usecase-area__num {
+    animation: airdy-usecases-fade-in 420ms ease-out forwards;
+  }
+  .airdy-usecases.animating .usecase-area.in-view .usecase-area__name {
+    animation: airdy-usecases-fade-in 420ms ease-out forwards;
+    animation-delay: 80ms;
+  }
+  .airdy-usecases.animating .usecase-area.in-view .usecase-area__subtitle {
+    animation: airdy-usecases-fade-in 420ms ease-out forwards;
+    animation-delay: 140ms;
+  }
+  .airdy-usecases.animating .usecase-area.in-view .usecase-area__body {
+    animation: airdy-usecases-fade-in 420ms ease-out forwards;
+    animation-delay: 220ms;
+  }
+  .airdy-usecases.animating .usecase-area.in-view .usecase-area__hook {
+    animation: airdy-usecases-fade-in 420ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+  .airdy-usecases.animating .usecase-area.in-view .usecase-area__hook::before {
+    animation: airdy-usecases-bar-grow 520ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+
+  @keyframes airdy-usecases-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes airdy-usecases-bar-grow {
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .airdy-usecases.animating .airdy-usecases__heading-block,
+    .airdy-usecases.animating .usecase-area__num,
+    .airdy-usecases.animating .usecase-area__name,
+    .airdy-usecases.animating .usecase-area__subtitle,
+    .airdy-usecases.animating .usecase-area__body,
+    .airdy-usecases.animating .usecase-area__hook {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .airdy-usecases.animating .usecase-area__hook::before {
+      transform: scaleY(1) !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupAiReadyUseCases() {
+    const sec = document.querySelector<HTMLElement>(".airdy-usecases");
+    if (!sec) return;
+    if (sec.dataset.usecasesRevealInit === "true") return;
+    sec.dataset.usecasesRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            sectionObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    sectionObserver.observe(sec);
+
+    const areaObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            areaObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    const areas = sec.querySelectorAll<HTMLElement>(".usecase-area");
+    areas.forEach((area) => areaObserver.observe(area));
+  }
+
+  document.addEventListener("DOMContentLoaded", setupAiReadyUseCases);
+  document.addEventListener("astro:page-load", setupAiReadyUseCases);
+</script>

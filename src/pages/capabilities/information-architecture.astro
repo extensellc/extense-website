@@ -35,34 +35,51 @@ import PillarPageLayout from "../../layouts/PillarPageLayout.astro";
       description: "The runbook that lets your team maintain the architecture after the engagement closes.",
     },
   ]}
-  phases={[
-    {
-      phase: "Discovery",
-      body: "Stakeholder interviews, content audit, current-state IA assessment, use-case mapping. The IA pillar leads here — most failed migrations failed because Discovery was skipped.",
-    },
-    {
-      phase: "Architecture",
-      body: "Content model design (DITA, S1000D, custom DTDs), taxonomy design, metadata strategy, reuse strategy. This is where the IA pillar concentrates its primary execution load.",
-    },
-    {
-      phase: "Migration",
-      body: "IA validation through pilot conversion of representative content. The pilot surfaces architecture decisions that need adjustment before production conversion runs.",
-    },
-    {
-      phase: "Implementation",
-      body: "IA propagation across authoring tools, CCMS configuration, validation rules. The architecture becomes operational across the toolchain.",
-    },
-    {
-      phase: "Enablement",
-      body: "Governance handover, IA documentation, author orientation, ongoing model evolution as products and content needs change.",
-    },
-  ]}
   anchorStat={{
     number: "90%",
     label: "Reduction in documentation-driven support escalations",
     context: "When users find what they need on the first try, they don't open tickets.",
   }}
+  supportingStats={[
+    {
+      number: "45%",
+      label: "Content reuse rate enabled by reuse-aware architecture",
+    },
+    {
+      number: "72%",
+      label: "Translation cost savings downstream of conditional content design",
+    },
+  ]}
+  outcomesNote="Anchor metric measured at 6-12 months post-rollout across regulated-industry engagements. Adjacent outcomes are downstream effects of the architecture work — measured during the first localized release after migration."
   bridgeProse="The connection from IA quality to support volume is direct. Bad IA produces content users can't find, can't follow, or can't trust — every one of which surfaces as a support ticket. Architecture quality is measurable in escalation volume; if support tickets are climbing, the IA is the upstream cause more often than the writing."
+  engagementVignettes={[
+    {
+      framing: "A Class III medical-device IFU consolidation.",
+      body: "Redesigned the content model across multiple device families with regulatory profiling for FDA, EU MDR, and equivalent international standards. Reduced authored topics by more than 60% while the number of markets served expanded. The reuse architecture made the subsequent localization wave possible without doubling translation headcount.",
+    },
+    {
+      framing: "A multi-agency federal compliance architecture.",
+      body: "S1000D specialization plus a subject scheme aligned to two different mission taxonomies. Subject-scheme keys carried the audience and classification metadata that downstream retrieval and access-control systems needed. Reuse across agencies' deliverables without parallel authoring streams.",
+    },
+  ]}
+  engagementSignals={[
+    {
+      signal: "Two CCMS implementations have already failed.",
+      body: "Usually means the content model was never finalized — the platform was picked first, and authors then fought the configuration. The fix is in the model, not the next platform.",
+    },
+    {
+      signal: "Translation costs are climbing faster than content volume.",
+      body: "The reuse architecture isn't doing its job. New content is being authored as variants of existing content rather than as references to it; translation is paying for the redundancy.",
+    },
+    {
+      signal: "Your RAG pilot retrieves the wrong paragraph 35% of the time.",
+      body: "The chunk boundaries don't match the semantic boundaries. Architecture design (section-ID stability, conref structure, subject scheme) determines what retrieval can recover; the model can't make up for it downstream.",
+    },
+    {
+      signal: "Auditors keep finding the same gap in different documents.",
+      body: "The metadata schema isn't enforcing what it needs to. Compliance attributes are present in some topics and missing in others — usually because the architecture didn't gate them at validation time.",
+    },
+  ]}
   standardsAndTooling={[
     {
       label: "DITA 1.3",
@@ -91,4 +108,8 @@ import PillarPageLayout from "../../layouts/PillarPageLayout.astro";
     body: "Failed migrations because there's no clean target to migrate to. Reuse that doesn't work because the granularity is wrong. RAG retrieving the wrong chunks because semantic boundaries weren't designed in. Translation that costs more every quarter because there's no separation of concerns. The architecture decisions get re-litigated in every phase that follows.",
   }}
   ctaBody="Submit a 20-page sample. We'll return a content-model fitness assessment — what the existing IA can support, what it can't, and what redesign would make possible. Two business days, no obligation to proceed."
+  narrativeLink={{
+    href: "/solutions/xml-data-interoperability",
+    label: "Read the XML Data Interoperability narrative",
+  }}
 />

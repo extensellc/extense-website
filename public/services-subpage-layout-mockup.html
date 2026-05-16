@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Services subpage — Paginated SOW mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" />
+  <style>
+    :root {
+      --color-page-bg: #ffffff;
+      --color-text-primary: #1a1817;
+      --color-text-secondary: #6b6560;
+      --color-text-muted: #9c958e;
+      --color-border-subtle: #e5dfd7;
+      --color-accent-primary: #f59e0b;
+      --color-gravitas-navy: #1f2d3d;
+      --color-bar-yellow: #fcd34d;
+      --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+      --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", "Menlo", "Cascadia Code", "Courier New", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    * { margin: 0; padding: 0; }
+
+    html { text-rendering: optimizeLegibility; }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.5;
+      color: var(--color-text-primary);
+      background-color: var(--color-page-bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mockup-banner {
+      background-color: rgb(253 224 71 / 0.06);
+      border-bottom: 1px solid var(--color-bar-yellow);
+      padding: 16px 48px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-secondary);
+    }
+
+    .mockup-label {
+      display: inline-block;
+      padding: 4px 8px;
+      margin-right: 12px;
+      background-color: #fcd34d;
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+
+    .mockup-label--baseline {
+      background-color: var(--color-border-subtle);
+    }
+
+    .container-prose {
+      max-width: calc(720px + 96px);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+
+    .container-data {
+      max-width: calc(1080px + 96px);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+
+    .section {
+      padding-top: 96px;
+      padding-bottom: 96px;
+      border-top: 1px solid var(--color-border-subtle);
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(1.625rem, 1.3125rem + 1.5625vw, 2.25rem);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      color: var(--color-text-primary);
+      margin-bottom: 32px;
+      text-wrap: balance;
+    }
+
+    /* ─── BASELINE narrative (centered prose) ─── */
+    .narrative__prose {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      font-size: 18px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    .narrative__prose p { text-wrap: pretty; }
+
+    /* ─── Asymmetric spread shell ─── */
+    .doc-spread {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    @media (min-width: 900px) {
+      .doc-spread {
+        grid-template-columns: 1fr 1.55fr;
+        gap: 80px;
+      }
+    }
+
+    .doc-spread__left {
+      max-width: 360px;
+    }
+
+    .doc-spread__heading {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(1.625rem, 1.3125rem + 1.5625vw, 2.25rem);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      color: var(--color-text-primary);
+      margin-bottom: 24px;
+      text-wrap: balance;
+    }
+
+    .doc-spread__lead {
+      font-family: var(--font-body);
+      font-size: 18px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      text-wrap: pretty;
+    }
+
+    .doc-spread__caption {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--color-border-subtle);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* ─── Paginated book ─── */
+    .book {
+      position: relative;
+      border: 1px solid var(--color-border-subtle);
+      background-color: var(--color-page-bg);
+    }
+
+    .book::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 2px;
+      background-color: #fcd34d;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Pages strip — horizontal scroll-snap container */
+    .book__pages {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      /* Hide native scrollbar */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .book__pages::-webkit-scrollbar { display: none; }
+
+    .book__page {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      padding: 32px 32px 28px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .book__chapter {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 12px;
+    }
+
+    .book__doc-ref {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .book__title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: var(--color-text-primary);
+      margin-bottom: 6px;
+    }
+
+    .book__tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--color-text-secondary);
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+
+    .book__rule {
+      border: 0;
+      border-top: 1px solid var(--color-border-subtle);
+      margin: 0 0 20px 0;
+    }
+
+    /* On pages 2+, hide the title block, show just chapter label */
+    .book__page:not(:first-child) .book__doc-ref,
+    .book__page:not(:first-child) .book__title,
+    .book__page:not(:first-child) .book__tagline,
+    .book__page:not(:first-child) .book__rule {
+      display: none;
+    }
+
+    .book__page:not(:first-child) .book__chapter {
+      margin-top: 0;
+    }
+
+    .book__fields {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      flex: 1;
+    }
+
+    .field-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .field-value {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.5;
+      color: var(--color-text-primary);
+      text-wrap: pretty;
+    }
+
+    /* Nav strip — prev / page indicator / next */
+    .book__nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 32px;
+      border-top: 1px solid var(--color-border-subtle);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .book__btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-link, #b45309);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+      transition: color 150ms cubic-bezier(0,0,0.2,1);
+    }
+
+    .book__btn:hover:not(:disabled) {
+      color: #9a3412;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .book__btn:disabled {
+      color: var(--color-text-muted);
+      cursor: default;
+      opacity: 0.4;
+    }
+
+    .book__indicator {
+      font-feature-settings: "tnum";
+      color: var(--color-text-secondary);
+      font-weight: 500;
+    }
+
+    /* Page dots — subtle visual indicator above nav */
+    .book__dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      padding-top: 12px;
+      padding-bottom: 4px;
+    }
+
+    .book__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-border-subtle);
+      transition: background-color 200ms cubic-bezier(0,0,0.2,1);
+    }
+
+    .book__dot--active {
+      background-color: #fcd34d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mockup-banner">
+    <span class="mockup-label">Mockup v2</span>
+    Paginated SOW. Two sections shown: baseline narrative (unchanged) + new asymmetric spread with the SOW as a 3-page horizontal book.
+  </div>
+
+  <!-- ─────────────── SECTION 1 — BASELINE narrative ─────────────── -->
+  <section class="section">
+    <div class="container-prose">
+      <div class="mockup-banner" style="background:none;border:none;padding:0 0 16px 0;">
+        <span class="mockup-label mockup-label--baseline">Baseline</span>
+        Reading anchor — keeps current treatment.
+      </div>
+      <h2 class="section-heading">What Project-Based actually means.</h2>
+      <div class="narrative__prose">
+        <p>Project-Based engagements run against a Statement of Work &mdash; a signed document that names the deliverables, the acceptance criteria, the milestones, the fee, and the schedule.</p>
+        <p>The contractual structure carries the risk allocation: Extense carries execution risk against the fee, the client carries scope-definition risk against the acceptance criteria.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SECTION 2 — NEW: asymmetric + paginated book ─────────────── -->
+  <section class="section">
+    <div class="container-data">
+      <div class="mockup-banner" style="background:none;border:none;padding:0 0 32px 0;">
+        <span class="mockup-label">New</span>
+        Asymmetric spread. Lead copy left; 3-page horizontal book right. Click prev/next, arrow keys, or swipe.
+      </div>
+
+      <div class="doc-spread">
+        <div class="doc-spread__left">
+          <h2 class="doc-spread__heading">The document.</h2>
+          <p class="doc-spread__lead">A fuller version of the procurement instrument from the Services overview. Three pages, organized the way a procurement reader actually moves through an SOW &mdash; The Work, Commercial Terms, then Governance &amp; Boilerplate.</p>
+          <p class="doc-spread__caption">Excerpt &middot; SOW v3.2 &middot; 3 pages</p>
+        </div>
+
+        <div class="book" id="book" aria-label="Statement of Work — three-page excerpt">
+
+          <div class="book__pages" id="book-pages">
+
+            <!-- Page 1 — The Work -->
+            <article class="book__page" aria-label="Page 1 of 3">
+              <p class="book__doc-ref">Statement of Work &middot; SOW-2026-XXXX</p>
+              <h3 class="book__title">Statement of Work</h3>
+              <p class="book__tagline">The contractual instrument for Project-Based engagements.</p>
+              <hr class="book__rule" />
+              <p class="book__chapter">Page 1 / 3 &mdash; The Work</p>
+              <ul class="book__fields">
+                <li>
+                  <span class="field-label">Scope</span>
+                  <span class="field-value">The bounded body of work, named in 2&ndash;3 sentences. Example: information architecture redesign and DITA migration of the regulated-IFU content estate covering 14 device families across 5 markets.</span>
+                </li>
+                <li>
+                  <span class="field-label">Deliverables</span>
+                  <span class="field-value">Named outputs that have to land in named systems by named dates. Comma-separated, scannable. Example: content model, migration toolchain, ~60,000 topic conversion, author runbook.</span>
+                </li>
+                <li>
+                  <span class="field-label">Acceptance Criteria</span>
+                  <span class="field-value">Verifiable thresholds and conformance tests. Define &ldquo;done&rdquo; in a way both sides can audit independently &mdash; schema validation, fidelity percentages, named outputs in named systems.</span>
+                </li>
+              </ul>
+            </article>
+
+            <!-- Page 2 — Commercial Terms -->
+            <article class="book__page" aria-label="Page 2 of 3">
+              <p class="book__chapter">Page 2 / 3 &mdash; Commercial Terms</p>
+              <ul class="book__fields">
+                <li>
+                  <span class="field-label">Term</span>
+                  <span class="field-value">Effective date and end date. Milestone schedule with named dates for kickoff, midpoint review, acceptance, and closeout.</span>
+                </li>
+                <li>
+                  <span class="field-label">Fee</span>
+                  <span class="field-value">Fixed amount. Typical range: $50K &ndash; $500K for discrete engagements; $250K &ndash; $1.5M for multi-pillar transformation programs. Payment schedule example: 30% kickoff / 40% midpoint / 30% on acceptance.</span>
+                </li>
+                <li>
+                  <span class="field-label">Change Management</span>
+                  <span class="field-value">Written change orders required for scope additions, deliverable modifications, or schedule changes. Out-of-scope work runs at a published T&amp;M rate or as a new SOW.</span>
+                </li>
+              </ul>
+            </article>
+
+            <!-- Page 3 — Governance & Boilerplate -->
+            <article class="book__page" aria-label="Page 3 of 3">
+              <p class="book__chapter">Page 3 / 3 &mdash; Governance &amp; Boilerplate</p>
+              <ul class="book__fields">
+                <li>
+                  <span class="field-label">Governance</span>
+                  <span class="field-value">Status reporting cadence (typically weekly). Steering-committee escalation path. Decision-making authorities named for both sides.</span>
+                </li>
+                <li>
+                  <span class="field-label">Warranty</span>
+                  <span class="field-value">Defects in delivered work corrected at no cost for a defined period after acceptance. Period varies by engagement type and is named in the SOW.</span>
+                </li>
+                <li>
+                  <span class="field-label">IP &amp; Confidentiality</span>
+                  <span class="field-value">Work product assigned to Client on acceptance and final payment. Pre-existing Extense IP licensed under standard terms. NDA-bounded handling of Client content.</span>
+                </li>
+                <li>
+                  <span class="field-label">Termination</span>
+                  <span class="field-value">For convenience by either party with notice; fee owed for work completed to date. For cause on material breach with cure period.</span>
+                </li>
+              </ul>
+            </article>
+
+          </div>
+
+          <!-- Dots indicator -->
+          <div class="book__dots" aria-hidden="true">
+            <span class="book__dot book__dot--active" data-page="0"></span>
+            <span class="book__dot" data-page="1"></span>
+            <span class="book__dot" data-page="2"></span>
+          </div>
+
+          <!-- Nav strip -->
+          <div class="book__nav">
+            <button class="book__btn" id="book-prev" disabled aria-label="Previous page">&larr; Prev</button>
+            <span class="book__indicator" id="book-indicator" aria-live="polite">1 / 3</span>
+            <button class="book__btn" id="book-next" aria-label="Next page">Next &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const pages = document.getElementById('book-pages');
+      const prevBtn = document.getElementById('book-prev');
+      const nextBtn = document.getElementById('book-next');
+      const indicator = document.getElementById('book-indicator');
+      const dots = document.querySelectorAll('.book__dot');
+      const book = document.getElementById('book');
+      if (!pages || !prevBtn || !nextBtn) return;
+
+      const total = 3;
+      let current = 0;
+
+      function go(page) {
+        current = Math.max(0, Math.min(total - 1, page));
+        pages.scrollTo({ left: pages.clientWidth * current, behavior: 'smooth' });
+        indicator.textContent = (current + 1) + ' / ' + total;
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === total - 1;
+        dots.forEach((d, i) => {
+          d.classList.toggle('book__dot--active', i === current);
+        });
+      }
+
+      prevBtn.addEventListener('click', () => go(current - 1));
+      nextBtn.addEventListener('click', () => go(current + 1));
+
+      // Sync state if user swipes / scrolls manually
+      let scrollT = null;
+      pages.addEventListener('scroll', () => {
+        if (scrollT) clearTimeout(scrollT);
+        scrollT = setTimeout(() => {
+          const p = Math.round(pages.scrollLeft / pages.clientWidth);
+          if (p !== current) go(p);
+        }, 80);
+      });
+
+      // Keyboard arrows when focus is inside the book
+      book.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
+      });
+      book.setAttribute('tabindex', '0');
+    })();
+  </script>
+</body>
+</html>

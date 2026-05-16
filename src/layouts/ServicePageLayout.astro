@@ -1,0 +1,1054 @@
+---
+/*
+  ServicePageLayout — shared base for the three /services/[model] sub-pages
+  (Project-Based, Staff Augmentation, Managed Services).
+
+  Section order (shared across all three):
+    1. TopNav (BaseLayout)
+    2. Hero (Hero.universal, model-specific copy)
+    3. SiblingsBreadcrumb (.services)
+    4. Narrative — "What [model] actually means" (3-5 paragraphs)
+    5. The document, expanded — load-bearing centerpiece (SOW / Order Form /
+       SLA fragment with ~10 sections of fields)
+    6. How it runs — structured list of engagement phases
+    7. What's in scope / out of scope — two compact lists side-by-side
+    8. When you'd pick this — italic signal lines with body
+    9. When this is wrong — failure modes (DocumentRow.failureMode × N)
+    10. Recent engagements — anonymized vignettes
+    11. Related — compact cross-link cluster (other models + capabilities)
+    12. CTAModule
+    13. LifecycleNav — small inline "Next: [model] →"
+    14. Footer (BaseLayout)
+
+  Amber scroll thread spans the narrative through the recent-engagements
+  section, mirroring the pattern used on /capabilities/[pillar] pages.
+*/
+
+import BaseLayout from "./BaseLayout.astro";
+import Hero from "../components/site/Hero.astro";
+import SiblingsBreadcrumb from "../components/nav/SiblingsBreadcrumb.astro";
+import CompactList from "../components/site/CompactList.astro";
+import DocumentRow from "../components/site/DocumentRow.astro";
+import CTAModule from "../components/site/CTAModule.astro";
+import LifecycleNav from "../components/nav/LifecycleNav.astro";
+
+interface CompactItem {
+  label: string;
+  description?: string;
+}
+
+interface DocumentField {
+  label: string;
+  value: string;
+  emphasis?: string;
+}
+
+interface DocumentPage {
+  /** Chapter label shown at the top of each page, e.g. "Page 1 / 3 — The Work" */
+  chapter: string;
+  fields: DocumentField[];
+}
+
+interface DocumentFragment {
+  docRef: string;
+  title: string;
+  tagline: string;
+  /** Paginated document — each page renders as a slide in the horizontal book. */
+  pages: DocumentPage[];
+  formLabel?: string;
+}
+
+interface NarrativeParagraph {
+  text: string;
+}
+
+interface Signal {
+  line: string;
+  body: string;
+}
+
+interface FailureMode {
+  eyebrow: string;
+  heading: string;
+  body: string;
+}
+
+interface EngagementVignette {
+  framing: string;
+  body: string;
+}
+
+interface RelatedLink {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  modelId: "project" | "staff-aug" | "managed";
+  modelHref: string;
+  pageTitle: string;
+  pageDescription: string;
+  heroTitle: string;
+  heroSubdeck: string;
+  narrative: NarrativeParagraph[];
+  document: DocumentFragment;
+  phases: CompactItem[];
+  inScope: CompactItem[];
+  outOfScope: CompactItem[];
+  signals: Signal[];
+  failureModes: FailureMode[];
+  vignettes: EngagementVignette[];
+  related: RelatedLink[];
+  ctaBody: string;
+}
+
+const {
+  modelId,
+  modelHref,
+  pageTitle,
+  pageDescription,
+  heroTitle,
+  heroSubdeck,
+  narrative,
+  document: doc,
+  phases,
+  inScope,
+  outOfScope,
+  signals,
+  failureModes,
+  vignettes,
+  related,
+  ctaBody,
+} = Astro.props;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Hero variant="universal" title={heroTitle} subdeck={heroSubdeck} />
+
+  <SiblingsBreadcrumb variant="services" current={modelHref} />
+
+    <section class="svc-section svc-section--narrative" aria-labelledby="narrative-heading">
+      <div class="container-prose svc-section__inner">
+        <h2 id="narrative-heading" class="svc-section__heading">What {heroTitle} actually means.</h2>
+        <div class="svc-section__prose">
+          {narrative.map((p) => (
+            <p>{p.text}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="svc-section svc-section--document" aria-labelledby="document-heading">
+      <div class="container-data svc-section__inner">
+        <div class="svc-doc-spread">
+          <div class="svc-doc-spread__left">
+            <h2 id="document-heading" class="svc-doc-spread__heading">The document.</h2>
+            <p class="svc-doc-spread__lead">
+              A fuller version of the procurement instrument introduced on the <a href="/services">Services overview</a>. {doc.pages.length} pages, organized the way a procurement reader actually moves through an Extense {doc.title} &mdash; section by section.
+            </p>
+            <p class="svc-doc-spread__caption">
+              Excerpt {doc.formLabel && <>&middot; {doc.formLabel}</>} &middot; {doc.pages.length} pages
+            </p>
+          </div>
+
+          <div class="svc-book" id="svc-book" aria-label={`${doc.title} — ${doc.pages.length}-page excerpt`}>
+            <div class="svc-book__pages" id="svc-book-pages">
+              {doc.pages.map((page, i) => (
+                <article class="svc-book__page" aria-label={`Page ${i + 1} of ${doc.pages.length}`}>
+                  {i === 0 && (
+                    <>
+                      <p class="svc-book__doc-ref">{doc.docRef}</p>
+                      <h3 class="svc-book__title">{doc.title}</h3>
+                      <p class="svc-book__tagline">{doc.tagline}</p>
+                      <hr class="svc-book__rule" />
+                    </>
+                  )}
+                  <p class="svc-book__chapter">{page.chapter}</p>
+                  <ul class="svc-book__fields">
+                    {page.fields.map((field) => (
+                      <li>
+                        <span class="svc-doc__field-label">{field.label}</span>
+                        <span class="svc-doc__field-value">
+                          {field.value}
+                          {field.emphasis && <> <em>{field.emphasis}</em></>}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+
+            <div class="svc-book__dots" aria-hidden="true">
+              {doc.pages.map((_, i) => (
+                <span class:list={["svc-book__dot", i === 0 && "svc-book__dot--active"]} data-page={i}></span>
+              ))}
+            </div>
+
+            <div class="svc-book__nav">
+              <button class="svc-book__btn" id="svc-book-prev" disabled aria-label="Previous page">&larr; Prev</button>
+              <span class="svc-book__indicator" id="svc-book-indicator" aria-live="polite">1 / {doc.pages.length}</span>
+              <button class="svc-book__btn" id="svc-book-next" aria-label="Next page">Next &rarr;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="svc-section svc-section--phases" aria-labelledby="phases-heading">
+      <div class="container-prose svc-section__inner">
+        <h2 id="phases-heading" class="svc-section__heading">How it runs.</h2>
+        <ol class="svc-phases">
+          {phases.map((p, i) => (
+            <li class="svc-phase">
+              <span class="svc-phase__index">{String(i + 1).padStart(2, "0")}</span>
+              <div class="svc-phase__body">
+                <h3 class="svc-phase__label">{p.label}</h3>
+                {p.description && <p class="svc-phase__description">{p.description}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="svc-section svc-section--scope" aria-labelledby="scope-heading">
+      <div class="container-data svc-section__inner">
+        <h2 id="scope-heading" class="svc-section__heading">What&rsquo;s in scope, what&rsquo;s out.</h2>
+        <p class="svc-section__lead svc-scope__lead">
+          Out-of-scope items are typical defaults. Exact inclusions and exclusions are named in the SOW for each engagement.
+        </p>
+        <div class="svc-scope-scroll" role="region" aria-label="Scope table, scroll horizontally on narrow screens" tabindex="0">
+          <table class="svc-scope-table">
+            <thead>
+              <tr>
+                <th scope="col" class="svc-scope-table__th svc-scope-table__th--status">Status</th>
+                <th scope="col" class="svc-scope-table__th svc-scope-table__th--item">Item</th>
+                <th scope="col" class="svc-scope-table__th svc-scope-table__th--notes">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {inScope.map((item) => (
+                <tr>
+                  <td class="svc-scope-table__cell svc-scope-table__cell--status" data-label="Status">
+                    <span class="svc-scope__pill svc-scope__pill--in">In</span>
+                  </td>
+                  <td class="svc-scope-table__cell svc-scope-table__cell--item" data-label="Item">{item.label}</td>
+                  <td class="svc-scope-table__cell svc-scope-table__cell--notes" data-label="Notes">{item.description}</td>
+                </tr>
+              ))}
+              {outOfScope.map((item) => (
+                <tr>
+                  <td class="svc-scope-table__cell svc-scope-table__cell--status" data-label="Status">
+                    <span class="svc-scope__pill svc-scope__pill--out">Out</span>
+                  </td>
+                  <td class="svc-scope-table__cell svc-scope-table__cell--item" data-label="Item">{item.label}</td>
+                  <td class="svc-scope-table__cell svc-scope-table__cell--notes" data-label="Notes">{item.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <div class="svc-scroll-context" data-svc-scroll-context>
+      <div class="svc-scroll-indicator" aria-hidden="true">
+        <div class="svc-scroll-indicator__fill"></div>
+      </div>
+
+      <section class="svc-section svc-section--signals" aria-labelledby="signals-heading">
+        <div class="container-prose svc-section__inner">
+          <h2 id="signals-heading" class="svc-section__heading">When you&rsquo;d pick this.</h2>
+          <ol class="svc-signal-list">
+            {signals.map((s) => (
+              <li class="svc-signal">
+                <p class="svc-signal__line">&ldquo;{s.line}&rdquo;</p>
+                <p class="svc-signal__body">{s.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="svc-section svc-section--failure" aria-labelledby="failure-heading">
+        <div class="container-prose svc-section__inner">
+          <h2 id="failure-heading" class="svc-section__heading">When this is the wrong choice.</h2>
+          {failureModes.map((fm) => (
+            <DocumentRow
+              variant="failureMode"
+              eyebrow={fm.eyebrow}
+              heading={fm.heading}
+              body={fm.body}
+              headingLevel={3}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section class="svc-section svc-section--engagements" aria-labelledby="engagements-heading">
+        <div class="container-prose svc-section__inner">
+          <h2 id="engagements-heading" class="svc-section__heading">Recent engagements.</h2>
+          <ol class="svc-vignette-list">
+            {vignettes.map((v) => (
+              <li class="svc-vignette">
+                <p class="svc-vignette__framing">{v.framing}</p>
+                <p class="svc-vignette__body">{v.body}</p>
+              </li>
+            ))}
+          </ol>
+          <p class="svc-vignette-note">
+            Anonymized for client confidentiality. Specific scope, contract details, and named outcomes available under appropriate NDA channels.
+          </p>
+        </div>
+      </section>
+    </div>
+
+  <section class="svc-section svc-section--related" aria-label="Related links">
+    <div class="container-prose svc-section__inner">
+      <p class="eyebrow svc-related__eyebrow">Related</p>
+      <ul class="svc-related__list">
+        {related.map((r) => (
+          <li>
+            <a href={r.href} class="svc-related__link">
+              {r.label}
+              <span class="svc-related__arrow" aria-hidden="true">&nbsp;→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule audience="general" compact body={ctaBody} />
+
+  <LifecycleNav currentModel={modelId} />
+</BaseLayout>
+
+<style>
+  .svc-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .svc-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .svc-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-8);
+    text-wrap: balance;
+  }
+
+  .svc-section__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-12);
+    text-wrap: pretty;
+  }
+
+  .svc-section__prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+  }
+
+  .svc-section__prose p {
+    text-wrap: pretty;
+  }
+
+  /* ─── Document spread (asymmetric: lead-on-left, book-on-right) ─── */
+  .svc-doc-spread {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .svc-doc-spread {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .svc-doc-spread__left {
+    max-width: 480px;
+  }
+
+  .svc-doc-spread__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+    text-wrap: balance;
+  }
+
+  .svc-doc-spread__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  .svc-doc-spread__caption {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* ─── The book — horizontal scroll-snap pages with prev/next ─── */
+  .svc-book {
+    position: relative;
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+  }
+
+  .svc-book::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #fcd34d;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .svc-book__pages {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .svc-book__pages::-webkit-scrollbar { display: none; }
+
+  .svc-book__page {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding: var(--space-8) var(--space-8) var(--space-6);
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .svc-book__doc-ref {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin-bottom: var(--space-6);
+  }
+
+  .svc-book__title {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: 30px;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .svc-book__tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-snug);
+    margin-bottom: var(--space-6);
+    text-wrap: balance;
+  }
+
+  .svc-book__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .svc-book__chapter {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .svc-book__fields {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    flex: 1;
+  }
+
+  /* Field label/value classes reused across book pages */
+  .svc-doc__field-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .svc-doc__field-value {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+
+  .svc-doc__field-value em {
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+
+  /* ─── Book navigation: dots + prev/next strip ─── */
+  .svc-book__dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-1);
+  }
+
+  .svc-book__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-border-subtle);
+    transition: background-color var(--duration-medium) var(--easing-out);
+  }
+
+  .svc-book__dot--active {
+    background-color: #fcd34d;
+  }
+
+  .svc-book__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-8);
+    border-top: var(--border-hairline);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .svc-book__btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-link);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-1) 0;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .svc-book__btn:hover:not(:disabled),
+  .svc-book__btn:focus-visible:not(:disabled) {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .svc-book__btn:disabled {
+    color: var(--color-text-muted);
+    cursor: default;
+    opacity: 0.4;
+  }
+
+  .svc-book__indicator {
+    font-feature-settings: "tnum";
+    color: var(--color-text-secondary);
+    font-weight: var(--weight-medium);
+  }
+
+  /* ─── Phases (How it runs) ─── */
+  .svc-phases {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .svc-phase {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--space-6);
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+    border-top: var(--border-hairline);
+  }
+
+  .svc-phase:first-of-type {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .svc-phase:last-of-type {
+    padding-bottom: 0;
+  }
+
+  .svc-phase__index {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    color: var(--color-accent-primary);
+    padding-top: 2px;
+  }
+
+  .svc-phase__label {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .svc-phase__description {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Scope table (Status / Item / Notes) ─── */
+  .svc-scope__lead {
+    margin-bottom: var(--space-8);
+  }
+
+  /* Wrapping container scrolls horizontally below the table's natural
+     min-width — matches the PhaseWeightMatrix / CrossModeComparison
+     pattern. Per the brief: tables don't collapse to cards on mobile. */
+  .svc-scope-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .svc-scope-scroll:focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 2px;
+  }
+
+  .svc-scope-table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+  }
+
+  .svc-scope-table__th {
+    text-align: left;
+    vertical-align: bottom;
+    padding: var(--space-3) var(--space-4) var(--space-3) 0;
+    border-bottom: var(--border-hairline);
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .svc-scope-table__th--status {
+    width: 88px;
+  }
+
+  .svc-scope-table__th--item {
+    width: 32%;
+  }
+
+  .svc-scope-table__cell {
+    padding: var(--space-4) var(--space-4) var(--space-4) 0;
+    border-top: var(--border-hairline);
+    vertical-align: top;
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+  }
+
+  .svc-scope-table tbody tr:first-child .svc-scope-table__cell {
+    border-top: none;
+  }
+
+  .svc-scope-table__cell--status {
+    white-space: nowrap;
+  }
+
+  .svc-scope-table__cell--item {
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+
+  .svc-scope-table__cell--notes {
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .svc-scope__pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .svc-scope__pill--in {
+    background-color: rgb(253 224 71 / 0.18);
+    color: var(--color-link);
+  }
+
+  .svc-scope__pill--out {
+    background-color: var(--color-border-subtle);
+    color: var(--color-text-secondary);
+  }
+
+  /* ─── Vertical scroll-progress indicator (signals → engagements) ───
+     Wraps the three sections that share the "this model in practice"
+     narrative arc. Track top = top of signals section. Track bottom =
+     top of .svc-vignette-note's hairline (the last hairline inside
+     the engagements section). Heights and bottom positioning are
+     computed in JS because the note's position is content-dependent. */
+  .svc-scroll-context {
+    position: relative;
+  }
+
+  .svc-scroll-indicator {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .svc-scroll-indicator {
+      display: block;
+      position: absolute;
+      top: 0;
+      height: 0; /* JS sets the actual height */
+      /* Sits in the left gutter to the side of the centered prose
+         column. max() guards against the indicator falling off the
+         left edge at narrower tablet widths (e.g. 768px), where the
+         gutter is small. */
+      left: max(16px, calc(50% - var(--container-prose) / 2 - 40px));
+      width: 2px;
+      background-color: var(--color-border-subtle);
+      pointer-events: none;
+    }
+  }
+
+  .svc-scroll-indicator__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: #fcd34d;
+    will-change: height;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc-scroll-indicator__fill {
+      height: 100%;
+    }
+  }
+
+  /* ─── Signals ─── */
+  .svc-signal-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .svc-signal {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+    border-top: var(--border-hairline);
+  }
+
+  .svc-signal:first-of-type {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .svc-signal:last-of-type {
+    padding-bottom: 0;
+  }
+
+  .svc-signal__line {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .svc-signal__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Vignettes ─── */
+  .svc-vignette-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .svc-vignette {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+    border-top: var(--border-hairline);
+  }
+
+  .svc-vignette:first-of-type {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .svc-vignette:last-of-type {
+    padding-bottom: 0;
+  }
+
+  .svc-vignette__framing {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+
+  .svc-vignette__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .svc-vignette-note {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: var(--border-hairline);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+  }
+
+  /* ─── Related cross-links ─── */
+  .svc-section--related {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    border-bottom: var(--border-hairline);
+  }
+
+  .svc-related__eyebrow {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .svc-related__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .svc-related__link {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .svc-related__link:hover,
+  .svc-related__link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .svc-related__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+
+  .svc-related__link:hover .svc-related__arrow {
+    transform: translateX(2px);
+  }
+
+</style>
+
+<script>
+// ─── Book controller — paginated SOW/Order Form/SLA fragment ───
+(function () {
+  const pages = document.getElementById('svc-book-pages');
+  const prevBtn = document.getElementById('svc-book-prev');
+  const nextBtn = document.getElementById('svc-book-next');
+  const indicator = document.getElementById('svc-book-indicator');
+  const book = document.getElementById('svc-book');
+  if (!pages || !prevBtn || !nextBtn || !indicator || !book) return;
+
+  const dots = book.querySelectorAll('.svc-book__dot');
+  const total = pages.querySelectorAll('.svc-book__page').length;
+  if (total === 0) return;
+  let current = 0;
+
+  function go(page) {
+    current = Math.max(0, Math.min(total - 1, page));
+    pages.scrollTo({ left: pages.clientWidth * current, behavior: 'smooth' });
+    indicator.textContent = (current + 1) + ' / ' + total;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+    dots.forEach((d, i) => {
+      d.classList.toggle('svc-book__dot--active', i === current);
+    });
+  }
+
+  prevBtn.addEventListener('click', () => go(current - 1));
+  nextBtn.addEventListener('click', () => go(current + 1));
+
+  // Sync state if user swipes or scrolls horizontally
+  let scrollT = null;
+  pages.addEventListener('scroll', () => {
+    if (scrollT) clearTimeout(scrollT);
+    scrollT = setTimeout(() => {
+      const p = Math.round(pages.scrollLeft / pages.clientWidth);
+      if (p !== current && p >= 0 && p < total) go(p);
+    }, 80);
+  });
+
+  // Keyboard arrows when focus is inside the book
+  book.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
+  });
+  book.setAttribute('tabindex', '0');
+})();
+
+// ─── Vertical scroll-progress indicator ───
+// Spans the signals → engagements arc. Track height is dynamic
+// (anchored to .svc-vignette-note's top hairline). Fill height tracks
+// where the viewport center sits within the track range.
+(function () {
+  const ctx = document.querySelector<HTMLElement>('[data-svc-scroll-context]');
+  if (!ctx) return;
+  const track = ctx.querySelector<HTMLElement>('.svc-scroll-indicator');
+  const fill = ctx.querySelector<HTMLElement>('.svc-scroll-indicator__fill');
+  const startEl = ctx.querySelector<HTMLElement>('.svc-section--signals');
+  const endEl = ctx.querySelector<HTMLElement>('.svc-vignette-note');
+  if (!track || !fill || !startEl || !endEl) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function positionTrack() {
+    const startRect = startEl!.getBoundingClientRect();
+    const endRect = endEl!.getBoundingClientRect();
+    const ctxRect = ctx!.getBoundingClientRect();
+    const topInCtx = startRect.top - ctxRect.top;
+    const bottomInCtx = endRect.top - ctxRect.top;
+    track!.style.top = `${topInCtx}px`;
+    track!.style.height = `${Math.max(0, bottomInCtx - topInCtx)}px`;
+  }
+
+  let ticking = false;
+  function update() {
+    ticking = false;
+    if (reducedMotion) return;
+    const trackRect = track!.getBoundingClientRect();
+    if (trackRect.height === 0) return;
+    const viewportCenter = window.innerHeight / 2;
+    const centerWithinTrack = viewportCenter - trackRect.top;
+    const ratio = Math.max(0, Math.min(1, centerWithinTrack / trackRect.height));
+    fill!.style.height = `${(ratio * 100).toFixed(2)}%`;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
+  function onResize() {
+    positionTrack();
+    update();
+  }
+
+  positionTrack();
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onResize, { passive: true });
+  // Re-measure after fonts/images settle (height of vignette-note may shift).
+  window.addEventListener('load', onResize);
+})();
+</script>

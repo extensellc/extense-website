@@ -1,0 +1,445 @@
+---
+/*
+  AiReadyHero — hero for /solutions/ai-ready-content.
+
+  Two-column layout (60/40 desktop, single column mobile):
+    LEFT  — kicker, "Retrievable, by design." thesis, hairline, body
+            paragraph naming the chunking strategy, metadata filters,
+            and the 85% precision framing.
+    RIGHT — animated "precision gauge" diagram: an instrument-style
+            display with two horizontal bars (BASELINE 30% in subdued
+            gray, AFTER 87% in amber) on a 0-100 axis, with a "+57pts"
+            amber dashed connector between their right edges, and a
+            calibration readout below (n, p, domain, measured-against).
+
+  Sister diagram to TDP starburst, Migration funnel, and Interop fabric.
+  Where those three show CONTENT TRANSFORMATIONS, this shows a
+  MEASUREMENT — the AI-Ready story is about what gets measured.
+
+  Animation: same vocabulary as the other heroes. Viewport-triggered
+  cascade adds `.drawn` to the SVG; per-element delays staggered so
+  the diagram assembles itself top-to-bottom — chrome / section label
+  / axis / BASELINE bar / AFTER bar / gap annotation / calibration
+  readout / bottom chrome.
+
+  prefers-reduced-motion: static render, no animation.
+*/
+---
+
+<section class="airdy-hero">
+  <div class="airdy-hero__inner">
+    <div class="airdy-hero__text">
+      <p class="airdy-hero__kicker">
+        TYPE<span class="airdy-hero__dot">·</span>CHUNK<span class="airdy-hero__dot">·</span>FILTER<span class="airdy-hero__dot">·</span>MEASURE
+      </p>
+      <h1 class="airdy-hero__title">
+        Retrievable, by <em>design.</em>
+      </h1>
+      <hr class="airdy-hero__rule" />
+      <p class="airdy-hero__body">
+        Chunking strategy, typed DITA topics, metadata filters, and section-ID stability turn 85% RAG precision into a measurable property of the corpus &mdash; not a model parameter, not a hope. The translation layer between your documentation and the LLMs that consume it.
+      </p>
+    </div>
+
+    <div class="airdy-hero__visual">
+      <svg
+        class="gauge-svg"
+        id="airdy-gauge"
+        viewBox="0 0 320 420"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <!-- Corner registration marks (amber chrome) -->
+        <g class="corner corner--accent" style="--d: 0ms">
+          <path d="M 10 20 L 10 10 L 20 10" />
+          <path d="M 300 10 L 310 10 L 310 20" />
+          <path d="M 10 400 L 10 410 L 20 410" />
+          <path d="M 300 410 L 310 410 L 310 400" />
+        </g>
+
+        <!-- Top chrome: corpus context -->
+        <text class="chrome" x="30" y="22" style="--d: 80ms">in :: corpus.retrieval</text>
+
+        <!-- Section label -->
+        <text class="chrome chrome--strong" x="30" y="56" style="--d: 160ms">RAG RETRIEVAL PRECISION</text>
+
+        <!-- BASELINE caption -->
+        <text class="bar-caption" x="30" y="78" style="--d: 240ms">BASELINE &mdash; unstructured, no filters</text>
+
+        <!-- BASELINE bar — fills 30% of the 260px-wide track (x=30 to x=108) -->
+        <rect class="bar-track" x="30" y="84" width="260" height="40" style="--d: 360ms" />
+        <rect class="bar-fill-baseline" x="30" y="84" width="78" height="40" style="--d: 540ms" />
+        <text class="bar-value-baseline" x="113" y="109" style="--d: 700ms">30%</text>
+
+        <!-- +57pts gap annotation: dashed amber connector linking the
+             two bar right-edges (BASELINE bar bottom at y=124, AFTER
+             bar top at y=174). Label sits ABOVE the horizontal
+             connector at y=148, clear of both bars. -->
+        <path class="gap-line" d="M 108 124 L 108 148 L 256 148 L 256 174" style="--d: 1500ms" />
+        <text class="gap-label" x="160" y="142" text-anchor="middle" style="--d: 1500ms">+57pts</text>
+
+        <!-- AFTER caption — pushed down to y=168 so it sits clear of
+             the gap connector at y=148 and the +57pts label at y=142.
+             Shortened from "AFTER — typed DITA + metadata filters" so
+             the text ends well before x=256 (where the connector's
+             right vertical drops) and no longer cuts through "filters". -->
+        <text class="bar-caption" x="30" y="168" style="--d: 880ms">AFTER &mdash; typed DITA + filters</text>
+
+        <!-- AFTER bar — fills 87% of the track (x=30 to x=256) -->
+        <rect class="bar-track" x="30" y="174" width="260" height="40" style="--d: 1000ms" />
+        <rect class="bar-fill-after" x="30" y="174" width="226" height="40" style="--d: 1180ms" />
+        <text class="bar-value-after" x="226" y="199" text-anchor="end" style="--d: 1340ms">87%</text>
+
+        <!-- Axis: 0-100 across the bar area at y=230 -->
+        <line class="axis-line" x1="30" y1="230" x2="290" y2="230" style="--d: 1640ms" />
+        <line class="axis-tick" x1="30"  y1="228" x2="30"  y2="234" style="--d: 1640ms" />
+        <line class="axis-tick" x1="95"  y1="228" x2="95"  y2="234" style="--d: 1640ms" />
+        <line class="axis-tick" x1="160" y1="228" x2="160" y2="234" style="--d: 1640ms" />
+        <line class="axis-tick" x1="225" y1="228" x2="225" y2="234" style="--d: 1640ms" />
+        <line class="axis-tick" x1="290" y1="228" x2="290" y2="234" style="--d: 1640ms" />
+        <text class="axis-label" x="30"  y="246" style="--d: 1700ms">0</text>
+        <text class="axis-label" x="93"  y="246" style="--d: 1700ms">25</text>
+        <text class="axis-label" x="158" y="246" style="--d: 1700ms">50</text>
+        <text class="axis-label" x="223" y="246" style="--d: 1700ms">75</text>
+        <text class="axis-label" x="280" y="246" style="--d: 1700ms">100</text>
+
+        <!-- Calibration readout — instrument-style measurement notes -->
+        <text class="calibration-label" x="30" y="286" style="--d: 1840ms">n</text>
+        <text class="calibration-value" x="60" y="286" style="--d: 1840ms">= 500 user queries</text>
+
+        <text class="calibration-label" x="30" y="304" style="--d: 1920ms">p</text>
+        <text class="calibration-value" x="60" y="304" style="--d: 1920ms">= 0.852 ± 0.02</text>
+
+        <text class="calibration-label" x="30" y="322" style="--d: 2000ms">domain</text>
+        <text class="calibration-value" x="78" y="322" style="--d: 2000ms">= field-service</text>
+
+        <text class="calibration-label" x="30" y="340" style="--d: 2080ms">measured</text>
+        <text class="calibration-value" x="93" y="340" style="--d: 2080ms">vs. ground-truth answers</text>
+
+        <!-- Bottom chrome — middle segment shortened from
+             "retrieval.precision" (19 chars, ran into the dot) to
+             "retrieval.eval" (14 chars) so the dot sits cleanly
+             between the figure caption and the PRECISION OK status. -->
+        <line class="chrome-rule" x1="30" y1="392" x2="290" y2="392" style="--d: 2240ms" />
+        <text class="chrome chrome--strong" x="30" y="410" style="--d: 2280ms">FIG. 06</text>
+        <text class="chrome" x="80" y="410" style="--d: 2280ms">/</text>
+        <text class="chrome chrome--strong" x="88" y="410" style="--d: 2280ms">retrieval.eval</text>
+        <rect class="build-dot" x="200" y="404" width="6" height="6" style="--d: 2280ms" />
+        <text class="chrome chrome--strong" x="290" y="410" text-anchor="end" style="--d: 2280ms">PRECISION OK</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Layout — same 60/40 as TDP, Migration, Interop heroes. */
+  .airdy-hero {
+    width: 100%;
+  }
+
+  .airdy-hero__inner {
+    max-width: var(--container-page, 1240px);
+    margin: 0 auto;
+    padding: var(--space-32) var(--space-12);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  @media (min-width: 960px) {
+    .airdy-hero__inner {
+      grid-template-columns: 60% 40%;
+      gap: var(--space-12);
+      padding: var(--space-32) var(--space-12);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .airdy-hero__inner {
+      padding: var(--space-20) var(--space-6);
+      gap: var(--space-16);
+    }
+  }
+
+  .airdy-hero__text {
+    max-width: 640px;
+  }
+
+  .airdy-hero__kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+  }
+  .airdy-hero__dot {
+    color: var(--color-text-muted);
+    margin: 0 0.5em;
+  }
+
+  .airdy-hero__title {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+  .airdy-hero__title em {
+    font-style: italic;
+  }
+
+  @media (max-width: 960px) {
+    .airdy-hero__title {
+      font-size: 36px;
+    }
+  }
+
+  .airdy-hero__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    width: 64px;
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .airdy-hero__body {
+    font-family: var(--font-body);
+    font-weight: var(--weight-regular);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 560px;
+    text-wrap: pretty;
+  }
+
+  /* Right: gauge SVG */
+  .airdy-hero__visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .gauge-svg {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  /* Chrome / corner / status — same vocabulary as other heroes */
+  .gauge-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-regular);
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .gauge-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .gauge-svg .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .gauge-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .gauge-svg .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* Bar caption — mono small */
+  .gauge-svg .bar-caption {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.12em;
+  }
+
+  /* Bar tracks (the 0-100 area) */
+  .gauge-svg .bar-track {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* BASELINE bar fill — subdued (currentColor at low opacity) */
+  .gauge-svg .bar-fill-baseline {
+    fill: currentColor;
+    fill-opacity: 0.18;
+  }
+
+  /* AFTER bar fill — amber (single accent for the brand-result moment) */
+  .gauge-svg .bar-fill-after {
+    fill: var(--color-accent-primary-hover);
+  }
+
+  .gauge-svg .bar-value-baseline {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+  }
+  .gauge-svg .bar-value-after {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-page-bg);
+  }
+
+  /* Amber gap connector + label */
+  .gauge-svg .gap-line {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 3;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+  .gauge-svg .gap-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-accent-primary-hover);
+    letter-spacing: 0.06em;
+  }
+
+  /* Axis below the bars */
+  .gauge-svg .axis-line,
+  .gauge-svg .axis-tick {
+    stroke: var(--color-text-primary);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .gauge-svg .axis-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* Calibration readout — instrument-style notes */
+  .gauge-svg .calibration-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .gauge-svg .calibration-value {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+
+  /* Initial hidden states + reveal cascade */
+  .gauge-svg .corner,
+  .gauge-svg .chrome,
+  .gauge-svg .chrome-rule,
+  .gauge-svg .build-dot,
+  .gauge-svg .bar-caption,
+  .gauge-svg .bar-track,
+  .gauge-svg .bar-fill-baseline,
+  .gauge-svg .bar-fill-after,
+  .gauge-svg .bar-value-baseline,
+  .gauge-svg .bar-value-after,
+  .gauge-svg .gap-line,
+  .gauge-svg .gap-label,
+  .gauge-svg .axis-line,
+  .gauge-svg .axis-tick,
+  .gauge-svg .axis-label,
+  .gauge-svg .calibration-label,
+  .gauge-svg .calibration-value {
+    opacity: 0;
+  }
+
+  .gauge-svg.drawn .corner,
+  .gauge-svg.drawn .chrome,
+  .gauge-svg.drawn .chrome-rule,
+  .gauge-svg.drawn .build-dot,
+  .gauge-svg.drawn .bar-caption,
+  .gauge-svg.drawn .bar-track,
+  .gauge-svg.drawn .bar-fill-baseline,
+  .gauge-svg.drawn .bar-fill-after,
+  .gauge-svg.drawn .bar-value-baseline,
+  .gauge-svg.drawn .bar-value-after,
+  .gauge-svg.drawn .gap-line,
+  .gauge-svg.drawn .gap-label,
+  .gauge-svg.drawn .axis-line,
+  .gauge-svg.drawn .axis-tick,
+  .gauge-svg.drawn .axis-label,
+  .gauge-svg.drawn .calibration-label,
+  .gauge-svg.drawn .calibration-value {
+    animation: gauge-fade-in 320ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes gauge-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gauge-svg .corner,
+    .gauge-svg .chrome,
+    .gauge-svg .chrome-rule,
+    .gauge-svg .build-dot,
+    .gauge-svg .bar-caption,
+    .gauge-svg .bar-track,
+    .gauge-svg .bar-fill-baseline,
+    .gauge-svg .bar-fill-after,
+    .gauge-svg .bar-value-baseline,
+    .gauge-svg .bar-value-after,
+    .gauge-svg .gap-line,
+    .gauge-svg .gap-label,
+    .gauge-svg .axis-line,
+    .gauge-svg .axis-tick,
+    .gauge-svg .axis-label,
+    .gauge-svg .calibration-label,
+    .gauge-svg .calibration-value {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupAiReadyHero() {
+    const svg = document.getElementById("airdy-gauge") as SVGElement | null;
+    if (!svg) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupAiReadyHero);
+  document.addEventListener("astro:page-load", setupAiReadyHero);
+</script>

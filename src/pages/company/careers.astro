@@ -1,0 +1,341 @@
+---
+/*
+  /company/careers — open positions roster index.
+
+  Slim index page:
+    1. Hero — "Open positions." with consolidated framing paragraph as subdeck
+    2. Roster table (titles link to /company/careers/{slug})
+    3. Practice / Citizenship / Benefits / Apply data-sheet
+    4. EEO footer (small print)
+
+  Per-role detail pages: src/pages/company/careers/[slug].astro
+  Source of truth for the role list: src/data/careers.ts
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
+import CareersHeroFigure from "../../components/site/CareersHeroFigure.astro";
+import { jobs, CAREERS_EMAIL } from "../../data/careers";
+
+const heroSubdeck = `Current roles available at Extense. The roster below lists every open position at a glance. Select a position to read the full description — about the role, key responsibilities, required and preferred qualifications, education, and how to apply. If your background and experience fits the work we do, but the timing is not right still write to <a href="mailto:${CAREERS_EMAIL}">${CAREERS_EMAIL}</a> and send us your resume. We maintain a candidate roster for client needs that come up.`;
+---
+
+<BaseLayout
+  title="Careers — Extense LLC"
+  description="Open positions at Extense LLC. Full-time roles in our Technical Publications and IETM practice — S1000D content engineering, IETM development, XML publishing automation, and QA for U.S. defense and aerospace programs."
+>
+  <Hero
+    variant="universal"
+    title="Open positions."
+    subdeck={heroSubdeck}
+  >
+    <CareersHeroFigure />
+  </Hero>
+
+  <AnimatedDivider />
+
+  <section class="car-section car-section--roster" aria-labelledby="roster-heading">
+    <div class="container-data car-section__inner">
+      <p class="car-roster__eyebrow" id="roster-heading">Open roles · at a glance</p>
+      <hr class="car-rule" />
+
+      <table class="car-roster">
+        <thead>
+          <tr>
+            <th scope="col" class="car-roster__th car-roster__th--num"></th>
+            <th scope="col" class="car-roster__th car-roster__th--title">Position</th>
+            <th scope="col" class="car-roster__th car-roster__th--type">Type</th>
+            <th scope="col" class="car-roster__th car-roster__th--salary">Salary band</th>
+            <th scope="col" class="car-roster__th car-roster__th--ref">Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          {jobs.map((job) => (
+            <tr class="car-roster__row">
+              <td class="car-roster__td car-roster__td--num">{job.number}</td>
+              <td class="car-roster__td car-roster__td--title">
+                <a href={`/company/careers/${job.id}`} class="car-roster__title-link">{job.title}</a>
+              </td>
+              <td class="car-roster__td car-roster__td--type">{job.employmentType}</td>
+              <td class="car-roster__td car-roster__td--salary">{job.salaryBand.split(" base")[0]}</td>
+              <td class="car-roster__td car-roster__td--ref">{job.postingRef}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <hr class="car-rule" />
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="car-section car-section--datasheet" aria-label="Practice, citizenship, benefits, and how to apply">
+    <div class="container-data car-section__inner">
+      <hr class="car-rule" />
+      <dl class="car-datasheet">
+        <div class="car-datasheet__row">
+          <dt class="car-datasheet__label">Practice</dt>
+          <dd class="car-datasheet__body">
+            Extense is an XML content engineering firm. Our capabilities span information architecture, content migration, CCMS and publishing automation, and AI-ready content engineering, with deep practice areas in DITA, S1000D, and IETM. We serve federal agencies, defense and aerospace contractors, and Fortune 500 enterprises across regulated industries.
+          </dd>
+        </div>
+
+        <div class="car-datasheet__row">
+          <dt class="car-datasheet__label">Citizenship</dt>
+          <dd class="car-datasheet__body">
+            U.S. work authorization is required for all positions; Extense does not provide employer-sponsored visas. Federal-government projects additionally require U.S. citizenship or lawful permanent residence (green card), and several require U.S. citizenship and the ability to obtain a U.S. Government security clearance. Selected candidates for federal roles must be willing to undergo a federal background investigation.
+          </dd>
+        </div>
+
+        <div class="car-datasheet__row">
+          <dt class="car-datasheet__label">Benefits</dt>
+          <dd class="car-datasheet__body">
+            Medical, dental, vision, 401(k) with company match, PTO, paid federal holidays, professional-development support, certification reimbursement, and conference attendance where role-aligned. Remote-first with periodic travel to customer or partner sites.
+          </dd>
+        </div>
+
+        <div class="car-datasheet__row">
+          <dt class="car-datasheet__label">Apply</dt>
+          <dd class="car-datasheet__body">
+            Email <a href={`mailto:${CAREERS_EMAIL}`}>{CAREERS_EMAIL}</a> with the job title and posting reference in the subject line. Include your résumé, a short cover note describing your most relevant project, and (where applicable) two or three representative work samples or anonymized excerpts.
+          </dd>
+        </div>
+      </dl>
+      <hr class="car-rule" />
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="car-section car-section--eeo" aria-labelledby="eeo-heading">
+    <div class="container-prose car-section__inner">
+      <p class="car-eeo__eyebrow" id="eeo-heading">Equal employment opportunity</p>
+      <p class="car-eeo__body">
+        Extense LLC is an Equal Opportunity Employer. All qualified applicants will receive consideration for employment without regard to race, color, religion, sex, sexual orientation, gender identity, national origin, age, disability, protected veteran status, or any other characteristic protected by law.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ─── Section spacing ─── */
+  .car-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .car-section {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+  }
+
+  .car-rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0;
+  }
+
+  /* ─── Hero subdeck link styling ───
+     The consolidated framing paragraph lives in the hero subdeck and
+     contains an inline mailto. Style the link consistently with body
+     links elsewhere on the site. */
+  :global(.hero__subdeck a) {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  :global(.hero__subdeck a:hover),
+  :global(.hero__subdeck a:focus-visible) {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* ─── Roster table ─── */
+  .car-roster__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .car-roster {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    margin: var(--space-2) 0;
+  }
+
+  .car-roster__th {
+    text-align: left;
+    padding: var(--space-3) var(--space-4) var(--space-3) 0;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    border-bottom: var(--border-hairline);
+  }
+
+  .car-roster__th--num {
+    width: 40px;
+  }
+
+  .car-roster__row {
+    border-bottom: var(--border-hairline);
+  }
+
+  .car-roster__row:last-child {
+    border-bottom: 0;
+  }
+
+  .car-roster__td {
+    padding: var(--space-4) var(--space-4) var(--space-4) 0;
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    vertical-align: top;
+  }
+
+  .car-roster__td--num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-semibold);
+    color: #b45309;
+    font-feature-settings: "tnum";
+  }
+
+  .car-roster__td--title {
+    font-family: var(--font-display);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+  }
+
+  .car-roster__title-link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .car-roster__title-link:hover,
+  .car-roster__title-link:focus-visible {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .car-roster__td--type,
+  .car-roster__td--ref {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+
+  .car-roster__td--salary {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text-primary);
+    font-feature-settings: "tnum";
+    white-space: nowrap;
+  }
+
+  /* ─── Practice/Citizenship/Benefits/Apply data sheet ───
+     One tight reference block in place of four separately-framed
+     sections. Each row pairs a mono-uppercase label with the body
+     copy; rows separated by hairlines. */
+  .car-datasheet {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .car-datasheet__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding: var(--space-6) 0;
+    border-top: var(--border-hairline);
+  }
+
+  .car-datasheet__row:first-child {
+    border-top: 0;
+  }
+
+  @media (min-width: 768px) {
+    .car-datasheet__row {
+      grid-template-columns: 180px 1fr;
+      gap: var(--space-8);
+      align-items: baseline;
+    }
+  }
+
+  .car-datasheet__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .car-datasheet__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .car-datasheet__body a {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .car-datasheet__body a:hover,
+  .car-datasheet__body a:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* ─── EEO footer ─── */
+  .car-section--eeo {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-12);
+  }
+
+  .car-eeo__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .car-eeo__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+</style>

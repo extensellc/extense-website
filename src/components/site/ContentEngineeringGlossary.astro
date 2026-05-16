@@ -1,0 +1,352 @@
+---
+/*
+  ContentEngineeringGlossary — hero side visual for /company.
+
+  An open-edged dictionary entry that defines the firm's discipline:
+  content engineering, spanning three markets (Technical Publishing /
+  Content Technology / Intelligent Content) combined under the
+  Intelligent Technical Content Services umbrella.
+
+  Top + bottom hairlines only (no card chrome, no amber spine, no left/
+  right borders). Internal hairlines organize sections — same open-edged
+  vocabulary as the Gantt that preceded it, but with the structure a
+  glossary entry needs.
+
+  Animates on page load: headword reveals first, then definition, then
+  the three markets stagger in, then meta rows, then footer. setTimeout-
+  based trigger (RAF unreliable in headless renderers).
+
+  Hidden below 1024px (desktop-only enhancement, consistent with the
+  other hero side panels).
+*/
+
+interface Market {
+  number: string;
+  name: string;
+  body: string;
+}
+
+interface Props {
+  headword: string;
+  partOfSpeech: string;
+  definition: string;
+  markets: Market[];
+  combinedAs: string;
+  seeAlso: string;
+}
+
+const {
+  headword,
+  partOfSpeech,
+  definition,
+  markets,
+  combinedAs,
+  seeAlso,
+} = Astro.props;
+---
+
+<aside class="ceg" id="ceg" aria-label="Definition of content engineering">
+  <hr class="ceg__rule ceg__rule--top" />
+
+  <header class="ceg__head">
+    <h2 class="ceg__headword">{headword}</h2>
+    <span class="ceg__pos">{partOfSpeech}</span>
+  </header>
+
+  <hr class="ceg__rule ceg__rule--internal ceg__rule--r1" />
+
+  <p class="ceg__definition">{definition}</p>
+
+  <hr class="ceg__rule ceg__rule--internal ceg__rule--r2" />
+
+  <ol class="ceg__markets">
+    {markets.map((m, i) => (
+      <li class="ceg__market" data-market-index={i}>
+        <span class="ceg__market-num">{m.number}</span>
+        <div class="ceg__market-body">
+          <p class="ceg__market-name">{m.name}</p>
+          <p class="ceg__market-text">{m.body}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <hr class="ceg__rule ceg__rule--internal ceg__rule--r3" />
+
+  <dl class="ceg__meta">
+    <div class="ceg__meta-row" data-meta="combined">
+      <dt class="ceg__meta-label">Combined as</dt>
+      <dd class="ceg__meta-value">{combinedAs}</dd>
+    </div>
+    <div class="ceg__meta-row" data-meta="seealso">
+      <dt class="ceg__meta-label">See also</dt>
+      <dd class="ceg__meta-value ceg__meta-value--terms">{seeAlso}</dd>
+    </div>
+  </dl>
+
+  <hr class="ceg__rule ceg__rule--bottom" />
+
+  <footer class="ceg__footer">
+    <span>Form: GLOSSARY v1.0</span>
+    <span class="ceg__hint">Definition of practice</span>
+  </footer>
+</aside>
+
+<style>
+  .ceg {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .ceg {
+      display: block;
+      width: 440px;
+      flex-shrink: 0;
+    }
+  }
+
+  /* ─── Hairline rules ─── */
+  .ceg__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0;
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 400ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .ceg__rule--top {
+    margin-bottom: var(--space-4);
+  }
+  .ceg__rule--internal {
+    margin: var(--space-4) 0;
+  }
+  .ceg__rule--bottom {
+    margin: var(--space-4) 0 var(--space-3);
+  }
+
+  /* ─── Headword ─── */
+  .ceg__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    opacity: 0;
+    transform: translateY(3px);
+    transition:
+      opacity 320ms cubic-bezier(0.32, 0.72, 0, 1),
+      transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .ceg__headword {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: var(--weight-regular);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .ceg__pos {
+    font-family: var(--font-serif, var(--font-display));
+    font-style: italic;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  /* ─── Definition ─── */
+  .ceg__definition {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+    opacity: 0;
+    transform: translateY(3px);
+    transition:
+      opacity 320ms cubic-bezier(0.32, 0.72, 0, 1),
+      transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  /* ─── Three markets ─── */
+  .ceg__markets {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .ceg__market {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+    opacity: 0;
+    transform: translateY(3px);
+    transition:
+      opacity 320ms cubic-bezier(0.32, 0.72, 0, 1),
+      transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .ceg__market-num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-semibold);
+    color: #b45309;
+    font-feature-settings: "tnum";
+    line-height: 1.4;
+  }
+
+  .ceg__market-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ceg__market-name {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    line-height: 1.25;
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+
+  .ceg__market-text {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Meta rows (combined as / see also) ─── */
+  .ceg__meta {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .ceg__meta-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+    opacity: 0;
+    transform: translateY(3px);
+    transition:
+      opacity 320ms cubic-bezier(0.32, 0.72, 0, 1),
+      transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .ceg__meta-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .ceg__meta-value {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .ceg__meta-value--terms {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+
+  /* ─── Footer ─── */
+  .ceg__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    opacity: 0;
+    transition: opacity 360ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .ceg__hint {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── Build-in sequence (added when .is-built lands on .ceg) ─── */
+  .ceg.is-built .ceg__rule--top                            { transform: scaleX(1); transition-delay: 50ms; }
+  .ceg.is-built .ceg__head                                  { opacity: 1; transform: translateY(0); transition-delay: 200ms; }
+  .ceg.is-built .ceg__rule--r1                              { transform: scaleX(1); transition-delay: 450ms; }
+  .ceg.is-built .ceg__definition                            { opacity: 1; transform: translateY(0); transition-delay: 550ms; }
+  .ceg.is-built .ceg__rule--r2                              { transform: scaleX(1); transition-delay: 850ms; }
+  .ceg.is-built .ceg__market[data-market-index="0"]         { opacity: 1; transform: translateY(0); transition-delay: 950ms; }
+  .ceg.is-built .ceg__market[data-market-index="1"]         { opacity: 1; transform: translateY(0); transition-delay: 1130ms; }
+  .ceg.is-built .ceg__market[data-market-index="2"]         { opacity: 1; transform: translateY(0); transition-delay: 1310ms; }
+  .ceg.is-built .ceg__rule--r3                              { transform: scaleX(1); transition-delay: 1530ms; }
+  .ceg.is-built .ceg__meta-row[data-meta="combined"]        { opacity: 1; transform: translateY(0); transition-delay: 1630ms; }
+  .ceg.is-built .ceg__meta-row[data-meta="seealso"]         { opacity: 1; transform: translateY(0); transition-delay: 1800ms; }
+  .ceg.is-built .ceg__rule--bottom                          { transform: scaleX(1); transition-delay: 2000ms; }
+  .ceg.is-built .ceg__footer                                { opacity: 1; transition-delay: 2100ms; }
+
+  /* Reduced motion: everything visible immediately, no transitions */
+  @media (prefers-reduced-motion: reduce) {
+    .ceg__rule {
+      transform: scaleX(1);
+      transition: none;
+    }
+    .ceg__head,
+    .ceg__definition,
+    .ceg__market,
+    .ceg__meta-row,
+    .ceg__footer {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const card = document.getElementById('ceg');
+    if (!card) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      card.classList.add('is-built');
+      return;
+    }
+
+    function trigger() {
+      setTimeout(() => {
+        card!.classList.add('is-built');
+      }, 32);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', trigger);
+    } else {
+      trigger();
+    }
+  })();
+</script>

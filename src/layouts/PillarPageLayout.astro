@@ -9,14 +9,23 @@
     2. Hero (Hero.universal, pillar-specific copy)
     3. SiblingsBreadcrumb (.pillars)
     4. Deliverables — compact structured list
-    5. Methodology phases applied (DocumentRow.entry × 5) —
-       Discovery → Architecture → Migration → Implementation → Enablement
-    6. Anchor stat + bridge (StatBlock.one + bridge prose)
-    7. Standards and tooling — compact structured list
-    8. Cost-of-being-wrong (DocumentRow.failureMode × 1)
+    5. Anchor stat + bridge (StatBlock.one + bridge prose)
+    6. Standards and tooling — compact structured list
+    7. Cost-of-being-wrong (DocumentRow.failureMode × 1)
+    8. Cross-link to corresponding /solutions/* narrative page
     9. CTAModule
     10. LifecycleNav — small inline "Next: [pillar] →"
     11. Footer (BaseLayout)
+
+  Note on the dropped methodology section: the previous version
+  rendered a "How we run engagements" block with 5 methodology phases
+  per pillar (Discovery → Architecture → Migration → Implementation →
+  Enablement). That block duplicated the lifecycle narrative on the
+  /capabilities index, which covers the same 5 phases in more depth.
+  The pillar pages are now leaner reference cards; the integration
+  story lives on /capabilities, the narrative deep-dive lives on the
+  corresponding /solutions/* sub-page, reachable via the cross-link
+  near the bottom of each pillar page.
 */
 
 import BaseLayout from "./BaseLayout.astro";
@@ -33,21 +42,40 @@ interface CompactItem {
   description?: string;
 }
 
-interface PhaseEntry {
-  phase: "Discovery" | "Architecture" | "Migration" | "Implementation" | "Enablement";
-  body: string;
-}
-
 interface Stat {
   number: string;
   label: string;
   context?: string;
 }
 
+interface SupportingStat {
+  number: string;
+  label: string;
+}
+
+interface EngagementVignette {
+  /** One-line italic framing in display serif. */
+  framing: string;
+  /** Two to three sentences of substance. */
+  body: string;
+}
+
+interface EngagementSignal {
+  /** The trigger phrase the buyer recognizes in their own situation. */
+  signal: string;
+  /** What that signal actually means / why it matters. */
+  body: string;
+}
+
 interface FailureMode {
   eyebrow: string;
   heading: string;
   body: string;
+}
+
+interface NarrativeLink {
+  href: string;
+  label: string;
 }
 
 interface Props {
@@ -58,12 +86,43 @@ interface Props {
   heroTitle: string;
   heroSubdeck: string;
   deliverables: CompactItem[];
-  phases: PhaseEntry[]; // exactly 5
   anchorStat: Stat;
   bridgeProse: string;
+  /**
+   * Optional 1-2 supporting stats rendered below the anchor stat in the
+   * Outcomes section. Stats come from the verified five-stat record
+   * (60/72/85/45/90) — see EXTENSE_DESIGN_BRIEF.md §5. Each stat may
+   * appear on multiple pillar pages where the engineering work in this
+   * pillar is a meaningful contributor to that outcome.
+   */
+  supportingStats?: SupportingStat[];
+  /**
+   * Optional measurement-methodology note rendered as a small mono
+   * caption beneath the supporting stats. Adds credibility without
+   * inventing numbers — describes how the stats get measured.
+   */
+  outcomesNote?: string;
+  /**
+   * Optional 2-3 anonymized engagement vignettes rendered as a
+   * "Recent engagements." section between Outcomes and Standards.
+   * NDA-bounded per design brief §13.
+   */
+  engagementVignettes?: EngagementVignette[];
+  /**
+   * Optional 3-4 entry-point signals rendered as a "When you'd engage
+   * us here." section between Failure Mode and the cross-link. Each
+   * signal is a recognizable buyer situation that maps to this pillar.
+   */
+  engagementSignals?: EngagementSignal[];
   standardsAndTooling: CompactItem[];
   failureMode: FailureMode;
   ctaBody: string;
+  /**
+   * Optional cross-link to the corresponding /solutions/* narrative
+   * sub-page. Rendered as a small "Related — read the narrative →"
+   * section between the failure mode and the CTA.
+   */
+  narrativeLink?: NarrativeLink;
 }
 
 const {
@@ -74,12 +133,16 @@ const {
   heroTitle,
   heroSubdeck,
   deliverables,
-  phases,
   anchorStat,
   bridgeProse,
+  supportingStats,
+  outcomesNote,
+  engagementVignettes,
+  engagementSignals,
   standardsAndTooling,
   failureMode,
   ctaBody,
+  narrativeLink,
 } = Astro.props;
 ---
 
@@ -88,6 +151,9 @@ const {
 
   <SiblingsBreadcrumb variant="pillars" current={pillarHref} />
 
+  <div class="pillar-thread-wrapper" id="pillar-thread-wrapper">
+    <div class="pillar-thread" id="pillar-thread" aria-hidden="true" role="presentation"></div>
+
   <section class="pillar-section pillar-section--deliverables" aria-labelledby="deliverables-heading">
     <div class="container-prose pillar-section__inner">
       <h2 id="deliverables-heading" class="pillar-section__heading">What gets delivered.</h2>
@@ -95,24 +161,45 @@ const {
     </div>
   </section>
 
-  <section class="pillar-section pillar-section--methodology" aria-labelledby="methodology-heading">
-    <div class="container-prose pillar-section__inner">
-      <h2 id="methodology-heading" class="pillar-section__heading">How we run engagements.</h2>
-      <div class="pillar-section__rows">
-        {phases.map((p) => (
-          <DocumentRow variant="entry" heading={p.phase} body={p.body} headingLevel={3} />
-        ))}
-      </div>
-    </div>
-  </section>
-
   <section class="pillar-section pillar-section--anchor" aria-labelledby="anchor-heading">
     <div class="container-prose pillar-section__inner">
       <h2 id="anchor-heading" class="pillar-section__heading">Outcomes.</h2>
       <StatBlock variant="one" stats={[anchorStat]} />
+      {supportingStats && supportingStats.length > 0 && (
+        <div class="pillar-section__supporting-stats" aria-label="Adjacent outcomes">
+          {supportingStats.map((s) => (
+            <div class="supporting-stat">
+              <p class="supporting-stat__number">{s.number}</p>
+              <p class="supporting-stat__label">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      {outcomesNote && (
+        <p class="pillar-section__outcomes-note">{outcomesNote}</p>
+      )}
       <p class="pillar-section__bridge">{bridgeProse}</p>
     </div>
   </section>
+
+  {engagementVignettes && engagementVignettes.length > 0 && (
+    <section class="pillar-section pillar-section--engagements" aria-labelledby="engagements-heading">
+      <div class="container-prose pillar-section__inner">
+        <h2 id="engagements-heading" class="pillar-section__heading">Recent engagements.</h2>
+        <ol class="pillar-section__vignette-list">
+          {engagementVignettes.map((v) => (
+            <li class="engagement-vignette">
+              <p class="engagement-vignette__framing">{v.framing}</p>
+              <p class="engagement-vignette__body">{v.body}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="pillar-section__nda-note">
+          Anonymized for client confidentiality. Specific scope, contract details, and named outcomes available under appropriate NDA channels.
+        </p>
+      </div>
+    </section>
+  )}
 
   <section class="pillar-section pillar-section--standards" aria-labelledby="standards-heading">
     <div class="container-prose pillar-section__inner">
@@ -134,7 +221,37 @@ const {
     </div>
   </section>
 
-  <CTAModule audience="general" body={ctaBody} />
+  {engagementSignals && engagementSignals.length > 0 && (
+    <section class="pillar-section pillar-section--signals" aria-labelledby="signals-heading">
+      <div class="container-prose pillar-section__inner">
+        <h2 id="signals-heading" class="pillar-section__heading">When you&rsquo;d engage us here.</h2>
+        <ol class="pillar-section__signal-list">
+          {engagementSignals.map((s) => (
+            <li class="engagement-signal">
+              <p class="engagement-signal__signal">{s.signal}</p>
+              <p class="engagement-signal__body">{s.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  </div>{/* end pillar-thread-wrapper */}
+
+  {narrativeLink && (
+    <section class="pillar-section pillar-section--cross" aria-label="Related solution narrative">
+      <div class="container-prose pillar-section__inner">
+        <p class="eyebrow pillar-section__cross-eyebrow">Related</p>
+        <a href={narrativeLink.href} class="pillar-section__cross-link">
+          {narrativeLink.label}
+          <span class="pillar-section__cross-arrow" aria-hidden="true">&nbsp;→</span>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <CTAModule audience="general" compact body={ctaBody} />
 
   <LifecycleNav currentPillar={pillarId} />
 </BaseLayout>
@@ -143,6 +260,10 @@ const {
   .pillar-section {
     padding-top: var(--section-pad-default);
     padding-bottom: var(--section-pad-default);
+    /* Hairline section divider above every pillar-section. Matches the
+       section-rhythm used on /capabilities (the index) and on the four
+       /solutions/* sub-pages. */
+    border-top: var(--border-hairline);
   }
 
   @media (max-width: 767px) {
@@ -175,4 +296,314 @@ const {
     line-height: var(--leading-normal);
     text-wrap: pretty;
   }
+
+  /* ─────────────────────────────────────────────────────────
+     Outcomes — supporting stats below the anchor + measurement note.
+     ───────────────────────────────────────────────────────── */
+  .pillar-section__supporting-stats {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: var(--border-hairline);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 600px) {
+    .pillar-section__supporting-stats {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+  }
+
+  .supporting-stat__number {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    line-height: 1;
+    margin: 0 0 var(--space-2) 0;
+    font-feature-settings: "tnum";
+  }
+
+  .supporting-stat__label {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    max-width: 36ch;
+    text-wrap: pretty;
+  }
+
+  .pillar-section__outcomes-note {
+    margin-top: var(--space-6);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    max-width: 60ch;
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     Recent engagements — list of italic-framed vignettes.
+     ───────────────────────────────────────────────────────── */
+  .pillar-section__vignette-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .engagement-vignette {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+    border-top: var(--border-hairline);
+  }
+  .engagement-vignette:first-of-type {
+    padding-top: 0;
+    border-top: none;
+  }
+  .engagement-vignette:last-of-type {
+    padding-bottom: 0;
+  }
+
+  .engagement-vignette__framing {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+
+  .engagement-vignette__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .pillar-section__nda-note {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: var(--border-hairline);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     When you'd engage us — list of italic signal + explanation.
+     ───────────────────────────────────────────────────────── */
+  .pillar-section__signal-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .engagement-signal {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+    border-top: var(--border-hairline);
+  }
+  .engagement-signal:first-of-type {
+    padding-top: 0;
+    border-top: none;
+  }
+  .engagement-signal:last-of-type {
+    padding-bottom: 0;
+  }
+
+  .engagement-signal__signal {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .engagement-signal__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     Scroll thread — amber dot/line in the left gutter that
+     grows from "What gets delivered." down to the last signal.
+     JS sets top, left, and height via inline style.
+     ───────────────────────────────────────────────────────── */
+  .pillar-thread-wrapper {
+    position: relative;
+  }
+
+  .pillar-thread {
+    position: absolute;
+    width: 2px;
+    height: 0;
+    background-color: var(--color-accent-primary);
+    border-radius: 1px;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+
+  /* Only show at viewport widths where a left gutter exists */
+  @media (max-width: 599px) {
+    .pillar-thread {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pillar-thread {
+      display: none;
+    }
+  }
 </style>
+
+<style is:global>
+  /* Cross-link section — minimal padding so the link reads as a small
+     bridge between the failure mode and the CTA, not its own major
+     section. Also gets a border-bottom hairline to give the CTA a clean
+     top boundary. */
+  .pillar-section--cross {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    border-bottom: var(--border-hairline);
+  }
+
+  .pillar-section__cross-eyebrow {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .pillar-section__cross-link {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .pillar-section__cross-link:hover,
+  .pillar-section__cross-link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .pillar-section__cross-arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .pillar-section__cross-link:hover .pillar-section__cross-arrow {
+    transform: translateX(2px);
+  }
+</style>
+
+<script>
+(function () {
+  const wrapper = document.getElementById('pillar-thread-wrapper');
+  const thread = document.getElementById('pillar-thread');
+  if (!wrapper || !thread) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.innerWidth < 600) return;
+
+  let dotScrollY = 0;   // scrollY at which the dot first appears
+  let lineStartY = 0;   // scrollY at which the line starts growing
+  let lineEndY = 0;     // scrollY at which the line is fully grown
+  let lineHeight = 0;   // total px height the line grows to
+
+  function measure() {
+    const heading = document.getElementById('deliverables-heading');
+    if (!heading) return;
+
+    const signals = wrapper.querySelectorAll('.engagement-signal__body');
+    const lastEl = signals.length > 0
+      ? signals[signals.length - 1]
+      : wrapper.querySelectorAll('.pillar-section')[wrapper.querySelectorAll('.pillar-section').length - 1];
+    if (!lastEl) return;
+
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const headingRect = heading.getBoundingClientRect();
+    const endRect    = lastEl.getBoundingClientRect();
+
+    const topInWrapper  = headingRect.top  - wrapperRect.top;
+    const leftInWrapper = headingRect.left - wrapperRect.left;
+    const endInWrapper  = endRect.bottom   - wrapperRect.top;
+
+    lineHeight = endInWrapper - topInWrapper;
+
+    thread.style.top  = topInWrapper  + 'px';
+    thread.style.left = (leftInWrapper - 32) + 'px';
+
+    const headingAbsTop = headingRect.top + window.scrollY;
+    const endAbsBottom  = wrapperRect.top + window.scrollY + endInWrapper;
+
+    // Dot appears when heading is near viewport bottom
+    dotScrollY   = headingAbsTop - window.innerHeight * 0.92;
+    // Line starts growing when heading is comfortably in view (~55vh from top)
+    lineStartY   = headingAbsTop - window.innerHeight * 0.55;
+    // Line finishes when end el bottom is 20% from viewport bottom
+    lineEndY     = endAbsBottom  - window.innerHeight * 0.2;
+  }
+
+  function update() {
+    const sy = window.scrollY;
+
+    if (sy < dotScrollY) {
+      thread.style.opacity = '0';
+      thread.style.height  = '0px';
+      return;
+    }
+
+    thread.style.opacity = '0.8';
+
+    if (sy <= lineStartY) {
+      // Dot state: tiny capsule, no growth yet
+      thread.style.height = '6px';
+      return;
+    }
+
+    const range = lineEndY - lineStartY;
+    const p = range > 0 ? Math.min(1, (sy - lineStartY) / range) : 1;
+    thread.style.height = Math.max(6, lineHeight * p) + 'px';
+  }
+
+  function init() {
+    measure();
+    update();
+  }
+
+  if (document.readyState === 'complete') {
+    init();
+  } else {
+    window.addEventListener('load', init);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth < 600) {
+      thread.style.opacity = '0';
+      return;
+    }
+    measure();
+    update();
+  }, { passive: true });
+})();
+</script>

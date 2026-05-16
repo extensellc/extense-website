@@ -1,0 +1,74 @@
+---
+/*
+  AnimatedDivider — horizontal amber hairline that draws left-to-right
+  when scrolled into view. Used between section transitions on industry
+  sub-pages where no static hairline divider exists.
+
+  Multiple instances per page are supported; a single IntersectionObserver
+  (initialized once via the hoisted script) handles all instances via the
+  shared [data-divider] attribute.
+
+  Reduced motion: line shows static at full width, no transition.
+*/
+---
+
+<div class="animated-divider" data-divider>
+  <span class="animated-divider__line" aria-hidden="true"></span>
+</div>
+
+<style>
+  .animated-divider {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    overflow: hidden;
+  }
+
+  .animated-divider__line {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #fcd34d;
+    transition: width 800ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .animated-divider.is-visible .animated-divider__line {
+    width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animated-divider__line {
+      width: 100%;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  const dividers = document.querySelectorAll('[data-divider]');
+  if (!dividers.length) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    dividers.forEach((d) => d.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.5,
+    rootMargin: '0px 0px -10% 0px',
+  });
+
+  dividers.forEach((d) => observer.observe(d));
+})();
+</script>

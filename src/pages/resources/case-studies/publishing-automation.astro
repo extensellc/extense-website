@@ -1,0 +1,198 @@
+---
+import CaseStudyPageLayout from "../../../layouts/CaseStudyPageLayout.astro";
+import DocumentRow from "../../../components/site/DocumentRow.astro";
+
+const plugins = [
+  {
+    heading: "com.extense.html5.branded",
+    items: [
+      "XSLT topic-level and TOC navigation overrides",
+      "Branded CSS with custom highlight classes and responsive layout",
+      "JavaScript for interactive features",
+      "Full PWA support — manifest.json, service worker, installable icons",
+      "Custom font configuration",
+      "XSLT parameter injection via insertparams.xml",
+    ],
+  },
+  {
+    heading: "com.extense.pdf.branded",
+    items: [
+      "XSL-FO customizations for page layout, headers, and footers",
+      "Custom cover page with branding",
+      "Chapter-level mini-TOC layout (MINITOC mode)",
+      "Print-optimized font configuration",
+      "Yellow highlight support for instructional callouts",
+      "Consistent visual treatment across 218 pages",
+    ],
+  },
+];
+
+const buildSteps = [
+  {
+    heading: "HTML5 build",
+    body: "Automated shell script: installs the branded plugin, cleans output, runs the DITA-OT transformation, copies static assets (JS, CSS, PWA manifests, fonts), and produces an interactive guide ready for web deployment.",
+  },
+  {
+    heading: "PDF build",
+    body: "Installs the PDF plugin, builds with MINITOC chapter layout, and reports final page count and file size via pdfinfo. Produces a 218-page branded document from a single command.",
+  },
+  {
+    heading: "Instant preview",
+    body: "A Python-based preview server renders individual DITA topics in the browser without a full build. Enables a rapid edit → reload authoring workflow during content development.",
+  },
+];
+---
+
+<CaseStudyPageLayout
+  caseNumber="03"
+  caseTotal="03"
+  year="2024"
+  sector="Technical training"
+  title="Custom DITA-OT Publishing Automation"
+  frame="Two branded DITA-OT plugins and a multi-format build pipeline producing HTML5, print-ready PDF, and PWA-installable output from one DITA source."
+  challenge="Default DITA-OT output is functional but generic — no branding, no interactive navigation, no mobile optimization, and no progressive web app support. The training curriculum needed professional, branded deliverables across multiple formats, all generated from the same DITA source with zero manual post-processing."
+  approach="We developed two custom DITA-OT plugins — one for HTML5 and one for PDF — with XSLT template overrides, branded CSS, custom JavaScript, and XSL-FO page layouts. Shell scripts automate the full build cycle: plugin installation, output generation, asset copying, and quality verification."
+  artifacts={[
+    { number: "4", label: "output formats" },
+    { number: "2", label: "custom plugins" },
+    { number: "0", label: "manual steps" },
+    { number: "1", label: "single source" },
+  ]}
+  engagement={{
+    duration: "10 weeks",
+    team: "1 publishing engineer · 1 XSLT specialist",
+    engagement: "Project-based, fixed scope",
+    status: "Shipped · in production for ongoing rebuilds",
+  }}
+  stack={[
+    { label: "Schema",     value: "DITA 1.3" },
+    { label: "Plugins",    value: "com.extense.html5.branded · com.extense.pdf.branded" },
+    { label: "HTML5",      value: "DITA-OT 4.2 · custom CSS · PWA manifest + service worker" },
+    { label: "PDF",        value: "Apache FOP 2.9 · XSL-FO · MINITOC chapter mode" },
+    { label: "Preview",    value: "Python 3.12 · live-reload topic server" },
+    { label: "Build",      value: "Shell scripts · containerized DITA-OT" },
+  ]}
+  decisions={[
+    {
+      decision: "Plugin architecture",
+      chosen: "Two separate branded plugins (HTML5 + PDF)",
+      rejected: "Single multi-output plugin",
+      why: "Separate plugins isolate format-specific concerns. A single plugin entangles XSL-FO logic with HTML5 CSS and becomes unmaintainable within a year as one format's needs diverge from the other's.",
+    },
+    {
+      decision: "PDF rendering engine",
+      chosen: "XSL-FO + Apache FOP",
+      rejected: "CSS Paged Media (PrinceXML class)",
+      why: "FOP is open-source, integrates cleanly with the existing DITA-OT pipeline, and avoids per-build commercial licensing — material in the client's distribution scenario where the document is rebuilt on every curriculum update.",
+    },
+    {
+      decision: "Mini-TOC layout",
+      chosen: "Chapter-level MINITOC at every entry",
+      rejected: "Single document-level TOC only",
+      why: "A 218-page document with one front TOC is unscannable. Chapter-level mini-TOCs let learners orient at every entry point without paging back to the global index.",
+    },
+    {
+      decision: "Preview workflow",
+      chosen: "Python-based instant topic preview server",
+      rejected: "Full DITA-OT build per content change",
+      why: "Full builds take 90+ seconds. Instant preview renders one topic in under a second and removes the friction that otherwise discourages incremental authoring discipline.",
+    },
+  ]}
+  metaTitle="Case Study — Custom DITA-OT Publishing Automation"
+  metaDescription="Engagement record: two custom DITA-OT plugins and a build pipeline producing HTML5, branded PDF, JSON, and PWA-installable output from a single DITA bookmap, with zero manual post-processing."
+>
+  <section class="cs-body cs-body--plugins" aria-labelledby="plugins-heading">
+    <div class="container-prose cs-body__inner">
+      <h2 id="plugins-heading" class="cs-body__heading">Plugin architecture.</h2>
+      <div class="cs-plugins-grid">
+        {plugins.map((p) => (
+          <article class="cs-plugin">
+            <p class="cs-plugin__name">{p.heading}</p>
+            <ul class="cs-plugin__list">
+              {p.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-body cs-body--build" aria-labelledby="build-heading">
+    <div class="container-prose cs-body__inner">
+      <h2 id="build-heading" class="cs-body__heading">Build pipeline.</h2>
+      <div class="cs-body__rows">
+        {buildSteps.map((s) => (
+          <DocumentRow variant="entry" heading={s.heading} body={s.body} headingLevel={3} />
+        ))}
+      </div>
+    </div>
+  </section>
+</CaseStudyPageLayout>
+
+<style>
+  .cs-body {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .cs-body {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+  }
+
+  .cs-body__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: balance;
+  }
+
+  /* Plugin architecture cards (low-chrome — hairline border, mono code-style name) */
+  .cs-plugins-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .cs-plugins-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+    }
+  }
+
+  .cs-plugin__name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    padding-bottom: var(--space-3);
+    border-bottom: var(--border-hairline);
+  }
+
+  .cs-plugin__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .cs-plugin__list li {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.45;
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+</style>

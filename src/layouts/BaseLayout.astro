@@ -29,7 +29,7 @@ interface Props {
 const {
   title,
   description,
-  canonical = new URL(Astro.url.pathname, Astro.site ?? "https://www.ex-tense.co").toString(),
+  canonical = new URL(Astro.url.pathname, Astro.site ?? "https://www.extense.co").toString(),
   ogImage = "/images/og-default.png",
   pageClass,
 } = Astro.props;
@@ -62,14 +62,14 @@ const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site ?? "https://www.ex-tense.co").toString()} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site ?? "https://www.extense.co").toString()} />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(ogImage, Astro.site ?? "https://www.ex-tense.co").toString()} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site ?? "https://www.extense.co").toString()} />
 
     <!-- Fonts: Source Serif 4 (display), Inter (body), JetBrains Mono (code), Montserrat 200 (logo wordmark) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -88,9 +88,9 @@ const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Extense LLC",
-      "url": "https://www.ex-tense.co",
-      "logo": "https://www.ex-tense.co/images/extense-logo.svg",
-      "description": "XML content engineering for organizations whose documentation has to be right.",
+      "url": "https://www.extense.co",
+      "logo": "https://www.extense.co/images/extense-logo.svg",
+      "description": "Content engineering for organizations whose documentation has to be right.",
       "foundingDate": "2012",
       "sameAs": ["https://www.linkedin.com/company/ex-tense"],
       "knowsAbout": ["DITA XML", "CCMS", "S1000D", "Publishing Automation", "Content Strategy", "AI-Ready Content"]

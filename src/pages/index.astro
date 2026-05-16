@@ -36,6 +36,7 @@ import TrustBadges from "../components/site/TrustBadges.astro";
 import LogoBench from "../components/site/LogoBench.astro";
 import AudiencePivotCard from "../components/site/AudiencePivotCard.astro";
 import CTAModule from "../components/site/CTAModule.astro";
+import AnimatedDivider from "../components/site/AnimatedDivider.astro";
 
 const failureModes = [
   {
@@ -114,8 +115,8 @@ const stats = [
 ---
 
 <BaseLayout
-  title="XML Content Engineering"
-  description="Extense LLC is an XML content engineering firm for organizations whose documentation has to be right — federal agencies, Fortune 500 manufacturers, life sciences companies, financial institutions, and defense contractors."
+  title="Content Engineering"
+  description="Extense LLC is a content engineering firm for organizations whose documentation has to be right — federal agencies, Fortune 500 manufacturers, life sciences companies, financial institutions, and defense contractors."
 >
   <HomeHero />
 
@@ -195,18 +196,28 @@ const stats = [
           eyebrow="Public Sector"
           heading="For federal agencies and contractors."
           description="Capability statement, NAICS codes, sole-source eligibility, and past performance with the IRS, the U.S. House, and the U.S. District Courts."
-          href="/public-sector"
+          href="/industries/government-and-defense"
+          linkLabel="View Agencies"
         />
         <AudiencePivotCard
           variant="private-sector"
           eyebrow="Private Sector"
           heading="For commercial buyers and partners."
           description="Outcomes-led engagements with Toyota, FedEx, Morgan Stanley, and Fortune 500 documentation programs across regulated industries."
-          href="/private-sector"
+          linkLabel="View Industries"
+          industries={[
+            { label: "Financial Services", href: "/industries/financial-services" },
+            { label: "Life Sciences",      href: "/industries/life-sciences" },
+            { label: "Transportation",     href: "/industries/transportation" },
+            { label: "Insurance",          href: "/industries/insurance" },
+            { label: "Technology",         href: "/industries/technology" },
+          ]}
         />
       </div>
     </div>
   </section>
+
+  <AnimatedDivider />
 
   <CTAModule
     audience="general"

@@ -1,0 +1,873 @@
+---
+/*
+  /resources/automation-guide — practitioner guide to publishing automation.
+
+  Section order:
+    1. Hero (universal, with PublishingPipelineCard side panel — static)
+    2. AnimatedDivider
+    3. Framing prose + before/after outcome strip
+    4. AnimatedDivider
+    5. The eight-stage pipeline (horizontal-row layout; validation gates
+       folded into each stage's "Validates" line)
+    6. AnimatedDivider
+    7. Containerization (prose + Dockerfile code block + What's in the image)
+    8. AnimatedDivider
+    9. Output formats (typographic table + Gradle code block)
+   10. AnimatedDivider
+   11. CI/CD platforms (vertical entries + GitHub Actions code block)
+   12. AnimatedDivider
+   13. Custom DITA-OT plugins (vertical entries + maintenance principle)
+   14. AnimatedDivider
+   15. CTAModule (general)
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import PublishingPipelineCard from "../../components/site/PublishingPipelineCard.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
+
+const pipelineCardStages = [
+  { number: "01", name: "Git push",   body: "Writer commits and opens a PR." },
+  { number: "02", name: "Validate",   body: "DTD/RNG and Schematron block the build." },
+  { number: "03", name: "References", body: "Links, xrefs, conrefs, keyrefs verified." },
+  { number: "04", name: "Style",      body: "Vale or Acrolinx enforces terminology." },
+  { number: "05", name: "Build",      body: "HTML5, PDF, and JSONL in parallel." },
+  { number: "06", name: "Audit",      body: "Images, assets, and accessibility." },
+  { number: "07", name: "Stage",      body: "Deploy to staging URL for review." },
+  { number: "08", name: "Promote",    body: "Production push on PR approval." },
+];
+
+const beforeAfter = [
+  { label: "Build time",     value: "40 minutes → 3 minutes" },
+  { label: "Output formats", value: "1 → 4 (in parallel)" },
+  { label: "Validation",     value: "0% → 100% coverage" },
+  { label: "Rework",         value: "~70% fewer cycles" },
+];
+
+interface Stage {
+  number: string;
+  name: string;
+  runs: string;
+  result: string;
+}
+
+const pipelineStages: Stage[] = [
+  {
+    number: "01",
+    name: "Git push",
+    runs: "Writer commits to a feature branch and opens a pull request. The PR automatically triggers the pipeline — there is no 'did you remember to run the build' question.",
+    result: "Every commit produces a build attempt. Stale local builds and inconsistent author environments stop being a source of drift.",
+  },
+  {
+    number: "02",
+    name: "Schema & metadata validation",
+    runs: "DTD or RelaxNG validates every topic file. Schematron rules enforce business-level constraints: required metadata fields, prohibited elements, naming conventions, topic length limits, image resolution thresholds.",
+    result: "Invalid XML or incomplete metadata blocks the build immediately, before downstream stages run. The fix surfaces at the cheapest possible moment — at author time, not at deploy time.",
+  },
+  {
+    number: "03",
+    name: "Link & reference integrity",
+    runs: "Every xref, href, conref, and keyref is resolved and verified at build time. Missing targets, circular references, and dead external URLs fail the build.",
+    result: "Catches the most common source of broken documentation: refactoring topics without updating cross-references. The link integrity gate runs before format generation, so broken refs cost a second to detect, not an hour to chase down post-publish.",
+  },
+  {
+    number: "04",
+    name: "Terminology & style",
+    runs: "Vale (open source) or Acrolinx (enterprise) runs against the corpus. Custom rules enforce the style guide — banned terms, passive voice limits, abbreviation consistency, product-name capitalization.",
+    result: "Style violations fail the build or warn, depending on rule severity. Editorial consistency stops being a manual-review burden and becomes a CI artifact.",
+  },
+  {
+    number: "05",
+    name: "Build all formats",
+    runs: "DITA-OT generates HTML5, branded PDF, and JSONL in parallel. Custom plugins handle company branding, navigation, and metadata enrichment for each output.",
+    result: "Three production-ready output formats in a single build pass — typically under three minutes for a 200-topic corpus. No 'PDF will be ready Friday' email.",
+  },
+  {
+    number: "06",
+    name: "Image & asset audit",
+    runs: "Missing alt text, oversized files (over 500 KB), orphaned graphics (referenced but never committed), and unlicensed stock images are flagged as build warnings or failures depending on severity.",
+    result: "Accessibility compliance and repo health are continuously verified. Uncompressed screenshots and stock-license violations stop reaching production.",
+  },
+  {
+    number: "07",
+    name: "Deploy to staging",
+    runs: "HTML5 output is deployed to a staging URL accessible to reviewers and stakeholders. Pull-request comments link directly to the rendered artifact, not the raw XML.",
+    result: "Review feedback happens against what users will actually see. Comments are written on rendered prose, screenshots, and navigation — not on XML markup.",
+  },
+  {
+    number: "08",
+    name: "Promote to production",
+    runs: "After PR approval, output is deployed: HTML5 to S3 / Netlify / CDN, PDF uploaded to the doc portal, JSONL pushed to the vector store. Build dashboards record pass/fail and timing trends; Slack, Teams, or email notify on failure.",
+    result: "Three artifacts shipped in lockstep from one commit. Documentation, branded PDF, and AI corpus are all promoted together — never out of sync.",
+  },
+];
+
+const containerLayers = [
+  { label: "Base",             value: "Eclipse Temurin JDK 17 (slim)" },
+  { label: "DITA-OT",          value: "Pinned version (e.g., 4.2.3) installed via official distribution" },
+  { label: "Custom plugins",   value: "Branded PDF plugin, HTML5 theme, JSONL exporter — all baked in" },
+  { label: "Fonts",            value: "Corporate fonts for PDF generation (no more 'font not found' on the build server)" },
+  { label: "Validation tools", value: "Vale CLI, xmllint, custom Schematron rules" },
+  { label: "Build script",     value: "Gradle wrapper with tasks for each output format" },
+];
+
+const dockerfile = `# Dockerfile — production DITA-OT build image
+FROM eclipse-temurin:17-jdk-jammy AS base
+
+# Install DITA-OT
+ARG DITA_OT_VERSION=4.2.3
+RUN curl -sL https://github.com/dita-ot/dita-ot/releases/download/\${DITA_OT_VERSION}/dita-ot-\${DITA_OT_VERSION}.zip \\
+    -o /tmp/dita-ot.zip && unzip /tmp/dita-ot.zip -d /opt
+ENV DITA_HOME=/opt/dita-ot-\${DITA_OT_VERSION}
+ENV PATH="\${DITA_HOME}/bin:\${PATH}"
+
+# Install custom plugins
+COPY plugins/ \${DITA_HOME}/plugins/
+RUN dita install
+
+# Install corporate fonts for PDF
+COPY fonts/ /usr/share/fonts/custom/
+RUN fc-cache -fv
+
+WORKDIR /workspace
+ENTRYPOINT ["dita"]`;
+
+const dockerRun = `docker run --rm -v $(pwd):/workspace \\
+  your-registry/dita-ot:4.2.3 \\
+  -i main.ditamap -f html5 -o /workspace/out/html5`;
+
+interface OutputFormat {
+  name: string;
+  description: string;
+  build: string;
+}
+
+const outputFormats: OutputFormat[] = [
+  {
+    name: "Branded HTML5",
+    description: "Responsive, searchable web output with company visual identity. Custom DITA-OT HTML5 plugin handles navigation, breadcrumbs, version selector, and search integration. Deployed to S3, Netlify, or CDN with cache-busting asset fingerprints.",
+    build: "200 topics → 45s",
+  },
+  {
+    name: "Branded PDF",
+    description: "Print-ready PDF using Apache FOP or Antenna House with brand fonts, headers/footers, and cover page. Generated from a custom PDF plugin — not a post-processing step. Includes auto-generated TOC, index, and cross-reference page numbers.",
+    build: "200 topics → 90s",
+  },
+  {
+    name: "Chatbot-ready JSONL",
+    description: "Section-aware chunks with full metadata inheritance: topic type, audience, difficulty, domain, intent, section ID. Each chunk is a self-contained unit ready for vector store embedding. Includes a glossary index and content manifest for corpus validation.",
+    build: "200 topics → 30s",
+  },
+  {
+    name: "Additional formats",
+    description: "EPUB (for offline readers), Markdown (for developer portals), normalized DITA (for CCMS ingestion), and custom XML transforms (for data interchange). Each format is a Gradle task — adding a new format is a one-line configuration change.",
+    build: "All 4 in parallel → under 3 minutes",
+  },
+];
+
+const gradle = `// build.gradle — parallel multi-format build
+task buildAll {
+  dependsOn 'buildHtml5', 'buildPdf', 'buildJsonl'
+}
+
+task buildHtml5(type: Exec) {
+  commandLine 'dita', '-i', 'main.ditamap', '-f', 'com.extense.html5',
+    '-o', 'out/html5', '-Dargs.css=brand.css'
+}
+
+task buildPdf(type: Exec) {
+  commandLine 'dita', '-i', 'main.ditamap', '-f', 'com.extense.pdf',
+    '-o', 'out/pdf'
+}
+
+task buildJsonl(type: Exec) {
+  commandLine 'dita', '-i', 'main.ditamap', '-f', 'com.extense.jsonl',
+    '-o', 'out/jsonl', '-Dchunk.strategy=section-aware'
+}`;
+
+interface Platform {
+  name: string;
+  body: string;
+}
+
+const platforms: Platform[] = [
+  {
+    name: "GitHub Actions",
+    body: "Container-first CI with a marketplace of pre-built actions. Recommended starting point for teams already using GitHub. Container jobs pull the same Docker image used in local development.",
+  },
+  {
+    name: "Azure DevOps",
+    body: "Multi-stage YAML pipelines with artifact management and approval gates. Container jobs pull the same Docker image. Ideal for enterprises already on Azure — integrates with Azure Blob Storage for hosting and Azure AI Search for vector retrieval.",
+  },
+  {
+    name: "Jenkins",
+    body: "Declarative or scripted Groovy pipelines running on self-hosted agents. Maximum control over infrastructure. The recommended pick for air-gapped defense environments where SaaS CI platforms are prohibited. Supports Docker agent blocks for containerized builds.",
+  },
+  {
+    name: "GitLab CI",
+    body: "Integrated CI/CD with built-in container registry and merge-request pipelines. Great for teams already using GitLab for source control — pipeline, container registry, and Pages hosting are all in one platform.",
+  },
+];
+
+const githubActionsYml = `# .github/workflows/docs.yml
+name: Build & Deploy Docs
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: your-registry/dita-ot:4.2.3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate XML
+        run: xmllint --noout --dtdvalid $DITA_HOME/dtd/topic.dtd src/**/*.dita
+
+      - name: Check links
+        run: dita -i main.ditamap -f lint --check.links=true
+
+      - name: Build HTML5
+        run: dita -i main.ditamap -f com.extense.html5 -o out/html5
+
+      - name: Build PDF
+        run: dita -i main.ditamap -f com.extense.pdf -o out/pdf
+
+      - name: Build JSONL
+        run: dita -i main.ditamap -f com.extense.jsonl -o out/jsonl
+
+      - name: Deploy to S3
+        if: github.ref == 'refs/heads/main'
+        run: aws s3 sync out/html5 s3://docs.example.com/ --delete`;
+
+interface Plugin {
+  name: string;
+  body: string;
+}
+
+const plugins: Plugin[] = [
+  {
+    name: "Branded PDF plugin",
+    body: "Custom XSL-FO transforms for Apache FOP or Antenna House. Cover pages, headers and footers with logos, corporate fonts, color schemes, auto-generated TOC and index, and conditional content filtering by audience or product variant.",
+  },
+  {
+    name: "Custom HTML5 theme",
+    body: "Responsive web output with the company design system. Navigation sidebar, breadcrumbs, version selector, search integration (Algolia, Elasticsearch, or Lunr.js), and analytics tracking. Deployed as a static site — no server infrastructure required.",
+  },
+  {
+    name: "JSONL exporter",
+    body: "Section-aware chunking with full metadata inheritance for vector store ingestion. Produces chunks.jsonl, glossary-index.json, and content-manifest.json. Configurable chunking strategy: by section, by topic, or by semantic boundary.",
+  },
+];
+---
+
+<BaseLayout
+  title="Publishing Automation Guide — Extense LLC"
+  description="A practitioner guide to CI/CD for documentation: containerized builds, eight-stage validated pipeline, multi-format parallel output (HTML5, PDF, JSONL), and platform-specific configurations for GitHub Actions, Azure DevOps, Jenkins, and GitLab CI."
+>
+  <Hero
+    variant="universal"
+    title="Manual publishing is a risk surface."
+    subdeck="Documentation that ships from someone's laptop is a quality problem, a reproducibility problem, and an audit problem at once. A practitioner guide to the CI/CD pipeline that solves it — containerized builds, validation gates, parallel multi-format output, and chatbot-ready JSONL as a first-class artifact."
+  >
+    <PublishingPipelineCard stages={pipelineCardStages} />
+  </Hero>
+
+  <AnimatedDivider />
+
+  <section class="pa-section pa-section--framing" aria-labelledby="framing-heading">
+    <div class="container-prose pa-section__inner">
+      <h2 id="framing-heading" class="pa-section__heading">Why manual publishing fails.</h2>
+      <div class="pa-framing">
+        <p>
+          The manual publishing process looks deceptively functional. A writer runs DITA-OT locally on their laptop. PDF generation takes 15 to 40 minutes. Broken links and invalid XML are discovered <em>after</em> the build, on the rendered output. Someone emails the PDF to a reviewer. The branded template hasn't been updated in two years. There is no build for chatbot-ready JSONL because "that's an AI team problem." Every one of those steps is a quality control that isn't being run.
+        </p>
+        <p>
+          Publishing automation isn't about speed — it's about risk reduction. The pipeline is the place where validation runs deterministically, where the same toolchain produces the same output every time, where defects fail loudly at the cheapest moment to fix them. The headline numbers (build time, format count) are downstream effects of the actual change, which is moving every quality control upstream of the writer's discretion.
+        </p>
+        <p>
+          The guide below codifies the pipeline: eight stages from commit to production, four parallel output formats including JSONL for AI retrieval, four CI/CD platform options, and a containerization model that gives every build identical inputs and identical outputs. None of it is theory; all of it is what a production documentation team has to run.
+        </p>
+      </div>
+
+      <dl class="pa-outcomes" aria-label="Before and after outcomes">
+        {beforeAfter.map((row) => (
+          <div class="pa-outcomes__row">
+            <dt class="pa-outcomes__label">{row.label}</dt>
+            <dd class="pa-outcomes__value">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="pa-section pa-section--pipeline" aria-labelledby="pipeline-heading">
+    <div class="container-data pa-section__inner">
+      <h2 id="pipeline-heading" class="pa-section__heading">The eight-stage pipeline.</h2>
+      <p class="pa-section__lead">
+        Eight stages from commit to production. Each stage names the action that runs and the result it produces. The validation gates that surface defects are integrated into the stages, not staged separately — defects fail at the moment they're cheapest to fix.
+      </p>
+
+      <ol class="pa-pipeline">
+        {pipelineStages.map((s) => (
+          <li class="pa-stage">
+            <span class="pa-stage__num" aria-hidden="true">{s.number}</span>
+            <p class="pa-stage__name">{s.name}</p>
+            <div class="pa-stage__col pa-stage__col--runs">
+              <p class="pa-stage__col-label">What runs</p>
+              <p class="pa-stage__col-body">{s.runs}</p>
+            </div>
+            <div class="pa-stage__col pa-stage__col--result">
+              <p class="pa-stage__col-label">Result</p>
+              <p class="pa-stage__col-body">{s.result}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="pa-section pa-section--container" aria-labelledby="container-heading">
+    <div class="container-prose pa-section__inner">
+      <h2 id="container-heading" class="pa-section__heading">Containerization is the single largest change.</h2>
+      <p class="pa-section__lead">
+        DITA-OT depends on Java, Saxon, Apache FOP, and a stack of plugins — each with version-specific behavior. When Writer A runs DITA-OT 4.1 with Java 17 and Writer B runs DITA-OT 3.7 with Java 11, the same source produces different output. In regulated industries — defense, life sciences, financial services — that is a compliance failure, not a stylistic one.
+      </p>
+      <p class="pa-section__body">
+        A Docker image locks the entire toolchain into a single, versioned artifact: DITA-OT version, Java version, custom plugins, fonts, and configuration. The pipeline pulls the image and runs the build. Every build. Every environment. Identical output. The "it works on my machine" failure mode disappears because the machine is now the image.
+      </p>
+
+      <p class="pa-stack__eyebrow">What's in the image</p>
+      <hr class="pa-rule" />
+      <dl class="pa-stack">
+        {containerLayers.map((row) => (
+          <div class="pa-stack__row">
+            <dt class="pa-stack__label">{row.label}</dt>
+            <dd class="pa-stack__value">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <hr class="pa-rule" />
+
+      <p class="pa-code__eyebrow">Dockerfile</p>
+      <pre class="pa-code"><code>{dockerfile}</code></pre>
+
+      <p class="pa-section__body">
+        Once the image is built and pushed to a container registry, every CI job uses the same image. GitHub Actions, Azure DevOps, Jenkins, and GitLab CI all support container-based jobs natively — the CI platform pulls the image, mounts the source, and runs the build.
+      </p>
+
+      <p class="pa-code__eyebrow">Pipeline usage</p>
+      <pre class="pa-code"><code>{dockerRun}</code></pre>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="pa-section pa-section--formats" aria-labelledby="formats-heading">
+    <div class="container-prose pa-section__inner">
+      <h2 id="formats-heading" class="pa-section__heading">Output formats from a single source.</h2>
+      <p class="pa-section__lead">
+        Four production-grade output formats generated in parallel from one DITA bookmap. JSONL is treated as a first-class output, not a separate "AI pipeline" — it ships from the same commit, validated by the same gates.
+      </p>
+
+      <ol class="pa-formats">
+        {outputFormats.map((f, i) => (
+          <li class="pa-format">
+            <span class="pa-format__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <div class="pa-format__body">
+              <h3 class="pa-format__name">{f.name}</h3>
+              <p class="pa-format__desc">{f.description}</p>
+              <p class="pa-format__build">
+                <span class="pa-format__build-tag">Typical build:</span> {f.build}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="pa-code__eyebrow">Build configuration</p>
+      <pre class="pa-code"><code>{gradle}</code></pre>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="pa-section pa-section--platforms" aria-labelledby="platforms-heading">
+    <div class="container-prose pa-section__inner">
+      <h2 id="platforms-heading" class="pa-section__heading">CI/CD platforms.</h2>
+      <p class="pa-section__lead">
+        The pipeline is platform-portable because containerization decouples the build from the CI runner. Below: four supported platforms and the criteria for choosing each. The GitHub Actions configuration is included as a worked example — the Azure DevOps, Jenkins, and GitLab equivalents are structurally similar.
+      </p>
+
+      <ol class="pa-platforms">
+        {platforms.map((p, i) => (
+          <li class="pa-platform">
+            <span class="pa-platform__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <div class="pa-platform__body">
+              <h3 class="pa-platform__name">{p.name}</h3>
+              <p class="pa-platform__desc">{p.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="pa-code__eyebrow">GitHub Actions — worked example</p>
+      <pre class="pa-code"><code>{githubActionsYml}</code></pre>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="pa-section pa-section--plugins" aria-labelledby="plugins-heading">
+    <div class="container-prose pa-section__inner">
+      <h2 id="plugins-heading" class="pa-section__heading">Custom DITA-OT plugins.</h2>
+      <p class="pa-section__lead">
+        Off-the-shelf DITA-OT output is a starting point. Production documentation needs custom branding, navigation, and export formats — and those customizations belong in versioned plugins, not in someone's local install.
+      </p>
+
+      <ol class="pa-plugins">
+        {plugins.map((p, i) => (
+          <li class="pa-plugin">
+            <span class="pa-plugin__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <div class="pa-plugin__body">
+              <h3 class="pa-plugin__name">{p.name}</h3>
+              <p class="pa-plugin__desc">{p.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="pa-section__body pa-section__body--principle">
+        Every custom plugin is a versioned, testable artifact in the Git repository — not a one-off customization buried in someone's local DITA-OT installation. We build plugins with automated tests, document the configuration parameters, and train the client team to maintain them. When DITA-OT releases a new version, we validate plugin compatibility and update where needed.
+      </p>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <CTAModule
+    audience="general"
+    body="Send your current build process — Jenkinsfile, GitHub Actions workflow, or a description of the manual steps — and we'll return a gap analysis with a recommended automation roadmap within two business days. No obligation to proceed."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Section spacing ─── */
+  .pa-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .pa-section {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+  }
+
+  .pa-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+
+  .pa-section__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-12) 0;
+    text-wrap: pretty;
+    max-width: 65ch;
+  }
+
+  .pa-section__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: var(--space-8) 0 0 0;
+    text-wrap: pretty;
+    max-width: 65ch;
+  }
+
+  .pa-section__body--principle {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: var(--border-hairline);
+  }
+
+  .pa-rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0;
+  }
+
+  /* ─── Framing prose ─── */
+  .pa-framing {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin-bottom: var(--space-12);
+  }
+
+  .pa-framing p {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .pa-framing em {
+    font-style: italic;
+  }
+
+  /* Outcomes strip (before / after) */
+  .pa-outcomes {
+    margin: 0;
+    padding: var(--space-6) 0;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .pa-outcomes__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  @media (min-width: 768px) {
+    .pa-outcomes__row {
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+  }
+
+  .pa-outcomes__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .pa-outcomes__value {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  /* ─── Pipeline (horizontal-row stages) ─── */
+  .pa-pipeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pa-stage {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-8) 0;
+    border-top: var(--border-hairline);
+  }
+
+  .pa-stage:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .pa-stage {
+      grid-template-columns: 56px 1fr;
+      gap: var(--space-2) var(--space-6);
+      align-items: start;
+    }
+
+    .pa-stage__num {
+      grid-row: 1 / -1;
+      grid-column: 1;
+    }
+
+    .pa-stage__name,
+    .pa-stage__col {
+      grid-column: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pa-stage {
+      grid-template-columns: 48px 180px minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--space-6);
+      align-items: start;
+      padding: var(--space-8) 0;
+    }
+
+    .pa-stage__num {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .pa-stage__name {
+      grid-row: 1;
+      grid-column: 2;
+      padding-top: 6px;
+    }
+
+    .pa-stage__col--runs   { grid-row: 1; grid-column: 3; }
+    .pa-stage__col--result { grid-row: 1; grid-column: 4; }
+  }
+
+  .pa-stage__num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    padding-top: 2px;
+    margin: 0;
+  }
+
+  .pa-stage__name {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .pa-stage__col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .pa-stage__col-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .pa-stage__col-body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Stack (container layers) ─── */
+  .pa-stack__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: var(--space-12) 0 var(--space-4) 0;
+  }
+
+  .pa-stack {
+    margin: 0;
+    padding: var(--space-6) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .pa-stack__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 768px) {
+    .pa-stack__row {
+      grid-template-columns: 180px 1fr;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+  }
+
+  .pa-stack__label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .pa-stack__value {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* ─── Code blocks ─── */
+  .pa-code__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: var(--space-12) 0 var(--space-4) 0;
+  }
+
+  .pa-code {
+    background-color: #14181f;
+    border: 1px solid #20262f;
+    border-left: 2px solid #fcd34d;
+    padding: var(--space-6);
+    margin: 0;
+  }
+
+  .pa-code code {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #d4d4d8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    display: block;
+  }
+
+  /* ─── Vertical-entry sections (formats, platforms, plugins) ─── */
+  .pa-formats,
+  .pa-platforms,
+  .pa-plugins {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pa-format,
+  .pa-platform,
+  .pa-plugin {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-8) 0;
+    border-top: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .pa-format,
+    .pa-platform,
+    .pa-plugin {
+      grid-template-columns: 64px 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  .pa-format:last-child,
+  .pa-platform:last-child,
+  .pa-plugin:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  .pa-format__num,
+  .pa-platform__num,
+  .pa-plugin__num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    padding-top: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .pa-format__num,
+    .pa-platform__num,
+    .pa-plugin__num {
+      font-size: 32px;
+    }
+  }
+
+  .pa-format__body,
+  .pa-platform__body,
+  .pa-plugin__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .pa-format__name,
+  .pa-platform__name,
+  .pa-plugin__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .pa-format__desc,
+  .pa-platform__desc,
+  .pa-plugin__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .pa-format__build {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .pa-format__build-tag {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-right: var(--space-2);
+  }
+</style>

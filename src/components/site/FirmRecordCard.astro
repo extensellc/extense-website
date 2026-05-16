@@ -1,0 +1,180 @@
+---
+/*
+  FirmRecordCard — hero side panel for /company.
+
+  Static establishment record: name, founded, state, corp type. Same
+  document-grade hairline + amber-spine vocabulary as the other hero
+  cards, but the content shape is different — a factual firm-of-record
+  card, like the front matter of a corporate registration filing.
+
+  Static. No rotation, no JS. Hidden below 1024px.
+*/
+
+interface FactRow {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  facts: FactRow[];
+}
+
+const { facts } = Astro.props;
+---
+
+<aside class="frc" aria-label="Firm of record">
+  <div class="frc__panel">
+    <header class="frc__header">
+      <p class="frc__doc-ref">Firm of Record</p>
+      <p class="frc__counter">
+        <span class="frc__counter-num">EST.</span>
+        <span class="frc__counter-label">2012</span>
+      </p>
+    </header>
+    <hr class="frc__rule" />
+
+    <dl class="frc__list">
+      {facts.map((f) => (
+        <div class="frc__row">
+          <dt class="frc__label">{f.label}</dt>
+          <dd class="frc__value">{f.value}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <hr class="frc__rule" />
+    <footer class="frc__footer">
+      <span>Form: RECORD v1.0</span>
+      <span class="frc__hint">Establishment record</span>
+    </footer>
+  </div>
+</aside>
+
+<style>
+  .frc {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .frc {
+      display: block;
+      width: 360px;
+      flex-shrink: 0;
+    }
+  }
+
+  .frc__panel {
+    position: relative;
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-4) var(--space-6) var(--space-3);
+  }
+
+  .frc__panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #fcd34d;
+    pointer-events: none;
+  }
+
+  .frc__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .frc__doc-ref {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .frc__counter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+    font-feature-settings: "tnum";
+  }
+
+  .frc__counter-num {
+    color: var(--color-text-muted);
+  }
+
+  .frc__counter-label {
+    color: var(--color-link);
+    font-weight: var(--weight-semibold);
+  }
+
+  .frc__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: var(--space-3) 0;
+  }
+
+  .frc__list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .frc__row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+
+  .frc__label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .frc__value {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .frc__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .frc__hint {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+</style>

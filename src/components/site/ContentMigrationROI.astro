@@ -1,0 +1,181 @@
+---
+/*
+  ContentMigrationROI — short prose section on
+  /solutions/content-migration.
+
+  Sequenced after the five source chapter-blocks, before the CTA.
+  Lands the 45% content reuse rate as the punchline of a body
+  paragraph — NOT as a StatBlock and NOT in amber type. The number
+  is homepage-anchored and per the design brief is the canonical
+  anchor metric for Migration; the brief permits reusing it here as
+  supporting prose.
+
+  Layout (mirrors TechDocsLocalization)
+    - container-prose width (~720 px), left-aligned
+    - eyebrow + heading + three short body paragraphs
+    - no diagram, no card, no number stat treatment
+    - hairline border-top divides from the chapter-blocks above;
+      hairline border-bottom + tight padding-bottom space the
+      transition to the CTA cleanly (same pattern as TDP)
+
+  Animation: viewport-triggered fade-up of eyebrow / heading /
+  paragraphs in sequence. prefers-reduced-motion: static.
+*/
+---
+
+<section class="cm-roi" aria-labelledby="cm-roi-heading">
+  <div class="container-prose cm-roi__inner">
+    <p class="eyebrow cm-roi__eyebrow">Recovery rate</p>
+    <h2 id="cm-roi-heading" class="cm-roi__heading">
+      Recovery rate is the metric, not page count.
+    </h2>
+    <p class="cm-roi__body">
+      A migration project quoted in pages is a project that ignores its own findings. The first thing the audit produces is a recoverability score per asset family &mdash; the fraction of each estate that parses cleanly, the fraction that needs human triage, and the fraction that was always too unstructured to recover.
+    </p>
+    <p class="cm-roi__body">
+      That number is the basis for every downstream commitment. Schedule estimates, translation budget, search-index coverage, and RAG retrieval precision all depend on it. A page count tells you nothing about which of those numbers will survive the conversion.
+    </p>
+    <p class="cm-roi__body cm-roi__body--punch">
+      On typical Extense engagements, deduplication and conref-driven reuse push the final reuse rate to 45% &mdash; forty-five out of every hundred paragraphs in the new DITA repository point at content authored once. That is the baseline every translation, search, and AI pipeline that comes after gets to measure itself against.
+    </p>
+  </div>
+</section>
+
+<style>
+  .cm-roi {
+    /* Top and bottom padding intentionally matched so the hairlines
+       bracket the content with visually equal breathing room.
+       58 px is off the --space token scale (valid stops are 48 → 64);
+       picked as a tuned middle value for this specific section. */
+    padding-top: 58px;
+    padding-bottom: 58px;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .cm-roi {
+      padding-top: 58px;
+      padding-bottom: 58px;
+    }
+  }
+
+  .cm-roi__eyebrow {
+    margin: 0 0 var(--space-6) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .cm-roi__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: balance;
+  }
+
+  .cm-roi__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .cm-roi__body:last-child {
+    margin-bottom: 0;
+  }
+
+  /* The 45% paragraph reads slightly heavier — same body type, but in
+     primary color so the punchline lands without becoming a stat
+     block or stepping on the single-semantic-accent rule. */
+  .cm-roi__body--punch {
+    color: var(--color-text-primary);
+  }
+
+  /* Reveal animation — viewport-triggered, eyebrow / heading / each
+     paragraph stagger in. */
+  .cm-roi.animating .cm-roi__eyebrow,
+  .cm-roi.animating .cm-roi__heading,
+  .cm-roi.animating .cm-roi__body {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .cm-roi.animating.in-view .cm-roi__eyebrow {
+    animation: cm-roi-fade-in 420ms ease-out forwards;
+  }
+  .cm-roi.animating.in-view .cm-roi__heading {
+    animation: cm-roi-fade-in 520ms ease-out forwards;
+    animation-delay: 120ms;
+  }
+  /* :nth-of-type counts by tag (<p>), and the eyebrow is the first
+     <p> in this section — so the first body paragraph is the 2nd <p>,
+     not the 1st. The shifted indices are intentional. */
+  .cm-roi.animating.in-view .cm-roi__body:nth-of-type(2) {
+    animation: cm-roi-fade-in 420ms ease-out forwards;
+    animation-delay: 280ms;
+  }
+  .cm-roi.animating.in-view .cm-roi__body:nth-of-type(3) {
+    animation: cm-roi-fade-in 420ms ease-out forwards;
+    animation-delay: 400ms;
+  }
+  .cm-roi.animating.in-view .cm-roi__body:nth-of-type(4) {
+    animation: cm-roi-fade-in 420ms ease-out forwards;
+    animation-delay: 520ms;
+  }
+
+  @keyframes cm-roi-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cm-roi.animating .cm-roi__eyebrow,
+    .cm-roi.animating .cm-roi__heading,
+    .cm-roi.animating .cm-roi__body {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupContentMigrationROI() {
+    const sec = document.querySelector<HTMLElement>(".cm-roi");
+    if (!sec) return;
+    if (sec.dataset.roiRevealInit === "true") return;
+    sec.dataset.roiRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupContentMigrationROI);
+  document.addEventListener("astro:page-load", setupContentMigrationROI);
+</script>

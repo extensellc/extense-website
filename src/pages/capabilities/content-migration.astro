@@ -35,34 +35,51 @@ import PillarPageLayout from "../../layouts/PillarPageLayout.astro";
       description: "Training and runbook handover. The migration ships when authors are operating the new system, not when the conversion finishes.",
     },
   ]}
-  phases={[
-    {
-      phase: "Discovery",
-      body: "Content audit, inventory, stakeholder interviews. What exists, what's worth migrating, what's been duplicated, what's quietly broken. The audit determines scope; the inventory determines effort.",
-    },
-    {
-      phase: "Architecture",
-      body: "Conversion design, target schema validation, QA harness design. This is where Migration projects succeed or fail before anyone has converted a single topic. Significant load alongside the Migration phase itself.",
-    },
-    {
-      phase: "Migration",
-      body: "Pilot conversion, production batches, normalization, metadata enrichment. The pillar's primary execution load — converting legacy content to clean, reusable assets in the target schema.",
-    },
-    {
-      phase: "Implementation",
-      body: "Cutover, parallel running, rollback procedures. The new system goes live without breaking the old one; if it does, recovery is procedural, not panicked.",
-    },
-    {
-      phase: "Enablement",
-      body: "Author transition, runbook handover, post-migration optimization. Training so the new workflow is operational, not aspirational.",
-    },
-  ]}
   anchorStat={{
     number: "45%",
     label: "Content reuse rate after migration",
     context: "Average across migrations from unstructured legacy formats to clean DITA.",
   }}
+  supportingStats={[
+    {
+      number: "72%",
+      label: "Translation cost reduction in the first localized release post-migration",
+    },
+    {
+      number: "60%",
+      label: "Faster publishing cycles after the new pipeline lands",
+    },
+  ]}
+  outcomesNote="Recovery rate is measured per-engagement against the audited source estate. Translation savings and publishing speed are first-year effects after the new pipeline replaces the legacy chain."
   bridgeProse="Migration isn't moving content — it's identifying recoverable reusable assets. The 45% recovery rate is what makes downstream translation savings possible. When content is recovered as reusable topics rather than rewritten chapter by chapter, localization volume drops proportionally and every subsequent change costs less."
+  engagementVignettes={[
+    {
+      framing: "A 4,000-page FrameMaker estate moved to DITA.",
+      body: "Format-specific MIF parser plus paragraph-level hash matching across the full estate. 38% of topics consolidated into a warehouse with conref pointers from the originals. First localized release after cutover dropped translation cost 51%; the engineering paid for itself on that release alone.",
+    },
+    {
+      framing: "A 15-year Confluence migration to typed DITA.",
+      body: "REST API extraction plus macro-to-conref mappings preserved the link graph and cross-reference structure. Heading-style consistency rebuilt where the source had drifted across three platform versions. The new repository launched with a single authoring path; the Confluence space was retired six weeks later.",
+    },
+  ]}
+  engagementSignals={[
+    {
+      signal: "The migration scope keeps expanding mid-project.",
+      body: "The audit was scoped to one estate; the work surfaced three. Until the inventory is wall-to-wall, scope expansion is the rule, not the exception.",
+    },
+    {
+      signal: "Your current vendor is rekeying instead of parsing.",
+      body: "Hand-rekeying is how migrations never finish. If the conversion plan is a typing pool, the implicit hierarchies in the source disappear — and the new repository inherits the same authoring problems the legacy system had.",
+    },
+    {
+      signal: "Your translation memory doesn't match the new system's segments.",
+      body: "Migration broke the TM link without anyone quantifying it before cutover. Every subsequent localization release pays full translation cost on content that was already translated.",
+    },
+    {
+      signal: "You're three months past cutover and still running the old system in parallel.",
+      body: "The conversion was wrong against the target before it ran. Usually the architecture work was rushed; the parallel-running is paying down content debt that should have been resolved in Migration.",
+    },
+  ]}
   standardsAndTooling={[
     {
       label: "Source formats",
@@ -91,4 +108,8 @@ import PillarPageLayout from "../../layouts/PillarPageLayout.astro";
     body: "Migrations that lose fidelity. 'We'll clean it up later' debt that never gets cleaned up. Conversion projects that produce structured-looking content with the same authoring problems as the legacy system — now in a new format. The pattern is consistent: the architecture work was skipped or rushed, and the conversion ran against an unspecified target.",
   }}
   ctaBody="Submit a 20-page sample. We'll return a migration feasibility assessment — recovery potential, conversion effort, and the architecture decisions that would shape a production migration. Two business days, no obligation to proceed."
+  narrativeLink={{
+    href: "/solutions/content-migration",
+    label: "Read the Content Migration narrative",
+  }}
 />

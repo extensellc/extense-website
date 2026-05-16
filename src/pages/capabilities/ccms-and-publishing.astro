@@ -35,34 +35,51 @@ import PillarPageLayout from "../../layouts/PillarPageLayout.astro";
       description: "Admin training, author training, runbook for ongoing operations. The CCMS goes live with a team that can run it.",
     },
   ]}
-  phases={[
-    {
-      phase: "Discovery",
-      body: "Current-state assessment, platform fit analysis, requirements gathering. PoC evaluations using actual client content — not vendor demos with vendor sample files.",
-    },
-    {
-      phase: "Architecture",
-      body: "CCMS configuration design, workflow design, publishing pipeline architecture. The configuration decisions that determine whether the system fights authors or supports them.",
-    },
-    {
-      phase: "Migration",
-      body: "Data load and content migration into the configured CCMS. Where the Content Migration pillar's output lands.",
-    },
-    {
-      phase: "Implementation",
-      body: "Pipeline build, CI/CD integration, automation rollout, multi-format publishing. The pillar's primary execution load — turning configuration into working operations.",
-    },
-    {
-      phase: "Enablement",
-      body: "Admin training, author training, runbook handover, ongoing optimization. Where many CCMS implementations fail — when it's treated as an event, not a discipline.",
-    },
-  ]}
   anchorStat={{
     number: "60%",
     label: "Faster publishing cycles",
     context: "From quarterly to per-merge releases on representative engagements.",
   }}
+  supportingStats={[
+    {
+      number: "72%",
+      label: "Translation cost savings downstream of single-source publishing",
+    },
+    {
+      number: "90%",
+      label: "Fewer support escalations when the CCMS launches with author training",
+    },
+  ]}
+  outcomesNote="Publishing speed measured as commit-to-deploy time across PDF, HTML5, and EPUB outputs. Translation savings and support reduction are first-year effects post-rollout, contingent on the rollout including author training and governance handover."
   bridgeProse="From quarterly publishing because the manual chain is too painful, to per-merge releases because the pipeline runs without intervention. The 60% faster claim is operational, not marketing — it's the time between a content change being committed and the published output being live across every format."
+  engagementVignettes={[
+    {
+      framing: "An IXIASOFT implementation for a global manufacturer.",
+      body: "DITA-OT pipeline emitting branded PDF, responsive HTML5, and EPUB on every merge to main. Containerized build cut wall-clock time from four hours to twelve minutes. Translation pipeline integrated against the same content; per-release localization cost dropped proportional to the reuse rate.",
+    },
+    {
+      framing: "A Tridion Docs rollout for regulated authoring.",
+      body: "Workflow design with role-gated approvals, audit-trail metadata, and a custom Schematron rule set that fires before publication. Authors trained in three cohorts over six weeks. Six months post-go-live, no shadow Word documents in the regulated workflow.",
+    },
+  ]}
+  engagementSignals={[
+    {
+      signal: "Your last CCMS demo was 18 months ago and nothing has changed since.",
+      body: "Platform selection has stalled because the content model wasn't finalized first. The path forward isn't another demo — it's resolving the architecture work the platform decision was supposed to follow.",
+    },
+    {
+      signal: "Authors are still using Word as a side-channel.",
+      body: "The CCMS configuration is fighting the workflow, not supporting it. Usually it's permissions, branching, or review-cycle design — not the platform itself.",
+    },
+    {
+      signal: "Your publishing chain still includes a human running an Antenna House command.",
+      body: "It's a build artifact, not a manual step. Until the publish runs in CI on every merge, the savings the structured content was supposed to produce don't compound.",
+    },
+    {
+      signal: "Your CI pipeline doesn't have a 'publish docs' step.",
+      body: "Publishing is being treated as an event, not a discipline. Engineering ships every two weeks; docs ship every quarter; the gap is where errata and outdated PDFs accumulate.",
+    },
+  ]}
   standardsAndTooling={[
     {
       label: "IXIASOFT",
@@ -95,4 +112,8 @@ import PillarPageLayout from "../../layouts/PillarPageLayout.astro";
     body: "The Gartner-ratio CCMS abandonment is real: workflows that fight authors, publishing chains that break under load, vendor lock-in without an exit strategy, configurations that nobody internal can maintain. The pattern: implementation treated as an event rather than a discipline; enablement treated as an afterthought rather than a parallel work stream.",
   }}
   ctaBody="Submit a 20-page sample. We'll return a CCMS-fit assessment — which platforms fit the content profile, which configuration decisions matter most, and what an implementation roadmap would look like. Two business days, no obligation to proceed."
+  narrativeLink={{
+    href: "/solutions/technical-docs-and-publishing",
+    label: "Read the Technical Docs & Publishing narrative",
+  }}
 />

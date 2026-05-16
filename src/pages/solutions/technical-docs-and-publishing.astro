@@ -1,61 +1,48 @@
 ---
 /*
-  /solutions/technical-docs-and-publishing — placeholder sub-page.
+  /solutions/technical-docs-and-publishing
 
-  Created as part of the Phase 4.5 nav restructure. Content to be
-  filled out in a later pass.
+  Sub-page deep-dive on the Technical Docs & Publishing solution area.
+
+  Sections (building piece by piece):
+    1. Hero — "One source. Every output channel." + starburst SVG
+    2. Siblings nav — back to /solutions + across to the other three
+                      sub-pages
+    3. The problem at scale (TODO)
+    4. The pipeline (TODO)
+    5. Outputs — five editorial chapter-blocks (TODO)
+    6. Localization (TODO)
+    7. CTA (TODO)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import TechDocsHero from "../../components/site/TechDocsHero.astro";
+import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
+import TechDocsProblem from "../../components/site/TechDocsProblem.astro";
+import TechDocsPipeline from "../../components/site/TechDocsPipeline.astro";
+import TechDocsOutputs from "../../components/site/TechDocsOutputs.astro";
+import TechDocsLocalization from "../../components/site/TechDocsLocalization.astro";
+import CrossPillarLink from "../../components/site/CrossPillarLink.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
 ---
 
-<BaseLayout title="Technical Docs & Publishing" description="Standards-first technical documentation and structured publishing from Extense LLC. Coming soon.">
-  <section class="placeholder-page">
-    <div class="container-prose placeholder-page__inner">
-      <p class="eyebrow placeholder-page__eyebrow">Solutions</p>
-      <h1 class="placeholder-page__heading">Technical Docs & Publishing</h1>
-      <p class="placeholder-page__body">
-        This page is in progress. For an overview of what Extense does today, see
-        <a href="/capabilities">Capabilities</a>, or get in touch via
-        <a href="/contact">Contact</a>.
-      </p>
-      <p class="placeholder-page__back">
-        <a href="/solutions">&larr; Back to all Solutions</a>
-      </p>
-    </div>
-  </section>
+<BaseLayout
+  title="Technical Docs & Publishing"
+  description="One source, every output channel. A DITA-OT build pipeline that produces pixel-perfect PDF, responsive HTML5, EPUB3, IETM, SCORM, and RAG-grounded retrieval from a single DITA repository."
+>
+  <TechDocsHero />
+  <SolutionsSiblings currentSlug="technical-docs-and-publishing" />
+  <TechDocsProblem />
+  <TechDocsPipeline />
+  <TechDocsOutputs />
+  <TechDocsLocalization />
+  <CrossPillarLink
+    href="/capabilities/ccms-and-publishing"
+    label="See CCMS & Publishing deliverables and standards"
+  />
+  <CTAModule
+    audience="general"
+    compact
+    body="Send us a 20-page sample — DITA, Word, FrameMaker, unstructured XML, or PDF. We’ll return a conversion feasibility, content recovery rate, and pipeline-effort estimate within two business days."
+  />
 </BaseLayout>
-
-<style>
-  .placeholder-page {
-    padding-top: var(--section-pad-default);
-    padding-bottom: var(--section-pad-default);
-  }
-  .placeholder-page__eyebrow {
-    margin-bottom: var(--space-4);
-  }
-  .placeholder-page__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-6) 0;
-    text-wrap: balance;
-  }
-  .placeholder-page__body {
-    font-family: var(--font-body);
-    font-size: var(--text-body-lg);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-normal);
-    margin: 0 0 var(--space-8) 0;
-    text-wrap: pretty;
-  }
-  .placeholder-page__back {
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    font-weight: var(--weight-medium);
-    margin: 0;
-  }
-</style>

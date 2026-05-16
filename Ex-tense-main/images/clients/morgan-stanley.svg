@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80">
-  <rect width="240" height="80" fill="none"/>
-  <g transform="translate(15,20)">
-    <text x="0" y="28" font-family="serif" font-size="26" fill="#00263e" font-weight="400" letter-spacing="1">Morgan Stanley</text>
-    <line x1="0" y1="36" x2="210" y2="36" stroke="#0078c1" stroke-width="1.5"/>
-  </g>
-</svg>

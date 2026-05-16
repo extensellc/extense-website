@@ -1,0 +1,363 @@
+---
+/*
+  EngagementMethodologyGantt — hero side visual for /company.
+
+  Open-edged Gantt that animates through the five-phase engagement
+  methodology on page load. Top + bottom hairlines only — no card
+  chrome, no amber spine, no left/right borders. Reads as a typeset
+  chart in an annual report rather than a widget.
+
+  Phase rows reveal sequentially with hairline progress bars filling
+  in. Stage 05 (Enablement) is marked "continuous" — its bar fills
+  and then keeps shimmering subtly, reinforcing the brand position
+  that Enablement runs throughout, not as a terminal phase.
+
+  Hidden below 1024px (desktop-only enhancement, consistent with the
+  other hero side panels).
+
+  Animation triggered on DOMContentLoaded via setTimeout — same
+  approach as EditorialBarCard. Reduced motion: show everything
+  immediately, no transitions.
+*/
+
+interface Stage {
+  number: string;
+  name: string;
+  timing: string;
+  continuous?: boolean;
+}
+
+interface Props {
+  stages: Stage[];
+  totalWeeks: string;
+  continuousNote: string;
+}
+
+const { stages, totalWeeks, continuousNote } = Astro.props;
+const phaseCount = stages.length;
+---
+
+<aside class="ogantt" id="ogantt" aria-label="Engagement methodology pipeline">
+  <div class="ogantt__header">
+    <span class="ogantt__title">Engagement Methodology</span>
+    <span class="ogantt__status" id="ogantt-status">{phaseCount} phases</span>
+  </div>
+
+  <p class="ogantt__intro">Five phases. Same shape, every engagement.</p>
+
+  <hr class="ogantt__divider" />
+
+  <div class="ogantt__stages">
+    {stages.map((s, i) => (
+      <article
+        class:list={["ostage", s.continuous && "ostage--active"]}
+        data-stage-index={i}
+        data-continuous={s.continuous ? "true" : undefined}
+      >
+        <span class="ostage__num">{s.number}</span>
+        <span class="ostage__name">{s.name}</span>
+        <span class="ostage__meta">
+          {s.continuous ? (
+            <>
+              <span class="ostage__active-dot" aria-hidden="true"></span>
+              <span class="ostage__active-label">{s.timing}</span>
+            </>
+          ) : (
+            <span class="ostage__timing">{s.timing}</span>
+          )}
+        </span>
+        <span class="ostage__bar"><span class="ostage__bar-fill"></span></span>
+      </article>
+    ))}
+  </div>
+
+  <footer class="ogantt__footer" id="ogantt-footer">
+    <span>
+      <span class="ogantt__total">{totalWeeks}</span> · 1 phase continuous
+    </span>
+    <span class="ogantt__hint">{continuousNote}</span>
+  </footer>
+</aside>
+
+<style>
+  .ogantt {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .ogantt {
+      display: block;
+      width: 440px;
+      flex-shrink: 0;
+      padding: var(--space-6) 0 var(--space-4);
+      border-top: var(--border-hairline);
+      border-bottom: var(--border-hairline);
+    }
+  }
+
+  .ogantt__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .ogantt__title {
+    color: var(--color-text-muted);
+  }
+
+  .ogantt__status {
+    color: #b45309;
+    font-weight: var(--weight-semibold);
+    font-feature-settings: "tnum";
+  }
+
+  .ogantt__intro {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .ogantt__divider {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  /* Stage row */
+  .ogantt__stages {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ostage {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    column-gap: var(--space-4);
+    row-gap: var(--space-2);
+    align-items: baseline;
+    padding: 12px 0 10px;
+    opacity: 0;
+    transform: translateY(3px);
+    transition:
+      opacity 320ms cubic-bezier(0.32, 0.72, 0, 1),
+      transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .ostage.reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ostage__num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-semibold);
+    color: #b45309;
+    font-feature-settings: "tnum";
+    line-height: 1.3;
+  }
+
+  .ostage__name {
+    grid-column: 2;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+
+  .ostage__meta {
+    grid-column: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-feature-settings: "tnum";
+  }
+
+  .ostage__timing {
+    color: var(--color-text-muted);
+  }
+
+  .ostage__active-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #fcd34d;
+    box-shadow: 0 0 0 0 rgba(252, 211, 77, 0.55);
+    animation: ogantt-pulse 2.4s cubic-bezier(0.32, 0.72, 0, 1) infinite;
+  }
+
+  @keyframes ogantt-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(252, 211, 77, 0.55); }
+    50%      { box-shadow: 0 0 0 6px rgba(252, 211, 77, 0); }
+  }
+
+  .ostage__active-label {
+    font-style: italic;
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+    color: #b45309;
+  }
+
+  /* Progress bar — spans columns 2-3 underneath name + meta */
+  .ostage__bar {
+    grid-column: 2 / -1;
+    position: relative;
+    height: 2px;
+    background: #ece7dc;
+    overflow: hidden;
+  }
+
+  .ostage__bar-fill {
+    position: absolute;
+    inset: 0;
+    width: 0;
+    background: #b45309;
+    transition: width 900ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .ostage--active .ostage__bar-fill {
+    background: #fcd34d;
+  }
+
+  .ostage--active .ostage__bar-fill.shimmer {
+    background: linear-gradient(
+      90deg,
+      #fcd34d 0%,
+      #fff3c2 50%,
+      #fcd34d 100%
+    );
+    background-size: 200% 100%;
+    animation: ogantt-shimmer 3.2s linear infinite;
+  }
+
+  @keyframes ogantt-shimmer {
+    from { background-position: 200% 0; }
+    to   { background-position: -200% 0; }
+  }
+
+  .ogantt__footer {
+    margin-top: var(--space-6);
+    padding-top: var(--space-3);
+    border-top: var(--border-hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    opacity: 0;
+    transition: opacity 360ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .ogantt__footer.reveal {
+    opacity: 1;
+  }
+
+  .ogantt__total {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+
+  .ogantt__hint {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  /* Reduced motion: show all content immediately, no animation */
+  @media (prefers-reduced-motion: reduce) {
+    .ostage,
+    .ogantt__footer {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .ostage__bar-fill {
+      width: 100% !important;
+      transition: none;
+      animation: none;
+    }
+    .ostage__active-dot {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const root = document.getElementById('ogantt');
+    if (!root) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return; // CSS already shows everything via reduced-motion rules
+
+    function run() {
+      const stages = root!.querySelectorAll<HTMLElement>('.ostage');
+      const footer = document.getElementById('ogantt-footer');
+      const status = document.getElementById('ogantt-status');
+
+      // Reset (in case re-run via view transition)
+      stages.forEach((s) => {
+        const fill = s.querySelector<HTMLElement>('.ostage__bar-fill');
+        s.classList.remove('reveal');
+        if (fill) {
+          fill.style.width = '0';
+          fill.classList.remove('shimmer');
+        }
+      });
+      footer?.classList.remove('reveal');
+      if (status) status.textContent = stages.length + ' phases';
+
+      let delay = 200;
+      const stageGap = 520;
+
+      stages.forEach((stage) => {
+        const continuous = stage.dataset.continuous === 'true';
+        setTimeout(() => {
+          stage.classList.add('reveal');
+          const fill = stage.querySelector<HTMLElement>('.ostage__bar-fill');
+          if (!fill) return;
+          setTimeout(() => {
+            fill.style.width = '100%';
+            if (continuous) {
+              setTimeout(() => fill.classList.add('shimmer'), 900);
+            }
+          }, 160);
+        }, delay);
+        delay += stageGap;
+      });
+
+      setTimeout(() => {
+        footer?.classList.add('reveal');
+        if (status) status.textContent = 'In progress';
+      }, delay + 300);
+    }
+
+    function trigger() {
+      setTimeout(run, 32);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', trigger);
+    } else {
+      trigger();
+    }
+  })();
+</script>

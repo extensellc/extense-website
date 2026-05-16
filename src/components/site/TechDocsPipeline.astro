@@ -1,0 +1,357 @@
+---
+/*
+  TechDocsPipeline — approach section on
+  /solutions/technical-docs-and-publishing.
+
+  The technical centerpiece. Sequenced after the diagnosis (problem)
+  section, before the output chapter-blocks.
+
+  Layout
+    - container-data section, border-top hairline
+    - Manifesto-style opening at container-prose width, centered:
+        eyebrow + display-serif principle + hairline + elaboration
+    - Horizontal 5-stage pipeline diagram below at container-data width:
+        AUTHOR -> VALIDATE -> TRANSFORM -> BUILD -> PUBLISH
+        Each stage has num, name, mono tool list, and body-small detail.
+        Amber "->" arrow between stages on desktop; "v" on mobile.
+
+  Animation: viewport-triggered. Manifesto block fades up first, then
+  the five stages stagger in. prefers-reduced-motion: static.
+*/
+
+interface Stage {
+  num: string;
+  name: string;
+  tool: string;
+  detail: string;
+}
+
+const stages: Stage[] = [
+  {
+    num: "01",
+    name: "Author",
+    tool: "DITA 1.3 topics",
+    detail: "Authored in IXIASOFT, Heretto, Paligo, or Tridion Docs — or a git-tracked DITA project for engineering-led teams.",
+  },
+  {
+    num: "02",
+    name: "Validate",
+    tool: "DITA 1.3 schema + Schematron",
+    detail: "Schema and Schematron rule sets run on every commit. The build fails on a schema error — invalid content never makes it to a transform.",
+  },
+  {
+    num: "03",
+    name: "Transform",
+    tool: "DITA-OT 4.x",
+    detail: "Apache FOP or Antenna House XSL Formatter for print PDF. Built-in html5 and epub3 transtypes. Project plugins for IETM, SCORM, and JSON retrieval.",
+  },
+  {
+    num: "04",
+    name: "Build",
+    tool: "GitHub Actions / Bamboo / Jenkins / GitLab CI",
+    detail: "Triggered on every merge to main. Outputs cached, versioned, and tagged as immutable build artifacts.",
+  },
+  {
+    num: "05",
+    name: "Publish",
+    tool: "CDN, CCMS Dynamic Delivery, LMS, retrieval index",
+    detail: "Static deploy to Vercel, Netlify, or S3 + CloudFront. Dynamic delivery from the CCMS. SCORM upload to the LMS. JSON chunks to the RAG index.",
+  },
+];
+---
+
+<section class="tdp-pipeline" aria-labelledby="tdp-pipeline-heading">
+  <div class="container-data tdp-pipeline__inner">
+    <div class="tdp-pipeline__manifesto">
+      <p class="eyebrow tdp-pipeline__eyebrow">The pipeline</p>
+      <h2 id="tdp-pipeline-heading" class="tdp-pipeline__principle">
+        The output is a <em>build artifact</em>, not a deliverable.
+      </h2>
+      <hr class="tdp-pipeline__rule" />
+      <p class="tdp-pipeline__elaboration">
+        Every output starts as a <code>.dita</code> topic in a CCMS or a git-tracked DITA project. Topics are validated against DITA 1.3 plus project-specific Schematron rules on every commit. Builds run inside DITA-OT &mdash; Apache FOP or Antenna House XSL Formatter for print PDF, the html5 transtype for web, the epub3 transtype for offline reading, and project plugins for IETM, SCORM, and JSON retrieval. CI runs the build on every merge to main. No designer reformats anything. No writer &ldquo;exports to PDF.&rdquo;
+      </p>
+    </div>
+
+    <ol class="tdp-pipeline__stages" aria-label="DITA publishing pipeline">
+      {stages.map((stage, i) => (
+        <li class={`pipeline-stage pipeline-stage--${i + 1}`}>
+          <p class="pipeline-stage__num" aria-hidden="true">{stage.num}</p>
+          <h3 class="pipeline-stage__name">{stage.name}</h3>
+          <p class="pipeline-stage__tool">{stage.tool}</p>
+          <p class="pipeline-stage__detail">{stage.detail}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .tdp-pipeline {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .tdp-pipeline {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Manifesto block — same vocabulary as SolutionsApproach, centered.
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-pipeline__manifesto {
+    max-width: var(--container-prose, 720px);
+    margin: 0 auto var(--space-20) auto;
+    text-align: center;
+  }
+
+  @media (max-width: 767px) {
+    .tdp-pipeline__manifesto {
+      margin-bottom: var(--space-16);
+    }
+  }
+
+  .tdp-pipeline__eyebrow {
+    margin: 0 0 var(--space-8) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .tdp-pipeline__principle {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: var(--weight-regular);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .tdp-pipeline__principle em {
+    font-style: italic;
+  }
+
+  @media (max-width: 767px) {
+    .tdp-pipeline__principle {
+      font-size: 32px;
+    }
+  }
+
+  .tdp-pipeline__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    width: 64px;
+    margin: var(--space-8) auto;
+  }
+
+  .tdp-pipeline__elaboration {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0 auto;
+    max-width: 60ch;
+    text-wrap: pretty;
+    text-align: left;
+  }
+  .tdp-pipeline__elaboration code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--color-surface-elevated);
+    padding: 0.05em 0.4em;
+    color: var(--color-text-primary);
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Pipeline stages — 5-column grid on desktop, stacked on mobile.
+     Each stage is a hairline-topped card with: num, name, tool, detail.
+     Amber arrow in the gap between stages (->) on desktop, (v) on mobile.
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-pipeline__stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 960px) {
+    .tdp-pipeline__stages {
+      grid-template-columns: repeat(5, 1fr);
+      /* Generous gap so the amber arrow has room to live in. */
+      gap: var(--space-12);
+    }
+  }
+
+  .pipeline-stage {
+    border-top: 2px solid var(--color-text-primary);
+    padding-top: var(--space-4);
+    position: relative;
+  }
+
+  /* Amber arrow between stages. Desktop: "->" positioned in the right
+     gap, vertically aligned with the stage NAME row. Mobile: "v"
+     positioned below each stage, between rows. */
+  .pipeline-stage:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    line-height: 1;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary-hover);
+    /* Default = mobile: arrow below the stage, centered horizontally. */
+    bottom: calc(-1 * var(--space-8) - 8px);
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+
+  @media (min-width: 960px) {
+    .pipeline-stage:not(:last-child)::after {
+      bottom: auto;
+      left: auto;
+      /* Sit in the gap to the right, centered vertically on the
+         stage NAME line (which is ~34 px from the top after num + gap).
+         The +0 px term lands the arrow's anchor exactly at the gap's
+         midpoint (vs the original -8 px), shifting it ~8 px (~2 mm)
+         left in two equal nudges so it sits closer to the stage it's
+         leaving rather than the one it's pointing to. */
+      right: calc(-1 * var(--space-12) / 2 + 0px);
+      top: 38px;
+      transform: translate(50%, -50%) rotate(0deg);
+    }
+  }
+
+  .pipeline-stage__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    margin: 0 0 var(--space-2) 0;
+    line-height: 1;
+  }
+
+  .pipeline-stage__name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: var(--weight-medium);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .pipeline-stage__tool {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    /* Tool list can be long — let it wrap, don't squeeze. */
+    text-wrap: pretty;
+  }
+
+  .pipeline-stage__detail {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Reveal animation — viewport-triggered. Manifesto block first, then
+     stages stagger in left-to-right.
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-pipeline.animating .tdp-pipeline__eyebrow,
+  .tdp-pipeline.animating .tdp-pipeline__principle,
+  .tdp-pipeline.animating .tdp-pipeline__rule,
+  .tdp-pipeline.animating .tdp-pipeline__elaboration,
+  .tdp-pipeline.animating .pipeline-stage {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .tdp-pipeline.animating.in-view .tdp-pipeline__eyebrow {
+    animation: tdp-pipe-fade-in 420ms ease-out forwards;
+  }
+  .tdp-pipeline.animating.in-view .tdp-pipeline__principle {
+    animation: tdp-pipe-fade-in 520ms ease-out forwards;
+    animation-delay: 120ms;
+  }
+  .tdp-pipeline.animating.in-view .tdp-pipeline__rule {
+    animation: tdp-pipe-fade-in 420ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+  .tdp-pipeline.animating.in-view .tdp-pipeline__elaboration {
+    animation: tdp-pipe-fade-in 420ms ease-out forwards;
+    animation-delay: 420ms;
+  }
+  .tdp-pipeline.animating.in-view .pipeline-stage:nth-child(1) { animation: tdp-pipe-fade-in 420ms ease-out forwards; animation-delay: 640ms; }
+  .tdp-pipeline.animating.in-view .pipeline-stage:nth-child(2) { animation: tdp-pipe-fade-in 420ms ease-out forwards; animation-delay: 760ms; }
+  .tdp-pipeline.animating.in-view .pipeline-stage:nth-child(3) { animation: tdp-pipe-fade-in 420ms ease-out forwards; animation-delay: 880ms; }
+  .tdp-pipeline.animating.in-view .pipeline-stage:nth-child(4) { animation: tdp-pipe-fade-in 420ms ease-out forwards; animation-delay: 1000ms; }
+  .tdp-pipeline.animating.in-view .pipeline-stage:nth-child(5) { animation: tdp-pipe-fade-in 420ms ease-out forwards; animation-delay: 1120ms; }
+
+  @keyframes tdp-pipe-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tdp-pipeline.animating .tdp-pipeline__eyebrow,
+    .tdp-pipeline.animating .tdp-pipeline__principle,
+    .tdp-pipeline.animating .tdp-pipeline__rule,
+    .tdp-pipeline.animating .tdp-pipeline__elaboration,
+    .tdp-pipeline.animating .pipeline-stage {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupTechDocsPipeline() {
+    const sec = document.querySelector<HTMLElement>(".tdp-pipeline");
+    if (!sec) return;
+    if (sec.dataset.pipelineRevealInit === "true") return;
+    sec.dataset.pipelineRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTechDocsPipeline);
+  document.addEventListener("astro:page-load", setupTechDocsPipeline);
+</script>

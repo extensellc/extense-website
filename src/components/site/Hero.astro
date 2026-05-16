@@ -38,9 +38,10 @@ interface Props {
 }
 
 const { title, subdeck, variant = "universal", badges, eyebrow } = Astro.props;
+const hasSideContent = Astro.slots.has('default');
 ---
 
-<section class:list={["hero", `hero--${variant}`]}>
+<section class:list={["hero", `hero--${variant}`, hasSideContent && "hero--has-side"]}>
   <div class="container-page hero__inner">
     <div class="hero__content">
       {eyebrow && <p class="eyebrow hero__eyebrow">{eyebrow}</p>}
@@ -55,6 +56,12 @@ const { title, subdeck, variant = "universal", badges, eyebrow } = Astro.props;
 
       {subdeck && <p class="hero__subdeck"><Fragment set:html={subdeck} /></p>}
     </div>
+
+    {hasSideContent && (
+      <div class="hero__side">
+        <slot />
+      </div>
+    )}
   </div>
 </section>
 
@@ -128,5 +135,26 @@ const { title, subdeck, variant = "universal", badges, eyebrow } = Astro.props;
      but the hooks exist for any per-audience tweaks discovered in Phase 4. */
   .hero--identifying .hero__eyebrow {
     color: var(--color-gravitas-navy);
+  }
+
+  /* ─── Optional side-content slot (used by /industries hero) ───
+     When the hero has slot content (e.g., a ComplianceReferenceCard),
+     the inner becomes a horizontal flex layout at desktop widths.
+     The side content renders to the right of the hero text. */
+  @media (min-width: 1024px) {
+    .hero--has-side .hero__inner {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+    }
+
+    .hero--has-side .hero__content {
+      flex: 1 1 auto;
+    }
+
+    .hero__side {
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
   }
 </style>

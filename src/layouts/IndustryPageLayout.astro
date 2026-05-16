@@ -26,9 +26,14 @@ import Hero from "../components/site/Hero.astro";
 import SiblingsBreadcrumb from "../components/nav/SiblingsBreadcrumb.astro";
 import CompactList from "../components/site/CompactList.astro";
 import DocumentRow from "../components/site/DocumentRow.astro";
-import LogoBench from "../components/site/LogoBench.astro";
-import StatBlock from "../components/site/StatBlock.astro";
 import CTAModule from "../components/site/CTAModule.astro";
+import AuditCycle from "../components/site/AuditCycle.astro";
+import VariantPolicyForm from "../components/site/VariantPolicyForm.astro";
+import FederalProgramLifecycle from "../components/site/FederalProgramLifecycle.astro";
+import ControlChain from "../components/site/ControlChain.astro";
+import CrossModeComparison from "../components/site/CrossModeComparison.astro";
+import ProductSurfacePanels from "../components/site/ProductSurfacePanels.astro";
+import AnimatedDivider from "../components/site/AnimatedDivider.astro";
 
 interface CompactItem {
   label: string;
@@ -39,6 +44,8 @@ interface CapabilityRelevance {
   pillarLabel: string;
   pillarHref: string;
   context: string;
+  /** Optional inline note about typical commercial engagement shape */
+  engagementShape?: string;
 }
 
 interface CaseStudy {
@@ -46,15 +53,114 @@ interface CaseStudy {
   body: string;
 }
 
-interface Logo {
-  label: string;
-  src?: string;
+interface Signal {
+  line: string;
+  body: string;
 }
 
-interface Stat {
-  number: string;
+// AuditCycle data — passed straight through to the AuditCycle component.
+interface DiscreteEvent { position: number; label: string; }
+interface AdHocEvent { position: number; label: string; annotation?: string; }
+interface DiscreteLane { label: string; type: "discrete"; events: DiscreteEvent[]; }
+interface ContinuousLane { label: string; type: "continuous"; peakPositions?: number[]; notes?: string; }
+interface AdHocLane { label: string; type: "ad-hoc"; events: AdHocEvent[]; }
+type AuditLane = DiscreteLane | ContinuousLane | AdHocLane;
+interface AxisLabel { position: number; label: string; }
+
+interface AuditCycleData {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  axisLabels: AxisLabel[];
+  lanes: AuditLane[];
+  footnote: string;
+}
+
+// VariantPolicyForm data — passed straight through to that component.
+interface SectionVariant {
   label: string;
-  context?: string;
+  profileTag: string;
+  description: string;
+  statePills?: string[];
+  overflow?: number;
+}
+
+interface VariantPolicyFormData {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  documentRef: string;
+  formLabel: string;
+  documentTitle: string;
+  documentSubtitle: string;
+  sections: SectionVariant[];
+  bottomNote: string;
+  footnote: string;
+}
+
+// FederalProgramLifecycle data — passed straight through to that component.
+interface Milestone {
+  position: number;
+  name: string;
+  deliverable: string;
+}
+interface LifecycleTrack {
+  label: string;
+  variant: "solid" | "outlined";
+  milestones: Milestone[];
+}
+interface FederalProgramLifecycleData {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  tracks: LifecycleTrack[];
+  footnote: string;
+}
+
+// ControlChain data — passed straight through to that component.
+interface ControlStage {
+  number: string;
+  name: string;
+  description: string;
+  artifact: string;
+}
+interface ControlChainData {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  stages: ControlStage[];
+  callout: string;
+  footnote: string;
+}
+
+// CrossModeComparison data — passed straight through to that component.
+interface ModeColumn { label: string; }
+interface ComparisonRow { category: string; cells: string[]; }
+interface CrossModeComparisonData {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  modes: ModeColumn[];
+  rows: ComparisonRow[];
+  footnote: string;
+}
+
+// ProductSurfacePanels data — passed straight through to that component.
+interface PanelEntry { key?: string; value: string; }
+interface PanelSection { label: string; entries: PanelEntry[]; }
+interface SurfacePanel {
+  docRef: string;
+  title: string;
+  subtitle: string;
+  treatment: "datasheet" | "api" | "narrative";
+  sections: PanelSection[];
+}
+interface ProductSurfacePanelsData {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  panels: SurfacePanel[];
+  footnote: string;
 }
 
 interface Props {
@@ -66,15 +172,27 @@ interface Props {
   showBreadcrumb?: boolean;
   documentTypes: CompactItem[];
   standards: CompactItem[];
+  /** Optional audit cycle visualization. If provided, renders between Standards and Failure Mode. */
+  auditCycle?: AuditCycleData;
+  /** Optional variant policy form artifact. If provided, renders between Standards and Failure Mode. */
+  variantPolicyForm?: VariantPolicyFormData;
+  /** Optional federal program lifecycle (two-register). If provided, renders between Standards and Failure Mode. */
+  federalProgramLifecycle?: FederalProgramLifecycleData;
+  /** Optional documentation control chain (SOX 404). If provided, renders between Standards and Failure Mode. */
+  controlChain?: ControlChainData;
+  /** Optional cross-mode comparison table. If provided, renders between Standards and Failure Mode. */
+  crossModeComparison?: CrossModeComparisonData;
+  /** Optional product-surface panels (3-up document fragments). If provided, renders between Standards and Failure Mode. */
+  productSurfacePanels?: ProductSurfacePanelsData;
   failureMode: {
     eyebrow: string;
     heading: string;
     body: string;
   };
+  /** Optional signals section. If provided, renders between Failure Mode and Capability Relevance. */
+  signals?: Signal[];
   capabilityRelevance: CapabilityRelevance[];
-  industryLogos: Logo[];
   caseStudies: CaseStudy[];
-  stats: [Stat, Stat]; // exactly 2
   ctaAudience?: "public-sector" | "private-sector" | "general";
   ctaBody: string;
 }
@@ -88,11 +206,16 @@ const {
   showBreadcrumb = true,
   documentTypes,
   standards,
+  auditCycle,
+  variantPolicyForm,
+  federalProgramLifecycle,
+  controlChain,
+  crossModeComparison,
+  productSurfacePanels,
   failureMode,
+  signals,
   capabilityRelevance,
-  industryLogos,
   caseStudies,
-  stats,
   ctaAudience = "private-sector",
   ctaBody,
 } = Astro.props;
@@ -112,12 +235,84 @@ const {
     </div>
   </section>
 
+  <AnimatedDivider />
+
   <section class="ind-section ind-section--standards" aria-labelledby="standards-heading">
     <div class="container-prose ind-section__inner">
       <h2 id="standards-heading" class="ind-section__heading">Regulatory frameworks and standards.</h2>
       <CompactList items={standards} />
     </div>
   </section>
+
+  {auditCycle && (
+    <AuditCycle
+      eyebrow={auditCycle.eyebrow}
+      heading={auditCycle.heading}
+      lead={auditCycle.lead}
+      axisLabels={auditCycle.axisLabels}
+      lanes={auditCycle.lanes}
+      footnote={auditCycle.footnote}
+    />
+  )}
+
+  {variantPolicyForm && (
+    <VariantPolicyForm
+      eyebrow={variantPolicyForm.eyebrow}
+      heading={variantPolicyForm.heading}
+      lead={variantPolicyForm.lead}
+      documentRef={variantPolicyForm.documentRef}
+      formLabel={variantPolicyForm.formLabel}
+      documentTitle={variantPolicyForm.documentTitle}
+      documentSubtitle={variantPolicyForm.documentSubtitle}
+      sections={variantPolicyForm.sections}
+      bottomNote={variantPolicyForm.bottomNote}
+      footnote={variantPolicyForm.footnote}
+    />
+  )}
+
+  {federalProgramLifecycle && (
+    <FederalProgramLifecycle
+      eyebrow={federalProgramLifecycle.eyebrow}
+      heading={federalProgramLifecycle.heading}
+      lead={federalProgramLifecycle.lead}
+      tracks={federalProgramLifecycle.tracks}
+      footnote={federalProgramLifecycle.footnote}
+    />
+  )}
+
+  {controlChain && (
+    <ControlChain
+      eyebrow={controlChain.eyebrow}
+      heading={controlChain.heading}
+      lead={controlChain.lead}
+      stages={controlChain.stages}
+      callout={controlChain.callout}
+      footnote={controlChain.footnote}
+    />
+  )}
+
+  {crossModeComparison && (
+    <CrossModeComparison
+      eyebrow={crossModeComparison.eyebrow}
+      heading={crossModeComparison.heading}
+      lead={crossModeComparison.lead}
+      modes={crossModeComparison.modes}
+      rows={crossModeComparison.rows}
+      footnote={crossModeComparison.footnote}
+    />
+  )}
+
+  {productSurfacePanels && (
+    <ProductSurfacePanels
+      eyebrow={productSurfacePanels.eyebrow}
+      heading={productSurfacePanels.heading}
+      lead={productSurfacePanels.lead}
+      panels={productSurfacePanels.panels}
+      footnote={productSurfacePanels.footnote}
+    />
+  )}
+
+  <AnimatedDivider />
 
   <section class="ind-section ind-section--failure" aria-labelledby="failure-heading">
     <div class="container-prose ind-section__inner">
@@ -132,6 +327,28 @@ const {
     </div>
   </section>
 
+  {signals && signals.length > 0 ? (
+    <>
+      <AnimatedDivider />
+      <section class="ind-section ind-section--signals" aria-labelledby="signals-heading">
+        <div class="container-prose ind-section__inner">
+          <h2 id="signals-heading" class="ind-section__heading">When you&rsquo;d reach out.</h2>
+          <ol class="ind-section__signal-list">
+            {signals.map((s) => (
+              <li class="ind-signal">
+                <p class="ind-signal__line">&ldquo;{s.line}&rdquo;</p>
+                <p class="ind-signal__body">{s.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+      <AnimatedDivider />
+    </>
+  ) : (
+    <AnimatedDivider />
+  )}
+
   <section class="ind-section ind-section--relevance" aria-labelledby="relevance-heading">
     <div class="container-prose ind-section__inner">
       <h2 id="relevance-heading" class="ind-section__heading">Where Extense's capabilities apply.</h2>
@@ -141,18 +358,24 @@ const {
             <dt class="ind-section__relevance-label">
               <a href={cr.pillarHref}>{cr.pillarLabel}</a>
             </dt>
-            <dd class="ind-section__relevance-context">{cr.context}</dd>
+            <dd class="ind-section__relevance-context">
+              {cr.context}
+              {cr.engagementShape && (
+                <em class="ind-section__relevance-shape"> {cr.engagementShape}</em>
+              )}
+            </dd>
           </div>
         ))}
       </dl>
     </div>
   </section>
 
+  <AnimatedDivider />
+
   <section class="ind-section ind-section--proof" aria-labelledby="proof-heading">
     <div class="container-prose ind-section__inner">
       <h2 id="proof-heading" class="ind-section__heading">Engagements in this vertical.</h2>
     </div>
-    <LogoBench variant="industry" logos={industryLogos} />
     <div class="container-prose ind-section__inner ind-section__case-studies">
       {caseStudies.map((cs) => (
         <div class="ind-section__case-study">
@@ -166,11 +389,7 @@ const {
     </div>
   </section>
 
-  <section class="ind-section ind-section--stats" aria-label="Outcome metrics">
-    <div class="container-data ind-section__inner">
-      <StatBlock variant="two" stats={stats} />
-    </div>
-  </section>
+  <AnimatedDivider />
 
   <CTAModule audience={ctaAudience} body={ctaBody} />
 </BaseLayout>
@@ -236,6 +455,53 @@ const {
   }
 
   .ind-section__relevance-context {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .ind-section__relevance-shape {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  /* ─── Signals — "When you'd reach out." ─── */
+  .ind-section__signal-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ind-signal {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+    border-top: var(--border-hairline);
+  }
+
+  .ind-signal:first-of-type {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .ind-signal:last-of-type {
+    padding-bottom: 0;
+  }
+
+  .ind-signal__line {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .ind-signal__body {
     font-family: var(--font-body);
     font-size: var(--text-body);
     color: var(--color-text-secondary);

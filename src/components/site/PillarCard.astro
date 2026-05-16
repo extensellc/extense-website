@@ -63,9 +63,14 @@ const BadgeIcon = badges[pillar];
 
   .pillar-card__link {
     /* Whole card is a link. Stretched-link via ::after to avoid nested-link
-       issues. The visible CTA is decorative; the link wraps the card. */
+       issues. The visible CTA is decorative; the link wraps the card.
+       flex: 1 makes the link fill the card's full height — needed so the
+       CTA's `margin-top: auto` can push it to a shared bottom edge across
+       siblings in a grid row (otherwise cards with more body copy push
+       their CTA further down than cards with less). */
     display: flex;
     flex-direction: column;
+    flex: 1;
     color: var(--color-text-primary);
     text-decoration: none;
     transition: opacity var(--duration-base) var(--easing-out);

@@ -1,0 +1,162 @@
+---
+import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+---
+
+<IndustryPageLayout
+  pageTitle="Insurance — Industries"
+  pageDescription="Insurance documentation engineering for carriers and platform providers. Policy form management, state DOI variation, claims-handling SOPs, RAG over claims-handling guidelines for adjuster assistants."
+  heroTitle="Insurance"
+  heroSubdeck="Where the policy form is the product. Direct revenue exposure on filing rejection; direct litigation exposure on claims-handling divergence. State-by-state DOI variation managed with discipline, not exception logic."
+  industryHref="/industries/insurance"
+  documentTypes={[
+    {
+      label: "Policy forms and endorsements",
+      description: "Filed policy forms across states and product lines. The document is the product; revisions and variants tracked with audit-grade discipline.",
+    },
+    {
+      label: "Claims handling guidelines",
+      description: "Adjuster-facing procedures, claims-decision documentation, bad-faith-litigation-defensible procedural records.",
+    },
+    {
+      label: "Underwriting manuals",
+      description: "Underwriter-facing risk evaluation guidance, exception handling, referral procedures.",
+    },
+    {
+      label: "Agent and broker training",
+      description: "Producer-facing product training, regulatory compliance training, continuing-education materials.",
+    },
+    {
+      label: "Regulatory filings",
+      description: "State DOI filings, rate filings, form filings — submission-format compliance and tracking.",
+    },
+  ]}
+  standards={[
+    {
+      label: "ACORD",
+      description: "Insurance industry data exchange standard — content interoperability with carrier and broker systems.",
+    },
+    {
+      label: "State DOI requirements",
+      description: "State-by-state filing and disclosure requirements. Variation managed through DITA profiling and conditional content rather than parallel document maintenance.",
+    },
+    {
+      label: "NAIC model regulations",
+      description: "Where state regulations align to NAIC models, content patterns can carry across — a constraint and an opportunity for shared architecture.",
+    },
+    {
+      label: "NAIC ORSA (Own Risk and Solvency Assessment)",
+      description: "Annual filing required of insurers above the NAIC threshold. Risk-management documentation that has to satisfy state regulator review; most carriers run a multi-month internal documentation program around it.",
+    },
+  ]}
+  variantPolicyForm={{
+    eyebrow: "VARIANT MANAGEMENT — INSURANCE",
+    heading: "One source. Fifty state variants.",
+    lead: "Without DITA profiling, a multi-state policy form means parallel maintenance — fifty separately-edited documents, each at risk of drift. With profiling, a single source carries jurisdiction-specific variants assembled at publish time. The form below shows the variant cardinality per section.",
+    documentRef: "POLICY FORM PF-2026-XXXX",
+    formLabel: "Form: ISO HO-3 v4.2",
+    documentTitle: "Homeowners policy form",
+    documentSubtitle: "A multi-state base form profiled per state DOI requirements.",
+    sections: [
+      {
+        label: "§1. Insuring Agreement",
+        profileTag: "ALL 50 STATES",
+        description: "Base coverage language. Universal across all jurisdictions.",
+      },
+      {
+        label: "§2. Definitions",
+        profileTag: "+ 4 state profiles",
+        description: "Universal definitions plus profile blocks for jurisdiction-specific terminology (e.g., NY: actual cash value definition; FL: hurricane).",
+        statePills: ["NY", "FL", "CA", "TX"],
+        overflow: 1,
+      },
+      {
+        label: "§3. Coverage Limits",
+        profileTag: "50 state profiles",
+        description: "State-mandated minimums and maximums. Profiled per state DOI filings; variant assembly handled at publish time.",
+        statePills: ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA"],
+        overflow: 40,
+      },
+      {
+        label: "§4. Exclusions",
+        profileTag: "+ 12 state profiles",
+        description: "Base exclusions plus state-mandated exclusion language — CA earthquake; FL flood/sinkhole; LA hurricane deductible.",
+        statePills: ["CA", "FL", "LA", "TX", "NC", "SC", "AL", "MS", "GA", "TN"],
+        overflow: 2,
+      },
+      {
+        label: "§5. Conditions",
+        profileTag: "+ 8 state profiles",
+        description: "Universal conditions plus state-specific notice and cancellation provisions.",
+        statePills: ["NY", "NJ", "CA", "TX", "FL", "IL"],
+        overflow: 2,
+      },
+      {
+        label: "§6. Endorsements",
+        profileTag: "filed per state",
+        description: "Endorsement library managed per state filing approval status.",
+      },
+    ],
+    bottomNote: "Variants assembled at publish time. Single source maintained in a CCMS with DITA conditional-content profiling.",
+    footnote: "Section count and variant counts illustrative; exact variant cardinality depends on product line, state filings, and filing-status currency.",
+  }}
+  failureMode={{
+    eyebrow: "INSURANCE / DOI FILING",
+    heading: "A policy form filing rejection delays product launch and revenue.",
+    body: "The document is the product. Filing rejection blocks product launch in the affected state — direct revenue impact and roadmap slippage. Refiling cycles add weeks-to-months of regulatory review per round. The cost is measured in delayed premium revenue plus the operational drag of a stalled product launch in distribution channels that already announced it.",
+  }}
+  signals={[
+    {
+      line: "A state DOI just rejected our policy form filing.",
+      body: "Tactical, immediate. A rejection usually means the variant content didn't match the state's most current rate filing requirements, the form references a stale endorsement library, or the version submitted was a parallel-maintained file that drifted from the approved baseline. The fix is in the variant-management architecture, not in the rewrite.",
+    },
+    {
+      line: "We acquired another carrier and now have two parallel policy form libraries.",
+      body: "Strategic, post-M&A. Two carriers usually means two CCMS platforms (or two sets of Word documents), two filing-tracking systems, and two sets of state variants. Consolidation requires a target architecture before any conversion runs.",
+    },
+    {
+      line: "Our claims-handling AI assistant is giving adjusters inconsistent guidance.",
+      body: "Operational, AI-readiness. RAG over claims-handling guidelines fails when the source content has implicit policy-procedure linkage that the chunking strategy breaks. Provenance metadata has to survive the pipeline; otherwise the assistant cites the wrong jurisdiction's guideline.",
+    },
+    {
+      line: "Our underwriting manuals are 200+ pages and underwriters can't find what they need.",
+      body: "Operational, retrieval. Long-form underwriting content with weak structural hierarchy creates retrieval problems for both humans and AI assistants. Restructuring into topic-based content with controlled vocabulary makes both findable.",
+    },
+  ]}
+  capabilityRelevance={[
+    {
+      pillarLabel: "Information Architecture",
+      pillarHref: "/capabilities/information-architecture",
+      context: "Profiling and conditional-content architecture for state-by-state policy form variation; controlled vocabulary aligned to ACORD where applicable.",
+      engagementShape: "Typically Project-Based — IA design with explicit acceptance criteria against the variant-management requirements.",
+    },
+    {
+      pillarLabel: "Content Migration",
+      pillarHref: "/capabilities/content-migration",
+      context: "Consolidation of policy form libraries — often the carrier's most fragmented content estate. Migration to a single source with audit-grade variant control.",
+      engagementShape: "Project-Based — fixed scope, conversion-fidelity acceptance criteria, often post-M&A.",
+    },
+    {
+      pillarLabel: "CCMS & Publishing",
+      pillarHref: "/capabilities/ccms-and-publishing",
+      context: "Strong in this vertical. Carriers run policy form libraries across states and product lines; CCMS configuration handles the variant assembly.",
+      engagementShape: "Project-Based for the implementation; Managed Services for ongoing administration of state-filing-driven content updates.",
+    },
+    {
+      pillarLabel: "AI-Ready Content",
+      pillarHref: "/capabilities/ai-ready-content",
+      context: "Growing fast. RAG over claims-handling guidelines for adjuster assistants is one of the most active 2025 use cases in the vertical — and a place where content-engineering discipline determines whether the assistant is auditable.",
+      engagementShape: "Often starts as Staff Augmentation during exploratory work; converts to Project-Based once the architecture firms up.",
+    },
+  ]}
+  caseStudies={[
+    {
+      framing: "A multi-state carrier consolidating policy form libraries across product lines.",
+      body: "Single-source authoring with state-variant profiling replaced parallel document maintenance across 30+ jurisdictions. Filing-readiness cycles compressed; variant tracking moved from spreadsheets to audit-grade content metadata.",
+    },
+    {
+      framing: "An insurance platform provider engineering claims-handling content for adjuster-assistant deployment.",
+      body: "Claims-handling guidelines architected for retrieval — chunking strategy preserved policy-procedure linkage, metadata supported provenance tracking through the AI pipeline. Evaluation harness caught retrieval drift before adjuster-facing rollout.",
+    },
+  ]}
+  ctaBody="Submit a 20-page sample (policy form, claims-handling guideline, or underwriting manual). We'll return a content-readiness assessment focused on the variant management and retrieval-readiness questions specific to this vertical. Two business days, no obligation to proceed."
+/>

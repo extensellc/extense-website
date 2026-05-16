@@ -1,0 +1,213 @@
+---
+import ServicePageLayout from "../../layouts/ServicePageLayout.astro";
+---
+
+<ServicePageLayout
+  modelId="project"
+  modelHref="/services/project-based"
+  pageTitle="Project-Based Engagements — Services — Extense LLC"
+  pageDescription="Project-Based engagements run against a Statement of Work with fixed scope, fixed fee, defined endpoint, and explicit acceptance criteria. The default shape for IA refactors, migration programs, CCMS implementations, and discrete deliverables."
+  heroTitle="Project-Based"
+  heroSubdeck="Fixed scope. Fixed fee. Defined endpoint. The structure when the work has a clear deliverable, a firm schedule, and procurement wants a Statement of Work with explicit acceptance criteria."
+  narrative={[
+    {
+      text: "Project-Based engagements run against a Statement of Work — a signed document that names the deliverables, the acceptance criteria, the milestones, the fee, and the schedule. Once signed, the scope is fixed; changes go through a written change-order process. The contractual structure carries the risk allocation: Extense carries execution risk against the fee, the client carries scope-definition risk against the acceptance criteria.",
+    },
+    {
+      text: "Operationally, the engagement runs to milestones. Kickoff at week zero. Working sessions through execution. A midpoint review where deliverables-so-far get inspected against the acceptance criteria. A final acceptance gate. A closeout handover. Most engagements add weekly status reports against the milestone plan; large engagements add a steering-committee cadence.",
+    },
+    {
+      text: "Acceptance criteria are the contractual hinge. They define what \"done\" means in a way both sides can verify — conversion-fidelity thresholds, validation against target schemas, named outputs landed in named systems. Vague acceptance criteria are how Project-Based engagements fail; written ones are how they succeed.",
+    },
+    {
+      text: "Project-Based is the default shape for any discrete body of work with a clear endpoint: IA refactors, migration programs, CCMS implementations, schema designs, AI-readiness pilots. It's not the right shape for ongoing operations, exploratory work, or anything where the deliverables aren't knowable up front. Those belong in Staff Augmentation or Managed Services.",
+    },
+  ]}
+  document={{
+    docRef: "Statement of Work · SOW-2026-XXXX",
+    title: "Statement of Work",
+    tagline: "The contractual instrument for Project-Based engagements.",
+    formLabel: "SOW v3.2",
+    pages: [
+      {
+        chapter: "Page 1 / 5 — The Work",
+        fields: [
+          {
+            label: "Scope",
+            value: "The bounded body of work, named in 2–3 sentences. Example: information architecture redesign and DITA migration of the regulated-IFU content estate covering 14 device families across 5 markets.",
+          },
+          {
+            label: "Deliverables",
+            value: "Named outputs that have to land in named systems by named dates. Comma-separated, scannable. Example: content model, migration toolchain, ~60,000 topic conversion, author runbook.",
+          },
+        ],
+      },
+      {
+        chapter: "Page 2 / 5 — Acceptance & Term",
+        fields: [
+          {
+            label: "Acceptance Criteria",
+            value: "Verifiable thresholds and conformance tests. Define \"done\" in a way both sides can audit independently — schema validation, fidelity percentages, named outputs in named systems.",
+          },
+          {
+            label: "Term",
+            value: "Effective date and end date. Milestone schedule with named dates for kickoff, midpoint review, acceptance, and closeout.",
+          },
+        ],
+      },
+      {
+        chapter: "Page 3 / 5 — Commercial Terms",
+        fields: [
+          {
+            label: "Fee",
+            value: "Fixed amount. Typical range: $50K – $500K for discrete engagements; $250K – $1.5M for multi-pillar transformation programs. Payment schedule example: 30% kickoff / 40% midpoint / 30% on acceptance.",
+          },
+          {
+            label: "Change Management",
+            value: "Written change orders required for scope additions, deliverable modifications, or schedule changes. Out-of-scope work runs at a published T&M rate or as a new SOW.",
+          },
+        ],
+      },
+      {
+        chapter: "Page 4 / 5 — Governance & Warranty",
+        fields: [
+          {
+            label: "Governance",
+            value: "Status reporting cadence (typically weekly). Steering-committee escalation path. Decision-making authorities named for both sides.",
+          },
+          {
+            label: "Warranty",
+            value: "Defects in delivered work corrected at no cost for a defined period after acceptance. Period varies by engagement type and is named in the SOW.",
+          },
+        ],
+      },
+      {
+        chapter: "Page 5 / 5 — Rights & Exit",
+        fields: [
+          {
+            label: "IP & Confidentiality",
+            value: "Work product assigned to Client on acceptance and final payment. Pre-existing Extense IP licensed under standard terms. NDA-bounded handling of Client content.",
+          },
+          {
+            label: "Termination",
+            value: "For convenience by either party with notice; fee owed for work completed to date. For cause on material breach with cure period.",
+          },
+        ],
+      },
+    ],
+  }}
+  phases={[
+    {
+      label: "Kickoff (Week 0)",
+      description: "Joint working session: scope walkthrough, milestone confirmation, stakeholder map, access provisioning, signed kickoff document. Both sides agree what \"done\" looks like before execution starts.",
+    },
+    {
+      label: "Execution (Weeks 1 → midpoint)",
+      description: "Production work against the deliverable schedule. Weekly status reports against the milestone plan. Joint working sessions on the cadence agreed in kickoff.",
+    },
+    {
+      label: "Midpoint Review",
+      description: "Deliverables-so-far inspected against acceptance criteria. Course corrections via written change order if scope adjustments are needed. Re-baseline if a milestone slips.",
+    },
+    {
+      label: "Acceptance",
+      description: "Final deliverables submitted. Client tests against acceptance criteria. Sign-off on the named acceptance form. Final payment milestone triggers.",
+    },
+    {
+      label: "Closeout / Handover",
+      description: "Runbook delivered. Operational knowledge transferred. Source artifacts in Client repositories. Engagement formally closed.",
+    },
+  ]}
+  inScope={[
+    {
+      label: "Named deliverables in the SOW",
+      description: "Every output explicitly listed and bounded.",
+    },
+    {
+      label: "Milestone reviews and acceptance testing",
+      description: "Joint inspection sessions and acceptance-criteria verification.",
+    },
+    {
+      label: "Status reporting at the agreed cadence",
+      description: "Weekly reports against the milestone plan; steering committee for larger engagements.",
+    },
+    {
+      label: "Standard warranty period after acceptance",
+      description: "Defects in delivered work corrected at no cost for the defined warranty window.",
+    },
+    {
+      label: "Named tools, standards, and environments",
+      description: "Everything called out in the SOW's scope and tooling sections.",
+    },
+  ]}
+  outOfScope={[
+    {
+      label: "Post-acceptance support",
+      description: "Operating or administering the delivered system beyond the warranty period — handled under a separate Managed Services agreement.",
+    },
+    {
+      label: "Scope expansion or new deliverables",
+      description: "Handled via written change order. Out-of-scope work runs at a published T&M rate or as a new SOW.",
+    },
+    {
+      label: "Adjacent capability work",
+      description: "Anything not named in the SOW — separate scope, separate document.",
+    },
+    {
+      label: "Post-handover operations",
+      description: "Once the engagement closes and the runbook is accepted, ongoing operations are the Client's responsibility unless contracted separately.",
+    },
+  ]}
+  signals={[
+    {
+      line: "We have a clear deliverable and procurement wants a fixed price.",
+      body: "When the work has a knowable scope and verifiable acceptance criteria — IA refactor, migration program, CCMS implementation — Project-Based is the structure procurement is most comfortable with. Fixed fee de-risks the budget; explicit acceptance criteria de-risk the delivery.",
+    },
+    {
+      line: "We have a regulatory or business deadline.",
+      body: "Fixed-fee structure with milestone payments concentrates execution against a schedule everyone signed. Slipping a milestone has a named contractual consequence; that creates the right kind of pressure.",
+    },
+    {
+      line: "Previous vendors didn't finish what they started.",
+      body: "Failed projects usually fail because scope was unclear or constantly changing. An SOW with explicit acceptance criteria binds the scope. The work either meets the criteria or it doesn't — there's no interpretive middle ground.",
+    },
+    {
+      line: "We want a finite engagement with a clean exit.",
+      body: "Strategic preference for finite contracts. Project-Based engagements deliver and end; ongoing operations, if needed, become a separate Managed Services decision rather than an automatic continuation.",
+    },
+  ]}
+  failureModes={[
+    {
+      eyebrow: "ANTI-PATTERN",
+      heading: "Project-Based for ongoing operations.",
+      body: "Operating a CCMS, running a publishing pipeline, governing a schema — these aren't projects. Forcing them into Project-Based SOWs produces a treadmill of fixed-scope renewals every quarter, each one a fresh negotiation, none of them stable. Managed Services is the right shape.",
+    },
+    {
+      eyebrow: "ANTI-PATTERN",
+      heading: "Project-Based for exploratory work.",
+      body: "When the deliverable can't be defined up front — early-stage RAG enablement, schema discovery, evaluating tooling — fixing the scope in advance forces commitment to outputs that can't yet be named. Staff Augmentation carries that uncertainty more honestly.",
+    },
+    {
+      eyebrow: "ANTI-PATTERN",
+      heading: "Project-Based with vague acceptance criteria.",
+      body: "If \"done\" is loosely defined, Project-Based engagements drift — either toward change-order maximalism (every clarification becomes a paid add) or toward fixed-fee underdelivery (scope contracts to whatever can be done within budget). The hinge is the acceptance criteria; they have to be verifiable.",
+    },
+  ]}
+  vignettes={[
+    {
+      framing: "A Class III medical-device IFU consolidation.",
+      body: "12-week project SOW. Fixed fee against named deliverables: content model design, migration toolchain, ~60,000 topic conversion, runbook. Acceptance criteria included a 99.5% conversion-fidelity threshold validated against target DTD. Delivered on schedule; warranty period closed cleanly six weeks after acceptance.",
+    },
+    {
+      framing: "A defense documentation S1000D conformance refactor.",
+      body: "16-week project SOW with two milestone reviews. Scope: re-architect existing content base to S1000D Issue 5.0 conformance. Acceptance criteria: full conformance against issue-5.0 schema validator plus passing a representative deliverable cycle through Client's publishing pipeline. Delivered with one approved change order for an unanticipated subset of legacy content.",
+    },
+  ]}
+  related={[
+    { label: "Compare to Staff Augmentation", href: "/services/staff-augmentation" },
+    { label: "Compare to Managed Services", href: "/services/managed-services" },
+    { label: "Information Architecture engagements", href: "/capabilities/information-architecture" },
+    { label: "Content Migration engagements", href: "/capabilities/content-migration" },
+  ]}
+  ctaBody="Submit a scope brief — a paragraph describing the work, the desired outcome, and any constraints. We'll return a representative Statement of Work with deliverables, acceptance criteria, and a fixed-fee estimate within five business days. No obligation to proceed."
+/>

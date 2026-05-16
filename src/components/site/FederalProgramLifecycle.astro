@@ -1,0 +1,312 @@
+---
+/*
+  FederalProgramLifecycle — Government & Defense vertical visualization.
+
+  Centerpiece for /industries/government-and-defense. Two horizontal tracks
+  stacked vertically, each showing the milestones where federal documentation
+  gets tested in that register (defense program lifecycle vs civilian agency
+  content lifecycle). Same horizontal sequence axis (left = early, right =
+  late). Each marker tags the documentation deliverable required at that gate.
+
+  Visual treatment shares the brand-distinctive document-grade language
+  (hairline construction, mono labels, sparing #fcd34d for active markers)
+  but introduces a track-pair shape distinct from the AuditCycle 3-lane
+  timeline and the VariantPolicyForm artifact panel.
+
+  Defense track uses solid amber markers (audit-gated, firm).
+  Civilian track uses outlined amber markers (process-driven, less rigid).
+
+  Build-in animation triggered once when scrolled into view.
+*/
+
+interface Milestone {
+  /** 0-100 percentage on the track */
+  position: number;
+  /** Short milestone name shown above the marker */
+  name: string;
+  /** Documentation deliverable shown below the marker */
+  deliverable: string;
+}
+
+interface Track {
+  label: string;
+  /** Marker visual: solid (audit-gated, firm) or outlined (process-driven) */
+  variant: "solid" | "outlined";
+  milestones: Milestone[];
+}
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  tracks: Track[];
+  footnote: string;
+}
+
+const { eyebrow, heading, lead, tracks, footnote } = Astro.props;
+---
+
+<section class="fpl-section" aria-labelledby="fpl-heading">
+  <div class="container-data fpl-section__inner">
+    <p class="eyebrow fpl-section__eyebrow">{eyebrow}</p>
+    <h2 id="fpl-heading" class="fpl-section__heading">{heading}</h2>
+    <p class="fpl-section__lead">{lead}</p>
+
+    <figure class="fpl" id="fpl" aria-label="Federal program lifecycle">
+      <div class="fpl__chart">
+        {tracks.map((track, trackIdx) => (
+          <div
+            class:list={["fpl__track", `fpl__track--${track.variant}`]}
+            data-track-index={trackIdx}
+          >
+            <span class="fpl__track-label">{track.label}</span>
+            <div class="fpl__track-plot">
+              <div class="fpl__track-line" aria-hidden="true"></div>
+              {track.milestones.map((m, mIdx) => (
+                <div
+                  class="fpl__milestone"
+                  data-milestone-index={mIdx}
+                  style={`left: ${m.position}%; transition-delay: ${480 + trackIdx * 120 + mIdx * 100}ms`}
+                >
+                  <span class="fpl__milestone-name">{m.name}</span>
+                  <span class="fpl__milestone-marker" aria-hidden="true"></span>
+                  <span class="fpl__milestone-deliverable">{m.deliverable}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <figcaption class="fpl__footnote">{footnote}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .fpl-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .fpl-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .fpl-section__eyebrow {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .fpl-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+    text-wrap: balance;
+  }
+
+  .fpl-section__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-12);
+    text-wrap: pretty;
+    max-width: 75ch;
+  }
+
+  .fpl {
+    margin: 0;
+    padding: 0;
+  }
+
+  .fpl__chart {
+    padding: var(--space-4) 0 var(--space-6);
+  }
+
+  .fpl__track {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-6);
+    align-items: center;
+    padding: var(--space-12) 0;
+    border-top: var(--border-hairline);
+  }
+
+  .fpl__track:last-of-type {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (max-width: 599px) {
+    .fpl__track {
+      grid-template-columns: 110px 1fr;
+      gap: var(--space-3);
+    }
+  }
+
+  .fpl__track-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    /* Build-in: hidden until is-built */
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity 240ms cubic-bezier(0, 0, 0.2, 1),
+      transform 240ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .fpl__track-plot {
+    position: relative;
+    min-height: 100px;
+  }
+
+  .fpl__track-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-border-subtle);
+    transition: width 600ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .fpl__milestone {
+    position: absolute;
+    top: 0;
+    /* Center on the position */
+    transform: translateX(-50%);
+    width: 130px;
+    text-align: center;
+    /* Build-in: hidden until is-built; per-marker delay set inline */
+    opacity: 0;
+    transition:
+      opacity 240ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .fpl__milestone-name {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+    line-height: 1.3;
+    min-height: 28px;
+  }
+
+  .fpl__milestone-marker {
+    display: block;
+    width: 3px;
+    height: 18px;
+    margin: 0 auto;
+    border-radius: 1px;
+    background-color: #fcd34d;
+  }
+
+  .fpl__track--outlined .fpl__milestone-marker {
+    background-color: transparent;
+    border: 1.5px solid #fcd34d;
+    width: 6px;
+    /* Center the wider outlined marker on the same axis */
+    margin: 0 auto;
+  }
+
+  .fpl__milestone-deliverable {
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13.5px;
+    color: var(--color-text-secondary);
+    line-height: 1.35;
+    margin-top: var(--space-3);
+    text-wrap: pretty;
+  }
+
+  .fpl__footnote {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    max-width: 75ch;
+  }
+
+  /* ─── Build-in animation: cascade once is-built is added ─── */
+  .fpl.is-built .fpl__track-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .fpl.is-built .fpl__track[data-track-index="0"] .fpl__track-label { transition-delay: 0ms; }
+  .fpl.is-built .fpl__track[data-track-index="1"] .fpl__track-label { transition-delay: 120ms; }
+
+  .fpl.is-built .fpl__track-line {
+    width: 100%;
+  }
+  .fpl.is-built .fpl__track[data-track-index="0"] .fpl__track-line { transition-delay: 240ms; }
+  .fpl.is-built .fpl__track[data-track-index="1"] .fpl__track-line { transition-delay: 360ms; }
+
+  .fpl.is-built .fpl__milestone {
+    opacity: 1;
+    /* per-marker transition-delay set inline in template */
+  }
+
+  /* Reduced motion: show everything at rest, no transitions */
+  @media (prefers-reduced-motion: reduce) {
+    .fpl__track-label,
+    .fpl__milestone {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .fpl__milestone {
+      transform: translateX(-50%);
+    }
+    .fpl__track-line {
+      width: 100%;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  const fpl = document.getElementById('fpl');
+  if (!fpl) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    fpl.classList.add('is-built');
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        fpl.classList.add('is-built');
+        observer.disconnect();
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -10% 0px',
+  });
+
+  observer.observe(fpl);
+})();
+</script>

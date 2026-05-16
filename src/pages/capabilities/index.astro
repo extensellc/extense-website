@@ -31,24 +31,32 @@ const pillars = [
   {
     pillar: "ia" as const,
     name: "Information Architecture",
+    /* Link label shortened from the auto-generated "Explore
+       Information Architecture" so it fits on a single line in the
+       246 px-wide pillar card and visually aligns with the other
+       three single-line CTAs. */
+    linkLabel: "Explore Info Architecture",
     scope: "The schema, taxonomy, and reuse strategy that determine what every downstream system can do.",
     href: "/capabilities/information-architecture",
   },
   {
     pillar: "migration" as const,
     name: "Content Migration",
+    linkLabel: "Explore Content Migration",
     scope: "The recovery operation. Convert legacy content into reusable assets at the start of any modernization.",
     href: "/capabilities/content-migration",
   },
   {
     pillar: "ccms" as const,
     name: "CCMS & Publishing",
+    linkLabel: "Explore CCMS & Publishing",
     scope: "The operating system plus the CI/CD that makes structured content pay back daily.",
     href: "/capabilities/ccms-and-publishing",
   },
   {
     pillar: "ai-ready" as const,
     name: "AI-Ready Content",
+    linkLabel: "Explore AI-Ready Content",
     scope: "The translation layer between structured documentation and the AI systems that consume it.",
     href: "/capabilities/ai-ready-content",
   },
@@ -88,14 +96,20 @@ const engagementShapes = [
   <section class="cap-section cap-section--matrix" aria-labelledby="matrix-heading">
     <div class="container-data cap-section__inner">
       <div class="cap-section__matrix-intro">
+        <p class="eyebrow cap-section__matrix-eyebrow">The matrix</p>
+        <h2 id="matrix-heading" class="cap-section__matrix-heading">
+          The shape of an engagement.
+        </h2>
         <p class="cap-section__intro-text">
           Each pillar concentrates work in different methodology phases. The shape of an Extense engagement is how those distributions overlap.
         </p>
       </div>
-      <h2 id="matrix-heading" class="sr-only">Pillar work distribution across methodology phases</h2>
       <PhaseWeightMatrix />
     </div>
   </section>
+
+  <div class="cap-thread-wrapper" id="cap-thread-wrapper">
+    <div class="cap-thread" id="cap-thread" aria-hidden="true" role="presentation"></div>
 
   <section class="cap-section cap-section--narrative" aria-labelledby="narrative-heading">
     <div class="container-prose cap-section__inner">
@@ -167,12 +181,14 @@ const engagementShapes = [
     </div>
   </section>
 
+  </div>{/* end cap-thread-wrapper */}
+
   <section class="cap-section cap-section--pillar-pivot" aria-labelledby="pillar-pivot-heading">
     <div class="container-data cap-section__inner">
-      <h2 id="pillar-pivot-heading" class="cap-section__heading">Go deeper on a single pillar.</h2>
+      <h2 id="pillar-pivot-heading" class="cap-section__heading">Go <em>deep</em> on a single pillar.</h2>
       <div class="cap-section__pillar-grid">
         {pillars.map((p) => (
-          <PillarCard pillar={p.pillar} name={p.name} scope={p.scope} href={p.href} />
+          <PillarCard pillar={p.pillar} name={p.name} scope={p.scope} href={p.href} linkLabel={p.linkLabel} />
         ))}
       </div>
     </div>
@@ -180,6 +196,7 @@ const engagementShapes = [
 
   <CTAModule
     audience="general"
+    compact
     body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any engagement scope, single-pillar through full lifecycle."
   />
 </BaseLayout>
@@ -188,6 +205,16 @@ const engagementShapes = [
   .cap-section {
     padding-top: var(--section-pad-default);
     padding-bottom: var(--section-pad-default);
+    /* Hairline section divider above every cap-section. Matches the
+       section-rhythm used across the four Solutions sub-pages and
+       gives the page document-grade structure between sections. */
+    border-top: var(--border-hairline);
+  }
+
+  /* The last cap-section (pillar pivot) carries a border-bottom too,
+     so the transition to the CTA reads as a clean boundary. */
+  .cap-section--pillar-pivot {
+    border-bottom: var(--border-hairline);
   }
 
   @media (max-width: 767px) {
@@ -217,6 +244,24 @@ const engagementShapes = [
     margin-bottom: var(--space-12);
   }
 
+  /* Matrix eyebrow + heading: match the eyebrow + principle pattern
+     used in the Solutions sub-pages' pipeline manifesto blocks. */
+  .cap-section__matrix-eyebrow {
+    margin: 0 0 var(--space-6) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .cap-section__matrix-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+
   .cap-section__intro-text {
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
@@ -235,6 +280,11 @@ const engagementShapes = [
     color: var(--color-text-primary);
     margin-bottom: var(--space-8);
     text-wrap: balance;
+  }
+  /* Italic emphasis support inside cap-section headings (used on the
+     pillar-pivot heading "Go deep on a single pillar"). */
+  .cap-section__heading em {
+    font-style: italic;
   }
 
   .cap-section__prose p {
@@ -345,4 +395,124 @@ const engagementShapes = [
       gap: var(--space-8);
     }
   }
+
+  /* ─────────────────────────────────────────────────────────
+     Scroll thread — same amber line pattern used on the four
+     /capabilities/[pillar] pages, spanning narrative → shape.
+     ───────────────────────────────────────────────────────── */
+  .cap-thread-wrapper {
+    position: relative;
+  }
+
+  .cap-thread {
+    position: absolute;
+    width: 2px;
+    height: 0;
+    background-color: var(--color-accent-primary);
+    border-radius: 1px;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+
+  @media (max-width: 599px) {
+    .cap-thread {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cap-thread {
+      display: none;
+    }
+  }
 </style>
+
+<script>
+(function () {
+  const wrapper = document.getElementById('cap-thread-wrapper');
+  const thread = document.getElementById('cap-thread');
+  if (!wrapper || !thread) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.innerWidth < 600) return;
+
+  let dotScrollY = 0;
+  let lineStartY = 0;
+  let lineEndY = 0;
+  let lineHeight = 0;
+
+  function measure() {
+    const heading = document.getElementById('narrative-heading');
+    if (!heading) return;
+
+    const shapeBodies = wrapper.querySelectorAll('.cap-section__shape-body');
+    const lastEl = shapeBodies.length > 0
+      ? shapeBodies[shapeBodies.length - 1]
+      : wrapper.querySelectorAll('.cap-section')[wrapper.querySelectorAll('.cap-section').length - 1];
+    if (!lastEl) return;
+
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const headingRect = heading.getBoundingClientRect();
+    const endRect    = lastEl.getBoundingClientRect();
+
+    const topInWrapper  = headingRect.top  - wrapperRect.top;
+    const leftInWrapper = headingRect.left - wrapperRect.left;
+    const endInWrapper  = endRect.bottom   - wrapperRect.top;
+
+    lineHeight = endInWrapper - topInWrapper;
+
+    thread.style.top  = topInWrapper  + 'px';
+    thread.style.left = (leftInWrapper - 32) + 'px';
+
+    const headingAbsTop = headingRect.top + window.scrollY;
+    const endAbsBottom  = wrapperRect.top + window.scrollY + endInWrapper;
+
+    dotScrollY = headingAbsTop - window.innerHeight * 0.92;
+    lineStartY = headingAbsTop - window.innerHeight * 0.55;
+    lineEndY   = endAbsBottom  - window.innerHeight * 0.2;
+  }
+
+  function update() {
+    const sy = window.scrollY;
+
+    if (sy < dotScrollY) {
+      thread.style.opacity = '0';
+      thread.style.height  = '0px';
+      return;
+    }
+
+    thread.style.opacity = '0.8';
+
+    if (sy <= lineStartY) {
+      thread.style.height = '6px';
+      return;
+    }
+
+    const range = lineEndY - lineStartY;
+    const p = range > 0 ? Math.min(1, (sy - lineStartY) / range) : 1;
+    thread.style.height = Math.max(6, lineHeight * p) + 'px';
+  }
+
+  function init() {
+    measure();
+    update();
+  }
+
+  if (document.readyState === 'complete') {
+    init();
+  } else {
+    window.addEventListener('load', init);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth < 600) {
+      thread.style.opacity = '0';
+      return;
+    }
+    measure();
+    update();
+  }, { passive: true });
+})();
+</script>

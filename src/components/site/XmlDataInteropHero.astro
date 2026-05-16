@@ -1,0 +1,535 @@
+---
+/*
+  XmlDataInteropHero — hero for /solutions/xml-data-interoperability.
+
+  Two-column layout (60/40 desktop, single column mobile):
+    LEFT  — kicker, "One fact. Every system." thesis, hairline, body
+            paragraph naming the canonical schema and bidirectional
+            transformation patterns.
+    RIGHT — animated "fabric" diagram: 5 input system rects (CCMS,
+            PIM, ERP, CMS, XML) converge through an amber thread into
+            a CANONICAL XML hub, then diverge through a horizontal
+            bar into 5 system endpoint outputs (REST, GraphQL, JSON,
+            RDF, PDF).
+
+  Sister diagram to TDP starburst and Migration funnel. Where TDP
+  shows one source proliferating to many output formats and Migration
+  shows many sources converging to one repository, Interop shows the
+  bidirectional flow: many systems on top, canonical schema in the
+  middle, many systems below — same fact, every dialect.
+
+  Animation: same vocabulary as TDP/Migration heroes. Viewport-
+  triggered cascade adds `.drawn` to the SVG; per-element delays
+  staggered so the diagram assembles itself top-to-bottom.
+
+  prefers-reduced-motion: static render, no animation.
+*/
+---
+
+<section class="interop-hero">
+  <div class="interop-hero__inner">
+    <div class="interop-hero__text">
+      <p class="interop-hero__kicker">
+        NORMALIZE<span class="interop-hero__dot">·</span>VALIDATE<span class="interop-hero__dot">·</span>BRIDGE<span class="interop-hero__dot">·</span>QUERY
+      </p>
+      <h1 class="interop-hero__title">
+        One fact. <em>Every system.</em>
+      </h1>
+      <hr class="interop-hero__rule" />
+      <p class="interop-hero__body">
+        A canonical XML schema between CCMS, PIM, ERP, CMS, LMS, and the legacy repositories. Bidirectional XSLT and XQuery transforms, REST and GraphQL exposure, and event-driven propagation keep every downstream consumer reading the same paragraph in the dialect it expects.
+      </p>
+    </div>
+
+    <div class="interop-hero__visual">
+      <svg
+        class="fabric-svg"
+        id="interop-fabric"
+        viewBox="0 0 320 460"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <!-- Corner registration marks (amber chrome) -->
+        <g class="corner corner--accent" style="--d: 0ms">
+          <path d="M 10 20 L 10 10 L 20 10" />
+          <path d="M 300 10 L 310 10 L 310 20" />
+          <path d="M 10 440 L 10 450 L 20 450" />
+          <path d="M 300 450 L 310 450 L 310 440" />
+        </g>
+
+        <!-- Top chrome: input source systems -->
+        <text class="chrome" x="30" y="22" style="--d: 80ms">in :: ccms,pim,erp,cms,legacy</text>
+
+        <!-- 5 input system rects in a row at top -->
+        <g class="input-doc-group" style="--d: 200ms">
+          <rect class="input-doc" x="20" y="44" width="48" height="56" />
+          <text class="input-doc-label" x="44" y="58" text-anchor="middle">CCMS</text>
+          <line class="input-line" x1="26" y1="68" x2="62" y2="68" />
+          <line class="input-line" x1="26" y1="76" x2="58" y2="76" />
+          <line class="input-line" x1="26" y1="84" x2="62" y2="84" />
+          <line class="input-line" x1="26" y1="92" x2="54" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 240ms">
+          <rect class="input-doc" x="76" y="44" width="48" height="56" />
+          <text class="input-doc-label" x="100" y="58" text-anchor="middle">PIM</text>
+          <line class="input-line" x1="82" y1="68" x2="118" y2="68" />
+          <line class="input-line" x1="82" y1="76" x2="114" y2="76" />
+          <line class="input-line" x1="82" y1="84" x2="118" y2="84" />
+          <line class="input-line" x1="82" y1="92" x2="110" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 280ms">
+          <rect class="input-doc" x="132" y="44" width="48" height="56" />
+          <text class="input-doc-label" x="156" y="58" text-anchor="middle">ERP</text>
+          <line class="input-line" x1="138" y1="68" x2="174" y2="68" />
+          <line class="input-line" x1="138" y1="76" x2="170" y2="76" />
+          <line class="input-line" x1="138" y1="84" x2="174" y2="84" />
+          <line class="input-line" x1="138" y1="92" x2="166" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 320ms">
+          <rect class="input-doc" x="188" y="44" width="48" height="56" />
+          <text class="input-doc-label" x="212" y="58" text-anchor="middle">CMS</text>
+          <line class="input-line" x1="194" y1="68" x2="230" y2="68" />
+          <line class="input-line" x1="194" y1="76" x2="226" y2="76" />
+          <line class="input-line" x1="194" y1="84" x2="230" y2="84" />
+          <line class="input-line" x1="194" y1="92" x2="222" y2="92" />
+        </g>
+        <g class="input-doc-group" style="--d: 360ms">
+          <rect class="input-doc" x="244" y="44" width="48" height="56" />
+          <text class="input-doc-label" x="268" y="58" text-anchor="middle">XML</text>
+          <line class="input-line" x1="250" y1="68" x2="286" y2="68" />
+          <line class="input-line" x1="250" y1="76" x2="282" y2="76" />
+          <line class="input-line" x1="250" y1="84" x2="286" y2="84" />
+          <line class="input-line" x1="250" y1="92" x2="278" y2="92" />
+        </g>
+
+        <!-- Convergence lines: each input bottom-center -> (160, 134) -->
+        <path class="converge" d="M 44  100 L 160 134" style="--d: 540ms" />
+        <path class="converge" d="M 100 100 L 160 134" style="--d: 540ms" />
+        <path class="converge" d="M 156 100 L 160 134" style="--d: 540ms" />
+        <path class="converge" d="M 212 100 L 160 134" style="--d: 540ms" />
+        <path class="converge" d="M 268 100 L 160 134" style="--d: 540ms" />
+
+        <!-- Amber transformation thread + tip into CANONICAL XML box -->
+        <path class="amber-thread" d="M 160 134 L 160 195" style="--d: 760ms" />
+        <path class="amber-tip" d="M 155 195 L 160 202 L 165 195 Z" style="--d: 760ms" />
+
+        <!-- CANONICAL XML hub -->
+        <rect class="schema" x="80" y="204" width="160" height="90" style="--d: 1100ms" />
+        <text class="schema-label" x="160" y="222" text-anchor="middle" style="--d: 1100ms">CANONICAL XML</text>
+
+        <!-- Schema internals: abstract canonical-element cells -->
+        <g class="schema-elements" style="--d: 1280ms">
+          <rect class="schema-elem" x="92"  y="236" width="44" height="16" />
+          <rect class="schema-elem" x="140" y="236" width="40" height="16" />
+          <rect class="schema-elem" x="184" y="236" width="44" height="16" />
+          <rect class="schema-elem" x="92"  y="260" width="40" height="16" />
+          <rect class="schema-elem" x="136" y="260" width="48" height="16" />
+          <rect class="schema-elem" x="188" y="260" width="40" height="16" />
+        </g>
+
+        <!-- Output divergence: trunk down + horizontal bar + 5 drops -->
+        <path class="output-line" d="M 160 294 L 160 314" style="--d: 1640ms" />
+        <path class="output-line" d="M 44 314 L 268 314" style="--d: 1720ms" />
+        <path class="output-line" d="M 44  314 L 44  334" style="--d: 1800ms" />
+        <path class="output-line" d="M 100 314 L 100 334" style="--d: 1800ms" />
+        <path class="output-line" d="M 156 314 L 156 334" style="--d: 1800ms" />
+        <path class="output-line" d="M 212 314 L 212 334" style="--d: 1800ms" />
+        <path class="output-line" d="M 268 314 L 268 334" style="--d: 1800ms" />
+
+        <!-- 5 output system endpoints in a row at bottom -->
+        <g class="output" style="--d: 1920ms">
+          <rect class="output-box" x="20"  y="334" width="48" height="56" />
+          <text class="output-label" x="44"  y="348" text-anchor="middle">REST</text>
+          <line class="output-line-internal" x1="26" y1="358" x2="62" y2="358" />
+          <line class="output-line-internal" x1="26" y1="366" x2="58" y2="366" />
+          <line class="output-line-internal" x1="26" y1="374" x2="62" y2="374" />
+          <line class="output-line-internal" x1="26" y1="382" x2="54" y2="382" />
+        </g>
+        <g class="output" style="--d: 1980ms">
+          <rect class="output-box" x="76"  y="334" width="48" height="56" />
+          <text class="output-label" x="100" y="348" text-anchor="middle">GraphQL</text>
+          <line class="output-line-internal" x1="82" y1="358" x2="118" y2="358" />
+          <line class="output-line-internal" x1="82" y1="366" x2="114" y2="366" />
+          <line class="output-line-internal" x1="82" y1="374" x2="118" y2="374" />
+          <line class="output-line-internal" x1="82" y1="382" x2="110" y2="382" />
+        </g>
+        <g class="output" style="--d: 2040ms">
+          <rect class="output-box" x="132" y="334" width="48" height="56" />
+          <text class="output-label" x="156" y="348" text-anchor="middle">JSON</text>
+          <line class="output-line-internal" x1="138" y1="358" x2="174" y2="358" />
+          <line class="output-line-internal" x1="138" y1="366" x2="170" y2="366" />
+          <line class="output-line-internal" x1="138" y1="374" x2="174" y2="374" />
+          <line class="output-line-internal" x1="138" y1="382" x2="166" y2="382" />
+        </g>
+        <g class="output" style="--d: 2100ms">
+          <rect class="output-box" x="188" y="334" width="48" height="56" />
+          <text class="output-label" x="212" y="348" text-anchor="middle">RDF</text>
+          <line class="output-line-internal" x1="194" y1="358" x2="230" y2="358" />
+          <line class="output-line-internal" x1="194" y1="366" x2="226" y2="366" />
+          <line class="output-line-internal" x1="194" y1="374" x2="230" y2="374" />
+          <line class="output-line-internal" x1="194" y1="382" x2="222" y2="382" />
+        </g>
+        <g class="output" style="--d: 2160ms">
+          <rect class="output-box" x="244" y="334" width="48" height="56" />
+          <text class="output-label" x="268" y="348" text-anchor="middle">PDF</text>
+          <line class="output-line-internal" x1="250" y1="358" x2="286" y2="358" />
+          <line class="output-line-internal" x1="250" y1="366" x2="282" y2="366" />
+          <line class="output-line-internal" x1="250" y1="374" x2="286" y2="374" />
+          <line class="output-line-internal" x1="250" y1="382" x2="278" y2="382" />
+        </g>
+
+        <!-- Bottom chrome: figure caption + validation status -->
+        <line class="chrome-rule" x1="30" y1="424" x2="290" y2="424" style="--d: 2360ms" />
+        <text class="chrome chrome--strong" x="30"  y="442" style="--d: 2400ms">FIG. 05</text>
+        <text class="chrome"                 x="80"  y="442" style="--d: 2400ms">/</text>
+        <text class="chrome chrome--strong" x="88"  y="442" style="--d: 2400ms">interop.fabric</text>
+        <rect class="build-dot" x="208" y="436" width="6" height="6" style="--d: 2400ms" />
+        <text class="chrome chrome--strong" x="290" y="442" text-anchor="end" style="--d: 2400ms">VALIDATE OK</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Layout — same 60/40 as TDP and Migration heroes. */
+  .interop-hero {
+    width: 100%;
+  }
+
+  .interop-hero__inner {
+    max-width: var(--container-page, 1240px);
+    margin: 0 auto;
+    padding: var(--space-32) var(--space-12);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  @media (min-width: 960px) {
+    .interop-hero__inner {
+      grid-template-columns: 60% 40%;
+      gap: var(--space-12);
+      padding: var(--space-32) var(--space-12);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .interop-hero__inner {
+      padding: var(--space-20) var(--space-6);
+      gap: var(--space-16);
+    }
+  }
+
+  .interop-hero__text {
+    max-width: 640px;
+  }
+
+  .interop-hero__kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+  }
+  .interop-hero__dot {
+    color: var(--color-text-muted);
+    margin: 0 0.5em;
+  }
+
+  .interop-hero__title {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+  .interop-hero__title em {
+    font-style: italic;
+  }
+
+  @media (max-width: 960px) {
+    .interop-hero__title {
+      font-size: 36px;
+    }
+  }
+
+  .interop-hero__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    width: 64px;
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .interop-hero__body {
+    font-family: var(--font-body);
+    font-weight: var(--weight-regular);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 560px;
+    text-wrap: pretty;
+  }
+
+  /* Right: fabric SVG */
+  .interop-hero__visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fabric-svg {
+    width: 100%;
+    /* Slightly taller max-width than TDP/Migration because the viewBox
+       is 320x460 (vs their 320x420) to fit the bottom output row. */
+    max-width: 380px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  /* Input source systems — outlined rects, mono label at top, line
+     pattern inside (same vocabulary as TDP/Migration input docs). */
+  .fabric-svg .input-doc {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .fabric-svg .input-doc-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.1em;
+  }
+  .fabric-svg .input-line {
+    stroke: currentColor;
+    stroke-width: 1;
+    opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Convergence lines */
+  .fabric-svg .converge {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Amber transformation thread + tip */
+  .fabric-svg .amber-thread {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: butt;
+    vector-effect: non-scaling-stroke;
+  }
+  .fabric-svg .amber-tip {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* CANONICAL XML hub — same vocabulary as TDP DITA-OT and Migration
+     CONVERT engine boxes. */
+  .fabric-svg .schema {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.75;
+    vector-effect: non-scaling-stroke;
+  }
+  .fabric-svg .schema-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.18em;
+  }
+  .fabric-svg .schema-elem {
+    fill: currentColor;
+    fill-opacity: 0.12;
+    stroke: currentColor;
+    stroke-width: 0.75;
+    stroke-opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Output trunk + horizontal bar + drops */
+  .fabric-svg .output-line {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Output system endpoints — same shape as inputs (rect + label +
+     internal line pattern) so the visual reads as inputs ↔ canonical
+     ↔ outputs of the same kind: system endpoints, not document
+     formats. */
+  .fabric-svg .output-box {
+    fill: var(--color-page-bg);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .fabric-svg .output-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.1em;
+    text-anchor: middle;
+  }
+  .fabric-svg .output-line-internal {
+    stroke: currentColor;
+    stroke-width: 1;
+    opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Chrome / corner / status */
+  .fabric-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-regular);
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .fabric-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .fabric-svg .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .fabric-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .fabric-svg .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  /* Initial hidden states + reveal cascade */
+  .fabric-svg .corner,
+  .fabric-svg .input-doc,
+  .fabric-svg .input-doc-label,
+  .fabric-svg .input-line,
+  .fabric-svg .converge,
+  .fabric-svg .amber-thread,
+  .fabric-svg .amber-tip,
+  .fabric-svg .schema,
+  .fabric-svg .schema-label,
+  .fabric-svg .schema-elem,
+  .fabric-svg .output-line,
+  .fabric-svg .output-box,
+  .fabric-svg .output-label,
+  .fabric-svg .output-line-internal,
+  .fabric-svg .chrome,
+  .fabric-svg .chrome-rule,
+  .fabric-svg .build-dot {
+    opacity: 0;
+  }
+  .fabric-svg .input-doc-group,
+  .fabric-svg .schema-elements,
+  .fabric-svg .output {
+    opacity: 0;
+  }
+
+  .fabric-svg.drawn .corner,
+  .fabric-svg.drawn .chrome,
+  .fabric-svg.drawn .chrome-rule,
+  .fabric-svg.drawn .build-dot,
+  .fabric-svg.drawn .input-doc-group,
+  .fabric-svg.drawn .input-doc,
+  .fabric-svg.drawn .input-doc-label,
+  .fabric-svg.drawn .input-line,
+  .fabric-svg.drawn .converge,
+  .fabric-svg.drawn .amber-thread,
+  .fabric-svg.drawn .amber-tip,
+  .fabric-svg.drawn .schema,
+  .fabric-svg.drawn .schema-label,
+  .fabric-svg.drawn .schema-elements,
+  .fabric-svg.drawn .schema-elem,
+  .fabric-svg.drawn .output-line,
+  .fabric-svg.drawn .output,
+  .fabric-svg.drawn .output-box,
+  .fabric-svg.drawn .output-label,
+  .fabric-svg.drawn .output-line-internal {
+    animation: fabric-fade-in 320ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes fabric-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fabric-svg .corner,
+    .fabric-svg .input-doc,
+    .fabric-svg .input-doc-label,
+    .fabric-svg .input-line,
+    .fabric-svg .converge,
+    .fabric-svg .amber-thread,
+    .fabric-svg .amber-tip,
+    .fabric-svg .schema,
+    .fabric-svg .schema-label,
+    .fabric-svg .schema-elem,
+    .fabric-svg .output-line,
+    .fabric-svg .output-box,
+    .fabric-svg .output-label,
+    .fabric-svg .output-line-internal,
+    .fabric-svg .chrome,
+    .fabric-svg .chrome-rule,
+    .fabric-svg .build-dot,
+    .fabric-svg .input-doc-group,
+    .fabric-svg .schema-elements,
+    .fabric-svg .output {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupInteropHero() {
+    const svg = document.getElementById("interop-fabric") as SVGElement | null;
+    if (!svg) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupInteropHero);
+  document.addEventListener("astro:page-load", setupInteropHero);
+</script>

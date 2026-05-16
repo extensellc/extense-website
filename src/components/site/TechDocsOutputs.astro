@@ -1,0 +1,377 @@
+---
+/*
+  TechDocsOutputs — five editorial chapter-blocks on
+  /solutions/technical-docs-and-publishing.
+
+  Sequenced after the pipeline section. Each block is one output the
+  pipeline emits, presented as an editorial section rather than a card.
+
+    01  Print PDF.
+    02  Responsive HTML5.
+    03  EPUB3 + IETM.
+    04  SCORM eLearning.
+    05  In-app help, microcontent, RAG.
+
+  Per-block structure (mirrors SolutionsAreas)
+    - amber monospace number prefix (left column, narrow)
+    - display-serif name + italic subtitle + body + pull-quote hook
+      (right column, wide)
+    - hairline rule at the top of each block; last block also gets a
+      hairline at the bottom so the section ends cleanly
+    - no "Explore" link affordance: these blocks are the destination
+
+  Pull-quote
+    - italic display serif
+    - 2 px amber left bar via ::before, scales in on reveal
+
+  Animation: per-block IntersectionObserver, same pattern as
+  SolutionsAreas. prefers-reduced-motion: static.
+*/
+
+interface OutputArea {
+  num: string;
+  name: string;
+  subtitle: string;
+  body: string;
+  hook: string;
+}
+
+const outputs: OutputArea[] = [
+  {
+    num: "01",
+    name: "Print PDF",
+    subtitle: "Capability statements, parts catalogs, regulatory submissions.",
+    body: "XSL-FO via Apache FOP or Antenna House XSL Formatter. Table of contents, index, list of figures, cross-references, and change bars driven by @rev attributes. Running headers and footers carry topic context across page breaks. Output stream-suitable for offset digital print, archival, and 21 CFR Part 11 regulated submissions.",
+    hook: "What does the regulatory team do with the four-day “PDF rebuild for the change-bar markup” cycle once it’s gone?",
+  },
+  {
+    num: "02",
+    name: "Responsive HTML5",
+    subtitle: "Documentation portals and product help.",
+    body: "DITA-OT html5 transtype with a custom theme. Breadcrumb navigation derived from the DITA map hierarchy, full-text search via lunr or Algolia, and stable version-aware URLs for every topic. Static-host-deployable to Vercel, Netlify, or S3 + CloudFront — or served from the CCMS Dynamic Delivery layer.",
+    hook: "When the URL of every paragraph stays stable across releases, what stops being an emergency?",
+  },
+  {
+    num: "03",
+    name: "EPUB3 + IETM",
+    subtitle: "Offline reading and interactive procedures.",
+    body: "Reflowable EPUB3 for training guides and operator handbooks. Interactive electronic technical manuals — S1000D-adjacent, procedural-map driven — for field service workflows. Both consume the same DITA topics: the IETM gets the procedural maps, the EPUB gets the reference content. Neither is re-authored.",
+    hook: "The technician in the bay and the trainee in the classroom were never reading different books — only different renders.",
+  },
+  {
+    num: "04",
+    name: "SCORM eLearning",
+    subtitle: "Courseware emitted from the same source.",
+    body: "SCORM 1.2 and 2004 packages built directly from DITA learning content. Quizzes, assessments, and completion tracking emitted as part of the build. No duplicate authoring in a separate courseware tool, no parallel review cycle. LMS-portable through any Tin Can / xAPI endpoint.",
+    hook: "Why is the eLearning team writing the same procedure for the third time?",
+  },
+  {
+    num: "05",
+    name: "In-app help, microcontent, RAG",
+    subtitle: "The contextual surface, retrieval-grade.",
+    body: "<shortdesc> and conkeyref-driven microcontent maps naturally to tooltips, empty-state hints, and walkthrough steps. The same DITA topics, chunked by element boundaries and tagged with audience metadata, serve as the retrieval corpus for RAG-grounded support chat — measured at 85% retrieval precision in life-sciences and financial-services pilots.",
+    hook: "The chatbot doesn’t need its own content. It needs your content, structured well enough to find the right paragraph.",
+  },
+];
+---
+
+<section class="tdp-outputs" aria-labelledby="tdp-outputs-heading">
+  <div class="container-data tdp-outputs__inner">
+    <div class="tdp-outputs__heading-block">
+      <h2 id="tdp-outputs-heading" class="tdp-outputs__heading">
+        Five outputs, <em>one source.</em>
+      </h2>
+      <p class="tdp-outputs__subdeck">
+        Each is a transtype, a plugin, or a packaging step in the same DITA-OT build. None require a separate authoring tool, a separate review cycle, or a separate translation pass.
+      </p>
+    </div>
+
+    <ol class="tdp-outputs__list">
+      {outputs.map((area) => (
+        <li class="output-area">
+          <div class="output-area__num" aria-hidden="true">{area.num}</div>
+          <div class="output-area__content">
+            <h3 class="output-area__name">{area.name}.</h3>
+            <p class="output-area__subtitle">{area.subtitle}</p>
+            <p class="output-area__body">{area.body}</p>
+            <p class="output-area__hook">{area.hook}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .tdp-outputs {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .tdp-outputs {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .tdp-outputs__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-16);
+  }
+
+  .tdp-outputs__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .tdp-outputs__heading em {
+    font-style: italic;
+  }
+
+  .tdp-outputs__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* List of areas — flat list, no bullets. Each area separated by a
+     hairline at its top. Last area also gets a hairline at the bottom
+     so the section ends cleanly. */
+  .tdp-outputs__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .output-area {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  .output-area:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .output-area {
+      grid-template-columns: 96px 1fr;
+      gap: var(--space-8);
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .output-area__num {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-accent-primary);
+    line-height: 1;
+    padding-top: 8px;
+  }
+
+  .output-area__content {
+    max-width: 72ch;
+  }
+
+  .output-area__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+    text-wrap: balance;
+  }
+
+  /* Subtitle: italic display serif at a smaller size, sits directly
+     under the name as an editorial qualifier. */
+  .output-area__subtitle {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: pretty;
+  }
+
+  .output-area__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: pretty;
+  }
+
+  /* Pull-quote hook: italic with a 2 px amber bar on the left. The bar
+     is a ::before pseudo so it can animate independently of the text. */
+  .output-area__hook {
+    position: relative;
+    margin: 0;
+    padding-left: var(--space-6);
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+    max-width: 60ch;
+  }
+  .output-area__hook::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--color-accent-primary-hover);
+    transform-origin: top center;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Reveal animation — per-block. Each .output-area has its own
+     .in-view trigger.
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-outputs.animating .tdp-outputs__heading-block {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .tdp-outputs.animating .output-area__num,
+  .tdp-outputs.animating .output-area__name,
+  .tdp-outputs.animating .output-area__subtitle,
+  .tdp-outputs.animating .output-area__body,
+  .tdp-outputs.animating .output-area__hook {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .tdp-outputs.animating .output-area__hook::before {
+    transform: scaleY(0);
+  }
+
+  .tdp-outputs.animating.in-view .tdp-outputs__heading-block {
+    animation: tdp-outputs-fade-in 480ms ease-out forwards;
+  }
+
+  .tdp-outputs.animating .output-area.in-view .output-area__num {
+    animation: tdp-outputs-fade-in 420ms ease-out forwards;
+  }
+  .tdp-outputs.animating .output-area.in-view .output-area__name {
+    animation: tdp-outputs-fade-in 420ms ease-out forwards;
+    animation-delay: 80ms;
+  }
+  .tdp-outputs.animating .output-area.in-view .output-area__subtitle {
+    animation: tdp-outputs-fade-in 420ms ease-out forwards;
+    animation-delay: 140ms;
+  }
+  .tdp-outputs.animating .output-area.in-view .output-area__body {
+    animation: tdp-outputs-fade-in 420ms ease-out forwards;
+    animation-delay: 220ms;
+  }
+  .tdp-outputs.animating .output-area.in-view .output-area__hook {
+    animation: tdp-outputs-fade-in 420ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+  .tdp-outputs.animating .output-area.in-view .output-area__hook::before {
+    animation: tdp-outputs-bar-grow 520ms ease-out forwards;
+    animation-delay: 320ms;
+  }
+
+  @keyframes tdp-outputs-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes tdp-outputs-bar-grow {
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tdp-outputs.animating .tdp-outputs__heading-block,
+    .tdp-outputs.animating .output-area__num,
+    .tdp-outputs.animating .output-area__name,
+    .tdp-outputs.animating .output-area__subtitle,
+    .tdp-outputs.animating .output-area__body,
+    .tdp-outputs.animating .output-area__hook {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .tdp-outputs.animating .output-area__hook::before {
+      transform: scaleY(1) !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ─────────────────────────────────────────────────────────
+  // TechDocsOutputs — per-block viewport-triggered reveal
+  // Two observers: one for the section's heading block, one per output.
+  // ─────────────────────────────────────────────────────────
+  function setupTechDocsOutputs() {
+    const sec = document.querySelector<HTMLElement>(".tdp-outputs");
+    if (!sec) return;
+    if (sec.dataset.outputsRevealInit === "true") return;
+    sec.dataset.outputsRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            sectionObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    sectionObserver.observe(sec);
+
+    const areaObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            areaObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    const areas = sec.querySelectorAll<HTMLElement>(".output-area");
+    areas.forEach((area) => areaObserver.observe(area));
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTechDocsOutputs);
+  document.addEventListener("astro:page-load", setupTechDocsOutputs);
+</script>

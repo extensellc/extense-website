@@ -1,0 +1,150 @@
+---
+import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+---
+
+<IndustryPageLayout
+  pageTitle="Government & Defense — Industries"
+  pageDescription="Federal documentation engineering for civilian agencies and defense — S1000D conformance, IETM development, Section 508 accessibility, MIL-STD compliance. Past performance with the IRS, the U.S. House of Representatives, and the U.S. District Courts."
+  heroTitle="Government & Defense"
+  heroSubdeck="Federal documentation as a category where being wrong has procurement consequences. Two registers under one roof: civilian agency content modernization and defense maintenance documentation."
+  industryHref="/industries/government-and-defense"
+  documentTypes={[
+    {
+      label: "Civilian: agency policies and regulations",
+      description: "Statutory implementations, agency-specific publishing standards, FOIA-readiness, public-facing content modernization.",
+    },
+    {
+      label: "Civilian: training and operational guidance",
+      description: "Internal training materials, operational handbooks, agency knowledge bases for distributed staff.",
+    },
+    {
+      label: "Defense: maintenance documentation",
+      description: "Technical manuals for fielded systems, maintenance and operator guidance, weapons-system documentation.",
+    },
+    {
+      label: "Defense: Interactive Electronic Technical Manuals (IETMs / IETPs)",
+      description: "S1000D-conformant data modules, interactive technical publications, configuration-managed content.",
+    },
+    {
+      label: "Defense: training documentation",
+      description: "Training manuals, course materials, simulation-supporting documentation tied to operational systems.",
+    },
+  ]}
+  standards={[
+    {
+      label: "Title 5 USC / Title 44 records management",
+      description: "Records-management compliance for civilian agency documentation programs.",
+    },
+    {
+      label: "Section 508 accessibility",
+      description: "Required for federal public-facing and internal content — accessibility compliance built in, not bolted on.",
+    },
+    {
+      label: "S1000D Issue 5.0 / 6.0",
+      description: "International specification for technical publications. Defense and aerospace data module conformance.",
+    },
+    {
+      label: "MIL-STD-40051",
+      description: "Military standard for technical manuals — content development, data architecture, validation.",
+    },
+    {
+      label: "MIL-PRF-32070",
+      description: "Performance specification for digital data — applicable where digital deliverables pair with MIL-STD-40051 content.",
+    },
+    {
+      label: "Agency-specific publishing standards",
+      description: "Each federal agency has its own content and publishing conventions; engagements adapt to the agency's actual requirements.",
+    },
+  ]}
+  federalProgramLifecycle={{
+    eyebrow: "PROGRAM LIFECYCLE — GOVERNMENT & DEFENSE",
+    heading: "Two registers, one federal procurement consequence.",
+    lead: "Defense and civilian federal documentation run on different operational lifecycles. Defense documentation gates align to program milestones — PDR, CDR, FCA, PCA — with conformance audits at each. Civilian agency content runs through rulemaking, accessibility review, and publication cycles. Both face procurement consequences when the documentation is wrong, but the testing happens at different gates.",
+    tracks: [
+      {
+        label: "Defense program",
+        variant: "solid",
+        milestones: [
+          { position: 6,  name: "PDR",            deliverable: "Draft technical manual outline · early IETM concept" },
+          { position: 28, name: "CDR",            deliverable: "IETP data module structure · S1000D specialization decisions" },
+          { position: 50, name: "IETM Delivery",  deliverable: "S1000D-conformant data modules · CSDB integration" },
+          { position: 72, name: "FCA / PCA",      deliverable: "Documentation conformance audit · configuration baseline" },
+          { position: 94, name: "Sustainment",    deliverable: "Ongoing data module updates per fielded engineering changes" },
+        ],
+      },
+      {
+        label: "Civilian agency",
+        variant: "outlined",
+        milestones: [
+          { position: 6,  name: "Statutory authority", deliverable: "Agency rulemaking authority established · scope of regulated content defined" },
+          { position: 28, name: "Rulemaking",          deliverable: "Draft regulation · public-comment period · revision cycles" },
+          { position: 50, name: "Section 508 review",  deliverable: "Accessibility conformance · screen-reader compatibility · semantic structure" },
+          { position: 72, name: "Publication",         deliverable: "Federal Register · agency website · controlled distribution" },
+          { position: 94, name: "Modernization cycle", deliverable: "Ongoing content updates · system migration · FOIA-readiness" },
+        ],
+      },
+    ],
+    footnote: "Representative milestones. Defense program lifecycles vary by acquisition pathway (Major Capability Acquisition, Middle Tier, Software Acquisition); civilian agency lifecycles vary by rulemaking authority and publishing convention.",
+  }}
+  failureMode={{
+    eyebrow: "DEFENSE / S1000D",
+    heading: "An S1000D conformance failure triggers a stop-work order.",
+    body: "Payment halts. The contract goes to risk. Cure-notice procedures begin. Data modules have to be reauthored before delivery resumes — and the program slips on a dependency the prime didn't engineer in. The documentation control deliverable becomes the program's critical path.",
+  }}
+  signals={[
+    {
+      line: "Our S1000D conformance audit failed and we're facing a stop-work order.",
+      body: "Defense, tactical. A failed FCA usually means data module schema violations, missing required metadata, or CSDB integration gaps that surface only at audit time. The fix is in the data architecture and the configuration management — not in re-authoring the content. Recovery requires a parallel-track conformance program while the existing engagement runs.",
+    },
+    {
+      line: "We're 18 months into an S1000D conversion that's stalled.",
+      body: "Defense, operational. Stalled conversions in defense usually fail at the same point: the source content doesn't decompose into S1000D's required data module types without a structural redesign. Migration tooling alone doesn't bridge the gap; the IA work has to come first.",
+    },
+    {
+      line: "Our public-facing content has Section 508 accessibility findings from an OIG review.",
+      body: "Civilian, tactical. 508 findings tied to documentation usually mean the content was authored without accessibility constraints baked in — PDFs that aren't screen-reader-conformant, HTML without semantic structure, content models without accessibility metadata. The remediation runs through architecture before it runs through individual fixes.",
+    },
+    {
+      line: "Our agency content estate is fragmented across program offices and there's no single source of truth.",
+      body: "Cross-register, strategic. Common in large civilian agencies and defense system commands. Multiple program offices each maintain parallel publishing chains; consolidation requires both target architecture and migration program design before any conversion runs.",
+    },
+  ]}
+  capabilityRelevance={[
+    {
+      pillarLabel: "Information Architecture",
+      pillarHref: "/capabilities/information-architecture",
+      context: "Schema design and taxonomy for compliance documentation: agency-specific publishing standards, S1000D data module specifications, Section 508-aware content models.",
+      engagementShape: "Project-Based — schema and taxonomy work with named acceptance criteria, often gated to a federal program milestone.",
+    },
+    {
+      pillarLabel: "Content Migration",
+      pillarHref: "/capabilities/content-migration",
+      context: "Recovery of legacy estates — agency content from FrameMaker, Word, and unstructured XML into clean DITA or S1000D. Where Migration carries the heaviest load in this vertical.",
+      engagementShape: "Project-Based — fixed scope, conversion-fidelity acceptance criteria. Often multi-year for large agency or program-of-record estates.",
+    },
+    {
+      pillarLabel: "CCMS & Publishing",
+      pillarHref: "/capabilities/ccms-and-publishing",
+      context: "Implementation on procurement-friendly CCMS platforms with CI/CD publishing pipelines for civilian and defense documentation programs.",
+      engagementShape: "Project-Based for implementation; Managed Services for ongoing administration once stable. Procurement-vehicle-aware engagement structure.",
+    },
+    {
+      pillarLabel: "AI-Ready Content",
+      pillarHref: "/capabilities/ai-ready-content",
+      context: "Records-management modernization — chunking, metadata, and retrieval architecture for agency RAG initiatives over policy and regulation libraries.",
+      engagementShape: "Often starts as Staff Augmentation during agency exploratory pilots; converts to Project-Based once retrieval architecture firms up.",
+    },
+  ]}
+  caseStudies={[
+    {
+      framing: "A federal civilian agency consolidating taxpayer-facing documentation across program areas.",
+      body: "Multi-format publishing engineered from a single DITA source — Section 508-conformant HTML and accessible PDF for distribution channels with different requirements. CCMS-driven workflows replaced parallel publishing chains across program offices.",
+    },
+    {
+      framing: "A defense documentation program migrating from legacy FrameMaker into S1000D.",
+      body: "Conversion architecture surfaced systemic content-quality issues that had been masked by the legacy format. Issue 5.0 conformance achieved alongside the migration rather than as a separate program; CSDB integration handled in the same engagement.",
+    },
+  ]}
+  ctaAudience="public-sector"
+  ctaBody="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any future RFP response or sole-source justification, with no obligation to proceed."
+/>

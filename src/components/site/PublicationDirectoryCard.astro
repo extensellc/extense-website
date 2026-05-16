@@ -1,0 +1,224 @@
+---
+/*
+  PublicationDirectoryCard — hero side panel for /resources.
+
+  A document-grade library directory: hairline-bordered panel listing
+  the four Resources publications with their type tag and short
+  identifier. Each row is a link to the publication. Same brand chrome
+  as the other hero cards (hairline + amber spine + mono header + footer)
+  but new content rhetoric — a directory, not a process strip or record
+  preview.
+
+  Static. No rotation, no JS. Hidden below 1024px.
+*/
+
+interface Entry {
+  number: string;
+  type: string;
+  title: string;
+  href: string;
+}
+
+interface Props {
+  entries: Entry[];
+}
+
+const { entries } = Astro.props;
+const total = String(entries.length).padStart(2, "0");
+---
+
+<aside class="pdc" aria-label="Extense publications directory">
+  <div class="pdc__panel">
+    <header class="pdc__header">
+      <p class="pdc__doc-ref">Extense Publications</p>
+      <p class="pdc__counter">
+        <span class="pdc__counter-num">{total}</span>
+        <span class="pdc__counter-label">Publications</span>
+      </p>
+    </header>
+    <hr class="pdc__rule" />
+
+    <ol class="pdc__list">
+      {entries.map((e) => (
+        <li class="pdc__entry">
+          <a href={e.href} class="pdc__link">
+            <span class="pdc__num">{e.number}</span>
+            <div class="pdc__body">
+              <p class="pdc__type">{e.type}</p>
+              <p class="pdc__title">{e.title}</p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ol>
+
+    <hr class="pdc__rule" />
+    <footer class="pdc__footer">
+      <span>Form: PUBINDEX v1.0</span>
+      <span class="pdc__hint">Library directory</span>
+    </footer>
+  </div>
+</aside>
+
+<style>
+  .pdc {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .pdc {
+      display: block;
+      width: 360px;
+      flex-shrink: 0;
+    }
+  }
+
+  .pdc__panel {
+    position: relative;
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-4) var(--space-6) var(--space-3);
+  }
+
+  .pdc__panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #fcd34d;
+    pointer-events: none;
+  }
+
+  .pdc__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .pdc__doc-ref {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .pdc__counter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    margin: 0;
+    font-feature-settings: "tnum";
+  }
+
+  .pdc__counter-num {
+    color: var(--color-link);
+    font-weight: var(--weight-semibold);
+  }
+
+  .pdc__counter-label {
+    color: var(--color-text-muted);
+  }
+
+  .pdc__rule {
+    border: 0;
+    border-top: var(--border-hairline);
+    margin: var(--space-3) 0;
+  }
+
+  .pdc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pdc__entry + .pdc__entry {
+    border-top: var(--border-hairline);
+  }
+
+  .pdc__link {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    text-decoration: none;
+    color: var(--color-text-primary);
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .pdc__link:hover,
+  .pdc__link:focus-visible {
+    text-decoration: none;
+  }
+
+  .pdc__num {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: var(--weight-semibold);
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    line-height: 1.3;
+  }
+
+  .pdc__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .pdc__type {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .pdc__title {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: pretty;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .pdc__link:hover .pdc__title,
+  .pdc__link:focus-visible .pdc__title {
+    color: var(--color-link);
+  }
+
+  .pdc__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .pdc__hint {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+</style>

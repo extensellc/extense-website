@@ -1,0 +1,515 @@
+---
+/*
+  AuditCycle — vertical-specific audit cadence visualization.
+
+  Centerpiece for the industry sub-pages. Three-lane horizontal timeline
+  showing the typical audit/compliance cadence per vertical:
+
+    - Discrete events (per-submission, per-program-milestone, etc.) —
+      rendered as small amber bars at named time positions
+    - Continuous surveillance band — rendered as a full-width band with
+      darker peak markers at recurring cycle points
+    - Ad-hoc events (recalls, findings, incidents) — rendered with a
+      visually distinct dashed treatment to signal "could happen anytime"
+
+  Visual treatment matches the /industries matrix and Services document
+  fragments — hairline construction, mono labels, sparing #fcd34d for
+  active bars. Build-in animation triggered once when the visualization
+  scrolls into view.
+
+  Page passes data via props; component is reusable across all 6 industries.
+*/
+
+interface DiscreteEvent {
+  /** 0-100 percentage on the timeline */
+  position: number;
+  /** Short event name shown above the bar */
+  label: string;
+}
+
+interface AdHocEvent {
+  position: number;
+  label: string;
+  /** Optional annotation (e.g., "(unpredictable)") */
+  annotation?: string;
+}
+
+interface DiscreteLane {
+  label: string;
+  type: "discrete";
+  events: DiscreteEvent[];
+}
+
+interface ContinuousLane {
+  label: string;
+  type: "continuous";
+  /** Positions (0-100) for darker recurring-peak markers within the band */
+  peakPositions?: number[];
+  /** Small caption below the band — e.g., "FDA QSR · ISO 13485 · EU MDR" */
+  notes?: string;
+}
+
+interface AdHocLane {
+  label: string;
+  type: "ad-hoc";
+  events: AdHocEvent[];
+}
+
+type Lane = DiscreteLane | ContinuousLane | AdHocLane;
+
+interface AxisLabel {
+  position: number;
+  label: string;
+}
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  axisLabels: AxisLabel[];
+  lanes: Lane[];
+  footnote: string;
+}
+
+const { eyebrow, heading, lead, axisLabels, lanes, footnote } = Astro.props;
+---
+
+<section class="audit-cycle-section" aria-labelledby="audit-cycle-heading">
+  <div class="container-data audit-cycle-section__inner">
+    <p class="eyebrow audit-cycle-section__eyebrow">{eyebrow}</p>
+    <h2 id="audit-cycle-heading" class="audit-cycle-section__heading">{heading}</h2>
+    <p class="audit-cycle-section__lead">{lead}</p>
+
+    <figure class="audit-cycle" id="audit-cycle" aria-label="Audit cycle visualization">
+      <div class="audit-cycle__chart">
+        {lanes.map((lane, laneIdx) => (
+          <div class="audit-cycle__lane" data-lane-index={laneIdx}>
+            <span class="audit-cycle__lane-label">{lane.label}</span>
+            <div class="audit-cycle__lane-plot">
+              <div class="audit-cycle__lane-line" aria-hidden="true"></div>
+              {axisLabels.map((a) => (
+                <div class="audit-cycle__lane-tick" style={`left: ${a.position}%`} aria-hidden="true"></div>
+              ))}
+
+              {lane.type === "discrete" && lane.events.map((e, i) => (
+                <div
+                  class="audit-cycle__event audit-cycle__event--discrete"
+                  data-event-index={i}
+                  style={`left: ${e.position}%`}
+                >
+                  <span class="audit-cycle__event-label">{e.label}</span>
+                  <span class="audit-cycle__event-bar" aria-hidden="true"></span>
+                </div>
+              ))}
+
+              {lane.type === "continuous" && (
+                <>
+                  <div class="audit-cycle__band" aria-hidden="true"></div>
+                  {lane.peakPositions && lane.peakPositions.map((p, i) => (
+                    <div
+                      class="audit-cycle__band-peak"
+                      data-peak-index={i}
+                      style={`left: ${p}%`}
+                      aria-hidden="true"
+                    ></div>
+                  ))}
+                  {lane.notes && (
+                    <p class="audit-cycle__band-notes">{lane.notes}</p>
+                  )}
+                </>
+              )}
+
+              {lane.type === "ad-hoc" && lane.events.map((e, i) => (
+                <div
+                  class="audit-cycle__event audit-cycle__event--adhoc"
+                  data-event-index={i}
+                  style={`left: ${e.position}%`}
+                >
+                  <span class="audit-cycle__event-label">{e.label}</span>
+                  <span class="audit-cycle__event-marker" aria-hidden="true"></span>
+                  {e.annotation && (
+                    <span class="audit-cycle__event-annotation">{e.annotation}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div class="audit-cycle__axis" aria-hidden="true">
+          <span class="audit-cycle__lane-label-spacer"></span>
+          <div class="audit-cycle__axis-scale">
+            {axisLabels.map((a) => (
+              <span class="audit-cycle__axis-label" style={`left: ${a.position}%`}>{a.label}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <figcaption class="audit-cycle__footnote">{footnote}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .audit-cycle-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .audit-cycle-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .audit-cycle-section__eyebrow {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .audit-cycle-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+    text-wrap: balance;
+  }
+
+  .audit-cycle-section__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-12);
+    text-wrap: pretty;
+    max-width: 70ch;
+  }
+
+  .audit-cycle {
+    margin: 0;
+    padding: 0;
+  }
+
+  .audit-cycle__chart {
+    padding: var(--space-4) 0 var(--space-6);
+  }
+
+  .audit-cycle__lane {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-6);
+    align-items: start;
+    padding: var(--space-6) 0;
+    border-top: var(--border-hairline);
+  }
+
+  .audit-cycle__lane:last-of-type {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (max-width: 599px) {
+    .audit-cycle__lane {
+      grid-template-columns: 110px 1fr;
+      gap: var(--space-3);
+    }
+  }
+
+  .audit-cycle__lane-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    padding-top: 8px;
+    /* Build-in: hidden until is-built */
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity 240ms cubic-bezier(0, 0, 0.2, 1),
+      transform 240ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .audit-cycle__lane-plot {
+    position: relative;
+    min-height: 92px;
+  }
+
+  .audit-cycle__lane-line {
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--color-border-subtle);
+  }
+
+  .audit-cycle__lane-tick {
+    position: absolute;
+    top: 14px;
+    width: 1px;
+    height: 9px;
+    background-color: var(--color-border-subtle);
+  }
+
+  /* ─── Discrete event (submission, named milestone) ─── */
+  .audit-cycle__event {
+    position: absolute;
+    /* Build-in: hidden until is-built */
+    opacity: 0;
+    transform: translateY(-3px);
+    transition:
+      opacity 220ms cubic-bezier(0, 0, 0.2, 1),
+      transform 220ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .audit-cycle__event--discrete {
+    top: 0;
+    transform: translateY(-3px) translateX(-50%);
+    text-align: center;
+  }
+
+  .audit-cycle__event-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.05em;
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-bottom: 4px;
+  }
+
+  .audit-cycle__event-bar {
+    display: block;
+    width: 3px;
+    height: 14px;
+    background-color: #fcd34d;
+    margin: 0 auto;
+    border-radius: 1px;
+  }
+
+  /* ─── Continuous surveillance band ─── */
+  .audit-cycle__band {
+    position: absolute;
+    top: 11px;
+    left: 0;
+    width: 0;
+    height: 14px;
+    background-color: rgb(252 211 77 / 0.55);
+    border-radius: 1px;
+    transition: width 600ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .audit-cycle__band-peak {
+    position: absolute;
+    top: 8px;
+    width: 3px;
+    height: 20px;
+    background-color: #fcd34d;
+    transform: translateX(-50%);
+    border-radius: 1px;
+    /* Build-in */
+    opacity: 0;
+    transform: translateX(-50%) translateY(-3px);
+    transition:
+      opacity 220ms cubic-bezier(0, 0, 0.2, 1),
+      transform 220ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .audit-cycle__band-notes {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    right: 0;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    /* Build-in */
+    opacity: 0;
+    transition: opacity 240ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  /* ─── Ad-hoc event (unpredictable: recall, finding) ─── */
+  .audit-cycle__event--adhoc {
+    top: 0;
+    transform: translateY(-3px) translateX(-50%);
+    text-align: center;
+  }
+
+  .audit-cycle__event-marker {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border: 1.5px dashed var(--color-text-secondary);
+    border-radius: 2px;
+    margin: 4px auto;
+    background-color: var(--color-page-bg);
+  }
+
+  .audit-cycle__event-annotation {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  /* ─── Time axis ─── */
+  .audit-cycle__axis {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-6);
+    padding-top: var(--space-3);
+  }
+
+  @media (max-width: 599px) {
+    .audit-cycle__axis {
+      grid-template-columns: 110px 1fr;
+      gap: var(--space-3);
+    }
+  }
+
+  .audit-cycle__axis-scale {
+    position: relative;
+    height: 16px;
+  }
+
+  .audit-cycle__axis-label {
+    position: absolute;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .audit-cycle__footnote {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: var(--border-hairline);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-style: italic;
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    max-width: 70ch;
+  }
+
+  /* ─── Build-in animation: staggered reveal ─── */
+  .audit-cycle.is-built .audit-cycle__lane-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .audit-cycle.is-built .audit-cycle__lane[data-lane-index="0"] .audit-cycle__lane-label { transition-delay: 0ms; }
+  .audit-cycle.is-built .audit-cycle__lane[data-lane-index="1"] .audit-cycle__lane-label { transition-delay: 120ms; }
+  .audit-cycle.is-built .audit-cycle__lane[data-lane-index="2"] .audit-cycle__lane-label { transition-delay: 240ms; }
+
+  /* Surveillance band draws left-to-right after lane labels */
+  .audit-cycle.is-built .audit-cycle__band {
+    width: 100%;
+    transition-delay: 300ms;
+  }
+
+  /* Discrete submission events fade in after band */
+  .audit-cycle.is-built .audit-cycle__event--discrete {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+  }
+  .audit-cycle.is-built .audit-cycle__event--discrete[data-event-index="0"] { transition-delay: 700ms; }
+  .audit-cycle.is-built .audit-cycle__event--discrete[data-event-index="1"] { transition-delay: 800ms; }
+  .audit-cycle.is-built .audit-cycle__event--discrete[data-event-index="2"] { transition-delay: 900ms; }
+  .audit-cycle.is-built .audit-cycle__event--discrete[data-event-index="3"] { transition-delay: 1000ms; }
+
+  /* Band peaks reveal alongside discrete events */
+  .audit-cycle.is-built .audit-cycle__band-peak {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .audit-cycle.is-built .audit-cycle__band-peak[data-peak-index="0"] { transition-delay: 750ms; }
+  .audit-cycle.is-built .audit-cycle__band-peak[data-peak-index="1"] { transition-delay: 850ms; }
+  .audit-cycle.is-built .audit-cycle__band-peak[data-peak-index="2"] { transition-delay: 950ms; }
+
+  /* Band notes appear once peaks are in */
+  .audit-cycle.is-built .audit-cycle__band-notes {
+    opacity: 1;
+    transition-delay: 1050ms;
+  }
+
+  /* Ad-hoc safety markers come last (categorically different) */
+  .audit-cycle.is-built .audit-cycle__event--adhoc {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+  }
+  .audit-cycle.is-built .audit-cycle__event--adhoc[data-event-index="0"] { transition-delay: 1200ms; }
+  .audit-cycle.is-built .audit-cycle__event--adhoc[data-event-index="1"] { transition-delay: 1300ms; }
+  .audit-cycle.is-built .audit-cycle__event--adhoc[data-event-index="2"] { transition-delay: 1400ms; }
+
+  /* Reduced motion: show everything at rest, no transitions */
+  @media (prefers-reduced-motion: reduce) {
+    .audit-cycle__lane-label,
+    .audit-cycle__event,
+    .audit-cycle__band-peak,
+    .audit-cycle__band-notes {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .audit-cycle__event--discrete {
+      transform: translateX(-50%);
+    }
+    .audit-cycle__event--adhoc {
+      transform: translateX(-50%);
+    }
+    .audit-cycle__band-peak {
+      transform: translateX(-50%);
+    }
+    .audit-cycle__band {
+      width: 100%;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  const cycle = document.getElementById('audit-cycle');
+  if (!cycle) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    cycle.classList.add('is-built');
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        cycle.classList.add('is-built');
+        observer.disconnect();
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -10% 0px',
+  });
+
+  observer.observe(cycle);
+})();
+</script>

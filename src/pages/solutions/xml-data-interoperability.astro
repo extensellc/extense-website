@@ -1,61 +1,48 @@
 ---
 /*
-  /solutions/xml-data-interoperability — placeholder sub-page.
+  /solutions/xml-data-interoperability
 
-  Created as part of the Phase 4.5 nav restructure. Content to be
-  filled out in a later pass.
+  Sub-page deep-dive on the XML Data Interoperability solution area.
+
+  Sections (building piece by piece):
+    1. Hero — "One fact. Every system." + fabric SVG
+    2. Siblings nav — back to /solutions + across to the other three
+                      sub-pages
+    3. The problem (TODO)
+    4. The pipeline (TODO)
+    5. Patterns — five editorial chapter-blocks (TODO)
+    6. Closing prose — "When the schema is the contract." (TODO)
+    7. CTA (TODO)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import XmlDataInteropHero from "../../components/site/XmlDataInteropHero.astro";
+import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
+import XmlDataInteropProblem from "../../components/site/XmlDataInteropProblem.astro";
+import XmlDataInteropPipeline from "../../components/site/XmlDataInteropPipeline.astro";
+import XmlDataInteropPatterns from "../../components/site/XmlDataInteropPatterns.astro";
+import XmlDataInteropClosing from "../../components/site/XmlDataInteropClosing.astro";
+import CrossPillarLink from "../../components/site/CrossPillarLink.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
 ---
 
-<BaseLayout title="XML Data Interoperability" description="Structured content as a portable data layer. Coming soon.">
-  <section class="placeholder-page">
-    <div class="container-prose placeholder-page__inner">
-      <p class="eyebrow placeholder-page__eyebrow">Solutions</p>
-      <h1 class="placeholder-page__heading">XML Data Interoperability</h1>
-      <p class="placeholder-page__body">
-        This page is in progress. For an overview of what Extense does today, see
-        <a href="/capabilities">Capabilities</a>, or get in touch via
-        <a href="/contact">Contact</a>.
-      </p>
-      <p class="placeholder-page__back">
-        <a href="/solutions">&larr; Back to all Solutions</a>
-      </p>
-    </div>
-  </section>
+<BaseLayout
+  title="XML Data Interoperability"
+  description="One fact. Every system. A canonical XML schema between CCMS, PIM, ERP, CMS, and the legacy repositories — exposed via REST, GraphQL, JSON, RDF, and PDF without re-authoring."
+>
+  <XmlDataInteropHero />
+  <SolutionsSiblings currentSlug="xml-data-interoperability" />
+  <XmlDataInteropProblem />
+  <XmlDataInteropPipeline />
+  <XmlDataInteropPatterns />
+  <XmlDataInteropClosing />
+  <CrossPillarLink
+    href="/capabilities/information-architecture"
+    label="See Information Architecture deliverables and standards"
+  />
+  <CTAModule
+    audience="general"
+    compact
+    body="Send us a sample of your source data — XML, JSON, SGML, legacy DB exports, or code-spec. We’ll map the transformation path, identify integration points, and return a feasibility and effort estimate within two business days."
+  />
 </BaseLayout>
-
-<style>
-  .placeholder-page {
-    padding-top: var(--section-pad-default);
-    padding-bottom: var(--section-pad-default);
-  }
-  .placeholder-page__eyebrow {
-    margin-bottom: var(--space-4);
-  }
-  .placeholder-page__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-6) 0;
-    text-wrap: balance;
-  }
-  .placeholder-page__body {
-    font-family: var(--font-body);
-    font-size: var(--text-body-lg);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-normal);
-    margin: 0 0 var(--space-8) 0;
-    text-wrap: pretty;
-  }
-  .placeholder-page__back {
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    font-weight: var(--weight-medium);
-    margin: 0;
-  }
-</style>

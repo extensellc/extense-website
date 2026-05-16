@@ -1,0 +1,262 @@
+---
+/*
+  /resources/case-studies — index page.
+
+  Pattern: index + 3 individual case study sub-pages.
+  Hero with framing paragraph + CaseStudyRecordCard side panel.
+  Three CaseStudyListEntry items, each linking to its sub-page.
+  No aggregate top-of-page stats — those live per-case where they belong.
+  CTAModule (general) closes the page.
+*/
+
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Hero from "../../../components/site/Hero.astro";
+import CaseStudyRecordCard from "../../../components/site/CaseStudyRecordCard.astro";
+import CTAModule from "../../../components/site/CTAModule.astro";
+import AnimatedDivider from "../../../components/site/AnimatedDivider.astro";
+
+interface CaseEntry {
+  href: string;
+  number: string;
+  sector: string;
+  title: string;
+  frame: string;
+  artifacts: string[];
+}
+
+const cases: CaseEntry[] = [
+  {
+    href: "/resources/case-studies/dita-training-curriculum",
+    number: "01",
+    sector: "Consulting practice",
+    title: "Enterprise DITA Training Curriculum",
+    frame: "From a blank repository to a 76-topic, 10-part progressive learning program — authored, enriched, and published entirely in DITA.",
+    artifacts: ["76 DITA topics", "10 learning parts", "12 hands-on labs", "218 PDF pages"],
+  },
+  {
+    href: "/resources/case-studies/ai-content-pipeline",
+    number: "02",
+    sector: "Enterprise documentation",
+    title: "AI-Ready Content Pipeline",
+    frame: "Unstructured legacy XML transformed into chunk-safe, metadata-enriched DITA — with measurable AI-readiness scoring.",
+    artifacts: ["100% metadata coverage", "150+ addressable section IDs", "5 classification facets", "2 conversion tools shipped"],
+  },
+  {
+    href: "/resources/case-studies/publishing-automation",
+    number: "03",
+    sector: "Technical training",
+    title: "Custom DITA-OT Publishing Automation",
+    frame: "Two branded DITA-OT plugins and a multi-format build pipeline producing HTML5, print-ready PDF, and PWA-installable output from one DITA source.",
+    artifacts: ["4 output formats", "2 custom plugins", "0 manual build steps", "1 single source"],
+  },
+];
+
+const heroCards = cases.map((c) => ({
+  href: c.href,
+  sector: c.sector,
+  title: c.title,
+  frame: c.frame,
+  artifacts: [
+    { number: c.artifacts[0].split(" ")[0], label: c.artifacts[0].split(" ").slice(1).join(" ") },
+    { number: c.artifacts[1].split(" ")[0], label: c.artifacts[1].split(" ").slice(1).join(" ") },
+    { number: c.artifacts[2].split(" ")[0], label: c.artifacts[2].split(" ").slice(1).join(" ") },
+    { number: c.artifacts[3].split(" ")[0], label: c.artifacts[3].split(" ").slice(1).join(" ") },
+  ],
+}));
+---
+
+<BaseLayout
+  title="Case Studies — Extense LLC"
+  description="Three engagement records from the practice. Each describes the architecture decisions made, the artifacts shipped, and the metrics the work produced. Anonymized — verifiable on request under NDA."
+>
+  <Hero
+    variant="universal"
+    title="Case studies."
+    subdeck="Three engagements from the practice. Each describes the architecture decisions made, the artifacts shipped, and the metrics the work produced. Anonymized — verifiable on request under NDA."
+  >
+    <CaseStudyRecordCard cards={heroCards} />
+  </Hero>
+
+  <AnimatedDivider />
+
+  <section class="cs-index" aria-label="Case study index">
+    <div class="container-prose cs-index__inner">
+      <ul class="cs-index__list">
+        {cases.map((c) => (
+          <li class="cs-index__item">
+            <a href={c.href} class="cs-index__link">
+              <span class="cs-index__num" aria-hidden="true">{c.number}</span>
+              <span class="cs-index__body">
+                <span class="cs-index__sector">{c.sector}</span>
+                <span class="cs-index__title">{c.title}</span>
+                <span class="cs-index__frame">{c.frame}</span>
+                <span class="cs-index__ledger">
+                  {c.artifacts.map((a, i) => (
+                    <>
+                      <span class="cs-index__ledger-item">{a}</span>
+                      {i < c.artifacts.length - 1 && <span class="cs-index__ledger-sep" aria-hidden="true">·</span>}
+                    </>
+                  ))}
+                </span>
+                <span class="cs-index__cta">
+                  Read the case study <span aria-hidden="true">→</span>
+                </span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <CTAModule
+    audience="general"
+    body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
+  />
+</BaseLayout>
+
+<style>
+  .cs-index {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .cs-index {
+      padding-top: var(--space-24);
+      padding-bottom: var(--space-24);
+    }
+  }
+
+  .cs-index__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cs-index__item {
+    border-top: var(--border-hairline);
+  }
+
+  .cs-index__item:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  .cs-index__link {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-8) 0;
+    text-decoration: none;
+    color: var(--color-text-primary);
+    transition: background-color var(--duration-base) var(--easing-out);
+  }
+
+  @media (min-width: 768px) {
+    .cs-index__link {
+      grid-template-columns: 80px 1fr;
+      gap: var(--space-6);
+      padding: var(--space-12) 0;
+    }
+  }
+
+  .cs-index__link:hover,
+  .cs-index__link:focus-visible {
+    text-decoration: none;
+  }
+
+  .cs-index__num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: var(--weight-regular);
+    color: #fcd34d;
+    font-feature-settings: "tnum";
+    line-height: 1;
+    padding-top: 4px;
+  }
+
+  @media (min-width: 768px) {
+    .cs-index__num {
+      font-size: 40px;
+    }
+  }
+
+  .cs-index__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .cs-index__sector {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .cs-index__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .cs-index__link:hover .cs-index__title,
+  .cs-index__link:focus-visible .cs-index__title {
+    color: var(--color-link);
+  }
+
+  .cs-index__frame {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+    max-width: 70ch;
+  }
+
+  .cs-index__ledger {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: baseline;
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--color-text-secondary);
+  }
+
+  .cs-index__ledger-item {
+    color: var(--color-text-secondary);
+  }
+
+  .cs-index__ledger-sep {
+    color: var(--color-text-muted);
+    opacity: 0.6;
+  }
+
+  .cs-index__cta {
+    margin-top: var(--space-3);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    transition: color var(--duration-base) var(--easing-out);
+  }
+
+  .cs-index__link:hover .cs-index__cta,
+  .cs-index__link:focus-visible .cs-index__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+</style>

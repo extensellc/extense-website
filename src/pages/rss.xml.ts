@@ -20,7 +20,7 @@ export async function GET(context: APIContext) {
     title: "Extense LLC — Resources",
     description:
       "Field notes, technical writing, and methodology dispatches from the Extense practice. DITA, S1000D, CCMS migration, RAG retrieval engineering, methodology.",
-    site: context.site ?? "https://www.ex-tense.co",
+    site: context.site ?? "https://www.extense.co",
     items: sortedPosts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.publishedAt,

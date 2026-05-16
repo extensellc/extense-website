@@ -1,0 +1,189 @@
+---
+/*
+  TechDocsLocalization — short prose section on
+  /solutions/technical-docs-and-publishing.
+
+  Sequenced after the five output chapter-blocks, before the CTA.
+  Lands the 72% translation cost saving as the punchline of a body
+  paragraph — NOT as a StatBlock and NOT in amber type. The number
+  is a homepage-anchored metric (60/72/85); the brief permits reusing
+  it here as supporting prose.
+
+  Layout
+    - container-prose width (~720 px), left-aligned
+    - eyebrow + heading + three short body paragraphs
+    - no diagram, no card, no number stat treatment
+    - hairline border-top divides from the chapter-blocks above
+
+  Animation: viewport-triggered fade-up of eyebrow / heading /
+  paragraphs in sequence. prefers-reduced-motion: static.
+*/
+---
+
+<section class="tdp-localization" aria-labelledby="tdp-localization-heading">
+  <div class="container-prose tdp-localization__inner">
+    <p class="eyebrow tdp-localization__eyebrow">Localization</p>
+    <h2 id="tdp-localization-heading" class="tdp-localization__heading">
+      Translate once. Render six times.
+    </h2>
+    <p class="tdp-localization__body">
+      Translation memory operates at the segment level. When a DITA topic doesn&rsquo;t change between releases, the TM matches it as a 100% segment, and the paragraph isn&rsquo;t sent for translation again.
+    </p>
+    <p class="tdp-localization__body">
+      Reuse compounds the effect. A <code>&lt;warning&gt;</code> referenced across twelve manuals via <code>conref</code> is translated once; the translation is reused everywhere the reference resolves. A safety statement that ships in five output formats is translated once, not five times &mdash; the format-specific rendering happens after the localized DITA is built.
+    </p>
+    <p class="tdp-localization__body tdp-localization__body--punch">
+      On a typical Extense engagement, translation cost drops 72% in the first localized release after migration. Most of that savings recovers before the second release ships, because every subsequent release only pays for the segments that actually changed.
+    </p>
+  </div>
+</section>
+
+<style>
+  .tdp-localization {
+    /* Top and bottom padding intentionally matched so the hairlines
+       bracket the content with visually equal breathing room.
+       58 px is off the --space token scale (valid stops are 48 → 64);
+       picked as a tuned middle value for this specific section. */
+    padding-top: 58px;
+    padding-bottom: 58px;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .tdp-localization {
+      padding-top: 58px;
+      padding-bottom: 58px;
+    }
+  }
+
+  .tdp-localization__inner {
+    /* container-prose width inherited; left-aligned by default. */
+  }
+
+  .tdp-localization__eyebrow {
+    margin: 0 0 var(--space-6) 0;
+    color: var(--color-accent-primary);
+  }
+
+  .tdp-localization__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: balance;
+  }
+
+  .tdp-localization__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .tdp-localization__body:last-child {
+    margin-bottom: 0;
+  }
+  .tdp-localization__body code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--color-surface-elevated);
+    padding: 0.05em 0.4em;
+    color: var(--color-text-primary);
+  }
+
+  /* The 72% paragraph reads slightly heavier — same body type, but in
+     primary color so the punchline lands without becoming a stat
+     block or stepping on the single-semantic-accent rule. */
+  .tdp-localization__body--punch {
+    color: var(--color-text-primary);
+  }
+
+  /* Reveal animation — viewport-triggered, eyebrow / heading / each
+     paragraph stagger in. */
+  .tdp-localization.animating .tdp-localization__eyebrow,
+  .tdp-localization.animating .tdp-localization__heading,
+  .tdp-localization.animating .tdp-localization__body {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .tdp-localization.animating.in-view .tdp-localization__eyebrow {
+    animation: tdp-loc-fade-in 420ms ease-out forwards;
+  }
+  .tdp-localization.animating.in-view .tdp-localization__heading {
+    animation: tdp-loc-fade-in 520ms ease-out forwards;
+    animation-delay: 120ms;
+  }
+  /* :nth-of-type counts by tag (<p>), and the eyebrow is the first
+     <p> in this section — so the first body paragraph is the 2nd <p>,
+     not the 1st. The shifted indices are intentional. */
+  .tdp-localization.animating.in-view .tdp-localization__body:nth-of-type(2) {
+    animation: tdp-loc-fade-in 420ms ease-out forwards;
+    animation-delay: 280ms;
+  }
+  .tdp-localization.animating.in-view .tdp-localization__body:nth-of-type(3) {
+    animation: tdp-loc-fade-in 420ms ease-out forwards;
+    animation-delay: 400ms;
+  }
+  .tdp-localization.animating.in-view .tdp-localization__body:nth-of-type(4) {
+    animation: tdp-loc-fade-in 420ms ease-out forwards;
+    animation-delay: 520ms;
+  }
+
+  @keyframes tdp-loc-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tdp-localization.animating .tdp-localization__eyebrow,
+    .tdp-localization.animating .tdp-localization__heading,
+    .tdp-localization.animating .tdp-localization__body {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupTechDocsLocalization() {
+    const sec = document.querySelector<HTMLElement>(".tdp-localization");
+    if (!sec) return;
+    if (sec.dataset.locRevealInit === "true") return;
+    sec.dataset.locRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTechDocsLocalization);
+  document.addEventListener("astro:page-load", setupTechDocsLocalization);
+</script>

@@ -1,0 +1,150 @@
+---
+/*
+  SolutionsSiblings — sub-page sibling navigation for the four
+  /solutions/* sub-pages.
+
+  Sits directly below the hero on each sub-page. Shows the four
+  sub-page names inline; the current one is bolded (not a link); the
+  other three link across. Hairline rules above and below.
+
+  Labels match TopNav exactly:
+    - Technical Docs & Publishing
+    - Content Migration
+    - XML Data Interoperability
+    - AI-Ready Content
+
+  Props
+    currentSlug — one of the four slugs below; the corresponding label
+                  renders as a bolded span instead of a link.
+*/
+
+interface Sibling {
+  slug: string;
+  label: string;
+}
+
+const siblings: Sibling[] = [
+  { slug: "technical-docs-and-publishing", label: "Technical Docs & Publishing" },
+  { slug: "content-migration",             label: "Content Migration" },
+  { slug: "xml-data-interoperability",     label: "XML Data Interoperability" },
+  { slug: "ai-ready-content",              label: "AI-Ready Content" },
+];
+
+interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+---
+
+<section class="solutions-siblings" aria-label="Solutions sub-pages">
+  <div class="container-data solutions-siblings__inner">
+    <a href="/solutions" class="solutions-siblings__back">
+      <span class="solutions-siblings__back-arrow" aria-hidden="true">&larr;</span>
+      <span>Solutions</span>
+    </a>
+    <ol class="solutions-siblings__list">
+      {siblings.map((sibling) => (
+        <li class="solutions-siblings__item">
+          {sibling.slug === currentSlug ? (
+            <span class="solutions-siblings__current" aria-current="page">
+              {sibling.label}
+            </span>
+          ) : (
+            <a href={`/solutions/${sibling.slug}`} class="solutions-siblings__link">
+              {sibling.label}
+            </a>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .solutions-siblings {
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+  }
+
+  .solutions-siblings__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  /* "← Solutions" back link, mono small, sits to the left of the list. */
+  .solutions-siblings__back {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .solutions-siblings__back:hover,
+  .solutions-siblings__back:focus-visible {
+    color: var(--color-link-hover);
+  }
+  .solutions-siblings__back-arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .solutions-siblings__back:hover .solutions-siblings__back-arrow {
+    transform: translateX(-2px);
+  }
+
+  /* The four-item sibling list, horizontal on desktop. */
+  .solutions-siblings__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    flex: 1;
+  }
+
+  .solutions-siblings__item {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.4;
+  }
+
+  .solutions-siblings__link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .solutions-siblings__link:hover,
+  .solutions-siblings__link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  /* Current sub-page: bolded, primary color, no link. */
+  .solutions-siblings__current {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-semibold);
+  }
+
+  @media (max-width: 767px) {
+    .solutions-siblings__inner {
+      gap: var(--space-4);
+    }
+    .solutions-siblings__list {
+      gap: var(--space-4) var(--space-6);
+    }
+  }
+</style>
