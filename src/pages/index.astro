@@ -344,14 +344,18 @@ const stats = [
   .home-section--failure-modes :global(.doc-row__eyebrow) {
     color: var(--color-accent-primary);
   }
-  /* DocumentRow's own .doc-row--failureMode .doc-row__heading rule has
-     specificity (0,4,0). Match that chain so this override wins on cascade
-     order rather than getting beaten by specificity. Same fix for body
-     and rule, for symmetry. */
-  .home-section--failure-modes :global(.doc-row--failureMode .doc-row__heading) {
+  /* DocumentRow's own scoped rule on .doc-row--failureMode .doc-row__heading
+     has specificity (0,4,0) — same as the override below. In dev mode the
+     homepage override wins on source order; in production, Astro's
+     inlineStylesheets pass injects DocumentRow's scoped <style> block AFTER
+     the homepage's external CSS link, so DocumentRow wins by source order
+     and the heading becomes dark-on-dark (invisible). Repeat the
+     .doc-row__heading class in the selector so this override sits at (0,5,0)
+     and wins on specificity regardless of cascade order. Same fix for body. */
+  .home-section--failure-modes :global(.doc-row--failureMode .doc-row__heading.doc-row__heading) {
     color: #fffaf3;
   }
-  .home-section--failure-modes :global(.doc-row--failureMode .doc-row__body) {
+  .home-section--failure-modes :global(.doc-row--failureMode .doc-row__body.doc-row__body) {
     color: #c4bbb1;
   }
 
