@@ -53,12 +53,22 @@ const wordmarkFill = monochrome
     ? "#faf7f2"
     : "#1A1817";
 
+// Safari (locked): set explicit width AND height on the <svg> attribute.
+// When only `height` is set and `width` is left to CSS `width: auto`,
+// Safari sometimes computes width as 0 instead of inferring it from the
+// viewBox aspect ratio (200:225). Result: SVG occupies 0px wide and is
+// effectively invisible. Computing the width here guarantees both
+// browsers render at the correct size.
+const aspectRatio = 200 / 225;
+const width = Math.round(height * aspectRatio);
+
 const gradientId = `extense-logo-amber-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 200 225"
+  width={width}
   height={height}
   role="img"
   aria-label="Extense LLC"
