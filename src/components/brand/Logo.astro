@@ -18,14 +18,17 @@
 
   Source-of-truth dimensions: viewBox 200x225 (matches the brand-kit SVG).
 
-  Safari note (locked): CSS custom properties (var(...)) do NOT work inside
-  SVG presentation attributes like `stop-color` or `fill`. Chrome / Edge /
-  Firefox tolerate this; Safari treats them as invalid and the gradient
-  stops + wordmark fill render as none — the logo becomes invisible. We
-  therefore route the brand-token references through CSS rules (where var()
-  works everywhere), targeted by class selectors on the <stop> and <text>
-  elements. Stroke colors that use plain keywords like `currentColor` or
-  `url(#...)` references are fine in attributes.
+  Safari (locked): Brand colors are hardcoded as hex values directly on
+  the SVG attributes, NOT routed through CSS custom properties. Safari /
+  WebKit has multiple long-standing bugs with var(...) inside SVG
+  presentation attributes — including stop-color on <stop> elements and
+  fill on <text> elements — that cause the gradient and wordmark to
+  render as none, leaving the entire logo invisible on macOS and iOS.
+  CSS-rule routing via class selectors works for <text> but is
+  unreliable for <stop>. The brand gradient is locked anyway (#fcd34d /
+  #fde047 / #f59e0b per the design brief §14), so hardcoding here is the
+  correct trade-off. The same pattern is already in place in
+  ShimmerLogo.astro.
 */
 
 interface Props {
@@ -42,6 +45,14 @@ const {
   class: className,
 } = Astro.props;
 
+// Resolved at build time — Safari-safe because the SVG fill attribute
+// gets a literal hex value, never a var().
+const wordmarkFill = monochrome
+  ? "currentColor"
+  : variant === "dark"
+    ? "#faf7f2"
+    : "#1A1817";
+
 const gradientId = `extense-logo-amber-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
@@ -51,14 +62,14 @@ const gradientId = `extense-logo-amber-${Math.random().toString(36).slice(2, 8)}
   height={height}
   role="img"
   aria-label="Extense LLC"
-  class:list={["extense-logo", `extense-logo--${variant}`, className]}
+  class:list={["extense-logo", className]}
   data-monochrome={monochrome ? "true" : undefined}
 >
   <defs>
     <linearGradient id={gradientId} x1="30" y1="10" x2="170" y2="160" gradientUnits="userSpaceOnUse">
-      <stop class="extense-logo__stop extense-logo__stop--1" offset="0%" />
-      <stop class="extense-logo__stop extense-logo__stop--2" offset="50%" />
-      <stop class="extense-logo__stop extense-logo__stop--3" offset="100%" />
+      <stop offset="0%" stop-color="#fcd34d" />
+      <stop offset="50%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#f59e0b" />
     </linearGradient>
   </defs>
   <!-- Outer square (top-right) -->
@@ -77,13 +88,13 @@ const gradientId = `extense-logo-amber-${Math.random().toString(36).slice(2, 8)}
   />
   <!-- EXTENSE wordmark, centered below the squares -->
   <text
-    class="extense-logo__wordmark"
     x="100" y="210"
     text-anchor="middle"
     font-family="'Montserrat', 'Helvetica Neue', Arial, sans-serif"
     font-size="30"
     font-weight="600"
     letter-spacing="6"
+    fill={wordmarkFill}
   >EXTENSE</text>
 </svg>
 
@@ -91,26 +102,5 @@ const gradientId = `extense-logo-amber-${Math.random().toString(36).slice(2, 8)}
   .extense-logo {
     display: block;
     width: auto;
-  }
-
-  /* Gradient stop colors — Safari requires these in CSS, not on the
-     SVG attribute. */
-  .extense-logo__stop--1 { stop-color: var(--color-logo-gradient-1); }
-  .extense-logo__stop--2 { stop-color: var(--color-logo-gradient-2); }
-  .extense-logo__stop--3 { stop-color: var(--color-logo-gradient-3); }
-
-  /* Wordmark fill — same reason. Variant-specific colors handled via
-     the .extense-logo--{variant} class on the root SVG. */
-  .extense-logo--default .extense-logo__wordmark {
-    fill: var(--color-text-primary);
-  }
-  .extense-logo--dark .extense-logo__wordmark {
-    fill: var(--color-text-on-dark);
-  }
-
-  /* Monochrome mode: wordmark inherits surrounding text color. Higher
-     specificity than the variant rules so this wins regardless of variant. */
-  .extense-logo[data-monochrome="true"] .extense-logo__wordmark {
-    fill: currentColor;
   }
 </style>
