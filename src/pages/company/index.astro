@@ -171,13 +171,24 @@ interface NaicsCode {
 
 const naicsCodes: NaicsCode[] = [
   { code: "541330", description: "Engineering Services" },
-  { code: "541990", description: "All Other Professional, Scientific, and Technical Services" },
+  { code: "541990", description: "All Other Professional, Scientific, & Technical Services" },
   { code: "561410", description: "Document Preparation Services" },
   { code: "541430", description: "Graphic Design Services" },
-  { code: "519130", description: "Internet Publishing & Broadcasting" },
   { code: "541511", description: "Custom Computer Programming" },
-  { code: "511120", description: "Periodical Publishers" },
-  { code: "518210", description: "Data Processing & Hosting" },
+  { code: "513120", description: "Periodical Publishers" },
+  { code: "518210", description: "Computing Infrastructure Providers, Data Processing, Web Hosting, & Related Services" },
+];
+
+interface PscCode {
+  code: string;
+  description: string;
+}
+
+const pscCodes: PscCode[] = [
+  { code: "R425", description: "Engineering and Technical Services" },
+  { code: "R408", description: "Program Management and Support Services" },
+  { code: "R499", description: "Other Professional Services" },
+  { code: "R699", description: "Other Administrative Services" },
 ];
 ---
 
@@ -303,6 +314,20 @@ const naicsCodes: NaicsCode[] = [
               <div class="co-record-row co-record-row--code">
                 <dt class="co-record-row__label co-record-row__label--code">{n.code}</dt>
                 <dd class="co-record-row__value">{n.description}</dd>
+              </div>
+            ))}
+          </dl>
+          <hr class="co-rule" />
+        </div>
+
+        <div class="co-record-block co-record-block--psc">
+          <p class="co-record-block__eyebrow">PSC codes</p>
+          <hr class="co-rule" />
+          <dl class="co-record-list">
+            {pscCodes.map((p) => (
+              <div class="co-record-row co-record-row--code">
+                <dt class="co-record-row__label co-record-row__label--code">{p.code}</dt>
+                <dd class="co-record-row__value">{p.description}</dd>
               </div>
             ))}
           </dl>
@@ -654,27 +679,23 @@ const naicsCodes: NaicsCode[] = [
     gap: var(--space-12);
   }
 
-  /* At tablet+: side-by-side, asymmetric — Company Details narrow,
-     NAICS Codes wider so its internal 2-column list has room to breathe. */
-  @media (min-width: 768px) {
+  /* At desktop: three side-by-side columns, asymmetric.
+     Company Details narrow (short label/value pairs).
+     NAICS wider (descriptions can be long, e.g. the official 518210
+     title runs ~85 characters and needs room).
+     PSC medium (4 codes, descriptions are short but still benefit from
+     not being squeezed).
+
+     minmax(0, Nfr) instead of plain Nfr is required: by default a grid
+     fr column has an implicit min-content floor, so a column with a
+     single long unbreakable phrase (like "Infrastructure") could
+     expand past its fr share and squeeze the other columns. minmax(0,
+     ...) tells the column it may shrink below min-content, restoring
+     clean 1:2:1.5 proportions. */
+  @media (min-width: 1024px) {
     .co-record-grid {
-      grid-template-columns: 1fr 2fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1.5fr);
       gap: var(--space-12);
-    }
-  }
-
-  /* ─── NAICS Codes: 2-column internal list ─── */
-  /* Class chained (.co-record-list.co-record-list--two-col) to outrank
-     the later .co-record-list base rule's `display: flex` declaration. */
-  .co-record-list.co-record-list--two-col {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-3) var(--space-6);
-  }
-
-  @media (min-width: 768px) {
-    .co-record-list.co-record-list--two-col {
-      grid-template-columns: 1fr 1fr;
     }
   }
 
