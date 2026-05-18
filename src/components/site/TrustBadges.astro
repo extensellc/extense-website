@@ -103,11 +103,21 @@ const badges: Badge[] = [
     line-height: 1;
     color: var(--color-text-primary);
     letter-spacing: var(--tracking-tight);
+    /* Reserve a uniform 44px-tall box for every primary line so that
+       badges with a smaller font (see --small below) don't lift their
+       labels above the labels in adjacent columns. Text bottom-aligns
+       within the box so the visual baseline stays consistent across
+       the row regardless of font size. */
+    min-height: 44px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
   }
 
   /* Smaller primary line for badges with longer strings (e.g., the combined
      DITA · S1000D standards badge). Keeps the same display-serif voice but
-     fits the column width without wrapping. */
+     fits the column width without wrapping. Inherits the 44px min-height
+     from .trust-badges__primary above so its label aligns with the others. */
   .trust-badges__primary--small {
     font-size: 28px;
   }
