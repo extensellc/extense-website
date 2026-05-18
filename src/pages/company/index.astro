@@ -644,24 +644,20 @@ const pscCodes: PscCode[] = [
   }
 
   /* ─── Firm record ─── */
-  /* Outer layout: heading/intro on left (1fr, narrow) + data zone on
-     right (3fr, wide) at desktop. DOM order is head-first for accessibility
-     and the visual order matches via grid-template-areas. */
+  /* Stacked layout at all viewport widths: heading and intro on top,
+     full-width data grid below. The desktop layout originally placed
+     the head on the left (1fr) and data on the right (3fr), which
+     worked when the data zone had only two sub-columns (Company
+     Details + NAICS). With the third PSC column added, side-by-side
+     doesn't leave enough horizontal room for the three sub-columns;
+     long NAICS descriptions (518210, 541990) start to crowd the
+     Details column values. Stacking head above data gives the data
+     grid the full container width and lets all three sub-columns
+     size comfortably. */
   @media (min-width: 1024px) {
-    .co-section--record .co-section__inner {
-      display: grid;
-      grid-template-columns: 1fr 3fr;
-      grid-template-areas: "head data";
-      gap: var(--space-16);
-      align-items: start;
-    }
-
     .co-record-head {
-      grid-area: head;
-    }
-
-    .co-record-grid {
-      grid-area: data;
+      max-width: var(--container-prose);
+      margin-bottom: var(--space-12);
     }
 
     .co-record-head .co-section__heading {
@@ -694,7 +690,12 @@ const pscCodes: PscCode[] = [
      clean 1:2:1.5 proportions. */
   @media (min-width: 1024px) {
     .co-record-grid {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1.5fr);
+      /* 1.5fr / 2fr / 1.5fr: Company Details needs enough width to fit
+         a 130px label column plus a value column wide enough for the
+         12-char UEI string. NAICS keeps the largest share so long
+         descriptions (518210, 541990) can wrap to 2-3 lines. PSC
+         matches Details since its descriptions are similar in length. */
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 2fr) minmax(0, 1.5fr);
       gap: var(--space-12);
     }
   }
@@ -731,7 +732,11 @@ const pscCodes: PscCode[] = [
 
   @media (min-width: 640px) {
     .co-record-row {
-      grid-template-columns: 160px 1fr;
+      /* 130px label column: enough for the longest Company Details
+         label ("Year incorporated", ~17 chars in mono ≈ 119px) plus a
+         small buffer, while leaving more room for the value column to
+         fit the 12-char UEI string without wrapping. */
+      grid-template-columns: 130px 1fr;
       gap: var(--space-4);
       align-items: baseline;
     }
