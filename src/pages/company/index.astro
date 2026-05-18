@@ -160,7 +160,7 @@ const companyDetails = [
   { label: "State",             value: "Maryland" },
   { label: "Corporation type",  value: "S Corporation" },
   { label: "D-U-N-S number",    value: "064989191" },
-  { label: "CAGE code",         value: "8FGJ9" },
+  { label: "CAGE code",         value: "19A16" },
 ];
 
 interface NaicsCode {
@@ -169,13 +169,13 @@ interface NaicsCode {
 }
 
 const naicsCodes: NaicsCode[] = [
-  { code: "561410", description: "Document Preparation Services" },
-  { code: "541990", description: "Professional, Scientific & Technical Services" },
-  { code: "541430", description: "Graphic Design Services" },
-  { code: "541511", description: "Custom Computer Programming" },
   { code: "541330", description: "Engineering Services" },
-  { code: "511120", description: "Periodical Publishers" },
+  { code: "541990", description: "All Other Professional, Scientific, and Technical Services" },
+  { code: "561410", description: "Document Preparation Services" },
+  { code: "541430", description: "Graphic Design Services" },
   { code: "519130", description: "Internet Publishing & Broadcasting" },
+  { code: "541511", description: "Custom Computer Programming" },
+  { code: "511120", description: "Periodical Publishers" },
   { code: "518210", description: "Data Processing & Hosting" },
 ];
 ---
@@ -297,7 +297,7 @@ const naicsCodes: NaicsCode[] = [
         <div class="co-record-block co-record-block--naics">
           <p class="co-record-block__eyebrow">NAICS codes</p>
           <hr class="co-rule" />
-          <dl class="co-record-list co-record-list--two-col">
+          <dl class="co-record-list">
             {naicsCodes.map((n) => (
               <div class="co-record-row co-record-row--code">
                 <dt class="co-record-row__label co-record-row__label--code">{n.code}</dt>
