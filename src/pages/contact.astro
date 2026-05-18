@@ -58,16 +58,6 @@ const FORMSPREE_ENDPOINT =
     <div class="container-prose contact-section__inner">
       <h2 id="form-heading" class="sr-only">Contact form</h2>
 
-      <div class="contact-section__success" data-success hidden>
-        <h3 class="contact-section__success-heading">Thanks. We'll be in touch.</h3>
-        <p class="contact-section__success-body">
-          Your submission has been received. We'll respond within 24 business hours. If you submitted a sample, the assessment will follow within two business days.
-        </p>
-        <div class="contact-section__success-links" data-success-links>
-          <a href="/" class="contact-section__success-link">Back to home →</a>
-        </div>
-      </div>
-
       <form
         class="contact-form"
         method="POST"
@@ -125,6 +115,14 @@ const FORMSPREE_ENDPOINT =
         <button type="submit" class="contact-form__submit" data-submit>
           Submit →
         </button>
+
+        <div class="contact-form__success" data-success hidden>
+          <h3 class="contact-form__success-heading">Thanks. We'll be in touch.</h3>
+          <p class="contact-form__success-body">
+            Your submission has been received. We'll respond within 24 business hours. If you submitted a sample, the assessment will follow within two business days.
+          </p>
+          <a href="/" class="contact-form__success-link">Back to home →</a>
+        </div>
 
         <p class="contact-form__error" data-error hidden role="alert">
           Something went wrong. Please try again or email
@@ -193,44 +191,57 @@ const FORMSPREE_ENDPOINT =
     margin-bottom: var(--space-12);
   }
 
-  /* Success state */
-  .contact-section__success {
-    text-align: center;
-    padding-top: var(--space-12);
-    padding-bottom: var(--space-12);
+  /* Inline success state — appears at the bottom of the form, in place of
+     the submit button, after a successful submission. Anchored to the same
+     viewport position as the button so the user sees the confirmation right
+     where they clicked, with no scroll-jumping. */
+  .contact-form__success {
+    align-self: flex-start;
+    max-width: 60ch;
+    padding: var(--space-6) var(--space-8);
+    border-left: 2px solid var(--color-accent-primary);
+    background-color: rgb(253 224 71 / 0.06);
   }
 
-  .contact-section__success-heading {
+  @media (max-width: 600px) {
+    .contact-form__success {
+      align-self: stretch;
+    }
+  }
+
+  .contact-form__success-heading {
     font-family: var(--font-display);
     font-size: var(--text-display-md);
     font-weight: var(--weight-regular);
     color: var(--color-text-primary);
-    margin-bottom: var(--space-6);
+    line-height: var(--leading-snug);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
   }
 
-  .contact-section__success-body {
+  .contact-form__success-body {
     font-family: var(--font-body);
     font-size: var(--text-body);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    margin-bottom: var(--space-8);
-    max-width: 60ch;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 0 var(--space-4) 0;
     text-wrap: pretty;
   }
 
-  .contact-section__success-link {
+  .contact-form__success-link {
     font-family: var(--font-body);
-    font-size: var(--text-body);
+    font-size: var(--text-body-sm);
     font-weight: var(--weight-medium);
     color: var(--color-link);
     text-decoration: none;
   }
 
-  .contact-section__success-link:hover {
+  .contact-form__success-link:hover,
+  .contact-form__success-link:focus-visible {
     color: var(--color-link-hover);
     text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
   }
 
   /* Form */
@@ -449,11 +460,16 @@ const FORMSPREE_ENDPOINT =
     setAudience(determineInitialAudience());
 
     // Form submission via fetch — keeps us on the page and renders success state
+    // inline where the submit button was, so the user sees confirmation at the
+    // exact viewport position where they clicked (no scroll-jumping required).
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       errorMsg!.hidden = true;
+      // Disable the button to indicate processing without changing its label.
+      // The CSS disabled state (opacity 0.6, cursor not-allowed) provides the
+      // feedback. Async submission usually completes in < 1s; on success the
+      // button is hidden and replaced by the inline success message.
       submitBtn!.disabled = true;
-      submitBtn!.textContent = "Submitting...";
 
       const formData = new FormData(form!);
       try {
@@ -464,16 +480,21 @@ const FORMSPREE_ENDPOINT =
         });
 
         if (res.ok) {
-          form!.hidden = true;
+          // Hide the submit button and reveal the inline success message in
+          // its place. Disable all fields so the submitted state is final.
+          submitBtn!.hidden = true;
           successPanel!.hidden = false;
-          successPanel!.scrollIntoView({ behavior: "smooth", block: "start" });
+          form!.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+            "input:not([type='hidden']), textarea, select"
+          ).forEach((el) => {
+            el.disabled = true;
+          });
         } else {
           throw new Error(`Submission failed: ${res.status}`);
         }
       } catch (err) {
         errorMsg!.hidden = false;
         submitBtn!.disabled = false;
-        submitBtn!.textContent = "Submit →";
       }
     });
   }
