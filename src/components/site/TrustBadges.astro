@@ -2,12 +2,11 @@
 /*
   TrustBadges — homepage credentials strip.
 
-  Four procurement-relevant trust signals, ported from the original
-  ex-tense.co stats banner:
-    13+   Years in Business
-    11+   Major Clients Served
-    WOSB  Woman-Owned Small Business
-    508   Section Compliant
+  Four procurement-relevant trust signals:
+    13+              Years in Business
+    11+              Major Clients Served
+    DITA · S1000D    Content Standards
+    508              Section Compliant
 
   Placement: between the outcome StatBlock (60/72/85) and the LogoBench.
   Narrative order: outcomes -> credentials -> who trusts us -> pivot.
@@ -18,18 +17,25 @@
   for the primary line, mono caps for the descriptor, so the numbers
   read as credentials, not outcomes (those are bigger and amber-adjacent
   in the StatBlock above).
+
+  The DITA · S1000D badge uses a smaller primary font (primarySmall flag)
+  because the combined-standard string is too wide for the column at the
+  default 44px display size.
 */
 
 interface Badge {
   primary: string;
   label: string;
+  /** Render the primary line at a smaller font size so longer strings fit
+      the column without wrapping (e.g., the combined-standards badge). */
+  primarySmall?: boolean;
 }
 
 const badges: Badge[] = [
-  { primary: "13+",  label: "Years in Business" },
-  { primary: "11+",  label: "Major Clients Served" },
-  { primary: "WOSB", label: "Woman-Owned Small Business" },
-  { primary: "508",  label: "Section Compliant" },
+  { primary: "13+",            label: "Years in Business" },
+  { primary: "11+",            label: "Major Clients Served" },
+  { primary: "DITA · S1000D",  label: "Content Standards", primarySmall: true },
+  { primary: "508",            label: "Section Compliant" },
 ];
 ---
 
@@ -38,7 +44,12 @@ const badges: Badge[] = [
     <ul class="trust-badges__row">
       {badges.map((b) => (
         <li class="trust-badges__item">
-          <span class="trust-badges__primary">{b.primary}</span>
+          <span
+            class:list={[
+              "trust-badges__primary",
+              b.primarySmall && "trust-badges__primary--small",
+            ]}
+          >{b.primary}</span>
           <span class="trust-badges__label">{b.label}</span>
         </li>
       ))}
@@ -92,6 +103,13 @@ const badges: Badge[] = [
     line-height: 1;
     color: var(--color-text-primary);
     letter-spacing: var(--tracking-tight);
+  }
+
+  /* Smaller primary line for badges with longer strings (e.g., the combined
+     DITA · S1000D standards badge). Keeps the same display-serif voice but
+     fits the column width without wrapping. */
+  .trust-badges__primary--small {
+    font-size: 28px;
   }
 
   .trust-badges__label {
