@@ -98,7 +98,7 @@
         </g>
 
         <!-- Top namespace declaration -->
-        <text class="chrome" x="30" y="18" style="--d: 80ms">xmlns:dita="http://docs.oasis-open.org/dita/v1.3"</text>
+        <text class="chrome" x="30" y="18" style="--d: 80ms">xmlns:dita="http://docs.oasis-open.org/dita/ns/2.0"</text>
 
         <!-- L1 root: map (amber gradient stroke, ties to logo).
              data-branch lists which leaf-traces pass through this node
@@ -115,13 +115,13 @@
         <path class="edge" d="M 190 60 L 190 78 L 285 78 L 285 96"
               data-branch="2 3" data-tier="1" style="--d: 400ms" />
 
-        <!-- L2 topics -->
+        <!-- L2 topicrefs -->
         <rect class="node" x="63" y="96" width="64" height="22"
               data-branch="0 1" data-tier="2" style="--d: 560ms" />
-        <text class="label" x="95" y="107" style="--d: 560ms">&lt;topic&gt;</text>
+        <text class="label" x="95" y="107" style="--d: 560ms">&lt;topicref&gt;</text>
         <rect class="node" x="253" y="96" width="64" height="22"
               data-branch="2 3" data-tier="2" style="--d: 560ms" />
-        <text class="label" x="285" y="107" style="--d: 560ms">&lt;topic&gt;</text>
+        <text class="label" x="285" y="107" style="--d: 560ms">&lt;topicref&gt;</text>
 
         <!-- L2 → L3 edges. Each branch is one continuous bent path. -->
         <path class="edge" d="M 95 118 L 95 138 L 60 138 L 60 160"
@@ -133,19 +133,19 @@
         <path class="edge" d="M 285 118 L 285 138 L 320 138 L 320 160"
               data-branch="3" data-tier="3" style="--d: 720ms" />
 
-        <!-- L3 section/xref -->
+        <!-- L3 topicmeta / topicref / topicmeta / keydef -->
         <rect class="node" x="30"  y="160" width="60" height="20"
               data-branch="0" data-tier="4" style="--d: 880ms" />
-        <text class="label" x="60" y="170" style="--d: 880ms">&lt;section&gt;</text>
+        <text class="label" x="60" y="170" style="--d: 880ms">&lt;topicmeta&gt;</text>
         <rect class="node" x="100" y="160" width="60" height="20"
               data-branch="1" data-tier="4" style="--d: 880ms" />
-        <text class="label" x="130" y="170" style="--d: 880ms">&lt;xref&gt;</text>
+        <text class="label" x="130" y="170" style="--d: 880ms">&lt;topicref&gt;</text>
         <rect class="node" x="220" y="160" width="60" height="20"
               data-branch="2" data-tier="4" style="--d: 880ms" />
-        <text class="label" x="250" y="170" style="--d: 880ms">&lt;section&gt;</text>
+        <text class="label" x="250" y="170" style="--d: 880ms">&lt;topicmeta&gt;</text>
         <rect class="node" x="290" y="160" width="60" height="20"
               data-branch="3" data-tier="4" style="--d: 880ms" />
-        <text class="label" x="320" y="170" style="--d: 880ms">&lt;xref&gt;</text>
+        <text class="label" x="320" y="170" style="--d: 880ms">&lt;keydef&gt;</text>
 
         <!-- L3 → L4 edges (straight verticals to leaf rects) -->
         <path class="edge" d="M 60 180 L 60 215"
@@ -157,15 +157,30 @@
         <path class="edge" d="M 320 180 L 320 215"
               data-branch="3" data-tier="5" style="--d: 1040ms" />
 
-        <!-- L4 leaves -->
-        <rect class="node leaf" x="53"  y="215" width="14" height="7"
-              data-branch="0" data-tier="6" style="--d: 1160ms" />
-        <rect class="node leaf" x="123" y="215" width="14" height="7"
-              data-branch="1" data-tier="6" style="--d: 1160ms" />
-        <rect class="node leaf" x="243" y="215" width="14" height="7"
-              data-branch="2" data-tier="6" style="--d: 1160ms" />
-        <rect class="node leaf" x="313" y="215" width="14" height="7"
-              data-branch="3" data-tier="6" style="--d: 1160ms" />
+        <!-- L4 leaves — hairline document icons (rect outline + 2 inner hairlines).
+             The rect's stroke/stroke-width comes from .node via the parent <g>;
+             the inner lines inherit stroke color so the trace pulse highlights
+             the whole document. -->
+        <g class="node leaf" data-branch="0" data-tier="6" style="--d: 1160ms">
+          <rect class="leaf-frame" x="51"  y="215" width="18" height="14" />
+          <line class="leaf-line"  x1="54" y1="220" x2="66" y2="220" />
+          <line class="leaf-line"  x1="54" y1="224" x2="66" y2="224" />
+        </g>
+        <g class="node leaf" data-branch="1" data-tier="6" style="--d: 1160ms">
+          <rect class="leaf-frame" x="121" y="215" width="18" height="14" />
+          <line class="leaf-line"  x1="124" y1="220" x2="136" y2="220" />
+          <line class="leaf-line"  x1="124" y1="224" x2="136" y2="224" />
+        </g>
+        <g class="node leaf" data-branch="2" data-tier="6" style="--d: 1160ms">
+          <rect class="leaf-frame" x="241" y="215" width="18" height="14" />
+          <line class="leaf-line"  x1="244" y1="220" x2="256" y2="220" />
+          <line class="leaf-line"  x1="244" y1="224" x2="256" y2="224" />
+        </g>
+        <g class="node leaf" data-branch="3" data-tier="6" style="--d: 1160ms">
+          <rect class="leaf-frame" x="311" y="215" width="18" height="14" />
+          <line class="leaf-line"  x1="314" y1="220" x2="326" y2="220" />
+          <line class="leaf-line"  x1="314" y1="224" x2="326" y2="224" />
+        </g>
 
         <!-- Title block hairline -->
         <line class="chrome-rule" x1="30" y1="252" x2="350" y2="252" style="--d: 1260ms" />
@@ -181,7 +196,7 @@
 
         <!-- Annotation strip -->
         <text class="chrome" x="30" y="290" style="--d: 1380ms">
-          <tspan class="annotation-prefix">▸</tspan><tspan id="hero-annotation-text" dx="6" class="chrome--strong">&lt;map title="api-reference.ditamap"&gt;</tspan>
+          <tspan class="annotation-prefix">▸</tspan><tspan id="hero-annotation-text" dx="6" class="chrome--strong">&lt;map title="extense-platform.ditamap"&gt;</tspan>
         </text>
       </svg>
     </div>
@@ -380,13 +395,20 @@
     opacity: 0.7;
   }
 
-  /* Leaves are content blobs, not structural nodes — fill with the stroke
-     color at low opacity so they read as solid ink dots, distinct from the
-     outlined-only L1/L2/L3 rects above. */
-  .dita-svg .leaf {
-    fill: currentColor;
-    fill-opacity: 0.15;
+  /* Leaves are hairline document icons — outlined rect with two inner
+     hairlines, rendered in the same engineering-blueprint language as the
+     rest of the tree. Children inherit stroke + stroke-width from the
+     parent <g class="node">, so the idle trace pulse highlights the whole
+     document. Inner lines override stroke-width and add opacity to read as
+     secondary text-content marks. */
+  .dita-svg .leaf-frame {
+    vector-effect: non-scaling-stroke;
+  }
+  .dita-svg .leaf-line {
+    fill: none;
     stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.6;
   }
 
   .dita-svg .chrome-rule {
@@ -546,21 +568,17 @@
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const annotationEl = document.getElementById("hero-annotation-text");
 
+    // The idle trace always targets a leaf (last element in the path). Leaves
+    // carry a single-value data-branch ("0".."3"), so look up by branch index.
     function getAnnotationFor(node: Element): string {
-      const x = parseFloat(node.getAttribute("x") || "0");
-      const y = parseFloat(node.getAttribute("y") || "0");
-
-      if (y < 80) return '<map title="api-reference.ditamap">';
-      if (y < 130 && x < 150) return '<topic id="overview" outputclass="reference">';
-      if (y < 130) return '<topic id="endpoints" outputclass="reference">';
-      if (y < 200 && x < 80) return '<section id="introduction">';
-      if (y < 200 && x < 200) return '<xref href="../auth/oauth2.dita"/>';
-      if (y < 200 && x < 290) return '<section id="response-codes">';
-      if (y < 200) return '<xref href="../errors/codes.dita"/>';
-      if (x < 80) return "<p>Block-level paragraph element.</p>";
-      if (x < 200) return '<image href="sequence.svg" placement="break"/>';
-      if (x < 290) return '<codeblock outputclass="language-bash">';
-      return '<note type="warning">Authentication required.</note>';
+      const branch = node.getAttribute("data-branch");
+      switch (branch) {
+        case "0": return "<navtitle>Authoring conventions</navtitle>";
+        case "1": return '<topicref href="install/prerequisites.dita"/>';
+        case "2": return '<audience type="administrator"/>';
+        case "3": return "<keyword>product-name</keyword>";
+        default:  return '<map title="extense-platform.ditamap">';
+      }
     }
 
     const observer = new IntersectionObserver(
