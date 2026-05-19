@@ -123,68 +123,71 @@
               data-branch="2 3" data-tier="2" style="--d: 560ms" />
         <text class="label" x="285" y="107" style="--d: 560ms">&lt;topicref&gt;</text>
 
-        <!-- L2 → L3 edges. Each branch is one continuous bent path. -->
-        <path class="edge" d="M 95 118 L 95 138 L 60 138 L 60 160"
+        <!-- L2 → L3 edges. Each branch is one continuous bent path.
+             L3 sibling centers spread to 57/133 (left pair) and 247/323
+             (right pair) so the boxes have a visible 6px gap between them
+             instead of sharing a vertical stroke. -->
+        <path class="edge" d="M 95 118 L 95 138 L 57 138 L 57 160"
               data-branch="0" data-tier="3" style="--d: 720ms" />
-        <path class="edge" d="M 95 118 L 95 138 L 130 138 L 130 160"
+        <path class="edge" d="M 95 118 L 95 138 L 133 138 L 133 160"
               data-branch="1" data-tier="3" style="--d: 720ms" />
-        <path class="edge" d="M 285 118 L 285 138 L 250 138 L 250 160"
+        <path class="edge" d="M 285 118 L 285 138 L 247 138 L 247 160"
               data-branch="2" data-tier="3" style="--d: 720ms" />
-        <path class="edge" d="M 285 118 L 285 138 L 320 138 L 320 160"
+        <path class="edge" d="M 285 118 L 285 138 L 323 138 L 323 160"
               data-branch="3" data-tier="3" style="--d: 720ms" />
 
         <!-- L3 topicmeta / topicref / topicmeta / keydef.
              Boxes are 70 wide so <topicmeta> (11 chars at 10px JetBrains Mono
              ≈ 67 SVG user units) fits with ~1.5px margin each side, matching
-             the L2 box pattern. Sibling pairs touch at x=95 and x=255 — the
-             shared 1.5px stroke reads as a single dividing line, like a
-             collapsed table border. -->
-        <rect class="node" x="25"  y="160" width="70" height="20"
+             the L2 box pattern. Sibling centers spread to 57/133 and 247/323
+             so the boxes have a 6px gap between them. -->
+        <rect class="node" x="22"  y="160" width="70" height="20"
               data-branch="0" data-tier="4" style="--d: 880ms" />
-        <text class="label" x="60" y="170" style="--d: 880ms">&lt;topicmeta&gt;</text>
-        <rect class="node" x="95"  y="160" width="70" height="20"
+        <text class="label" x="57" y="170" style="--d: 880ms">&lt;topicmeta&gt;</text>
+        <rect class="node" x="98"  y="160" width="70" height="20"
               data-branch="1" data-tier="4" style="--d: 880ms" />
-        <text class="label" x="130" y="170" style="--d: 880ms">&lt;topicref&gt;</text>
-        <rect class="node" x="215" y="160" width="70" height="20"
+        <text class="label" x="133" y="170" style="--d: 880ms">&lt;topicref&gt;</text>
+        <rect class="node" x="212" y="160" width="70" height="20"
               data-branch="2" data-tier="4" style="--d: 880ms" />
-        <text class="label" x="250" y="170" style="--d: 880ms">&lt;topicmeta&gt;</text>
-        <rect class="node" x="285" y="160" width="70" height="20"
+        <text class="label" x="247" y="170" style="--d: 880ms">&lt;topicmeta&gt;</text>
+        <rect class="node" x="288" y="160" width="70" height="20"
               data-branch="3" data-tier="4" style="--d: 880ms" />
-        <text class="label" x="320" y="170" style="--d: 880ms">&lt;keydef&gt;</text>
+        <text class="label" x="323" y="170" style="--d: 880ms">&lt;keydef&gt;</text>
 
         <!-- L3 → L4 edges (straight verticals to leaf rects) -->
-        <path class="edge" d="M 60 180 L 60 215"
+        <path class="edge" d="M 57 180 L 57 215"
               data-branch="0" data-tier="5" style="--d: 1040ms" />
-        <path class="edge" d="M 130 180 L 130 215"
+        <path class="edge" d="M 133 180 L 133 215"
               data-branch="1" data-tier="5" style="--d: 1040ms" />
-        <path class="edge" d="M 250 180 L 250 215"
+        <path class="edge" d="M 247 180 L 247 215"
               data-branch="2" data-tier="5" style="--d: 1040ms" />
-        <path class="edge" d="M 320 180 L 320 215"
+        <path class="edge" d="M 323 180 L 323 215"
               data-branch="3" data-tier="5" style="--d: 1040ms" />
 
         <!-- L4 leaves — hairline document icons (rect outline + 2 inner hairlines).
              The rect's stroke/stroke-width comes from .node via the parent <g>;
              the inner lines inherit stroke color so the trace pulse highlights
-             the whole document. -->
+             the whole document. Leaf centers track the L3 centers above
+             (57/133/247/323). -->
         <g class="node leaf" data-branch="0" data-tier="6" style="--d: 1160ms">
-          <rect class="leaf-frame" x="51"  y="215" width="18" height="14" />
-          <line class="leaf-line"  x1="54" y1="220" x2="66" y2="220" />
-          <line class="leaf-line"  x1="54" y1="224" x2="66" y2="224" />
+          <rect class="leaf-frame" x="48"  y="215" width="18" height="14" />
+          <line class="leaf-line"  x1="51" y1="220" x2="63" y2="220" />
+          <line class="leaf-line"  x1="51" y1="224" x2="63" y2="224" />
         </g>
         <g class="node leaf" data-branch="1" data-tier="6" style="--d: 1160ms">
-          <rect class="leaf-frame" x="121" y="215" width="18" height="14" />
-          <line class="leaf-line"  x1="124" y1="220" x2="136" y2="220" />
-          <line class="leaf-line"  x1="124" y1="224" x2="136" y2="224" />
+          <rect class="leaf-frame" x="124" y="215" width="18" height="14" />
+          <line class="leaf-line"  x1="127" y1="220" x2="139" y2="220" />
+          <line class="leaf-line"  x1="127" y1="224" x2="139" y2="224" />
         </g>
         <g class="node leaf" data-branch="2" data-tier="6" style="--d: 1160ms">
-          <rect class="leaf-frame" x="241" y="215" width="18" height="14" />
-          <line class="leaf-line"  x1="244" y1="220" x2="256" y2="220" />
-          <line class="leaf-line"  x1="244" y1="224" x2="256" y2="224" />
+          <rect class="leaf-frame" x="238" y="215" width="18" height="14" />
+          <line class="leaf-line"  x1="241" y1="220" x2="253" y2="220" />
+          <line class="leaf-line"  x1="241" y1="224" x2="253" y2="224" />
         </g>
         <g class="node leaf" data-branch="3" data-tier="6" style="--d: 1160ms">
-          <rect class="leaf-frame" x="311" y="215" width="18" height="14" />
-          <line class="leaf-line"  x1="314" y1="220" x2="326" y2="220" />
-          <line class="leaf-line"  x1="314" y1="224" x2="326" y2="224" />
+          <rect class="leaf-frame" x="314" y="215" width="18" height="14" />
+          <line class="leaf-line"  x1="317" y1="220" x2="329" y2="220" />
+          <line class="leaf-line"  x1="317" y1="224" x2="329" y2="224" />
         </g>
 
         <!-- Title block hairline -->
