@@ -133,17 +133,22 @@
         <path class="edge" d="M 285 118 L 285 138 L 320 138 L 320 160"
               data-branch="3" data-tier="3" style="--d: 720ms" />
 
-        <!-- L3 topicmeta / topicref / topicmeta / keydef -->
-        <rect class="node" x="30"  y="160" width="60" height="20"
+        <!-- L3 topicmeta / topicref / topicmeta / keydef.
+             Boxes are 70 wide so <topicmeta> (11 chars at 10px JetBrains Mono
+             ≈ 67 SVG user units) fits with ~1.5px margin each side, matching
+             the L2 box pattern. Sibling pairs touch at x=95 and x=255 — the
+             shared 1.5px stroke reads as a single dividing line, like a
+             collapsed table border. -->
+        <rect class="node" x="25"  y="160" width="70" height="20"
               data-branch="0" data-tier="4" style="--d: 880ms" />
         <text class="label" x="60" y="170" style="--d: 880ms">&lt;topicmeta&gt;</text>
-        <rect class="node" x="100" y="160" width="60" height="20"
+        <rect class="node" x="95"  y="160" width="70" height="20"
               data-branch="1" data-tier="4" style="--d: 880ms" />
         <text class="label" x="130" y="170" style="--d: 880ms">&lt;topicref&gt;</text>
-        <rect class="node" x="220" y="160" width="60" height="20"
+        <rect class="node" x="215" y="160" width="70" height="20"
               data-branch="2" data-tier="4" style="--d: 880ms" />
         <text class="label" x="250" y="170" style="--d: 880ms">&lt;topicmeta&gt;</text>
-        <rect class="node" x="290" y="160" width="60" height="20"
+        <rect class="node" x="285" y="160" width="70" height="20"
               data-branch="3" data-tier="4" style="--d: 880ms" />
         <text class="label" x="320" y="170" style="--d: 880ms">&lt;keydef&gt;</text>
 
