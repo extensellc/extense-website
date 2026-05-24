@@ -100,10 +100,16 @@ template wireframe + a content-variant table, not N independent docs.
 | Resources (index)      | –         | –        | –         | –        | –           | – |
 | Company                | –         | –        | –         | –        | –           | – |
 | Contact                | –         | –        | –         | –        | –           | – |
-| Pillar template (×4)   | –         | –        | –         | –        | –           | – |
 | Industry template (×6) | –         | –        | –         | –        | –           | – |
-| Solution template (×4) | –         | –        | –         | –        | –           | – |
 | Service template (×3)  | –         | –        | –         | –        | –           | – |
+| Solution › Tech Docs   | done      | done     | done      | done     | done (uncommitted) | [technical-docs-and-publishing.md](technical-docs-and-publishing.md) |
+| Solution › Migration   | –         | –        | –         | –        | –           | – |
+| Solution › XML Interop  | –        | –        | –         | –        | –           | – |
+| Solution › AI-Ready    | –         | –        | –         | –        | –           | – |
+
+> The 4 `/solutions/*` sub-pages are **bespoke** (each has its own components —
+> `TechDocs*`, etc.), so they get one doc each, not a shared template. (The
+> retired `/capabilities` pillar pages were the templated set.)
 
 ---
 

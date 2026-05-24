@@ -1,0 +1,387 @@
+---
+/*
+  TechDocsArchitecture — "Modern Publishing Architecture" section on
+  /solutions/technical-docs-and-publishing.
+
+  Rebuilt from the old ex-tense.co section in the new design system.
+  Structure:
+    - heading-block (prose): H2 + intro ([OLD], "enable"→"deliver")
+    - architecture diagram: DITA Source → Transformation → Output
+      (hairline nodes, amber arrow), full width
+    - two columns: capability bullets (left) + key benefits (right)
+        bullets [OLD]: Single-Source Publishing / Content Reuse /
+                       Automated Formatting
+        benefits: 72% [locked] + 3 sharpened [DRAFT, approved]
+
+  No border-top: the Siblings row above already carries a border-bottom.
+  Animation: viewport-triggered fade-up, staggered. prefers-reduced-motion: static.
+*/
+
+interface Capability {
+  term: string;
+  desc: string;
+}
+
+const capabilities: Capability[] = [
+  {
+    term: "Single-Source Publishing",
+    desc: "Write once, publish to PDF, HTML5, WebHelp, and Mobile formats seamlessly.",
+  },
+  {
+    term: "Content Reuse",
+    desc: "Eliminate redundancy by reusing topics across different manuals and versions.",
+  },
+  {
+    term: "Automated Formatting",
+    desc: "Let the styling engines handle the layout, ensuring consistency and brand compliance.",
+  },
+];
+
+interface Benefit {
+  term: string;
+  desc?: string;
+}
+
+const benefits: Benefit[] = [
+  { term: "72% lower translation cost" },
+  {
+    term: "Same-day publish",
+    desc: "No formatting cycle between content approval and release.",
+  },
+  {
+    term: "One stylesheet, every locale",
+    desc: "Brand and layout can’t drift between a manual and its translation.",
+  },
+  {
+    term: "Fix once, propagate everywhere",
+    desc: "A correction resolves in every manual that references the topic; no stale copy survives in a parallel doc.",
+  },
+];
+---
+
+<section class="tdp-arch" aria-labelledby="tdp-arch-heading">
+  <div class="container-data tdp-arch__inner">
+    <div class="tdp-arch__heading-block">
+      <h2 id="tdp-arch-heading" class="tdp-arch__heading">
+        Modern Publishing Architecture
+      </h2>
+      <p class="tdp-arch__intro">
+        We move beyond static Word documents. The publishing architecture is built on structured content &mdash; DITA/XML &mdash; to deliver:
+      </p>
+    </div>
+
+    <div class="tdp-arch__diagram" aria-hidden="true">
+      <div class="arch-node">
+        <p class="arch-node__label">Source</p>
+        <p class="arch-node__title">DITA Source</p>
+        <p class="arch-node__sub">Authoring in XML</p>
+      </div>
+      <span class="arch-arrow">&rarr;</span>
+      <div class="arch-node">
+        <p class="arch-node__label">Transform</p>
+        <p class="arch-node__title">Transformation</p>
+        <p class="arch-node__sub">DITA-OT Engine</p>
+      </div>
+      <span class="arch-arrow">&rarr;</span>
+      <div class="arch-node arch-node--out">
+        <p class="arch-node__label">Output</p>
+        <p class="arch-node__title">Multi-channel</p>
+        <p class="arch-node__sub">PDF &middot; HTML5 &middot; EPUB &middot; IETM</p>
+      </div>
+    </div>
+
+    <div class="tdp-arch__cols">
+      <dl class="tdp-arch__caps">
+        {capabilities.map((cap) => (
+          <div class="arch-cap">
+            <dt class="arch-cap__term">{cap.term}</dt>
+            <dd class="arch-cap__desc">{cap.desc}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="tdp-arch__benefits">
+        <p class="eyebrow tdp-arch__benefits-eyebrow">Key benefits</p>
+        <ul class="arch-benefits">
+          {benefits.map((b) => (
+            <li class="arch-benefit">
+              <p class="arch-benefit__term">{b.term}</p>
+              {b.desc && <p class="arch-benefit__desc">{b.desc}</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tdp-arch {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    /* No border-top: the Siblings row above carries a border-bottom. */
+  }
+
+  @media (max-width: 767px) {
+    .tdp-arch {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .tdp-arch__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-16);
+  }
+
+  .tdp-arch__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .tdp-arch__intro {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Architecture diagram — 3 hairline nodes, amber arrows between.
+     Horizontal on desktop, stacked with down-arrows on mobile.
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-arch__diagram {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-16);
+    flex-wrap: wrap;
+  }
+
+  .arch-node {
+    flex: 1 1 0;
+    min-width: 180px;
+    max-width: 280px;
+    border: var(--border-hairline);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .arch-node--out {
+    border-color: var(--color-text-secondary);
+  }
+
+  .arch-node__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    margin: 0 0 var(--space-2) 0;
+  }
+  .arch-node__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .arch-node__sub {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .arch-arrow {
+    align-self: center;
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary-hover);
+    line-height: 1;
+  }
+
+  @media (max-width: 767px) {
+    .tdp-arch__diagram {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .arch-node {
+      max-width: none;
+    }
+    .arch-arrow {
+      transform: rotate(90deg);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Two columns: capabilities (left) + key benefits (right).
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-arch__cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 900px) {
+    .tdp-arch__cols {
+      grid-template-columns: 1.4fr 1fr;
+      gap: var(--space-16);
+    }
+  }
+
+  .tdp-arch__caps {
+    margin: 0;
+  }
+  .arch-cap {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+  .arch-cap:last-child {
+    margin-bottom: 0;
+  }
+  .arch-cap__term {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+  }
+  .arch-cap__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .tdp-arch__benefits-eyebrow {
+    margin: 0 0 var(--space-6) 0;
+    color: var(--color-accent-primary);
+  }
+  .arch-benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .arch-benefit {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+  .arch-benefit:last-child {
+    margin-bottom: 0;
+  }
+  .arch-benefit__term {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .arch-benefit__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: var(--space-1) 0 0 0;
+    text-wrap: pretty;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Reveal animation — viewport-triggered fade-up, staggered.
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-arch.animating .tdp-arch__heading-block,
+  .tdp-arch.animating .tdp-arch__diagram,
+  .tdp-arch.animating .arch-cap,
+  .tdp-arch.animating .tdp-arch__benefits {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .tdp-arch.animating.in-view .tdp-arch__heading-block {
+    animation: tdp-arch-fade-in 480ms ease-out forwards;
+  }
+  .tdp-arch.animating.in-view .tdp-arch__diagram {
+    animation: tdp-arch-fade-in 480ms ease-out forwards;
+    animation-delay: 160ms;
+  }
+  .tdp-arch.animating.in-view .arch-cap:nth-child(1) { animation: tdp-arch-fade-in 420ms ease-out forwards; animation-delay: 300ms; }
+  .tdp-arch.animating.in-view .arch-cap:nth-child(2) { animation: tdp-arch-fade-in 420ms ease-out forwards; animation-delay: 380ms; }
+  .tdp-arch.animating.in-view .arch-cap:nth-child(3) { animation: tdp-arch-fade-in 420ms ease-out forwards; animation-delay: 460ms; }
+  .tdp-arch.animating.in-view .tdp-arch__benefits {
+    animation: tdp-arch-fade-in 480ms ease-out forwards;
+    animation-delay: 420ms;
+  }
+
+  @keyframes tdp-arch-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tdp-arch.animating .tdp-arch__heading-block,
+    .tdp-arch.animating .tdp-arch__diagram,
+    .tdp-arch.animating .arch-cap,
+    .tdp-arch.animating .tdp-arch__benefits {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupTechDocsArchitecture() {
+    const sec = document.querySelector<HTMLElement>(".tdp-arch");
+    if (!sec) return;
+    if (sec.dataset.archRevealInit === "true") return;
+    sec.dataset.archRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTechDocsArchitecture);
+  document.addEventListener("astro:page-load", setupTechDocsArchitecture);
+</script>

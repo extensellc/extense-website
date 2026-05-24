@@ -1,0 +1,241 @@
+---
+/*
+  TechDocsRelated — "Explore Related Solutions" two-up on
+  /solutions/technical-docs-and-publishing.
+
+  Restores the old ex-tense.co cross-sell: one SOLUTION + one SERVICE.
+  Replaces the single generic CrossPillarLink usage on this page.
+
+    SOLUTION → Content Migration & Modernization (/solutions/content-migration)
+    SERVICE  → DITA Engineering (/services — placeholder; the 7 /services/*
+               detail pages don't exist yet)
+
+  Whole-card link, hairline tiles (HomeIndustries vocabulary). Sits before
+  the closing CTA; border-top divides it from the Headless section above.
+  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface Related {
+  kind: string;
+  name: string;
+  href: string;
+  desc: string;
+}
+
+const related: Related[] = [
+  {
+    kind: "Solution",
+    name: "Content Migration & Modernization",
+    href: "/solutions/content-migration",
+    desc: "Migrate legacy content to structured DITA XML with automated pipelines.",
+  },
+  {
+    kind: "Service",
+    name: "DITA Engineering",
+    href: "/services",
+    desc: "Topic modeling, specialization, and content architecture.",
+  },
+];
+---
+
+<section class="tdp-related" aria-labelledby="tdp-related-heading">
+  <div class="container-data tdp-related__inner">
+    <h2 id="tdp-related-heading" class="tdp-related__heading">
+      Explore Related Solutions
+    </h2>
+
+    <ul class="tdp-related__grid">
+      {related.map((item) => (
+        <li class="related-card-item">
+          <a href={item.href} class="related-card">
+            <p class="related-card__kind">{item.kind}</p>
+            <h3 class="related-card__name">{item.name}</h3>
+            <p class="related-card__desc">{item.desc}</p>
+            <span class="related-card__cta">
+              Explore <span class="related-card__arrow" aria-hidden="true">&rarr;</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .tdp-related {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .tdp-related {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .tdp-related__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: balance;
+  }
+
+  .tdp-related__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .tdp-related__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .related-card-item {
+    display: flex;
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+  .related-card:hover,
+  .related-card:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+  }
+
+  .related-card__kind {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .related-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+    text-wrap: balance;
+  }
+
+  .related-card__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+
+  .related-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .related-card:hover .related-card__cta,
+  .related-card:focus-visible .related-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .related-card:hover .related-card__arrow {
+    transform: translateX(2px);
+  }
+
+  /* Reveal animation — viewport-triggered, heading then cards stagger. */
+  .tdp-related.animating .tdp-related__heading,
+  .tdp-related.animating .related-card-item {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .tdp-related.animating .related-card-item:nth-child(1) { --reveal-delay: 160ms; }
+  .tdp-related.animating .related-card-item:nth-child(2) { --reveal-delay: 260ms; }
+
+  .tdp-related.animating.in-view .tdp-related__heading {
+    animation: tdp-related-fade-in 480ms ease-out forwards;
+  }
+  .tdp-related.animating.in-view .related-card-item {
+    animation: tdp-related-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes tdp-related-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tdp-related.animating .tdp-related__heading,
+    .tdp-related.animating .related-card-item {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupTechDocsRelated() {
+    const sec = document.querySelector<HTMLElement>(".tdp-related");
+    if (!sec) return;
+    if (sec.dataset.relatedRevealInit === "true") return;
+    sec.dataset.relatedRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTechDocsRelated);
+  document.addEventListener("astro:page-load", setupTechDocsRelated);
+</script>

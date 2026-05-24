@@ -1,0 +1,305 @@
+---
+/*
+  TechDocsFormats — "Multi-Channel Output Formats" section on
+  /solutions/technical-docs-and-publishing.
+
+  The old ex-tense.co card grid, rebuilt in the new design (hairline
+  cards). NINE formats in a balanced 3×3 grid, thematically grouped:
+    print/document  — PDF/Print · Accessible PDF (508) · Word/DOCX
+    web/digital      — Responsive HTML5 · Mobile/Offline · Markdown/Portals
+    specialized      — EPUB/eBook · SCORM/eLearning · IETM
+
+  Copy [OLD] for the six original formats; Accessible PDF, Word/DOCX, and
+  IETM are net-new [DRAFT, approved].
+
+  Treatment (per direction): amber mono index, a short amber accent rule
+  that draws in on scroll-reveal, and a hover lift. The hover uses the
+  independent `translate` property so it composes with the reveal's
+  `transform: translateY` instead of fighting it. prefers-reduced-motion: static.
+*/
+
+interface Format {
+  name: string;
+  body: string;
+}
+
+const formats: Format[] = [
+  {
+    name: "PDF / Print",
+    body: "XSL-FO rendering via Antenna House or Apache FOP. Pixel-perfect branded manuals, data sheets, and regulatory submissions with TOC, index, cross-references, and change bars — ready for print or compliance archives.",
+  },
+  {
+    name: "Accessible PDF / Section 508",
+    body: "Tagged, accessible PDF that meets Section 508 and PDF/UA — logical reading order, alt text, and tagged tables emitted by the build, not retrofitted. The same accessibility metadata carries into the HTML5 output.",
+  },
+  {
+    name: "Microsoft Word / DOCX",
+    body: "Microsoft Word and DOCX from the same DITA source — for stakeholders who review and redline in Word. Edits round-trip back into structured content; the review copy and the published manual never diverge.",
+  },
+  {
+    name: "Responsive HTML5",
+    body: "SEO-optimized, searchable web portals with custom branded themes. Full-text search, breadcrumb navigation, version selectors, and responsive layouts — deployed to any static host, CDN, or documentation platform.",
+  },
+  {
+    name: "Mobile / Offline",
+    body: "Progressive Web App packages for field technicians, service engineers, and remote teams. Cached locally for offline access with automatic sync when connectivity returns — no app store required.",
+  },
+  {
+    name: "Markdown / Developer Portals",
+    body: "Export DITA to clean Markdown for GitHub wikis, ReadMe.io, Docusaurus, and developer portals. Maintain a single DITA source of truth while publishing natively to platforms your developers already use.",
+  },
+  {
+    name: "EPUB / eBook",
+    body: "Reflowable EPUB3 output for training guides, onboarding handbooks, and reference manuals. Distribute through enterprise LMS platforms, intranets, or standard eBook readers with full accessibility support.",
+  },
+  {
+    name: "SCORM / eLearning",
+    body: "Package DITA learning content as SCORM 1.2 or 2004 modules for your LMS. Quizzes, assessments, and completion tracking built from the same structured source — no duplicate authoring in a separate courseware tool.",
+  },
+  {
+    name: "IETM",
+    body: "S1000D-adjacent interactive electronic technical manuals for field service and maintenance. Procedural maps drive step-by-step workflows; the same DITA topics that produce the PDF and the portal drive the interactive manual — no re-authoring.",
+  },
+];
+---
+
+<section class="tdp-formats" aria-labelledby="tdp-formats-heading">
+  <div class="container-data tdp-formats__inner">
+    <div class="tdp-formats__heading-block">
+      <h2 id="tdp-formats-heading" class="tdp-formats__heading">
+        Multi-Channel Output Formats
+      </h2>
+      <p class="tdp-formats__subdeck">
+        From the same DITA source, we generate pixel-perfect output for every channel your audience needs.
+      </p>
+    </div>
+
+    <ul class="tdp-formats__grid">
+      {formats.map((fmt, i) => (
+        <li class="format-card">
+          <span class="format-card__rule" aria-hidden="true"></span>
+          <p class="format-card__index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
+          <h3 class="format-card__name">{fmt.name}</h3>
+          <p class="format-card__body">{fmt.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .tdp-formats {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .tdp-formats {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .tdp-formats__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-12);
+  }
+
+  .tdp-formats__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .tdp-formats__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+
+  /* Grid: 1 / 2 / 3 columns (9 cards → 3 × 3 on desktop). */
+  .tdp-formats__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 600px) {
+    .tdp-formats__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .tdp-formats__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .format-card {
+    position: relative;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .format-card:hover {
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+
+  /* Amber accent rule — short bar, draws in on reveal, extends on hover. */
+  .format-card__rule {
+    display: block;
+    width: 32px;
+    height: 2px;
+    background-color: var(--color-accent-primary-hover);
+    margin-bottom: var(--space-5);
+    transform-origin: left center;
+    transition: width var(--duration-base) var(--easing-out);
+  }
+  .format-card:hover .format-card__rule {
+    width: 48px;
+  }
+
+  .format-card__index {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    line-height: 1;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .format-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .format-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     Reveal animation — viewport-triggered, heading then cards stagger.
+     The accent rule scales in alongside each card (shares --reveal-delay).
+     ───────────────────────────────────────────────────────────────── */
+  .tdp-formats.animating .tdp-formats__heading-block,
+  .tdp-formats.animating .format-card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .tdp-formats.animating .format-card__rule {
+    transform: scaleX(0);
+  }
+  .tdp-formats.animating .format-card:nth-child(1) { --reveal-delay: 200ms; }
+  .tdp-formats.animating .format-card:nth-child(2) { --reveal-delay: 250ms; }
+  .tdp-formats.animating .format-card:nth-child(3) { --reveal-delay: 300ms; }
+  .tdp-formats.animating .format-card:nth-child(4) { --reveal-delay: 350ms; }
+  .tdp-formats.animating .format-card:nth-child(5) { --reveal-delay: 400ms; }
+  .tdp-formats.animating .format-card:nth-child(6) { --reveal-delay: 450ms; }
+  .tdp-formats.animating .format-card:nth-child(7) { --reveal-delay: 500ms; }
+  .tdp-formats.animating .format-card:nth-child(8) { --reveal-delay: 550ms; }
+  .tdp-formats.animating .format-card:nth-child(9) { --reveal-delay: 600ms; }
+
+  .tdp-formats.animating.in-view .tdp-formats__heading-block {
+    animation: tdp-formats-fade-in 480ms ease-out forwards;
+  }
+  .tdp-formats.animating.in-view .format-card {
+    animation: tdp-formats-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  .tdp-formats.animating.in-view .format-card__rule {
+    animation: tdp-formats-rule-grow 460ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes tdp-formats-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes tdp-formats-rule-grow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tdp-formats.animating .tdp-formats__heading-block,
+    .tdp-formats.animating .format-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .tdp-formats.animating .format-card__rule {
+      transform: scaleX(1) !important;
+      animation: none !important;
+    }
+    .format-card,
+    .format-card__rule {
+      transition: none;
+    }
+    .format-card:hover {
+      translate: none;
+    }
+  }
+</style>
+
+<script>
+  function setupTechDocsFormats() {
+    const sec = document.querySelector<HTMLElement>(".tdp-formats");
+    if (!sec) return;
+    if (sec.dataset.formatsRevealInit === "true") return;
+    sec.dataset.formatsRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTechDocsFormats);
+  document.addEventListener("astro:page-load", setupTechDocsFormats);
+</script>

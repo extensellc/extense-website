@@ -1,0 +1,267 @@
+---
+/*
+  TechDocsHeadless — "Headless Content Delivery" section on
+  /solutions/technical-docs-and-publishing.
+
+  The old ex-tense.co section, rebuilt in the new design. Intro [OLD] +
+  three cards [OLD]:
+    API / REST Endpoints · Chatbot & AI Integration · Embedded Help &
+    Microcontent.
+
+  The Chatbot & AI card appends the locked 85% retrieval-precision metric
+  (60/72/85) — the only [DRAFT] wording in this section.
+
+  Treatment matches TechDocsFormats: amber mono index, a short amber accent
+  rule that draws in on scroll-reveal, and a hover lift (via the independent
+  `translate` property so it composes with the reveal transform).
+  prefers-reduced-motion: static.
+*/
+
+interface Channel {
+  name: string;
+  body: string;
+}
+
+const channels: Channel[] = [
+  {
+    name: "API / REST Endpoints",
+    body: "Expose your DITA content as JSON/REST APIs. Embed documentation directly into products, self-service portals, and knowledge bases without duplicating a single paragraph.",
+  },
+  {
+    name: "Chatbot & AI Integration",
+    body: "Feed structured content into conversational AI and chatbots. DITA’s semantic markup makes your docs retrieval-ready for RAG pipelines and LLM grounding — measured at 85% retrieval precision.",
+  },
+  {
+    name: "Embedded Help & Microcontent",
+    body: "Deliver context-sensitive help directly inside your application UI. DITA short descriptions and microcontent map naturally to tooltips, walkthroughs, and in-app guidance.",
+  },
+];
+---
+
+<section class="tdp-headless" aria-labelledby="tdp-headless-heading">
+  <div class="container-data tdp-headless__inner">
+    <div class="tdp-headless__heading-block">
+      <h2 id="tdp-headless-heading" class="tdp-headless__heading">
+        Headless Content Delivery
+      </h2>
+      <p class="tdp-headless__subdeck">
+        Modern documentation goes beyond static files. We build headless delivery pipelines using Deploy APIs that push structured content to customer portals, mobile apps, chatbots, and embedded help &mdash; all from the same DITA source.
+      </p>
+    </div>
+
+    <ul class="tdp-headless__grid">
+      {channels.map((ch, i) => (
+        <li class="headless-card">
+          <span class="headless-card__rule" aria-hidden="true"></span>
+          <p class="headless-card__index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
+          <h3 class="headless-card__name">{ch.name}</h3>
+          <p class="headless-card__body">{ch.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .tdp-headless {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .tdp-headless {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .tdp-headless__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-12);
+  }
+
+  .tdp-headless__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .tdp-headless__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* Grid: 1 / 3 columns (3 cards). */
+  .tdp-headless__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .tdp-headless__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .headless-card {
+    position: relative;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .headless-card:hover {
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+
+  /* Amber accent rule — short bar, draws in on reveal, extends on hover. */
+  .headless-card__rule {
+    display: block;
+    width: 32px;
+    height: 2px;
+    background-color: var(--color-accent-primary-hover);
+    margin-bottom: var(--space-5);
+    transform-origin: left center;
+    transition: width var(--duration-base) var(--easing-out);
+  }
+  .headless-card:hover .headless-card__rule {
+    width: 48px;
+  }
+
+  .headless-card__index {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    line-height: 1;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .headless-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .headless-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Reveal animation — viewport-triggered, heading then cards stagger.
+     The accent rule scales in alongside each card. */
+  .tdp-headless.animating .tdp-headless__heading-block,
+  .tdp-headless.animating .headless-card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .tdp-headless.animating .headless-card__rule {
+    transform: scaleX(0);
+  }
+  .tdp-headless.animating .headless-card:nth-child(1) { --reveal-delay: 200ms; }
+  .tdp-headless.animating .headless-card:nth-child(2) { --reveal-delay: 300ms; }
+  .tdp-headless.animating .headless-card:nth-child(3) { --reveal-delay: 400ms; }
+
+  .tdp-headless.animating.in-view .tdp-headless__heading-block {
+    animation: tdp-headless-fade-in 480ms ease-out forwards;
+  }
+  .tdp-headless.animating.in-view .headless-card {
+    animation: tdp-headless-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  .tdp-headless.animating.in-view .headless-card__rule {
+    animation: tdp-headless-rule-grow 460ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes tdp-headless-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes tdp-headless-rule-grow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tdp-headless.animating .tdp-headless__heading-block,
+    .tdp-headless.animating .headless-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .tdp-headless.animating .headless-card__rule {
+      transform: scaleX(1) !important;
+      animation: none !important;
+    }
+    .headless-card,
+    .headless-card__rule {
+      transition: none;
+    }
+    .headless-card:hover {
+      translate: none;
+    }
+  }
+</style>
+
+<script>
+  function setupTechDocsHeadless() {
+    const sec = document.querySelector<HTMLElement>(".tdp-headless");
+    if (!sec) return;
+    if (sec.dataset.headlessRevealInit === "true") return;
+    sec.dataset.headlessRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTechDocsHeadless);
+  document.addEventListener("astro:page-load", setupTechDocsHeadless);
+</script>

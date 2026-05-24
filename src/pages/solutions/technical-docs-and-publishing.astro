@@ -3,43 +3,39 @@
   /solutions/technical-docs-and-publishing
 
   Sub-page deep-dive on the Technical Docs & Publishing solution area.
+  Reframed to the old-site body (in the new design): see
+  docs/reframe-2026/technical-docs-and-publishing.md.
 
-  Sections (building piece by piece):
+  Sections:
     1. Hero — "One source. Every output channel." + starburst SVG
     2. Siblings nav — back to /solutions + across to the other three
-                      sub-pages
-    3. The problem at scale (TODO)
-    4. The pipeline (TODO)
-    5. Outputs — five editorial chapter-blocks (TODO)
-    6. Localization (TODO)
-    7. CTA (TODO)
+    3. Modern Publishing Architecture — intro + 3 bullets + diagram + benefits
+    4. Multi-Channel Output Formats — 7-card grid
+    5. Headless Content Delivery — 3-card grid
+    6. Explore Related Solutions — Solution + Service two-up
+    7. CTA — closing Sample Content Assessment
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import TechDocsHero from "../../components/site/TechDocsHero.astro";
 import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
-import TechDocsProblem from "../../components/site/TechDocsProblem.astro";
-import TechDocsPipeline from "../../components/site/TechDocsPipeline.astro";
-import TechDocsOutputs from "../../components/site/TechDocsOutputs.astro";
-import TechDocsLocalization from "../../components/site/TechDocsLocalization.astro";
-import CrossPillarLink from "../../components/site/CrossPillarLink.astro";
+import TechDocsArchitecture from "../../components/site/TechDocsArchitecture.astro";
+import TechDocsFormats from "../../components/site/TechDocsFormats.astro";
+import TechDocsHeadless from "../../components/site/TechDocsHeadless.astro";
+import TechDocsRelated from "../../components/site/TechDocsRelated.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 ---
 
 <BaseLayout
   title="Technical Docs & Publishing"
-  description="One source, every output channel. A DITA-OT build pipeline that produces pixel-perfect PDF, responsive HTML5, EPUB3, IETM, SCORM, and RAG-grounded retrieval from a single DITA repository."
+  description="One source, every output channel. A DITA-OT build pipeline that produces pixel-perfect PDF, responsive HTML5, EPUB3, IETM, SCORM, Markdown, and headless delivery from a single DITA repository."
 >
   <TechDocsHero />
   <SolutionsSiblings currentSlug="technical-docs-and-publishing" />
-  <TechDocsProblem />
-  <TechDocsPipeline />
-  <TechDocsOutputs />
-  <TechDocsLocalization />
-  <CrossPillarLink
-    href="/services"
-    label="See our publishing services"
-  />
+  <TechDocsArchitecture />
+  <TechDocsFormats />
+  <TechDocsHeadless />
+  <TechDocsRelated />
   <CTAModule
     audience="general"
     compact
