@@ -238,22 +238,27 @@ const stack = [
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
+    justify-content: center;
   }
+  /* Light-amber fill chips. #fef3c7 is a light wash of the brand amber; text in
+     the brand's deeper content-amber (--color-accent-primary-pressed, #b45309)
+     reads at ~5.4:1 on it (passes AA). Border in the logo-gradient amber. */
   .why-stack__badge {
     font-family: var(--font-mono);
     font-size: 12px;
     font-weight: var(--weight-medium);
     letter-spacing: 0.04em;
-    color: var(--color-text-secondary);
-    border: var(--border-hairline);
+    color: var(--color-accent-primary-pressed);
+    background-color: #fef3c7;
+    border: 1px solid var(--color-logo-gradient-1);
     border-radius: var(--radius-sm);
     padding: 6px 10px;
-    transition: border-color var(--duration-base) var(--easing-out),
-      color var(--duration-base) var(--easing-out);
+    transition: background-color var(--duration-base) var(--easing-out),
+      border-color var(--duration-base) var(--easing-out);
   }
   .why-stack__badge:hover {
-    border-color: var(--color-text-secondary);
-    color: var(--color-text-primary);
+    background-color: #fde68a;
+    border-color: var(--color-accent-primary);
   }
 
   /* ── Scroll reveal: differentiator cards fade/rise, staggered ── */

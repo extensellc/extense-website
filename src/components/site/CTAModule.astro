@@ -32,6 +32,11 @@ interface Props {
    * already provides its own breathing room before the CTA.
    */
   compact?: boolean;
+  /**
+   * Render a thin continuously-moving amber line along the top edge of the
+   * section — an attention cue entering the conversion zone. Opt-in (homepage).
+   */
+  accentLine?: boolean;
 }
 
 const {
@@ -40,12 +45,14 @@ const {
   body,
   buttonLabel = "Submit a sample →",
   compact = false,
+  accentLine = false,
 } = Astro.props;
 
 const href = `/contact?audience=${audience}`;
 ---
 
 <section class:list={["cta-module", { "cta-module--compact": compact }]} aria-label="Sample Content Assessment">
+  {accentLine && <div class="cta-module__topline" aria-hidden="true"></div>}
   <div class="container-page cta-module__inner">
     <div class="cta-module__content">
       <h2 class="cta-module__heading">{heading}</h2>
@@ -63,6 +70,48 @@ const href = `/contact?audience=${audience}`;
     width: 100%;
     padding-top: var(--space-32);
     padding-bottom: var(--space-32);
+    position: relative;
+  }
+
+  /* Continuously-moving amber line along the top edge — an amber highlight
+     segment sweeps left-to-right over a hairline base track. */
+  .cta-module__topline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    overflow: hidden;
+    background: var(--color-border-subtle);
+  }
+  .cta-module__topline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-accent-primary) 50%,
+      transparent
+    );
+    transform: translateX(-100%);
+    animation: cta-line-sweep 3.5s linear infinite;
+  }
+  @keyframes cta-line-sweep {
+    to {
+      transform: translateX(433%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta-module__topline {
+      background: var(--color-accent-primary-hover);
+    }
+    .cta-module__topline::before {
+      display: none;
+    }
   }
 
   /* Compact variant: 25% padding trim, opt-in via the `compact` prop.
