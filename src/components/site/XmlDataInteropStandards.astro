@@ -3,49 +3,71 @@
   XmlDataInteropStandards — "Enterprise Integration Standards" section on
   /solutions/xml-data-interoperability.
 
-  The old ex-tense.co section, rebuilt in the new design: intro + six
-  industry/standards cards in a 3x2 grid with the amber card treatment
-  (mono index, draw-in accent rule, hover lift). Full [OLD] descriptions.
-
-  Voice swaps from the old copy: S1000D card "enabling ... to share" ->
-  "so ... share"; Semantic Web card "enabling knowledge graphs" -> "for
-  knowledge graphs".
+  Six industry/standards cards in a 3x2 grid. Each card leads with a
+  distinct animated line icon (stroke-draw on reveal via pathLength=1)
+  instead of a number. Heading + sub-deck are centered; the sub-deck is
+  width-constrained so it wraps to two balanced lines. Full [OLD] copy,
+  with banned-verb swaps (enabling -> so / for).
 
   No border-top: the siblings row above carries a border-bottom.
-  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+  Animation: viewport-triggered fade-up + icon stroke-draw. prefers-reduced-motion: static.
 */
 
 interface Standard {
   name: string;
+  icon: string;
   body: string;
 }
 
 const standards: Standard[] = [
   {
     name: "S1000D & Defense Specs",
+    icon: "shield",
     body: "We design and build XSLT pipelines that bridge S1000D Common Source Data Base (CSDB) modules and DITA topics — so commercial and military documentation share the same structured backbone. Our team has deep expertise in S1000D Issue 4.x/5.0, ATA iSpec 2200, and MIL-STD-40051, and we deliver automated BREX validation tailored to each program’s business rules.",
   },
   {
     name: "IIoT & Industry 4.0",
+    icon: "hex",
     body: "We tag content with machine-readable asset IDs and fault codes. When a sensor on a factory floor reports a fault, the HMI system queries the XML index and surfaces the exact repair procedure — zero manual lookup. Supports OPC-UA, MQTT payloads, and ISA-95 data models.",
   },
   {
     name: "Healthcare & Life Sciences",
+    icon: "pulse",
     body: "HL7 FHIR resources, SPL drug labels, and IFU content mapped into DITA for regulatory submission and multi-channel delivery. Our pipelines produce FDA eSTAR-ready structured product labeling alongside patient-facing HTML5 portals — from the same XML source.",
   },
   {
     name: "Semantic Web & Knowledge Graphs",
+    icon: "graph",
     body: "We map DITA keys and subject-scheme taxonomies to RDF triples and OWL ontologies — for knowledge graphs that answer complex cross-system queries. Your documentation becomes a queryable dataset, not just a collection of files.",
   },
   {
     name: "Financial & Regulatory (XBRL)",
+    icon: "chart",
     body: "XBRL taxonomies for SEC/ESMA filings, FpML for derivatives documentation, and FIX protocol specs — all generated from structured XML. We automate the bridge between compliance data and human-readable reports so filings stay audit-ready.",
   },
   {
     name: "API Documentation & Code Sync",
+    icon: "code",
     body: "We extract source-code comments via Doxygen, Swagger/OpenAPI, or Javadoc, convert them to DITA XML, and merge with human-authored guides. If a developer changes a parameter name, the documentation build fails until the reference is updated — guaranteeing 100% API accuracy.",
   },
 ];
+
+// Inner SVG markup per icon (24x24 viewBox). Each drawable element carries
+// pathLength="1" so a single stroke-dashoffset animation draws it in.
+const iconSvgs: Record<string, string> = {
+  shield:
+    '<path class="ico-stroke" pathLength="1" d="M12 2.5 L20 5.5 V11.5 C20 16.2 16.4 19.8 12 21.5 C7.6 19.8 4 16.2 4 11.5 V5.5 Z"/><path class="ico-stroke" pathLength="1" d="M8.8 11.9 L11 14.1 L15.4 9.4"/>',
+  hex:
+    '<path class="ico-stroke" pathLength="1" d="M12 3 L19.4 7.25 V15.75 L12 20 L4.6 15.75 V7.25 Z"/><circle class="ico-stroke" pathLength="1" cx="12" cy="11.5" r="3.2"/>',
+  pulse:
+    '<path class="ico-stroke" pathLength="1" d="M3 12 H7.5 L9.5 7 L13 17 L15 12 H21"/>',
+  graph:
+    '<line class="ico-stroke" pathLength="1" x1="7" y1="8" x2="17" y2="8"/><line class="ico-stroke" pathLength="1" x1="7" y1="8" x2="12" y2="17.5"/><line class="ico-stroke" pathLength="1" x1="17" y1="8" x2="12" y2="17.5"/><circle class="ico-stroke" pathLength="1" cx="7" cy="8" r="2.1"/><circle class="ico-stroke" pathLength="1" cx="17" cy="8" r="2.1"/><circle class="ico-stroke" pathLength="1" cx="12" cy="17.5" r="2.1"/>',
+  chart:
+    '<line class="ico-stroke" pathLength="1" x1="4" y1="19.5" x2="20" y2="19.5"/><line class="ico-stroke" pathLength="1" x1="8" y1="19.5" x2="8" y2="13"/><line class="ico-stroke" pathLength="1" x1="12" y1="19.5" x2="12" y2="7.5"/><line class="ico-stroke" pathLength="1" x1="16" y1="19.5" x2="16" y2="10.5"/>',
+  code:
+    '<path class="ico-stroke" pathLength="1" d="M9 8.5 L5 12 L9 15.5"/><path class="ico-stroke" pathLength="1" d="M15 8.5 L19 12 L15 15.5"/><line class="ico-stroke" pathLength="1" x1="13.2" y1="7" x2="10.8" y2="17"/>',
+};
 ---
 
 <section class="interop-standards" aria-labelledby="interop-standards-heading">
@@ -61,9 +83,10 @@ const standards: Standard[] = [
 
     <ul class="interop-standards__grid">
       {standards.map((s, i) => (
-        <li class="std-card">
-          <span class="std-card__rule" aria-hidden="true"></span>
-          <p class="std-card__index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
+        <li class="std-card" style={`--reveal-delay: ${200 + i * 80}ms`}>
+          <span class="std-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" set:html={iconSvgs[s.icon]}></svg>
+          </span>
           <h3 class="std-card__name">{s.name}</h3>
           <p class="std-card__body">{s.body}</p>
         </li>
@@ -86,9 +109,12 @@ const standards: Standard[] = [
     }
   }
 
+  /* Centered heading block; sub-deck width tuned so it wraps to two
+     balanced lines on desktop. */
   .interop-standards__heading-block {
-    max-width: var(--container-prose, 720px);
-    margin-bottom: var(--space-12);
+    max-width: 780px;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
   }
 
   .interop-standards__heading {
@@ -103,12 +129,11 @@ const standards: Standard[] = [
   }
 
   .interop-standards__subdeck {
-    margin-top: var(--space-4);
+    margin: var(--space-4) auto 0 auto;
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    max-width: 64ch;
     text-wrap: pretty;
   }
 
@@ -146,27 +171,25 @@ const standards: Standard[] = [
     translate: 0 -4px;
   }
 
-  .std-card__rule {
+  /* Animated line icon (replaces the old number). */
+  .std-card__icon {
     display: block;
-    width: 32px;
-    height: 2px;
-    background-color: var(--color-accent-primary-hover);
     margin-bottom: var(--space-5);
-    transform-origin: left center;
-    transition: width var(--duration-base) var(--easing-out);
   }
-  .std-card:hover .std-card__rule {
-    width: 48px;
+  .std-card__icon svg {
+    width: 30px;
+    height: 30px;
+    display: block;
   }
-
-  .std-card__index {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.12em;
-    color: var(--color-accent-primary);
-    line-height: 1;
-    margin: 0 0 var(--space-2) 0;
+  .std-card__icon :global(.ico-stroke) {
+    fill: none;
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    /* pathLength=1 normalizes every element; default fully drawn. */
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
   }
 
   .std-card__name {
@@ -188,22 +211,15 @@ const standards: Standard[] = [
     text-wrap: pretty;
   }
 
-  /* Reveal — viewport-triggered, heading then cards stagger; accent rule
-     scales in alongside each card. */
+  /* Reveal — heading then cards stagger; icons stroke-draw with each card. */
   .interop-standards.animating .interop-standards__heading-block,
   .interop-standards.animating .std-card {
     opacity: 0;
     transform: translateY(8px);
   }
-  .interop-standards.animating .std-card__rule {
-    transform: scaleX(0);
+  .interop-standards.animating .std-card__icon :global(.ico-stroke) {
+    stroke-dashoffset: 1;
   }
-  .interop-standards.animating .std-card:nth-child(1) { --reveal-delay: 200ms; }
-  .interop-standards.animating .std-card:nth-child(2) { --reveal-delay: 280ms; }
-  .interop-standards.animating .std-card:nth-child(3) { --reveal-delay: 360ms; }
-  .interop-standards.animating .std-card:nth-child(4) { --reveal-delay: 440ms; }
-  .interop-standards.animating .std-card:nth-child(5) { --reveal-delay: 520ms; }
-  .interop-standards.animating .std-card:nth-child(6) { --reveal-delay: 600ms; }
 
   .interop-standards.animating.in-view .interop-standards__heading-block {
     animation: interop-standards-fade-in 480ms ease-out forwards;
@@ -212,16 +228,17 @@ const standards: Standard[] = [
     animation: interop-standards-fade-in 420ms ease-out forwards;
     animation-delay: var(--reveal-delay, 0ms);
   }
-  .interop-standards.animating.in-view .std-card__rule {
-    animation: interop-standards-rule-grow 460ms ease-out forwards;
-    animation-delay: var(--reveal-delay, 0ms);
+  .interop-standards.animating.in-view .std-card__icon :global(.ico-stroke) {
+    animation: interop-ico-draw 700ms ease-out forwards;
+    animation-delay: calc(var(--reveal-delay, 0ms) + 150ms);
   }
 
   @keyframes interop-standards-fade-in {
     to { opacity: 1; transform: translateY(0); }
   }
-  @keyframes interop-standards-rule-grow {
-    to { transform: scaleX(1); }
+  @keyframes interop-ico-draw {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -231,15 +248,14 @@ const standards: Standard[] = [
       transform: none !important;
       animation: none !important;
     }
-    .interop-standards.animating .std-card__rule {
-      transform: scaleX(1) !important;
+    .interop-standards.animating .std-card__icon :global(.ico-stroke),
+    .std-card__icon :global(.ico-stroke) {
+      stroke-dashoffset: 0 !important;
       animation: none !important;
     }
     .std-card,
-    .std-card__rule {
-      transition: none;
-    }
     .std-card:hover {
+      transition: none;
       translate: none;
     }
   }

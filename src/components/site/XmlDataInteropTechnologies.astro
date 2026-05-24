@@ -3,10 +3,13 @@
   XmlDataInteropTechnologies — "Transformation Technologies" section on
   /solutions/xml-data-interoperability.
 
-  The old ex-tense.co section, rebuilt as a two-column spec table (tool
-  name | full description) rather than 10 cards. Hairline-separated rows,
-  amber tool names, full [OLD] descriptions. Stacks (name above
-  description) on mobile.
+  All 10 tools as cards in a DISTINCT style from the other cards on the
+  page: filled "spec tiles" (surface-elevated fill, no all-around border,
+  a 2px amber left rule) with the tool name in MONO (not the serif used
+  elsewhere) + full [OLD] description. Reads as a technical/code catalog.
+
+  Heading + sub-deck centered; the sub-deck sits on one line. 2-col grid
+  (10 -> 5 x 2) on desktop, single column on mobile.
 
   border-top hairline divides from the Standards section above.
   Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
@@ -72,14 +75,14 @@ const technologies: Tech[] = [
       </p>
     </div>
 
-    <dl class="interop-tech__table">
+    <ul class="interop-tech__grid">
       {technologies.map((t, i) => (
-        <div class="tech-row" style={`--i: ${i}`}>
-          <dt class="tech-row__name">{t.name}</dt>
-          <dd class="tech-row__desc">{t.desc}</dd>
-        </div>
+        <li class="tech-tile" style={`--i: ${i}`}>
+          <p class="tech-tile__name">{t.name}</p>
+          <p class="tech-tile__desc">{t.desc}</p>
+        </li>
       ))}
-    </dl>
+    </ul>
   </div>
 </section>
 
@@ -97,9 +100,11 @@ const technologies: Tech[] = [
     }
   }
 
+  /* Centered heading block; full width so the sub-deck sits on one line. */
   .interop-tech__heading-block {
-    max-width: var(--container-prose, 720px);
-    margin-bottom: var(--space-12);
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
   }
 
   .interop-tech__heading {
@@ -114,64 +119,65 @@ const technologies: Tech[] = [
   }
 
   .interop-tech__subdeck {
-    margin-top: var(--space-4);
+    margin: var(--space-4) auto 0 auto;
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    max-width: 64ch;
     text-wrap: pretty;
   }
 
-  /* Spec table — each row is a 2-col grid (name | description) on
-     desktop, stacked on mobile. Hairline separators; last row gets a
-     bottom hairline so the table closes cleanly. */
-  .interop-tech__table {
+  /* Distinct "spec tiles": filled, amber left rule, mono name. 2 columns. */
+  .interop-tech__grid {
+    list-style: none;
     margin: 0;
-  }
-
-  .tech-row {
-    border-top: var(--border-hairline);
-    padding: var(--space-6) 0;
+    padding: 0;
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-2);
+    gap: var(--space-4);
   }
-  .tech-row:last-child {
-    border-bottom: var(--border-hairline);
-  }
-
   @media (min-width: 768px) {
-    .tech-row {
-      grid-template-columns: 260px 1fr;
-      gap: var(--space-8);
-      align-items: baseline;
+    .interop-tech__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
     }
   }
 
-  .tech-row__name {
-    margin: 0;
+  .tech-tile {
+    background-color: var(--color-surface-elevated);
+    border-left: 2px solid var(--color-accent-primary-hover);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: var(--space-5) var(--space-6);
+    transition: translate var(--duration-base) var(--easing-out),
+      border-left-width var(--duration-base) var(--easing-out);
+  }
+  .tech-tile:hover {
+    translate: 0 -4px;
+    border-left-width: 4px;
+  }
+
+  .tech-tile__name {
     font-family: var(--font-mono);
     font-size: 15px;
     font-weight: var(--weight-medium);
     letter-spacing: 0.01em;
     line-height: var(--leading-snug);
     color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-2) 0;
   }
 
-  .tech-row__desc {
-    margin: 0;
+  .tech-tile__desc {
     font-family: var(--font-body);
-    font-size: var(--text-body);
+    font-size: var(--text-body-sm);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    max-width: 70ch;
+    margin: 0;
     text-wrap: pretty;
   }
 
-  /* Reveal — viewport-triggered, heading then rows stagger (per-row --i). */
+  /* Reveal — heading then tiles stagger (per-tile --i). */
   .interop-tech.animating .interop-tech__heading-block,
-  .interop-tech.animating .tech-row {
+  .interop-tech.animating .tech-tile {
     opacity: 0;
     transform: translateY(8px);
   }
@@ -179,7 +185,7 @@ const technologies: Tech[] = [
   .interop-tech.animating.in-view .interop-tech__heading-block {
     animation: interop-tech-fade-in 480ms ease-out forwards;
   }
-  .interop-tech.animating.in-view .tech-row {
+  .interop-tech.animating.in-view .tech-tile {
     animation: interop-tech-fade-in 400ms ease-out forwards;
     animation-delay: calc(var(--i) * 60ms + 200ms);
   }
@@ -190,10 +196,15 @@ const technologies: Tech[] = [
 
   @media (prefers-reduced-motion: reduce) {
     .interop-tech.animating .interop-tech__heading-block,
-    .interop-tech.animating .tech-row {
+    .interop-tech.animating .tech-tile {
       opacity: 1 !important;
       transform: none !important;
       animation: none !important;
+    }
+    .tech-tile,
+    .tech-tile:hover {
+      transition: none;
+      translate: none;
     }
   }
 </style>

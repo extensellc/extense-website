@@ -72,8 +72,10 @@ const stages: Stage[] = [
   }
 
   .interop-layer__heading-block {
-    max-width: var(--container-prose, 720px);
-    margin-bottom: var(--space-16);
+    /* Full width + centered so the sub-deck sits on one line on desktop. */
+    max-width: none;
+    margin: 0 auto var(--space-16) auto;
+    text-align: center;
   }
 
   .interop-layer__heading {
@@ -88,12 +90,13 @@ const stages: Stage[] = [
   }
 
   .interop-layer__subdeck {
-    margin-top: var(--space-4);
+    margin: var(--space-4) auto 0 auto;
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    max-width: 64ch;
+    /* No width cap → one line on desktop. */
+    max-width: none;
     text-wrap: pretty;
   }
 
@@ -169,10 +172,15 @@ const stages: Stage[] = [
     text-wrap: pretty;
   }
 
-  /* AI-Ready callout — surface-elevated box with an amber left accent. */
+  /* AI-Ready callout — surface-elevated box with an amber left accent,
+     centered as a block under the centered heading (label/body stay
+     left-aligned inside). */
   .interop-layer__callout {
+    max-width: 860px;
+    margin: 0 auto;
     background-color: var(--color-surface-elevated);
     border-left: 3px solid var(--color-accent-primary-hover);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     padding: var(--space-6) var(--space-8);
   }
   .interop-layer__callout-label {
