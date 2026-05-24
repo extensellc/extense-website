@@ -1,10 +1,12 @@
 # XML Data Interoperability (sub-page) — Reframe Plan
 
-> Status: **implemented** on `redesign-2026` — build clean, preview-verified
-> (desktop + mobile). Spec table uses the full `[OLD]` descriptions; hero
-> rewritten benefit-led. Tags: `[OLD]` (ex-tense.co) / `[NEW]` (current
-> extense.co, live) / `[DRAFT]` (net-new, needs approval). Conventions in
-> [README.md](README.md).
+> Status: **implemented + shipped to staging** on `redesign-2026`/`main`.
+> Round-2 refinements (live): Standards cards lead with **animated line icons**
+> (not 01–06) + centered 2-line sub-deck; Transformation Technologies render as
+> **distinct white-filled bordered cards** (mono tool name vs. serif elsewhere)
+> — not the spec table originally drafted in §5 — + centered 1-line sub-deck; Interoperability
+> Layer centered + AI-Ready callout centered. Hero benefit-led. Full `[OLD]`
+> copy. Tags: `[OLD]` / `[NEW]` / `[DRAFT]`. Conventions in [README.md](README.md).
 >
 > **Direction (locked this session):** same recipe as the other three — rebuild
 > the body to the **old-site sections** in the new design; cut the

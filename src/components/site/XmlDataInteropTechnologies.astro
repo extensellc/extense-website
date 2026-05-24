@@ -145,17 +145,21 @@ const technologies: Tech[] = [
 
   .tech-tile {
     background-color: var(--color-surface-elevated);
-    border-left: 2px solid var(--color-accent-primary-hover);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    padding: var(--space-5) var(--space-6);
-    transition: translate var(--duration-base) var(--easing-out),
-      border-left-width var(--duration-base) var(--easing-out);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
   }
   .tech-tile:hover {
+    border-color: var(--color-text-secondary);
     translate: 0 -4px;
-    border-left-width: 4px;
   }
 
+  /* Mono tool name keeps these distinct from the serif-titled cards
+     elsewhere on the page. */
   .tech-tile__name {
     font-family: var(--font-mono);
     font-size: 15px;
@@ -163,7 +167,7 @@ const technologies: Tech[] = [
     letter-spacing: 0.01em;
     line-height: var(--leading-snug);
     color: var(--color-accent-primary-pressed);
-    margin: 0 0 var(--space-2) 0;
+    margin: 0 0 var(--space-3) 0;
   }
 
   .tech-tile__desc {
