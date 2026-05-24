@@ -31,6 +31,16 @@
 > problem-education" thesis is fully overridden for this page by owner
 > direction.)
 >
+> **Round 4 (polish):** problem intro forced to 2 lines (widened to page
+> width, 15px); problem-card icons raised. Two-pipeline heading centered on
+> one line + centered subdeck; all stage copy matched to the old page
+> verbatim (added "Broken trust", "Zero hallucinations", "User trust";
+> dropped FrameMaker from structured sources); connector labels bigger +
+> nudged. Foundation: rows tightened (24px), headers centered + raised, and
+> the "With Extense" column now an **amber outline (no fill)** instead of a
+> wash. Cost panel **fill removed**. "Go Deeper" renamed to **Explore
+> Further** (open to other wording).
+>
 > Old-page **screenshots reviewed** — they confirm the crawl and the
 > section set, and pin down the old visual treatment (red/green semantic
 > color throughout; the use-case section was a real 4-column table; the

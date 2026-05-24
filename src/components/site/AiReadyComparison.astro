@@ -37,58 +37,58 @@ interface PipelineStage {
 
 const unstructuredStages: PipelineStage[] = [
   {
-    name: "Content sources",
+    name: "Content Sources",
     detail: "Word · PDF · Wiki · Markdown",
     connectorLabel: "no transformation",
   },
   {
-    name: "Flat ingestion",
-    detail: "no typing · no metadata · no IDs",
+    name: "Flat / Unenriched Ingestion",
+    detail: "No typing · No metadata · No IDs",
   },
   {
-    name: "Arbitrary chunking",
-    detail: "667-word splits · mid-sentence cuts · broken tables",
+    name: "Arbitrary Chunking",
+    detail: "667-word splits · mid-sentence cuts · broken tables · lost context",
   },
   {
-    name: "Vector store",
-    detail: "no metadata filters · all content ranked equally",
+    name: "Vector Store",
+    detail: "No metadata filters available · All content ranked equally",
   },
   {
-    name: "LLM context window",
-    detail: "outdated + irrelevant chunks mixed in · model averages conflicting signals",
+    name: "LLM Context Window",
+    detail: "Outdated + irrelevant chunks mixed in · Model averages conflicting signals",
   },
   {
-    name: "Outcome: 25–35% precision",
-    detail: "wrong answers · hallucinations · escalated tickets",
+    name: "25–35% Precision",
+    detail: "Wrong answers · Hallucinations · Broken trust · Escalated tickets",
     outcome: true,
   },
 ];
 
 const structuredStages: PipelineStage[] = [
   {
-    name: "Content sources",
-    detail: "Word · PDF · FrameMaker · Wiki · Markdown",
+    name: "Content Sources",
+    detail: "Word · PDF · Wiki · Markdown",
     connectorLabel: "Extense migration",
   },
   {
-    name: "Typed DITA topics",
+    name: "Typed DITA Topics",
     detail: "concept · task · reference · troubleshooting",
   },
   {
-    name: "Metadata + section IDs",
-    detail: "audience · difficulty · domain · intent · stable IDs everywhere",
+    name: "Metadata & Section IDs",
+    detail: "audience · difficulty · domain · intent · Stable IDs on every section",
   },
   {
-    name: "Semantic chunking",
-    detail: "section-ID boundaries · self-contained · chunks.jsonl + glossary-index.json",
+    name: "Semantic Chunking",
+    detail: "Boundaries at section IDs · self-contained · chunks.jsonl + glossary-index.json",
   },
   {
-    name: "Vector store + metadata filters",
-    detail: "audience/type/domain pre-filter · top-k reranked before the LLM sees anything",
+    name: "Vector Store + Metadata Filters",
+    detail: "Filter by audience, type, domain first · Top-k reranked before LLM sees anything",
   },
   {
-    name: "Outcome: 85%+ precision",
-    detail: "correct answers · cited sources · reduced support load",
+    name: "85%+ Precision",
+    detail: "Correct answers · Zero hallucinations · User trust · Reduced support load",
     outcome: true,
   },
 ];
@@ -164,8 +164,9 @@ const structuredStages: PipelineStage[] = [
   }
 
   .airdy-pipelines__heading-block {
-    max-width: var(--container-prose, 720px);
-    margin-bottom: var(--space-16);
+    max-width: none;
+    margin: 0 auto var(--space-16) auto;
+    text-align: center;
   }
 
   .airdy-pipelines__heading {
@@ -183,13 +184,13 @@ const structuredStages: PipelineStage[] = [
   }
 
   .airdy-pipelines__subdeck {
-    margin-top: var(--space-4);
+    margin: var(--space-4) auto 0 auto;
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    max-width: 64ch;
-    text-wrap: pretty;
+    max-width: 44rem;
+    text-wrap: balance;
   }
 
   /* 2-column grid on desktop, stacked on mobile. */
@@ -247,10 +248,10 @@ const structuredStages: PipelineStage[] = [
   /* Connector label sitting beside the first down-arrow (in the gap). */
   .pipeline-step__connector {
     position: absolute;
-    bottom: calc(-1 * var(--space-8) + 2px);
-    left: calc(50% + 14px);
+    bottom: calc(-1 * var(--space-8) + 13px);
+    left: calc(50% + 33px);
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     font-weight: var(--weight-medium);
     letter-spacing: 0.04em;
     line-height: 1;

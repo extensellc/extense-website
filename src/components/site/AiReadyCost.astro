@@ -107,9 +107,8 @@ const items: CostItem[] = [
     text-wrap: pretty;
   }
 
-  /* Light-amber wash panel (the old navy panel, adapted). */
+  /* Hairline panel, no fill. */
   .airdy-cost__panel {
-    background-color: #fef3c7;
     border: var(--border-hairline);
     border-radius: var(--radius-sm);
     padding: var(--space-12) var(--space-10);
@@ -142,7 +141,7 @@ const items: CostItem[] = [
   /* Hairline dividers between figures (vertical desktop, horizontal mobile). */
   @media (min-width: 768px) {
     .cost-figure + .cost-figure {
-      border-left: 1px solid rgba(180, 83, 9, 0.25);
+      border-left: var(--border-hairline);
       padding-left: var(--space-8);
     }
     .cost-figure:not(:last-child) {
@@ -151,7 +150,7 @@ const items: CostItem[] = [
   }
   @media (max-width: 767px) {
     .cost-figure + .cost-figure {
-      border-top: 1px solid rgba(180, 83, 9, 0.25);
+      border-top: var(--border-hairline);
       padding-top: var(--space-8);
     }
   }
@@ -189,7 +188,7 @@ const items: CostItem[] = [
   .airdy-cost__total {
     margin: var(--space-10) 0 0 0;
     padding-top: var(--space-8);
-    border-top: 1px solid rgba(180, 83, 9, 0.25);
+    border-top: var(--border-hairline);
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     color: var(--color-text-primary);

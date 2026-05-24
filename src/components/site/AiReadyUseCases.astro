@@ -197,15 +197,20 @@ const rows: UseCaseRow[] = [
     font-weight: var(--weight-medium);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    text-align: left;
+    text-align: center;
     vertical-align: bottom;
     color: var(--color-text-secondary);
-    padding: 0 var(--space-6) var(--space-5) var(--space-6);
+    padding: 0 var(--space-6) var(--space-3) var(--space-6);
     border-bottom: 2px solid var(--color-text-primary);
   }
+  /* "With Extense" column: amber outline encasing the whole column (no fill).
+     The header is the box top; the cells continue the left/right edges; the
+     last row closes the bottom. */
   .foundation-table thead th.is-accent {
     color: var(--color-accent-primary-pressed);
-    background-color: var(--wash-amber);
+    border-top: 2px solid var(--color-accent-primary);
+    border-left: 2px solid var(--color-accent-primary);
+    border-right: 2px solid var(--color-accent-primary);
   }
 
   .foundation-table tbody th,
@@ -217,7 +222,7 @@ const rows: UseCaseRow[] = [
     color: var(--color-text-secondary);
     text-align: left;
     vertical-align: top;
-    padding: 28px var(--space-6);
+    padding: var(--space-6);
     border-bottom: var(--border-hairline);
     text-wrap: pretty;
   }
@@ -238,8 +243,12 @@ const rows: UseCaseRow[] = [
     color: var(--color-text-muted);
   }
   .foundation-table tbody td.cell-with {
-    background-color: var(--wash-amber);
     color: var(--color-text-primary);
+    border-left: 2px solid var(--color-accent-primary);
+    border-right: 2px solid var(--color-accent-primary);
+  }
+  .foundation-table tbody tr:last-child td.cell-with {
+    border-bottom: 2px solid var(--color-accent-primary);
   }
 
   @media (max-width: 767px) {
@@ -288,10 +297,8 @@ const rows: UseCaseRow[] = [
     border-top: var(--border-hairline);
   }
   .foundation-card__row--with {
-    background-color: var(--wash-amber);
-    margin: var(--space-2) calc(-1 * var(--space-6)) calc(-1 * var(--space-6));
-    padding: var(--space-3) var(--space-6) var(--space-4);
-    border-top: var(--border-hairline);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--color-accent-primary);
   }
 
   .foundation-card__label {
