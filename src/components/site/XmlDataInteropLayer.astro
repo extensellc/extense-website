@@ -172,16 +172,15 @@ const stages: Stage[] = [
     text-wrap: pretty;
   }
 
-  /* AI-Ready callout — surface-elevated box with an amber left accent,
-     centered as a block under the centered heading (label/body stay
-     left-aligned inside). */
+  /* AI-Ready callout — a light-amber filled panel, centered block with
+     centered content (no side rule). */
   .interop-layer__callout {
     max-width: 860px;
     margin: 0 auto;
-    background-color: var(--color-surface-elevated);
-    border-left: 3px solid var(--color-accent-primary-hover);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    padding: var(--space-6) var(--space-8);
+    background-color: #fef3c7;
+    border-radius: var(--radius-sm);
+    padding: var(--space-8);
+    text-align: center;
   }
   .interop-layer__callout-label {
     font-family: var(--font-mono);
@@ -197,7 +196,7 @@ const stages: Stage[] = [
     font-size: var(--text-body);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    margin: 0;
+    margin: 0 auto;
     max-width: 80ch;
     text-wrap: pretty;
   }
