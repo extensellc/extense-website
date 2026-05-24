@@ -111,7 +111,6 @@ function isActive(item: NavItem): boolean {
       <Logo height={80} />
     </a>
 
-    <div class="topnav__actions">
     <nav class="topnav__nav" aria-label="Main navigation">
       <ul class="topnav__list">
         {navItems.map((item) => {
@@ -157,6 +156,7 @@ function isActive(item: NavItem): boolean {
       </ul>
     </nav>
 
+    <div class="topnav__actions">
     <a href="/contact" class="topnav__cta">Free Assessment</a>
 
     <button
@@ -280,14 +280,30 @@ function isActive(item: NavItem): boolean {
      and the nav links can sit further right than the standard container.
      Override container-page padding for the topnav specifically. */
   .topnav__inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     gap: var(--space-6);
     height: 76px;
     max-width: none;
     padding-left: var(--space-6);
     padding-right: var(--space-6);
+  }
+  /* Three zones: logo left, nav centered, actions (CTA + hamburger) right.
+     Explicit grid-column keeps logo/actions pinned to the outer tracks even
+     when the centre nav is display:none on mobile (otherwise the two
+     remaining items would auto-place into columns 1 and 2). */
+  .topnav__logo {
+    grid-column: 1;
+    justify-self: start;
+  }
+  .topnav__nav {
+    grid-column: 2;
+    justify-self: center;
+  }
+  .topnav__actions {
+    grid-column: 3;
+    justify-self: end;
   }
 
   @media (min-width: 768px) {
@@ -327,7 +343,7 @@ function isActive(item: NavItem): boolean {
     display: none;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1140px) {
     .topnav__nav {
       display: block;
     }
@@ -336,7 +352,7 @@ function isActive(item: NavItem): boolean {
   .topnav__list {
     display: flex;
     align-items: center;
-    gap: var(--space-8);
+    gap: var(--space-6);
   }
 
   .topnav__link {
@@ -482,7 +498,7 @@ function isActive(item: NavItem): boolean {
     white-space: nowrap;
     transition: background-color var(--duration-base) var(--easing-out);
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 1140px) {
     .topnav__cta {
       display: inline-block;
     }
@@ -516,7 +532,7 @@ function isActive(item: NavItem): boolean {
     background-color: var(--color-surface-elevated);
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1140px) {
     .topnav__hamburger {
       display: none;
     }
