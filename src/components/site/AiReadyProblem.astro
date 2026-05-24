@@ -173,14 +173,11 @@ const problems: Problem[] = [
 
   .problem-card__icon {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1px solid var(--color-accent-primary);
+    align-self: flex-start;
     color: var(--color-accent-primary-hover);
     margin-bottom: var(--space-5);
+    /* No chip; nudged ~1mm (4px) left of the card's text edge. */
+    margin-left: -4px;
     flex: none;
   }
   .problem-card__icon svg {
