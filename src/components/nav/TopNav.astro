@@ -606,6 +606,16 @@ function isActive(item: NavItem): boolean {
   .topnav__drawer-link.is-active {
     font-weight: var(--weight-semibold);
     color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-color: var(--color-link);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  /* Keep the active underline on hover/focus (the general drawer-link hover
+     rule sets text-decoration:none). */
+  .topnav__drawer-link.is-active:hover,
+  .topnav__drawer-link.is-active:focus-visible {
+    text-decoration: underline;
   }
 
   /* Mobile drawer — sub-items rendered as an inline indented list under
