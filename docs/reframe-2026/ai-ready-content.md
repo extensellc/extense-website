@@ -22,6 +22,15 @@
 > reverse several round-1 decisions below; the round-1 record is kept for
 > history.
 >
+> **Round 3 (post-review):** the old **problem-education section** ("What
+> Unstructured and Unenriched Content Is Costing You Right Now," 6 cards)
+> was restored too — placed first after the siblings nav, before Two
+> Pipelines (old-page order). With the problem-led hero, the ROI block, and
+> this section all back, the page is now a faithful rebuild of the old
+> ai-ready.html structure in the new design system. (The "cut
+> problem-education" thesis is fully overridden for this page by owner
+> direction.)
+>
 > Old-page **screenshots reviewed** — they confirm the crawl and the
 > section set, and pin down the old visual treatment (red/green semantic
 > color throughout; the use-case section was a real 4-column table; the

@@ -1,0 +1,293 @@
+---
+/*
+  AiReadyProblem — "What Unstructured and Unenriched Content Is Costing You
+  Right Now" on /solutions/ai-ready-content.
+
+  The old ex-tense.co problem-education section, pulled forward [OLD]:
+  intro + 6 cards naming the measurable consequences. Hairline cards with
+  a small muted state icon (the old page's red left-bar / pink chips are
+  rendered neutral here — amber stays the page's positive accent).
+
+  Sits first after the siblings row (which carries a border-bottom), so
+  this section has NO border-top.
+  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface Problem {
+  icon: "alert" | "chat" | "globe" | "activity" | "target" | "search";
+  title: string;
+  body: string;
+}
+
+const problems: Problem[] = [
+  {
+    icon: "alert",
+    title: "AI Hallucinations Fill Your Content Gaps",
+    body: "When your AI can’t find a precise answer, it fabricates one. Without typed content, metadata filters, and controlled vocabulary, the model has no boundary between “what the docs say” and “what it thinks sounds right.” Your users get confident wrong answers.",
+  },
+  {
+    icon: "chat",
+    title: "Support Tickets Don’t Decrease",
+    body: "Your chatbot was supposed to deflect support volume. Instead, users escalate because the bot gave them the wrong version of a procedure, or a developer answer when they needed a manager overview. Wrong answers cost more than no answer — they create frustrated users and follow-up work.",
+  },
+  {
+    icon: "globe",
+    title: "Localization Costs Stay High",
+    body: "AI-assisted translation quality degrades on both unstructured content and unenriched DITA. Neural MT tools produce better output when they can read semantic element types — a <step> is translated as an imperative instruction; a <note type=\"warning\"> triggers safety phrasing rules. Without typed elements or proper metadata, everything is a paragraph, and everything costs the same to translate badly.",
+  },
+  {
+    icon: "activity",
+    title: "Fine-Tuning Produces Inconsistent Models",
+    body: "If you’re training or fine-tuning a model on your proprietary content, data quality determines output quality. Copy-pasted Word documents inject contradictions, tone shifts, and duplicates into your training set. The model learns to blend genres and confuse voice — exactly the failure mode you paid to avoid.",
+  },
+  {
+    icon: "target",
+    title: "Personalization Stays a Slide Deck Concept",
+    body: "Delivering the right content to the right user — by role, difficulty, product line — requires machine-readable audience and domain metadata on every topic. This is an unenriched content problem as much as a structural one: you may already have DITA XML, but if that DITA lacks audience, product, and difficulty attributes, your personalization engine falls back to serving the same content to everyone and calling it targeted.",
+  },
+  {
+    icon: "search",
+    title: "Search Relevance Doesn’t Improve",
+    body: "Semantic search still needs metadata to filter. The best embedding model in the world can’t distinguish a beginner concept from an advanced reference if those distinctions aren’t encoded in the content. This is a pure enrichment problem — your content can be perfectly valid DITA and still be invisible to a metadata filter if it was never enriched with audience, difficulty, or domain values.",
+  },
+];
+---
+
+<section class="airdy-problem" aria-labelledby="airdy-problem-heading">
+  <div class="container-data airdy-problem__inner">
+    <div class="airdy-problem__heading-block">
+      <h2 id="airdy-problem-heading" class="airdy-problem__heading">
+        What Unstructured and Unenriched Content Is Costing You Right Now
+      </h2>
+      <p class="airdy-problem__subdeck">
+        These aren&rsquo;t hypothetical risks. They&rsquo;re the measurable consequences of deploying AI on content that is either unstructured (Word, PDF, wiki) or structured but unenriched &mdash; DITA or XML content that lacks the metadata, controlled vocabulary, and section addressability that AI systems actually need.
+      </p>
+    </div>
+
+    <ul class="airdy-problem__grid">
+      {problems.map((p, i) => (
+        <li class="problem-card" style={`--i: ${i}`}>
+          <span class="problem-card__icon" aria-hidden="true">
+            {p.icon === "alert" && (
+              <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" /><line x1="10" y1="6" x2="10" y2="11" /><circle class="dot" cx="10" cy="13.8" r="0.6" /></svg>
+            )}
+            {p.icon === "chat" && (
+              <svg viewBox="0 0 20 20"><path d="M3.5 4.5 h13 v7 h-7.5 l-3 2.8 v-2.8 h-2.5 z" /></svg>
+            )}
+            {p.icon === "globe" && (
+              <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" /><line x1="2.5" y1="10" x2="17.5" y2="10" /><ellipse cx="10" cy="10" rx="3.2" ry="7.5" /></svg>
+            )}
+            {p.icon === "activity" && (
+              <svg viewBox="0 0 20 20"><polyline points="2,10 6.5,10 8.5,5 11.5,15 13.5,10 18,10" /></svg>
+            )}
+            {p.icon === "target" && (
+              <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" /><circle cx="10" cy="10" r="3.5" /><circle class="dot" cx="10" cy="10" r="0.8" /></svg>
+            )}
+            {p.icon === "search" && (
+              <svg viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.5" /><line x1="12.5" y1="12.5" x2="17" y2="17" /></svg>
+            )}
+          </span>
+          <h3 class="problem-card__title">{p.title}</h3>
+          <p class="problem-card__body">{p.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .airdy-problem {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    /* No border-top: the siblings row above carries a border-bottom. */
+  }
+
+  @media (max-width: 767px) {
+    .airdy-problem {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .airdy-problem__heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
+  }
+
+  .airdy-problem__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .airdy-problem__subdeck {
+    margin: var(--space-4) auto 0 auto;
+    max-width: 70ch;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  /* 3-up grid (3 x 2 on desktop). */
+  .airdy-problem__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 600px) {
+    .airdy-problem__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .airdy-problem__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .problem-card {
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .problem-card:hover {
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+
+  .problem-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: var(--border-hairline);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-5);
+    flex: none;
+  }
+  .problem-card__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .problem-card__icon svg circle,
+  .problem-card__icon svg ellipse,
+  .problem-card__icon svg line,
+  .problem-card__icon svg polyline,
+  .problem-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .problem-card__icon svg .dot {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .problem-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .problem-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ── Reveal animation ──────────────────────────────────────────── */
+  .airdy-problem.animating .airdy-problem__heading-block,
+  .airdy-problem.animating .problem-card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .airdy-problem.animating.in-view .airdy-problem__heading-block {
+    animation: airdy-problem-fade-in 480ms ease-out forwards;
+  }
+  .airdy-problem.animating.in-view .problem-card {
+    animation: airdy-problem-fade-in 420ms ease-out forwards;
+    animation-delay: calc(var(--i) * 70ms + 220ms);
+  }
+
+  @keyframes airdy-problem-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .airdy-problem.animating .airdy-problem__heading-block,
+    .airdy-problem.animating .problem-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .problem-card {
+      transition: none;
+    }
+    .problem-card:hover {
+      translate: none;
+    }
+  }
+</style>
+
+<script>
+  function setupAiReadyProblem() {
+    const sec = document.querySelector<HTMLElement>(".airdy-problem");
+    if (!sec) return;
+    if (sec.dataset.problemRevealInit === "true") return;
+    sec.dataset.problemRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupAiReadyProblem);
+  document.addEventListener("astro:page-load", setupAiReadyProblem);
+</script>
