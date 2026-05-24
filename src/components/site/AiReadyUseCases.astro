@@ -1,124 +1,164 @@
 ---
 /*
-  AiReadyUseCases — five editorial chapter-blocks on
+  AiReadyUseCases — "Every AI Use Case Needs the Same Foundation" on
   /solutions/ai-ready-content.
 
-  Sequenced after the pipeline section. Each block is one AI use case
-  that the same engineered corpus serves:
+  Rebuilt from 5 editorial chapter-blocks to the OLD ex-tense.co 7-row
+  comparison table (Use Case | What It Needs from Content | Without
+  Structure | With Extense Structure). [OLD] copy verbatim.
 
-    01  Chatbot & RAG retrieval.
-    02  Semantic search.
-    03  AI-assisted translation.
-    04  LLM fine-tuning.
-    05  Personalization & compliance auditing.
+  Render: hairline comparison table on desktop (mono header, the
+  "With Extense" column carries a light-amber wash + accent header text,
+  the "without" cells read muted). Stacks to per-use-case cards < 768px,
+  where a 4-column table is unreadable. The old page used red/green
+  semantic color throughout; we translate to the locked single-amber
+  palette — wash on the positive column only.
 
-  Per-block structure (mirrors the other chapter-block components on
-  TDP / Migration / Interop)
-    - amber monospace number prefix (left column, narrow)
-    - display-serif name + italic subtitle + body + pull-quote hook
-      (right column, wide)
-    - hairline rule at the top of each block; last block also gets a
-      hairline at the bottom so the section ends cleanly
-    - no "Explore" link affordance: these blocks are the destination
-
-  Animation: per-block IntersectionObserver, same pattern as the other
-  chapter-block sections. prefers-reduced-motion: static.
+  border-top hairline divides from the two-pipeline comparison above.
+  Animation: viewport-triggered staggered fade-up (rows on desktop, cards
+  on mobile). prefers-reduced-motion: static.
 */
 
-interface UseCase {
-  num: string;
-  name: string;
-  subtitle: string;
-  body: string;
-  hook: string;
+interface UseCaseRow {
+  useCase: string;
+  needs: string;
+  without: string;
+  withExtense: string;
 }
 
-const useCases: UseCase[] = [
+const rows: UseCaseRow[] = [
   {
-    num: "01",
-    name: "Chatbot & RAG retrieval",
-    subtitle: "Citation-ready answers, not averaged context.",
-    body: "Typed chunks with audience and domain filters. Top-k reranked before reaching the LLM context window. Each retrieved chunk carries its section ID, source URL, and provenance — so every answer is citable, traceable, and replayable against the exact paragraph that produced it.",
-    hook: "Why is your RAG hallucinating on a topic you’ve already documented?",
+    useCase: "Chatbot / RAG",
+    needs: "Typed chunks, metadata filters, section IDs for citation",
+    without: "25–35% precision. Hallucinations fill gaps.",
+    withExtense: "85%+ precision. Cited, traceable answers.",
   },
   {
-    num: "02",
-    name: "Semantic search",
-    subtitle: "Filter before you rank.",
-    body: "Metadata-filtered semantic search returns the right level for the user before similarity scoring even runs. A beginner concept and an advanced reference don’t get blended into the same top-k. The filter is the relevance — similarity scoring is just the tiebreaker.",
-    hook: "Why is search “improving” without actually answering different questions?",
+    useCase: "Semantic Search",
+    needs: "audience, difficulty, domain metadata per topic",
+    without: "Relevance improves slightly. Filtering impossible.",
+    withExtense: "Role-scoped results. Right level, right domain.",
   },
   {
-    num: "03",
-    name: "AI-assisted translation",
-    subtitle: "Element-aware, not paragraph-blind.",
-    body: "Semantic DITA elements (<warning>, <step>, <shortdesc>) carry their own translation rules. Safety-critical phrasing fires the right NMT pipeline; reference content takes a different path; conref-driven reuse is translated once. The element type is the routing key.",
-    hook: "Why is the same warning translated five different ways across five LMS modules?",
+    useCase: "AI-Assisted Translation",
+    needs: "Semantic elements (<step>, <warning>, <shortdesc>)",
+    without: "NMT treats everything as prose. Quality inconsistent.",
+    withExtense: 'Element-aware NMT. Safety phrasing rules fire on <note type="warning">.',
   },
   {
-    num: "04",
-    name: "LLM fine-tuning",
-    subtitle: "High-signal corpus, not noisy concatenation.",
-    body: "Typed, deduplicated, voice-consistent training data. No copy-paste duplicates injecting contradictions. No format drift teaching the model that your tone is six different tones. The fine-tune learns your voice because the corpus has a voice.",
-    hook: "What did your model learn when 30% of the training examples disagreed with each other?",
+    useCase: "LLM Fine-Tuning",
+    needs: "Clean, typed, deduplicated training examples",
+    without: "Noisy training data. Model learns contradictions.",
+    withExtense: "High-signal corpus. Model learns your voice, not an average.",
   },
   {
-    num: "05",
-    name: "Personalization & compliance auditing",
-    subtitle: "Audience and intent metadata, not slide-deck theory.",
-    body: "Role, level, product-line, and locale metadata on every topic make personalization a delivery property, not a marketing slide. The same metadata enables compliance auditing — the system names which warnings are missing, which prerequisites are untagged, which sections lack the required audit attributes.",
-    hook: "When the auditor asks what your AI told a regulated user, can you reproduce the answer?",
+    useCase: "Personalization",
+    needs: "audience + difficulty metadata on every topic",
+    without: "Same content for everyone. Personalization is theoretical.",
+    withExtense: "Dynamic delivery by role, level, product line.",
+  },
+  {
+    useCase: "Compliance Auditing",
+    needs: "Schema-enforced structure to audit against",
+    without: "AI can flag keywords but not structural gaps.",
+    withExtense: "AI detects missing <prereq>, untagged warnings, coverage gaps.",
+  },
+  {
+    useCase: "AI-Assisted Authoring",
+    needs: "Typed templates + controlled vocabulary constraints",
+    without: "AI generates off-topic, inconsistent drafts.",
+    withExtense: "AI fills typed templates. Output is consistently on-structure.",
   },
 ];
 ---
 
-<section class="airdy-usecases" aria-labelledby="airdy-usecases-heading">
-  <div class="container-data airdy-usecases__inner">
-    <div class="airdy-usecases__heading-block">
-      <h2 id="airdy-usecases-heading" class="airdy-usecases__heading">
-        Five AI use cases, <em>one foundation.</em>
+<section class="airdy-foundation" aria-labelledby="airdy-foundation-heading">
+  <div class="container-data airdy-foundation__inner">
+    <div class="airdy-foundation__heading-block">
+      <h2 id="airdy-foundation-heading" class="airdy-foundation__heading">
+        Every AI Use Case Needs the Same Foundation
       </h2>
-      <p class="airdy-usecases__subdeck">
-        Same engineering, different surface. The corpus you build for RAG is the same corpus that powers semantic search, AI translation, fine-tuning, and compliance auditing &mdash; one substrate, five consumers.
+      <p class="airdy-foundation__subdeck">
+        It&rsquo;s not just chatbots. Every AI initiative your organization runs draws from the same content well. Structure it once &mdash; every system benefits.
       </p>
     </div>
 
-    <ol class="airdy-usecases__list">
-      {useCases.map((area) => (
-        <li class="usecase-area">
-          <div class="usecase-area__num" aria-hidden="true">{area.num}</div>
-          <div class="usecase-area__content">
-            <h3 class="usecase-area__name">{area.name}.</h3>
-            <p class="usecase-area__subtitle">{area.subtitle}</p>
-            <p class="usecase-area__body">{area.body}</p>
-            <p class="usecase-area__hook">{area.hook}</p>
+    <!-- Desktop: comparison table -->
+    <table class="foundation-table">
+      <colgroup>
+        <col class="foundation-table__col-usecase" />
+        <col class="foundation-table__col-needs" />
+        <col class="foundation-table__col-without" />
+        <col class="foundation-table__col-with" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th scope="col">AI Use Case</th>
+          <th scope="col">What It Needs from Content</th>
+          <th scope="col">Without Structure</th>
+          <th scope="col" class="is-accent">With Extense Structure</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, i) => (
+          <tr class="foundation-row" style={`--i: ${i}`}>
+            <th scope="row" class="cell-usecase">{row.useCase}</th>
+            <td class="cell-needs">{row.needs}</td>
+            <td class="cell-without">{row.without}</td>
+            <td class="cell-with">{row.withExtense}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <!-- Mobile: per-use-case cards -->
+    <ul class="foundation-cards">
+      {rows.map((row, i) => (
+        <li class="foundation-card" style={`--i: ${i}`}>
+          <p class="foundation-card__name">{row.useCase}</p>
+          <div class="foundation-card__row">
+            <span class="foundation-card__label">Needs</span>
+            <span class="foundation-card__val">{row.needs}</span>
+          </div>
+          <div class="foundation-card__row">
+            <span class="foundation-card__label">Without structure</span>
+            <span class="foundation-card__val foundation-card__val--muted">{row.without}</span>
+          </div>
+          <div class="foundation-card__row foundation-card__row--with">
+            <span class="foundation-card__label">With Extense</span>
+            <span class="foundation-card__val">{row.withExtense}</span>
           </div>
         </li>
       ))}
-    </ol>
+    </ul>
   </div>
 </section>
 
 <style>
-  .airdy-usecases {
+  /* Locked light-amber wash (EXTENSE_DESIGN_BRIEF — badges/panels). Not
+     tokenized; scoped here for the positive-outcome column/row. */
+  .airdy-foundation {
+    --wash-amber: #fef3c7;
     padding-top: var(--section-pad-default);
     padding-bottom: var(--section-pad-default);
     border-top: var(--border-hairline);
   }
 
   @media (max-width: 767px) {
-    .airdy-usecases {
+    .airdy-foundation {
       padding-top: var(--space-16);
       padding-bottom: var(--space-16);
     }
   }
 
-  .airdy-usecases__heading-block {
-    max-width: var(--container-prose, 720px);
-    margin-bottom: var(--space-16);
+  /* Centered heading; full width so the sub-deck sits on 1–2 lines. */
+  .airdy-foundation__heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
   }
 
-  .airdy-usecases__heading {
+  .airdy-foundation__heading {
     font-family: var(--font-display);
     font-size: var(--text-display-lg);
     font-weight: var(--weight-regular);
@@ -128,197 +168,195 @@ const useCases: UseCase[] = [
     margin: 0;
     text-wrap: balance;
   }
-  .airdy-usecases__heading em {
-    font-style: italic;
-  }
 
-  .airdy-usecases__subdeck {
-    margin-top: var(--space-4);
+  .airdy-foundation__subdeck {
+    margin: var(--space-4) auto 0 auto;
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    max-width: 64ch;
     text-wrap: pretty;
   }
 
-  .airdy-usecases__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  /* ── Desktop table ─────────────────────────────────────────────── */
+  .foundation-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
   }
 
-  .usecase-area {
-    border-top: var(--border-hairline);
-    padding-top: var(--space-12);
-    padding-bottom: var(--space-12);
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
+  .foundation-table__col-usecase { width: 17%; }
+  .foundation-table__col-needs { width: 25%; }
+  .foundation-table__col-without { width: 28%; }
+  .foundation-table__col-with { width: 30%; }
+
+  .foundation-table thead th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: left;
+    vertical-align: bottom;
+    color: var(--color-text-secondary);
+    padding: 0 var(--space-5) var(--space-4) var(--space-5);
+    border-bottom: 2px solid var(--color-text-primary);
   }
-  .usecase-area:last-child {
+  .foundation-table thead th.is-accent {
+    color: var(--color-accent-primary-pressed);
+    background-color: var(--wash-amber);
+  }
+
+  .foundation-table tbody th,
+  .foundation-table tbody td {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    text-align: left;
+    vertical-align: top;
+    padding: var(--space-5);
     border-bottom: var(--border-hairline);
+    text-wrap: pretty;
   }
 
-  @media (min-width: 768px) {
-    .usecase-area {
-      grid-template-columns: 96px 1fr;
-      gap: var(--space-8);
-      padding-top: var(--space-16);
-      padding-bottom: var(--space-16);
+  /* Use-case name — mono, primary, the row's "key". Element + tbody in the
+     selector so it out-specifies the base `tbody th` color (Astro scopes
+     each compound, so type selectors decide ties in the class column). */
+  .foundation-table tbody th.cell-usecase {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.02em;
+    color: var(--color-text-primary);
+  }
+
+  /* "Without" reads muted; "With Extense" carries the wash + primary text. */
+  .foundation-table tbody td.cell-without {
+    color: var(--color-text-muted);
+  }
+  .foundation-table tbody td.cell-with {
+    background-color: var(--wash-amber);
+    color: var(--color-text-primary);
+  }
+
+  @media (max-width: 767px) {
+    .foundation-table { display: none; }
+  }
+
+  /* ── Mobile cards ──────────────────────────────────────────────── */
+  .foundation-cards {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .foundation-cards {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
   }
 
-  .usecase-area__num {
+  .foundation-card {
+    border: var(--border-hairline);
+    padding: var(--space-6);
+  }
+
+  .foundation-card__name {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: var(--weight-medium);
-    letter-spacing: 0.08em;
-    color: var(--color-accent-primary);
-    line-height: 1;
-    padding-top: 8px;
-  }
-
-  .usecase-area__content {
-    max-width: 72ch;
-  }
-
-  .usecase-area__name {
-    font-family: var(--font-display);
-    font-size: var(--text-display-md);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
+    letter-spacing: 0.02em;
     color: var(--color-text-primary);
-    margin: 0 0 var(--space-2) 0;
-    text-wrap: balance;
+    margin: 0 0 var(--space-4) 0;
+    padding-bottom: var(--space-3);
+    border-bottom: var(--border-hairline);
   }
 
-  .usecase-area__subtitle {
-    font-family: var(--font-display);
-    font-size: 18px;
-    font-style: italic;
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
+  .foundation-card__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+    padding: var(--space-3) 0;
+  }
+  .foundation-card__row + .foundation-card__row {
+    border-top: var(--border-hairline);
+  }
+  .foundation-card__row--with {
+    background-color: var(--wash-amber);
+    margin: var(--space-2) calc(-1 * var(--space-6)) calc(-1 * var(--space-6));
+    padding: var(--space-3) var(--space-6) var(--space-4);
+    border-top: var(--border-hairline);
+  }
+
+  .foundation-card__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--color-text-secondary);
-    margin: 0 0 var(--space-6) 0;
-    text-wrap: pretty;
+  }
+  .foundation-card__row--with .foundation-card__label {
+    color: var(--color-accent-primary-pressed);
   }
 
-  .usecase-area__body {
+  .foundation-card__val {
     font-family: var(--font-body);
-    font-size: var(--text-body-lg);
-    color: var(--color-text-secondary);
-    line-height: 1.55;
-    margin: 0 0 var(--space-8) 0;
-    text-wrap: pretty;
-  }
-
-  .usecase-area__hook {
-    position: relative;
-    margin: 0;
-    padding-left: var(--space-6);
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-style: italic;
-    font-weight: var(--weight-regular);
-    line-height: 1.4;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
     color: var(--color-text-primary);
     text-wrap: pretty;
-    max-width: 60ch;
   }
-  .usecase-area__hook::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: var(--color-accent-primary-hover);
-    transform-origin: top center;
+  .foundation-card__val--muted {
+    color: var(--color-text-muted);
   }
 
-  /* Reveal animation — per-block, same pattern as other chapter-blocks. */
-  .airdy-usecases.animating .airdy-usecases__heading-block {
+  /* ── Reveal animation ──────────────────────────────────────────── */
+  .airdy-foundation.animating .airdy-foundation__heading-block,
+  .airdy-foundation.animating .foundation-row,
+  .airdy-foundation.animating .foundation-card {
     opacity: 0;
     transform: translateY(8px);
   }
-  .airdy-usecases.animating .usecase-area__num,
-  .airdy-usecases.animating .usecase-area__name,
-  .airdy-usecases.animating .usecase-area__subtitle,
-  .airdy-usecases.animating .usecase-area__body,
-  .airdy-usecases.animating .usecase-area__hook {
-    opacity: 0;
-    transform: translateY(8px);
+
+  .airdy-foundation.animating.in-view .airdy-foundation__heading-block {
+    animation: airdy-foundation-fade-in 480ms ease-out forwards;
   }
-  .airdy-usecases.animating .usecase-area__hook::before {
-    transform: scaleY(0);
+  .airdy-foundation.animating.in-view .foundation-row,
+  .airdy-foundation.animating.in-view .foundation-card {
+    animation: airdy-foundation-fade-in 420ms ease-out forwards;
+    animation-delay: calc(var(--i) * 70ms + 220ms);
   }
 
-  .airdy-usecases.animating.in-view .airdy-usecases__heading-block {
-    animation: airdy-usecases-fade-in 480ms ease-out forwards;
-  }
-
-  .airdy-usecases.animating .usecase-area.in-view .usecase-area__num {
-    animation: airdy-usecases-fade-in 420ms ease-out forwards;
-  }
-  .airdy-usecases.animating .usecase-area.in-view .usecase-area__name {
-    animation: airdy-usecases-fade-in 420ms ease-out forwards;
-    animation-delay: 80ms;
-  }
-  .airdy-usecases.animating .usecase-area.in-view .usecase-area__subtitle {
-    animation: airdy-usecases-fade-in 420ms ease-out forwards;
-    animation-delay: 140ms;
-  }
-  .airdy-usecases.animating .usecase-area.in-view .usecase-area__body {
-    animation: airdy-usecases-fade-in 420ms ease-out forwards;
-    animation-delay: 220ms;
-  }
-  .airdy-usecases.animating .usecase-area.in-view .usecase-area__hook {
-    animation: airdy-usecases-fade-in 420ms ease-out forwards;
-    animation-delay: 320ms;
-  }
-  .airdy-usecases.animating .usecase-area.in-view .usecase-area__hook::before {
-    animation: airdy-usecases-bar-grow 520ms ease-out forwards;
-    animation-delay: 320ms;
-  }
-
-  @keyframes airdy-usecases-fade-in {
+  @keyframes airdy-foundation-fade-in {
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
-  @keyframes airdy-usecases-bar-grow {
-    to {
-      transform: scaleY(1);
-    }
-  }
 
   @media (prefers-reduced-motion: reduce) {
-    .airdy-usecases.animating .airdy-usecases__heading-block,
-    .airdy-usecases.animating .usecase-area__num,
-    .airdy-usecases.animating .usecase-area__name,
-    .airdy-usecases.animating .usecase-area__subtitle,
-    .airdy-usecases.animating .usecase-area__body,
-    .airdy-usecases.animating .usecase-area__hook {
+    .airdy-foundation.animating .airdy-foundation__heading-block,
+    .airdy-foundation.animating .foundation-row,
+    .airdy-foundation.animating .foundation-card {
       opacity: 1 !important;
       transform: none !important;
-      animation: none !important;
-    }
-    .airdy-usecases.animating .usecase-area__hook::before {
-      transform: scaleY(1) !important;
       animation: none !important;
     }
   }
 </style>
 
 <script>
-  function setupAiReadyUseCases() {
-    const sec = document.querySelector<HTMLElement>(".airdy-usecases");
+  function setupAiReadyFoundation() {
+    const sec = document.querySelector<HTMLElement>(".airdy-foundation");
     if (!sec) return;
-    if (sec.dataset.usecasesRevealInit === "true") return;
-    sec.dataset.usecasesRevealInit = "true";
+    if (sec.dataset.foundationRevealInit === "true") return;
+    sec.dataset.foundationRevealInit = "true";
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -327,34 +365,21 @@ const useCases: UseCase[] = [
 
     sec.classList.add("animating");
 
-    const sectionObserver = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             sec.classList.add("in-view");
-            sectionObserver.unobserve(entry.target);
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
-    sectionObserver.observe(sec);
 
-    const areaObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            areaObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
-    const areas = sec.querySelectorAll<HTMLElement>(".usecase-area");
-    areas.forEach((area) => areaObserver.observe(area));
+    observer.observe(sec);
   }
 
-  document.addEventListener("DOMContentLoaded", setupAiReadyUseCases);
-  document.addEventListener("astro:page-load", setupAiReadyUseCases);
+  document.addEventListener("DOMContentLoaded", setupAiReadyFoundation);
+  document.addEventListener("astro:page-load", setupAiReadyFoundation);
 </script>

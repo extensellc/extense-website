@@ -105,7 +105,7 @@ template wireframe + a content-variant table, not N independent docs.
 | Solution › Tech Docs   | done      | done     | done      | done     | done (uncommitted) | [technical-docs-and-publishing.md](technical-docs-and-publishing.md) |
 | Solution › Migration   | done      | done     | done      | done     | done (uncommitted) | [content-migration.md](content-migration.md) |
 | Solution › XML Interop  | done     | done     | done      | done     | done (uncommitted) | [xml-data-interoperability.md](xml-data-interoperability.md) |
-| Solution › AI-Ready    | –         | –        | –         | –        | –           | – |
+| Solution › AI-Ready    | done      | done     | done      | done     | done        | [ai-ready-content.md](ai-ready-content.md) |
 
 > The 4 `/solutions/*` sub-pages are **bespoke** (each has its own components —
 > `TechDocs*`, etc.), so they get one doc each, not a shared template. (The

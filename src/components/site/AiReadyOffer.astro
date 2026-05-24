@@ -1,0 +1,309 @@
+---
+/*
+  AiReadyOffer — "We Engineer — We Don't Just Advise" on
+  /solutions/ai-ready-content.
+
+  The old ex-tense.co offer section: 5 engagement deliverables, each with
+  a light-amber Deliverable pill. [OLD] copy verbatim. The old page paired
+  these with a before/after bar chart — dropped here, since the hero gauge
+  already carries the 30 → 87 / +57pts figure.
+
+  Differentiates from the §5 phase strip (the PROCESS) by being the
+  DELIVERABLES (what you walk away holding): bordered cards, amber index +
+  draw-in accent rule + hover lift (TechDocs card vocabulary). 2-col grid
+  on desktop; the 5th card (Integration & Validation → measured 85%) spans
+  full width as the finale before Related + CTA. Single column on mobile.
+
+  border-top hairline divides from the pipeline above.
+  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface Offering {
+  name: string;
+  body: string;
+  deliverable: string;
+}
+
+const offerings: Offering[] = [
+  {
+    name: "Free AI-Readiness Assessment",
+    body: "Send us 20 topics. We score them on 7 dimensions — content typing, metadata coverage, section addressability, vocabulary control, semantic markup, reuse architecture, and pipeline maturity — and return a gap analysis with specific next steps.",
+    deliverable: "Scored gap analysis · No obligation",
+  },
+  {
+    name: "Structured Migration",
+    body: "We convert your Word, PDF, FrameMaker, or wiki content to typed DITA XML with section IDs. Automation tooling handles scale — 1,000 topics is not 1,000 hours of manual work.",
+    deliverable: "Typed DITA corpus with full section addressability",
+  },
+  {
+    name: "Taxonomy & Metadata Engineering",
+    body: "We design a controlled vocabulary — audience, difficulty, domain, intent — and apply it at scale. Validation rules prevent vocabulary drift from day one.",
+    deliverable: "Subject scheme + 100% metadata coverage",
+  },
+  {
+    name: "AI-Native Publishing Pipeline",
+    body: "We configure your DITA-OT toolchain to produce chunks.jsonl, glossary-index.json, and content-manifest.json alongside HTML and PDF — all from a single source, on every build.",
+    deliverable: "Automated multi-format pipeline including JSONL",
+  },
+  {
+    name: "Integration & Precision Validation",
+    body: "We connect your output to your vector store, configure metadata filters for intent routing and audience scoping, run retrieval tests against real user queries, and deliver a measured precision baseline.",
+    deliverable: "Live AI retrieval with measured 85%+ precision target",
+  },
+];
+---
+
+<section class="airdy-offer" aria-labelledby="airdy-offer-heading">
+  <div class="container-data airdy-offer__inner">
+    <div class="airdy-offer__heading-block">
+      <h2 id="airdy-offer-heading" class="airdy-offer__heading">
+        We Engineer &mdash; We Don&rsquo;t Just Advise
+      </h2>
+      <p class="airdy-offer__subdeck">
+        Every engagement ends with working, measurable infrastructure &mdash; not a report with recommendations you have to implement yourself.
+      </p>
+    </div>
+
+    <ol class="airdy-offer__grid">
+      {offerings.map((o, i) => (
+        <li class="offer-card" style={`--i: ${i}`}>
+          <span class="offer-card__rule" aria-hidden="true"></span>
+          <p class="offer-card__index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
+          <h3 class="offer-card__name">{o.name}</h3>
+          <p class="offer-card__body">{o.body}</p>
+          <p class="offer-card__deliverable">
+            <span class="offer-card__deliverable-label">Deliverable</span>
+            {o.deliverable}
+          </p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .airdy-offer {
+    --wash-amber: #fef3c7;
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .airdy-offer {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .airdy-offer__heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
+  }
+
+  .airdy-offer__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .airdy-offer__subdeck {
+    margin: var(--space-4) auto 0 auto;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  /* 2-col grid; the 5th card spans full width as the finale. */
+  .airdy-offer__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .airdy-offer__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .offer-card:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .offer-card {
+    position: relative;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .offer-card:hover {
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+
+  /* Amber accent rule — short bar, draws in on reveal, extends on hover. */
+  .offer-card__rule {
+    display: block;
+    width: 32px;
+    height: 2px;
+    background-color: var(--color-accent-primary-hover);
+    margin-bottom: var(--space-5);
+    transform-origin: left center;
+    transition: width var(--duration-base) var(--easing-out);
+  }
+  .offer-card:hover .offer-card__rule {
+    width: 48px;
+  }
+
+  .offer-card__index {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    line-height: 1;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .offer-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .offer-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: pretty;
+  }
+
+  /* Light-amber Deliverable pill. margin-top:auto bottom-aligns it across a
+     row; the body's margin-bottom guarantees the gap when free space is 0. */
+  .offer-card__deliverable {
+    margin-top: auto;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--wash-amber);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-primary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+  .offer-card__deliverable-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-1);
+  }
+
+  /* ── Reveal animation ──────────────────────────────────────────── */
+  .airdy-offer.animating .airdy-offer__heading-block,
+  .airdy-offer.animating .offer-card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .airdy-offer.animating .offer-card__rule {
+    transform: scaleX(0);
+  }
+
+  .airdy-offer.animating.in-view .airdy-offer__heading-block {
+    animation: airdy-offer-fade-in 480ms ease-out forwards;
+  }
+  .airdy-offer.animating.in-view .offer-card {
+    animation: airdy-offer-fade-in 420ms ease-out forwards;
+    animation-delay: calc(var(--i) * 70ms + 220ms);
+  }
+  .airdy-offer.animating.in-view .offer-card__rule {
+    animation: airdy-offer-rule-grow 460ms ease-out forwards;
+    animation-delay: calc(var(--i) * 70ms + 220ms);
+  }
+
+  @keyframes airdy-offer-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes airdy-offer-rule-grow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .airdy-offer.animating .airdy-offer__heading-block,
+    .airdy-offer.animating .offer-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .airdy-offer.animating .offer-card__rule {
+      transform: scaleX(1) !important;
+      animation: none !important;
+    }
+    .offer-card,
+    .offer-card__rule {
+      transition: none;
+    }
+    .offer-card:hover {
+      translate: none;
+    }
+  }
+</style>
+
+<script>
+  function setupAiReadyOffer() {
+    const sec = document.querySelector<HTMLElement>(".airdy-offer");
+    if (!sec) return;
+    if (sec.dataset.offerRevealInit === "true") return;
+    sec.dataset.offerRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupAiReadyOffer);
+  document.addEventListener("astro:page-load", setupAiReadyOffer);
+</script>

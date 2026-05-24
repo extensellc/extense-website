@@ -4,49 +4,48 @@
 
   Sub-page deep-dive on the AI-Ready Content solution area.
 
-  Structurally similar to TDP / Migration / Interop, with ONE major
-  difference: section 3 is a side-by-side pipeline comparison
-  (unstructured vs. structured), replacing the standard 3-up problem
-  diagnostic — because the before/after frame IS the argument here.
+  Reframed to the old ex-tense.co page's SOLUTION-led sections only — its
+  problem-education and ROI ($540K) blocks are dropped per the locked
+  thesis. Solution-led order: claim → proof → reach → method → offer →
+  cross-sell → convert.
 
-  Sections (building piece by piece):
+  Sections:
     1. Hero — "Retrievable, by design." + precision-gauge SVG
     2. Siblings nav
-    3. Two pipelines — side-by-side unstructured vs. structured (TODO)
-    4. The pipeline — manifesto + 5-stage diagram (TODO)
-    5. Use cases — five editorial chapter-blocks (TODO)
-    6. Closing prose — 85% precision as the punchline (TODO)
-    7. CTA (TODO)
+    3. Two pipelines — before/after (the proof)
+    4. Every AI use case needs the same foundation — 7-row table (the reach)
+    5. From unstructured to AI-ready in 5 phases (the method)
+    6. We Engineer — We Don't Just Advise (the offer)
+    7. Explore Related Solutions (3-up)
+    8. CTA-as-closer (+ accentLine)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AiReadyHero from "../../components/site/AiReadyHero.astro";
 import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
 import AiReadyComparison from "../../components/site/AiReadyComparison.astro";
-import AiReadyPipeline from "../../components/site/AiReadyPipeline.astro";
 import AiReadyUseCases from "../../components/site/AiReadyUseCases.astro";
-import AiReadyClosing from "../../components/site/AiReadyClosing.astro";
-import CrossPillarLink from "../../components/site/CrossPillarLink.astro";
+import AiReadyPipeline from "../../components/site/AiReadyPipeline.astro";
+import AiReadyOffer from "../../components/site/AiReadyOffer.astro";
+import AiReadyRelated from "../../components/site/AiReadyRelated.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 ---
 
 <BaseLayout
   title="AI-Ready Content"
-  description="Retrievable by design. Chunking strategy, typed DITA topics, metadata filters, and section-ID stability that turn 85% RAG precision into a measurable property of the corpus — not a model parameter."
+  description="Retrievable by design. Typed DITA topics, metadata filters, and section-ID stability that turn 85% RAG precision into a measurable property of the corpus — and feed every AI system from one engineered source."
 >
   <AiReadyHero />
   <SolutionsSiblings currentSlug="ai-ready-content" />
   <AiReadyComparison />
-  <AiReadyPipeline />
   <AiReadyUseCases />
-  <AiReadyClosing />
-  <CrossPillarLink
-    href="/services"
-    label="See our AI-ready content services"
-  />
+  <AiReadyPipeline />
+  <AiReadyOffer />
+  <AiReadyRelated />
   <CTAModule
     audience="general"
     compact
+    accentLine
     body="Send us 20 topics from your current documentation. We’ll score them on 7 AI-readiness dimensions and return a gap analysis with the next concrete steps — within two business days."
   />
 </BaseLayout>

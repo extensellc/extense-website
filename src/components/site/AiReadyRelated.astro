@@ -1,0 +1,253 @@
+---
+/*
+  AiReadyRelated — "Explore Related Solutions" 3-up on
+  /solutions/ai-ready-content.
+
+  The old ex-tense.co "Go Deeper" cross-sell, remapped to real pages. Two
+  Solutions + one Service (DITA Engineering -> /services placeholder, since
+  the 7 /services/* detail pages don't exist yet). The old Guide card is
+  dropped — the resources guide page doesn't exist yet.
+
+  Whole-card links, hairline tiles with the amber kind-eyebrow + hover lift
+  (same vocabulary as the sibling Related blocks). Sits before the closing
+  CTA; border-top divides from the offer section above.
+  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface Related {
+  kind: string;
+  name: string;
+  href: string;
+  desc: string;
+}
+
+const related: Related[] = [
+  {
+    kind: "Solution",
+    name: "Content Migration & Modernization",
+    href: "/solutions/content-migration",
+    desc: "Proven methodology for converting unstructured content to structured, enriched DITA XML at scale.",
+  },
+  {
+    kind: "Solution",
+    name: "XML Data Interoperability",
+    href: "/solutions/xml-data-interoperability",
+    desc: "Structured XML as the canonical source for AI pipelines — semantic labels, JSON-LD, and retrieval-ready topics.",
+  },
+  {
+    kind: "Service",
+    name: "DITA Engineering",
+    href: "/services",
+    desc: "Topic modeling, metadata enrichment, AI-ready content architecture, and controlled vocabulary design.",
+  },
+];
+---
+
+<section class="airdy-related" aria-labelledby="airdy-related-heading">
+  <div class="container-data airdy-related__inner">
+    <h2 id="airdy-related-heading" class="airdy-related__heading">
+      Explore Related Solutions
+    </h2>
+
+    <ul class="airdy-related__grid">
+      {related.map((item) => (
+        <li class="related-card-item">
+          <a href={item.href} class="related-card">
+            <p class="related-card__kind">{item.kind}</p>
+            <h3 class="related-card__name">{item.name}</h3>
+            <p class="related-card__desc">{item.desc}</p>
+            <span class="related-card__cta">
+              Explore <span class="related-card__arrow" aria-hidden="true">&rarr;</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .airdy-related {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .airdy-related {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .airdy-related__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: balance;
+  }
+
+  .airdy-related__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .airdy-related__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .related-card-item {
+    display: flex;
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .related-card:hover,
+  .related-card:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+
+  .related-card__kind {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .related-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+    text-wrap: balance;
+  }
+
+  .related-card__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+
+  .related-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .related-card:hover .related-card__cta,
+  .related-card:focus-visible .related-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .related-card:hover .related-card__arrow {
+    transform: translateX(2px);
+  }
+
+  /* Reveal — heading then cards stagger. */
+  .airdy-related.animating .airdy-related__heading,
+  .airdy-related.animating .related-card-item {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .airdy-related.animating .related-card-item:nth-child(1) { --reveal-delay: 160ms; }
+  .airdy-related.animating .related-card-item:nth-child(2) { --reveal-delay: 260ms; }
+  .airdy-related.animating .related-card-item:nth-child(3) { --reveal-delay: 360ms; }
+
+  .airdy-related.animating.in-view .airdy-related__heading {
+    animation: airdy-related-fade-in 480ms ease-out forwards;
+  }
+  .airdy-related.animating.in-view .related-card-item {
+    animation: airdy-related-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes airdy-related-fade-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .airdy-related.animating .airdy-related__heading,
+    .airdy-related.animating .related-card-item {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .related-card {
+      transition: none;
+    }
+    .related-card:hover,
+    .related-card:focus-visible {
+      translate: none;
+    }
+  }
+</style>
+
+<script>
+  function setupAiReadyRelated() {
+    const sec = document.querySelector<HTMLElement>(".airdy-related");
+    if (!sec) return;
+    if (sec.dataset.relatedRevealInit === "true") return;
+    sec.dataset.relatedRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupAiReadyRelated);
+  document.addEventListener("astro:page-load", setupAiReadyRelated);
+</script>

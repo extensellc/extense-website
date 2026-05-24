@@ -61,13 +61,11 @@ const stages: Stage[] = [
 <section class="airdy-pipeline" aria-labelledby="airdy-pipeline-heading">
   <div class="container-data airdy-pipeline__inner">
     <div class="airdy-pipeline__manifesto">
-      <p class="eyebrow airdy-pipeline__eyebrow">The pipeline</p>
-      <h2 id="airdy-pipeline-heading" class="airdy-pipeline__principle">
-        Precision is a <em>content engineering</em> problem.
+      <h2 id="airdy-pipeline-heading" class="airdy-pipeline__heading">
+        From Unstructured or Unenriched to AI-Ready in <em>5 Phases</em>
       </h2>
-      <hr class="airdy-pipeline__rule" />
-      <p class="airdy-pipeline__elaboration">
-        AI retrieval precision is a function of how the content was structured, not how the model was tuned. The 7-dimension AI-readiness scorecard quantifies the gap. Word / PDF / FrameMaker content gets converted to typed DITA with stable section IDs. A subject scheme and SKOS-based controlled vocabulary tag every topic &mdash; audience, difficulty, domain, intent. The DITA-OT build emits <code>chunks.jsonl</code> and <code>glossary-index.json</code> alongside the HTML/PDF outputs. The corpus lands in Pinecone, Weaviate, or pgvector with metadata filters that pre-scope the search before similarity scoring runs. Retrieval precision is measured against real user queries before the engagement closes.
+      <p class="airdy-pipeline__intro">
+        A deterministic engineering process &mdash; not a consulting engagement with open-ended deliverables. Whether you&rsquo;re starting from Word documents or from DITA that was never properly enriched, each phase has a concrete output and a measurable improvement.
       </p>
     </div>
 
@@ -81,6 +79,15 @@ const stages: Stage[] = [
         </li>
       ))}
     </ol>
+
+    <div class="airdy-pipeline__timeline" aria-hidden="true">
+      <div class="airdy-pipeline__timeline-track"></div>
+      <div class="airdy-pipeline__timeline-marks">
+        <span class="tl-mark">Week 1</span>
+        <span class="tl-mark tl-mark--mid">4&ndash;8 weeks (small corpus)</span>
+        <span class="tl-mark tl-mark--end">AI-Ready &check;</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -112,55 +119,28 @@ const stages: Stage[] = [
     }
   }
 
-  .airdy-pipeline__eyebrow {
-    margin: 0 0 var(--space-8) 0;
-    color: var(--color-accent-primary);
-  }
-
-  .airdy-pipeline__principle {
+  .airdy-pipeline__heading {
     font-family: var(--font-display);
-    font-size: 48px;
+    font-size: var(--text-display-lg);
     font-weight: var(--weight-regular);
-    line-height: 1.1;
+    line-height: var(--leading-snug);
     letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
     margin: 0;
     text-wrap: balance;
   }
-  .airdy-pipeline__principle em {
+  .airdy-pipeline__heading em {
     font-style: italic;
   }
 
-  @media (max-width: 767px) {
-    .airdy-pipeline__principle {
-      font-size: 32px;
-    }
-  }
-
-  .airdy-pipeline__rule {
-    border: 0;
-    border-top: var(--border-hairline);
-    width: 64px;
-    margin: var(--space-8) auto;
-  }
-
-  .airdy-pipeline__elaboration {
+  .airdy-pipeline__intro {
+    margin: var(--space-4) auto 0 auto;
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     font-weight: var(--weight-regular);
-    line-height: 1.55;
+    line-height: var(--leading-normal);
     color: var(--color-text-secondary);
-    margin: 0 auto;
-    max-width: 100%;
     text-wrap: pretty;
-    text-align: left;
-  }
-  .airdy-pipeline__elaboration code {
-    font-family: var(--font-mono);
-    font-size: 0.92em;
-    background: var(--color-surface-elevated);
-    padding: 0.05em 0.4em;
-    color: var(--color-text-primary);
   }
 
   /* Pipeline stages — same vocabulary as TDP/Migration/Interop. */
@@ -250,36 +230,79 @@ const stages: Stage[] = [
     text-wrap: pretty;
   }
 
+  /* Timeline bar beneath the strip — Week 1 → 4–8 weeks → AI-Ready.
+     Restrained: a hairline track that warms to amber at the finish. */
+  .airdy-pipeline__timeline {
+    margin-top: var(--space-16);
+  }
+  .airdy-pipeline__timeline-track {
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(
+      90deg,
+      var(--color-border-subtle) 0%,
+      var(--color-border-subtle) 68%,
+      var(--color-accent-primary) 100%
+    );
+  }
+  .airdy-pipeline__timeline-marks {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+  }
+  .tl-mark {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .tl-mark--mid {
+    text-align: center;
+  }
+  .tl-mark--end {
+    color: var(--color-accent-primary-pressed);
+    text-align: right;
+  }
+
+  @media (max-width: 767px) {
+    .airdy-pipeline__timeline {
+      margin-top: var(--space-10);
+    }
+    .tl-mark {
+      font-size: 9px;
+      letter-spacing: 0.04em;
+    }
+  }
+
   /* Reveal animation — viewport-triggered. */
-  .airdy-pipeline.animating .airdy-pipeline__eyebrow,
-  .airdy-pipeline.animating .airdy-pipeline__principle,
-  .airdy-pipeline.animating .airdy-pipeline__rule,
-  .airdy-pipeline.animating .airdy-pipeline__elaboration,
-  .airdy-pipeline.animating .pipeline-stage {
+  .airdy-pipeline.animating .airdy-pipeline__heading,
+  .airdy-pipeline.animating .airdy-pipeline__intro,
+  .airdy-pipeline.animating .pipeline-stage,
+  .airdy-pipeline.animating .airdy-pipeline__timeline {
     opacity: 0;
     transform: translateY(8px);
   }
 
-  .airdy-pipeline.animating.in-view .airdy-pipeline__eyebrow {
-    animation: airdy-pipe-fade-in 420ms ease-out forwards;
-  }
-  .airdy-pipeline.animating.in-view .airdy-pipeline__principle {
+  .airdy-pipeline.animating.in-view .airdy-pipeline__heading {
     animation: airdy-pipe-fade-in 520ms ease-out forwards;
-    animation-delay: 120ms;
   }
-  .airdy-pipeline.animating.in-view .airdy-pipeline__rule {
+  .airdy-pipeline.animating.in-view .airdy-pipeline__intro {
     animation: airdy-pipe-fade-in 420ms ease-out forwards;
-    animation-delay: 320ms;
+    animation-delay: 200ms;
   }
-  .airdy-pipeline.animating.in-view .airdy-pipeline__elaboration {
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(1) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 440ms; }
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(2) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 560ms; }
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(3) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 680ms; }
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(4) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 800ms; }
+  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(5) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 920ms; }
+  .airdy-pipeline.animating.in-view .airdy-pipeline__timeline {
     animation: airdy-pipe-fade-in 420ms ease-out forwards;
-    animation-delay: 420ms;
+    animation-delay: 1060ms;
   }
-  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(1) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 640ms; }
-  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(2) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 760ms; }
-  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(3) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 880ms; }
-  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(4) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 1000ms; }
-  .airdy-pipeline.animating.in-view .pipeline-stage:nth-child(5) { animation: airdy-pipe-fade-in 420ms ease-out forwards; animation-delay: 1120ms; }
 
   @keyframes airdy-pipe-fade-in {
     to {
@@ -289,11 +312,10 @@ const stages: Stage[] = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .airdy-pipeline.animating .airdy-pipeline__eyebrow,
-    .airdy-pipeline.animating .airdy-pipeline__principle,
-    .airdy-pipeline.animating .airdy-pipeline__rule,
-    .airdy-pipeline.animating .airdy-pipeline__elaboration,
-    .airdy-pipeline.animating .pipeline-stage {
+    .airdy-pipeline.animating .airdy-pipeline__heading,
+    .airdy-pipeline.animating .airdy-pipeline__intro,
+    .airdy-pipeline.animating .pipeline-stage,
+    .airdy-pipeline.animating .airdy-pipeline__timeline {
       opacity: 1 !important;
       transform: none !important;
       animation: none !important;
