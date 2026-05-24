@@ -15,24 +15,30 @@
 */
 
 /*
-  Order tuned for two balanced rows (7 + 6) when wrapped at the capped
-  band width: the longer/shorter chips are distributed so each row is
-  roughly equal length. Row 1 = first 7, Row 2 = last 6.
+  19 source formats. Order interleaves longer and shorter chips so the
+  flex-wrap splits into two roughly equal-length rows (centered). Tuned
+  against measured widths on the preview.
 */
 const formats: string[] = [
   "Microsoft Word",
   "HTML",
-  "RoboHelp",
+  "Custom XML / DTD",
   "Excel",
-  "Confluence",
+  "FrameMaker",
   "SGML",
+  "PowerPoint / PPTX",
+  "RoboHelp",
+  "Confluence",
+  "AsciiDoc",
+  "Legacy DITA (1.0–1.2)",
   "DocBook",
   "MadCap Flare",
-  "InDesign",
   "Markdown",
+  "QuarkXPress",
+  "InDesign",
+  "Google Docs",
   "AuthorIT",
   "PDF (OCR)",
-  "FrameMaker",
 ];
 ---
 
@@ -70,7 +76,10 @@ const formats: string[] = [
   }
 
   .cm-formats__heading-block {
-    max-width: var(--container-prose, 720px);
+    /* Full section width so the sub-deck sits on one line on desktop
+       (it wraps naturally on narrower viewports). Centered per direction. */
+    max-width: none;
+    text-align: center;
     /* Extra space between the sub-deck and the badge band (per direction).
        Section padding-top/bottom unchanged, so the bracketing hairlines
        stay put. */
@@ -94,20 +103,20 @@ const formats: string[] = [
     font-size: var(--text-body-lg);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    max-width: 60ch;
-    text-wrap: pretty;
+    /* No width cap → one line on desktop. */
+    max-width: none;
   }
 
-  /* Capped width so the 13 badges wrap to two balanced rows (7 + 6) on
-     desktop rather than one long row or a lopsided wrap. */
+  /* 19 badges, centered, wrapping to two rows across the full section
+     width. justify-content: center centers each row. */
   .cm-formats__chips {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: var(--space-3);
-    max-width: 660px;
   }
 
   /* Amber-fill badges, matching the homepage toolchain chips:
