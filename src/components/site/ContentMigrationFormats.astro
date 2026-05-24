@@ -14,20 +14,25 @@
   prefers-reduced-motion: static.
 */
 
+/*
+  Order tuned for two balanced rows (7 + 6) when wrapped at the capped
+  band width: the longer/shorter chips are distributed so each row is
+  roughly equal length. Row 1 = first 7, Row 2 = last 6.
+*/
 const formats: string[] = [
   "Microsoft Word",
-  "FrameMaker",
-  "InDesign",
-  "RoboHelp",
-  "MadCap Flare",
-  "DocBook",
   "HTML",
-  "Markdown",
-  "AuthorIT",
+  "RoboHelp",
+  "Excel",
   "Confluence",
   "SGML",
-  "Excel",
+  "DocBook",
+  "MadCap Flare",
+  "InDesign",
+  "Markdown",
+  "AuthorIT",
   "PDF (OCR)",
+  "FrameMaker",
 ];
 ---
 
@@ -66,7 +71,10 @@ const formats: string[] = [
 
   .cm-formats__heading-block {
     max-width: var(--container-prose, 720px);
-    margin-bottom: var(--space-10);
+    /* Extra space between the sub-deck and the badge band (per direction).
+       Section padding-top/bottom unchanged, so the bracketing hairlines
+       stay put. */
+    margin-bottom: var(--space-12);
   }
 
   .cm-formats__heading {
@@ -90,6 +98,8 @@ const formats: string[] = [
     text-wrap: pretty;
   }
 
+  /* Capped width so the 13 badges wrap to two balanced rows (7 + 6) on
+     desktop rather than one long row or a lopsided wrap. */
   .cm-formats__chips {
     list-style: none;
     margin: 0;
@@ -97,23 +107,27 @@ const formats: string[] = [
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
+    max-width: 660px;
   }
 
+  /* Amber-fill badges, matching the homepage toolchain chips:
+     light-amber wash, deep-amber text, amber border. */
   .format-chip {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: var(--weight-medium);
     letter-spacing: 0.04em;
-    color: var(--color-text-primary);
-    border: var(--border-hairline);
+    color: var(--color-accent-primary-pressed);
+    background-color: #fef3c7;
+    border: 1px solid var(--color-logo-gradient-1);
     border-radius: var(--radius-sm);
-    padding: var(--space-2) var(--space-4);
-    background-color: var(--color-page-bg);
-    transition: border-color var(--duration-base) var(--easing-out),
-      color var(--duration-base) var(--easing-out);
+    padding: 6px 10px;
+    transition: background-color var(--duration-base) var(--easing-out),
+      border-color var(--duration-base) var(--easing-out);
   }
   .format-chip:hover {
-    border-color: var(--color-accent-primary-hover);
+    background-color: #fde68a;
+    border-color: var(--color-accent-primary);
   }
 
   /* Reveal animation — viewport-triggered, heading then chips stagger
