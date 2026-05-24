@@ -19,26 +19,30 @@ interface Related {
   name: string;
   href: string;
   desc: string;
+  cta: string;
 }
 
 const related: Related[] = [
   {
-    kind: "Solution",
-    name: "Content Migration & Modernization",
-    href: "/solutions/content-migration",
-    desc: "Proven methodology for converting unstructured content to structured, enriched DITA XML at scale.",
-  },
-  {
-    kind: "Solution",
-    name: "XML Data Interoperability",
-    href: "/solutions/xml-data-interoperability",
-    desc: "Structured XML as the canonical source for AI pipelines — semantic labels, JSON-LD, and retrieval-ready topics.",
+    kind: "Guide",
+    name: "AI Content Readiness Guide",
+    href: "/resources/ai-readiness",
+    desc: "Score your content on 7 dimensions and get a step-by-step roadmap to AI readiness.",
+    cta: "Read the guide",
   },
   {
     kind: "Service",
     name: "DITA Engineering",
     href: "/services",
     desc: "Topic modeling, metadata enrichment, AI-ready content architecture, and controlled vocabulary design.",
+    cta: "See the service",
+  },
+  {
+    kind: "Solution",
+    name: "Content Migration",
+    href: "/solutions/content-migration",
+    desc: "Proven methodology for converting unstructured content to structured, enriched DITA XML at scale.",
+    cta: "See the solution",
   },
 ];
 ---
@@ -46,7 +50,7 @@ const related: Related[] = [
 <section class="airdy-related" aria-labelledby="airdy-related-heading">
   <div class="container-data airdy-related__inner">
     <h2 id="airdy-related-heading" class="airdy-related__heading">
-      Explore Related Solutions
+      Go Deeper
     </h2>
 
     <ul class="airdy-related__grid">
@@ -57,7 +61,7 @@ const related: Related[] = [
             <h3 class="related-card__name">{item.name}</h3>
             <p class="related-card__desc">{item.desc}</p>
             <span class="related-card__cta">
-              Explore <span class="related-card__arrow" aria-hidden="true">&rarr;</span>
+              {item.cta} <span class="related-card__arrow" aria-hidden="true">&rarr;</span>
             </span>
           </a>
         </li>

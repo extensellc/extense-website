@@ -4,20 +4,19 @@
 
   Sub-page deep-dive on the AI-Ready Content solution area.
 
-  Reframed to the old ex-tense.co page's SOLUTION-led sections only — its
-  problem-education and ROI ($540K) blocks are dropped per the locked
-  thesis. Solution-led order: claim → proof → reach → method → offer →
-  cross-sell → convert.
+  Pulls the old ex-tense.co page's structure forward, reworked per review.
 
   Sections:
-    1. Hero — "Retrievable, by design." + precision-gauge SVG
+    1. Hero — "Your AI Is Only As Good As Your Content" + 4-metric band +
+       content-grounds-answer SVG
     2. Siblings nav
-    3. Two pipelines — before/after (the proof)
-    4. Every AI use case needs the same foundation — 7-row table (the reach)
-    5. From unstructured to AI-ready in 5 phases (the method)
-    6. We Engineer — We Don't Just Advise (the offer)
-    7. Explore Related Solutions (3-up)
-    8. CTA-as-closer (+ accentLine)
+    3. Two Content Pipelines. One Outcome Difference. (before/after proof)
+    4. Every AI use case needs the same foundation — 7-row table
+    5. What "Good Enough" Content Is Actually Costing — ROI block
+    6. From unstructured to AI-ready in 5 phases (the method)
+    7. We Engineer — We Don't Just Advise (offer; cards left, sticky gauge right)
+    8. Go Deeper (3-up)
+    9. CTA-as-closer (+ accentLine)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -25,6 +24,7 @@ import AiReadyHero from "../../components/site/AiReadyHero.astro";
 import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
 import AiReadyComparison from "../../components/site/AiReadyComparison.astro";
 import AiReadyUseCases from "../../components/site/AiReadyUseCases.astro";
+import AiReadyCost from "../../components/site/AiReadyCost.astro";
 import AiReadyPipeline from "../../components/site/AiReadyPipeline.astro";
 import AiReadyOffer from "../../components/site/AiReadyOffer.astro";
 import AiReadyRelated from "../../components/site/AiReadyRelated.astro";
@@ -39,6 +39,7 @@ import CTAModule from "../../components/site/CTAModule.astro";
   <SolutionsSiblings currentSlug="ai-ready-content" />
   <AiReadyComparison />
   <AiReadyUseCases />
+  <AiReadyCost />
   <AiReadyPipeline />
   <AiReadyOffer />
   <AiReadyRelated />

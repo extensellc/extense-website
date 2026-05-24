@@ -1,0 +1,283 @@
+---
+/*
+  AiReadyCost — "What 'Good Enough' Content Is Actually Costing" on
+  /solutions/ai-ready-content.
+
+  The old ex-tense.co cost block, pulled forward [OLD]. Rendered as a
+  light-amber wash panel (the old dark-navy panel adapted to our palette):
+  3 figures + the ~$540K total. Cost figures stay in primary serif (not
+  amber) so amber keeps reading as the positive/brand accent elsewhere on
+  the page.
+
+  Sits after the use-case foundation table, before the 5-phase pipeline
+  (old-page order). border-top hairline divides from the table above.
+  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface CostItem {
+  amount: string;
+  label: string;
+  body: string;
+}
+
+const items: CostItem[] = [
+  {
+    amount: "$180K",
+    label: "Annual support escalation",
+    body: "Chatbot wrong-answer rate driving ~40% escalation instead of the target 15%. At $90/ticket, that’s 2,000 unnecessary tickets per year.",
+  },
+  {
+    amount: "$240K",
+    label: "Wasted localization spend",
+    body: "Unstructured or unenriched content translated at full cost per word, including duplicated fragments, outdated copy-paste blocks, and content that should have been reused. Proper reuse metadata eliminates most of this waste.",
+  },
+  {
+    amount: "$120K",
+    label: "AI retraining cycles",
+    body: "Fine-tuning on noisy unstructured or unenriched data produces inconsistent models. Even valid DITA without controlled vocabulary injects tone inconsistency and contradictions into your training corpus.",
+  },
+];
+---
+
+<section class="airdy-cost" aria-labelledby="airdy-cost-heading">
+  <div class="container-data airdy-cost__inner">
+    <div class="airdy-cost__heading-block">
+      <h2 id="airdy-cost-heading" class="airdy-cost__heading">
+        What &ldquo;Good Enough&rdquo; Content Is Actually Costing
+      </h2>
+      <p class="airdy-cost__subdeck">
+        These are conservative estimates for a 500-person organization with 1,000 documentation topics and an active AI program.
+      </p>
+    </div>
+
+    <div class="airdy-cost__panel">
+      <ul class="airdy-cost__figures">
+        {items.map((item, i) => (
+          <li class="cost-figure" style={`--i: ${i}`}>
+            <p class="cost-figure__amount">{item.amount}</p>
+            <p class="cost-figure__label">{item.label}</p>
+            <p class="cost-figure__body">{item.body}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="airdy-cost__total">
+        Total annual drag: <strong>~$540K</strong> &mdash; against a one-time structured content engineering engagement that eliminates the root cause.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .airdy-cost {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .airdy-cost {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .airdy-cost__heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
+  }
+
+  .airdy-cost__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .airdy-cost__subdeck {
+    margin: var(--space-4) auto 0 auto;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  /* Light-amber wash panel (the old navy panel, adapted). */
+  .airdy-cost__panel {
+    background-color: #fef3c7;
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-12) var(--space-10);
+  }
+
+  @media (max-width: 767px) {
+    .airdy-cost__panel {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+
+  .airdy-cost__figures {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  @media (min-width: 768px) {
+    .airdy-cost__figures {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+  }
+
+  .cost-figure {
+    padding: 0;
+  }
+  /* Hairline dividers between figures (vertical desktop, horizontal mobile). */
+  @media (min-width: 768px) {
+    .cost-figure + .cost-figure {
+      border-left: 1px solid rgba(180, 83, 9, 0.25);
+      padding-left: var(--space-8);
+    }
+    .cost-figure:not(:last-child) {
+      padding-right: var(--space-8);
+    }
+  }
+  @media (max-width: 767px) {
+    .cost-figure + .cost-figure {
+      border-top: 1px solid rgba(180, 83, 9, 0.25);
+      padding-top: var(--space-8);
+    }
+  }
+
+  .cost-figure__amount {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cost-figure__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .cost-figure__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .airdy-cost__total {
+    margin: var(--space-10) 0 0 0;
+    padding-top: var(--space-8);
+    border-top: 1px solid rgba(180, 83, 9, 0.25);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-primary);
+    line-height: var(--leading-normal);
+    text-align: center;
+    text-wrap: pretty;
+  }
+  .airdy-cost__total strong {
+    font-weight: var(--weight-semibold);
+    color: var(--color-accent-primary-pressed);
+  }
+
+  /* ── Reveal animation ──────────────────────────────────────────── */
+  .airdy-cost.animating .airdy-cost__heading-block,
+  .airdy-cost.animating .airdy-cost__panel {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .airdy-cost.animating .cost-figure,
+  .airdy-cost.animating .airdy-cost__total {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .airdy-cost.animating.in-view .airdy-cost__heading-block {
+    animation: airdy-cost-fade-in 480ms ease-out forwards;
+  }
+  .airdy-cost.animating.in-view .airdy-cost__panel {
+    animation: airdy-cost-fade-in 480ms ease-out forwards;
+    animation-delay: 160ms;
+  }
+  .airdy-cost.animating.in-view .cost-figure {
+    animation: airdy-cost-fade-in 420ms ease-out forwards;
+    animation-delay: calc(var(--i) * 90ms + 320ms);
+  }
+  .airdy-cost.animating.in-view .airdy-cost__total {
+    animation: airdy-cost-fade-in 420ms ease-out forwards;
+    animation-delay: 640ms;
+  }
+
+  @keyframes airdy-cost-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .airdy-cost.animating .airdy-cost__heading-block,
+    .airdy-cost.animating .airdy-cost__panel,
+    .airdy-cost.animating .cost-figure,
+    .airdy-cost.animating .airdy-cost__total {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupAiReadyCost() {
+    const sec = document.querySelector<HTMLElement>(".airdy-cost");
+    if (!sec) return;
+    if (sec.dataset.costRevealInit === "true") return;
+    sec.dataset.costRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupAiReadyCost);
+  document.addEventListener("astro:page-load", setupAiReadyCost);
+</script>

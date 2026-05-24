@@ -32,12 +32,14 @@ interface PipelineStage {
   name: string;
   detail: string;
   outcome?: boolean;
+  connectorLabel?: string;
 }
 
 const unstructuredStages: PipelineStage[] = [
   {
     name: "Content sources",
     detail: "Word · PDF · Wiki · Markdown",
+    connectorLabel: "no transformation",
   },
   {
     name: "Flat ingestion",
@@ -66,6 +68,7 @@ const structuredStages: PipelineStage[] = [
   {
     name: "Content sources",
     detail: "Word · PDF · FrameMaker · Wiki · Markdown",
+    connectorLabel: "Extense migration",
   },
   {
     name: "Typed DITA topics",
@@ -95,33 +98,49 @@ const structuredStages: PipelineStage[] = [
   <div class="container-data airdy-pipelines__inner">
     <div class="airdy-pipelines__heading-block">
       <h2 id="airdy-pipelines-heading" class="airdy-pipelines__heading">
-        Two pipelines. <em>One measurement.</em>
+        Two Content Pipelines. <em>One Outcome Difference.</em>
       </h2>
       <p class="airdy-pipelines__subdeck">
-        Same query, same LLM, same vector store. What the model retrieves is determined entirely by whether the content was engineered for retrieval.
+        The same user question. The same AI model. Two completely different results &mdash; determined entirely by whether the content feeding it is structured or not.
       </p>
     </div>
 
     <div class="airdy-pipelines__grid">
-      <div class="pipeline-col pipeline-col--unstructured" aria-label="Unstructured pipeline">
-        <p class="pipeline-col__caption">UNSTRUCTURED</p>
+      <div class="pipeline-col pipeline-col--unstructured" aria-label="Without structured, enriched content">
+        <p class="pipeline-col__caption">
+          <span class="pipeline-col__icon pipeline-col__icon--x" aria-hidden="true">
+            <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" /><path d="M5.5 5.5 L10.5 10.5 M10.5 5.5 L5.5 10.5" /></svg>
+          </span>
+          Without Structured, Enriched Content
+        </p>
         <ol class="pipeline-col__stages">
           {unstructuredStages.map((stage) => (
             <li class={`pipeline-step ${stage.outcome ? "pipeline-step--outcome" : ""}`}>
               <p class="pipeline-step__name">{stage.name}</p>
               <p class="pipeline-step__detail">{stage.detail}</p>
+              {stage.connectorLabel && (
+                <span class="pipeline-step__connector">{stage.connectorLabel}</span>
+              )}
             </li>
           ))}
         </ol>
       </div>
 
-      <div class="pipeline-col pipeline-col--structured" aria-label="Structured pipeline">
-        <p class="pipeline-col__caption">STRUCTURED</p>
+      <div class="pipeline-col pipeline-col--structured" aria-label="With Extense structured content">
+        <p class="pipeline-col__caption">
+          <span class="pipeline-col__icon pipeline-col__icon--check" aria-hidden="true">
+            <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" /><path d="M5 8.2 L7 10.2 L11 5.6" /></svg>
+          </span>
+          With Extense Structured Content
+        </p>
         <ol class="pipeline-col__stages">
           {structuredStages.map((stage) => (
             <li class={`pipeline-step ${stage.outcome ? "pipeline-step--outcome pipeline-step--outcome-amber" : ""}`}>
               <p class="pipeline-step__name">{stage.name}</p>
               <p class="pipeline-step__detail">{stage.detail}</p>
+              {stage.connectorLabel && (
+                <span class="pipeline-step__connector">{stage.connectorLabel}</span>
+              )}
             </li>
           ))}
         </ol>
@@ -188,15 +207,61 @@ const structuredStages: PipelineStage[] = [
     }
   }
 
-  /* Column header: small mono uppercase caption above the stack. */
+  /* Column header: mono label + state icon (muted x / amber check). */
   .pipeline-col__caption {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: var(--weight-medium);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-text-secondary);
+    letter-spacing: 0.02em;
+    color: var(--color-text-primary);
     margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+  .pipeline-col__icon {
+    display: inline-flex;
+    flex: none;
+  }
+  .pipeline-col__icon svg {
+    width: 16px;
+    height: 16px;
+    overflow: visible;
+  }
+  .pipeline-col__icon svg circle,
+  .pipeline-col__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .pipeline-col__icon--x {
+    color: var(--color-text-muted);
+  }
+  .pipeline-col__icon--check {
+    color: var(--color-accent-primary-hover);
+  }
+
+  /* Connector label sitting beside the first down-arrow (in the gap). */
+  .pipeline-step__connector {
+    position: absolute;
+    bottom: calc(-1 * var(--space-8) + 2px);
+    left: calc(50% + 14px);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .pipeline-col--unstructured .pipeline-step__connector {
+    color: var(--color-text-muted);
+  }
+  .pipeline-col--structured .pipeline-step__connector {
+    color: var(--color-accent-primary-pressed);
   }
 
   /* Stage list — vertical stack, no bullets. */

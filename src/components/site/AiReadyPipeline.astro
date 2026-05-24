@@ -108,7 +108,7 @@ const stages: Stage[] = [
   /* Manifesto block widened to 900 px (matching Migration and Interop
      pipelines) so the elaboration spans the inner stages. */
   .airdy-pipeline__manifesto {
-    max-width: 900px;
+    max-width: none;
     margin: 0 auto var(--space-20) auto;
     text-align: center;
   }
@@ -131,6 +131,13 @@ const stages: Stage[] = [
   }
   .airdy-pipeline__heading em {
     font-style: italic;
+  }
+
+  /* Keep the heading on one line on desktop; wrap (balanced) below. */
+  @media (min-width: 1080px) {
+    .airdy-pipeline__heading {
+      white-space: nowrap;
+    }
   }
 
   .airdy-pipeline__intro {

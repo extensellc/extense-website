@@ -3,19 +3,17 @@
   AiReadyOffer — "We Engineer — We Don't Just Advise" on
   /solutions/ai-ready-content.
 
-  The old ex-tense.co offer section: 5 engagement deliverables, each with
-  a light-amber Deliverable pill. [OLD] copy verbatim. The old page paired
-  these with a before/after bar chart — dropped here, since the hero gauge
-  already carries the 30 → 87 / +57pts figure.
+  The old ex-tense.co offer section: 5 engagement deliverables, each with a
+  light-amber Deliverable pill. [OLD] copy verbatim.
 
-  Differentiates from the §5 phase strip (the PROCESS) by being the
-  DELIVERABLES (what you walk away holding): bordered cards, amber index +
-  draw-in accent rule + hover lift (TechDocs card vocabulary). 2-col grid
-  on desktop; the 5th card (Integration & Validation → measured 85%) spans
-  full width as the finale before Related + CTA. Single column on mobile.
+  Layout: cards in a single LEFT column (all 5 equal size); the precision-
+  gauge SVG sits in the RIGHT column, position:sticky so it stays pinned
+  through the cards and releases once the last card scrolls past. Stacks on
+  mobile (cards, then the gauge). The gauge moved here from the hero — the
+  measured-85% story belongs with "working, measurable infrastructure."
 
-  border-top hairline divides from the pipeline above.
-  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+  Animation: cards fade-up on viewport entry; the gauge assembles via its
+  own `.drawn` cascade. prefers-reduced-motion: static.
 */
 
 interface Offering {
@@ -60,24 +58,89 @@ const offerings: Offering[] = [
         We Engineer &mdash; We Don&rsquo;t Just Advise
       </h2>
       <p class="airdy-offer__subdeck">
-        Every engagement ends with working, measurable infrastructure &mdash; not a report with recommendations you have to implement yourself.
+        Every engagement ends with working, measurable infrastructure &mdash; not a report<br />
+        with recommendations you have to implement yourself.
       </p>
     </div>
 
-    <ol class="airdy-offer__grid">
-      {offerings.map((o, i) => (
-        <li class="offer-card" style={`--i: ${i}`}>
-          <span class="offer-card__rule" aria-hidden="true"></span>
-          <p class="offer-card__index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
-          <h3 class="offer-card__name">{o.name}</h3>
-          <p class="offer-card__body">{o.body}</p>
-          <p class="offer-card__deliverable">
-            <span class="offer-card__deliverable-label">Deliverable</span>
-            {o.deliverable}
-          </p>
-        </li>
-      ))}
-    </ol>
+    <div class="airdy-offer__layout">
+      <ol class="airdy-offer__cards">
+        {offerings.map((o, i) => (
+          <li class="offer-card" style={`--i: ${i}`}>
+            <span class="offer-card__rule" aria-hidden="true"></span>
+            <p class="offer-card__index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
+            <h3 class="offer-card__name">{o.name}</h3>
+            <p class="offer-card__body">{o.body}</p>
+            <p class="offer-card__deliverable">
+              <span class="offer-card__deliverable-label">Deliverable</span>
+              {o.deliverable}
+            </p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="airdy-offer__visual">
+        <svg
+          class="gauge-svg"
+          id="airdy-gauge"
+          viewBox="0 0 320 420"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          role="presentation"
+        >
+          <g class="corner corner--accent" style="--d: 0ms">
+            <path d="M 10 20 L 10 10 L 20 10" />
+            <path d="M 300 10 L 310 10 L 310 20" />
+            <path d="M 10 400 L 10 410 L 20 410" />
+            <path d="M 300 410 L 310 410 L 310 400" />
+          </g>
+
+          <text class="chrome" x="30" y="22" style="--d: 80ms">in :: corpus.retrieval</text>
+          <text class="chrome chrome--strong" x="30" y="56" style="--d: 160ms">RAG RETRIEVAL PRECISION</text>
+
+          <text class="bar-caption" x="30" y="78" style="--d: 240ms">BASELINE &mdash; unstructured, no filters</text>
+          <rect class="bar-track" x="30" y="84" width="260" height="40" style="--d: 360ms" />
+          <rect class="bar-fill-baseline" x="30" y="84" width="78" height="40" style="--d: 540ms" />
+          <text class="bar-value-baseline" x="113" y="109" style="--d: 700ms">30%</text>
+
+          <path class="gap-line" d="M 108 124 L 108 148 L 256 148 L 256 174" style="--d: 1500ms" />
+          <text class="gap-label" x="160" y="142" text-anchor="middle" style="--d: 1500ms">+57pts</text>
+
+          <text class="bar-caption" x="30" y="168" style="--d: 880ms">AFTER &mdash; typed DITA + filters</text>
+          <rect class="bar-track" x="30" y="174" width="260" height="40" style="--d: 1000ms" />
+          <rect class="bar-fill-after" x="30" y="174" width="226" height="40" style="--d: 1180ms" />
+          <text class="bar-value-after" x="226" y="199" text-anchor="end" style="--d: 1340ms">87%</text>
+
+          <line class="axis-line" x1="30" y1="230" x2="290" y2="230" style="--d: 1640ms" />
+          <line class="axis-tick" x1="30"  y1="228" x2="30"  y2="234" style="--d: 1640ms" />
+          <line class="axis-tick" x1="95"  y1="228" x2="95"  y2="234" style="--d: 1640ms" />
+          <line class="axis-tick" x1="160" y1="228" x2="160" y2="234" style="--d: 1640ms" />
+          <line class="axis-tick" x1="225" y1="228" x2="225" y2="234" style="--d: 1640ms" />
+          <line class="axis-tick" x1="290" y1="228" x2="290" y2="234" style="--d: 1640ms" />
+          <text class="axis-label" x="30"  y="246" style="--d: 1700ms">0</text>
+          <text class="axis-label" x="93"  y="246" style="--d: 1700ms">25</text>
+          <text class="axis-label" x="158" y="246" style="--d: 1700ms">50</text>
+          <text class="axis-label" x="223" y="246" style="--d: 1700ms">75</text>
+          <text class="axis-label" x="280" y="246" style="--d: 1700ms">100</text>
+
+          <text class="calibration-label" x="30" y="286" style="--d: 1840ms">n</text>
+          <text class="calibration-value" x="60" y="286" style="--d: 1840ms">= 500 user queries</text>
+          <text class="calibration-label" x="30" y="304" style="--d: 1920ms">p</text>
+          <text class="calibration-value" x="60" y="304" style="--d: 1920ms">= 0.852 ± 0.02</text>
+          <text class="calibration-label" x="30" y="322" style="--d: 2000ms">domain</text>
+          <text class="calibration-value" x="78" y="322" style="--d: 2000ms">= field-service</text>
+          <text class="calibration-label" x="30" y="340" style="--d: 2080ms">measured</text>
+          <text class="calibration-value" x="93" y="340" style="--d: 2080ms">vs. ground-truth answers</text>
+
+          <line class="chrome-rule" x1="30" y1="392" x2="290" y2="392" style="--d: 2240ms" />
+          <text class="chrome chrome--strong" x="30" y="410" style="--d: 2280ms">FIG. 07</text>
+          <text class="chrome" x="80" y="410" style="--d: 2280ms">/</text>
+          <text class="chrome chrome--strong" x="88" y="410" style="--d: 2280ms">retrieval.eval</text>
+          <rect class="build-dot" x="200" y="404" width="6" height="6" style="--d: 2280ms" />
+          <text class="chrome chrome--strong" x="290" y="410" text-anchor="end" style="--d: 2280ms">PRECISION OK</text>
+        </svg>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -122,22 +185,27 @@ const offerings: Offering[] = [
     text-wrap: pretty;
   }
 
-  /* 2-col grid; the 5th card spans full width as the finale. */
-  .airdy-offer__grid {
+  /* Two-column layout: cards left, sticky gauge right. */
+  .airdy-offer__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+  @media (min-width: 960px) {
+    .airdy-offer__layout {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: var(--space-16);
+    }
+  }
+
+  /* Cards — single column, all equal. */
+  .airdy-offer__cards {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-6);
-  }
-  @media (min-width: 768px) {
-    .airdy-offer__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .offer-card:last-child {
-      grid-column: 1 / -1;
-    }
   }
 
   .offer-card {
@@ -154,7 +222,6 @@ const offerings: Offering[] = [
     translate: 0 -4px;
   }
 
-  /* Amber accent rule — short bar, draws in on reveal, extends on hover. */
   .offer-card__rule {
     display: block;
     width: 32px;
@@ -197,8 +264,6 @@ const offerings: Offering[] = [
     text-wrap: pretty;
   }
 
-  /* Light-amber Deliverable pill. margin-top:auto bottom-aligns it across a
-     row; the body's margin-bottom guarantees the gap when free space is 0. */
   .offer-card__deliverable {
     margin-top: auto;
     padding: var(--space-3) var(--space-4);
@@ -220,7 +285,175 @@ const offerings: Offering[] = [
     margin-bottom: var(--space-1);
   }
 
-  /* ── Reveal animation ──────────────────────────────────────────── */
+  /* Right column: sticky gauge. align-self:start keeps the item from
+     stretching, so it can travel within the (taller) cards row. */
+  .airdy-offer__visual {
+    display: flex;
+    justify-content: center;
+  }
+  @media (min-width: 960px) {
+    .airdy-offer__visual {
+      position: sticky;
+      top: var(--space-24);
+      align-self: start;
+    }
+  }
+
+  .gauge-svg {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  /* Gauge chrome / corners / status */
+  .gauge-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-regular);
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .gauge-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .gauge-svg .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .gauge-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .gauge-svg .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  .gauge-svg .bar-caption {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.12em;
+  }
+  .gauge-svg .bar-track {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .gauge-svg .bar-fill-baseline {
+    fill: currentColor;
+    fill-opacity: 0.18;
+  }
+  .gauge-svg .bar-fill-after {
+    fill: var(--color-accent-primary-hover);
+  }
+  .gauge-svg .bar-value-baseline {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+  }
+  .gauge-svg .bar-value-after {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-page-bg);
+  }
+  .gauge-svg .gap-line {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 3;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+  .gauge-svg .gap-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-accent-primary-hover);
+    letter-spacing: 0.06em;
+  }
+  .gauge-svg .axis-line,
+  .gauge-svg .axis-tick {
+    stroke: var(--color-text-primary);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .gauge-svg .axis-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+  }
+  .gauge-svg .calibration-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .gauge-svg .calibration-value {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+
+  /* Gauge reveal cascade */
+  .gauge-svg .corner,
+  .gauge-svg .chrome,
+  .gauge-svg .chrome-rule,
+  .gauge-svg .build-dot,
+  .gauge-svg .bar-caption,
+  .gauge-svg .bar-track,
+  .gauge-svg .bar-fill-baseline,
+  .gauge-svg .bar-fill-after,
+  .gauge-svg .bar-value-baseline,
+  .gauge-svg .bar-value-after,
+  .gauge-svg .gap-line,
+  .gauge-svg .gap-label,
+  .gauge-svg .axis-line,
+  .gauge-svg .axis-tick,
+  .gauge-svg .axis-label,
+  .gauge-svg .calibration-label,
+  .gauge-svg .calibration-value {
+    opacity: 0;
+  }
+  .gauge-svg.drawn .corner,
+  .gauge-svg.drawn .chrome,
+  .gauge-svg.drawn .chrome-rule,
+  .gauge-svg.drawn .build-dot,
+  .gauge-svg.drawn .bar-caption,
+  .gauge-svg.drawn .bar-track,
+  .gauge-svg.drawn .bar-fill-baseline,
+  .gauge-svg.drawn .bar-fill-after,
+  .gauge-svg.drawn .bar-value-baseline,
+  .gauge-svg.drawn .bar-value-after,
+  .gauge-svg.drawn .gap-line,
+  .gauge-svg.drawn .gap-label,
+  .gauge-svg.drawn .axis-line,
+  .gauge-svg.drawn .axis-tick,
+  .gauge-svg.drawn .axis-label,
+  .gauge-svg.drawn .calibration-label,
+  .gauge-svg.drawn .calibration-value {
+    animation: gauge-fade-in 320ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes gauge-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── Cards reveal ──────────────────────────────────────────────── */
   .airdy-offer.animating .airdy-offer__heading-block,
   .airdy-offer.animating .offer-card {
     opacity: 0;
@@ -272,36 +505,70 @@ const offerings: Offering[] = [
     .offer-card:hover {
       translate: none;
     }
+    .gauge-svg .corner,
+    .gauge-svg .chrome,
+    .gauge-svg .chrome-rule,
+    .gauge-svg .build-dot,
+    .gauge-svg .bar-caption,
+    .gauge-svg .bar-track,
+    .gauge-svg .bar-fill-baseline,
+    .gauge-svg .bar-fill-after,
+    .gauge-svg .bar-value-baseline,
+    .gauge-svg .bar-value-after,
+    .gauge-svg .gap-line,
+    .gauge-svg .gap-label,
+    .gauge-svg .axis-line,
+    .gauge-svg .axis-tick,
+    .gauge-svg .axis-label,
+    .gauge-svg .calibration-label,
+    .gauge-svg .calibration-value {
+      opacity: 1 !important;
+      animation: none !important;
+    }
   }
 </style>
 
 <script>
   function setupAiReadyOffer() {
     const sec = document.querySelector<HTMLElement>(".airdy-offer");
-    if (!sec) return;
-    if (sec.dataset.offerRevealInit === "true") return;
-    sec.dataset.offerRevealInit = "true";
+    if (sec && sec.dataset.offerRevealInit !== "true") {
+      sec.dataset.offerRevealInit = "true";
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (!prefersReducedMotion) {
+        sec.classList.add("animating");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                sec.classList.add("in-view");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        observer.observe(sec);
+      }
+    }
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReducedMotion) return;
-
-    sec.classList.add("animating");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            sec.classList.add("in-view");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(sec);
+    const gauge = document.getElementById("airdy-gauge") as SVGElement | null;
+    if (gauge && gauge.dataset.gaugeInit !== "true") {
+      gauge.dataset.gaugeInit = "true";
+      const gaugeObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              gauge.classList.add("drawn");
+              gaugeObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      gaugeObserver.observe(gauge);
+    }
   }
 
   document.addEventListener("DOMContentLoaded", setupAiReadyOffer);

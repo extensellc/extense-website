@@ -1,9 +1,26 @@
 # AI-Ready Content (sub-page) — Reframe Plan
 
-> Status: **wireframe — awaiting your review.** Last of the four
+> Status: **implemented + shipped (round 2).** Last of the four
 > `/solutions/*` sub-pages. Tags: `[OLD]` (ex-tense.co/ai-ready.html) /
 > `[NEW]` (current extense.co, live, pre-reframe) / `[DRAFT]` (net-new,
 > needs approval). Conventions in [README.md](README.md).
+>
+> **Round 2 (post-review, owner direction):** the original reframe leaned
+> too far from the old page. Reverted toward the old structure: (1) **hero
+> back to the problem-framed `[OLD]`** headline + body + the 4-metric band
+> (25–35% / 85%+ / 3× / 15 yrs); the precision-gauge moved **down to the
+> offer section**; a new **content-grounds-answer** flow SVG is the hero
+> visual. (2) **ROI block re-added** ("What 'Good Enough' Content Is
+> Actually Costing," ~$540K) after the use-case table — light-amber panel,
+> not navy. (3) Two-pipeline section uses the **old heading/subdeck**,
+> **Without Structured, Enriched Content** (✗) / **With Extense Structured
+> Content** (✓) captions, and **no transformation / Extense migration**
+> connector labels. (4) Offer cards now a **single left column** (5 equal)
+> with the **gauge pinned (sticky) on the right** through the cards.
+> (5) **Go Deeper** replaces Explore Related (Guide → `/resources/ai-readiness`,
+> DITA Engineering → `/services` placeholder, Content Migration). These
+> reverse several round-1 decisions below; the round-1 record is kept for
+> history.
 >
 > Old-page **screenshots reviewed** — they confirm the crawl and the
 > section set, and pin down the old visual treatment (red/green semantic
