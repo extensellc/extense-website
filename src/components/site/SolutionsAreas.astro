@@ -34,37 +34,32 @@ interface Area {
   num: string;
   name: string;
   body: string;
-  hook: string;
   href: string;
 }
 
 const areas: Area[] = [
   {
     num: "01",
-    name: "Technical Docs & Publishing",
-    body: "One source, every output channel. We replace the copy-and-reformat cycle with a single DITA-driven pipeline that produces pixel-perfect PDF, responsive HTML5, EPUB, and context-sensitive help — automatically, on every merge.",
-    hook: "What happens to your translation costs when the same paragraph stops being authored five different ways?",
+    name: "Technical Documentation & Publishing",
+    body: "Modernize your authoring and publishing workflows. We build single-source pipelines that produce pixel-perfect PDF, responsive HTML5, EPUB, and context-sensitive help from the same DITA map — eliminating the \"copy-paste-reformat\" cycle that costs enterprises thousands of hours per year.",
     href: "/solutions/technical-docs-and-publishing",
   },
   {
     num: "02",
-    name: "Content Migration",
-    body: "Recovery operation. Legacy estates — FrameMaker, Word, unstructured XML, scanned PDF — converted to clean, reusable DITA. The conversion is engineered, not hand-rekeyed, so the work finishes.",
-    hook: "Why does manual conversion never end — and what does a conversion pipeline that does?",
+    name: "Content Migration & Modernization",
+    body: "Legacy Word, FrameMaker, and InDesign content doesn't have to be rewritten by hand. Our migration engine combines automated conversion scripts with expert manual refinement to convert unstructured documents into clean, validated DITA XML — typically at 10x the speed of manual conversion.",
     href: "/solutions/content-migration",
   },
   {
     num: "03",
     name: "XML Data Interoperability",
-    body: "Structured content as a portable data layer. CCMS to PIM, ERP to portal, CMS to translation memory — your content fact is one fact, not five copies in five systems. XSLT/XQuery transformation layers, REST/GraphQL APIs, and OData connectors make the same source authoritative everywhere it's consumed.",
-    hook: "When four systems need the same fact, who's the source of truth?",
+    body: "Your content must flow between systems: CCMS to PIM, ERP to Portal, CMS to Translation Memory. We design XSLT/XQuery transformation layers, REST/GraphQL APIs, and OData connectors that make your XML data a first-class citizen in your enterprise architecture.",
     href: "/solutions/xml-data-interoperability",
   },
   {
     num: "04",
     name: "AI-Ready Content",
-    body: "The translation layer between authoritative documentation and the LLMs that consume it. Chunking strategy, metadata schemas, and retrieval architecture that turn 85% RAG precision into a measurable property of the content itself, not a hope.",
-    hook: "Why is your RAG hallucinating on a topic you've already documented?",
+    body: "Your content is becoming an AI retrieval source — whether it was engineered for that or not. We structure it for RAG pipelines: semantic chunking, retrieval metadata, and embedding-ready markup, validated so answers stay grounded in the source — the difference between 85% retrieval precision and a system that confidently hallucinates.",
     href: "/solutions/ai-ready-content",
   },
 ];
@@ -74,10 +69,10 @@ const areas: Area[] = [
   <div class="container-data solutions-areas__inner">
     <div class="solutions-areas__heading-block">
       <h2 id="areas-heading" class="solutions-areas__heading">
-        Where the principle becomes <em>practice</em>.
+        Our Solutions
       </h2>
       <p class="solutions-areas__subdeck">
-        Four areas where modeled, validated content replaces a hand-authored, copy-and-rebuild cycle.
+        Four areas where engineered content replaces a hand-authored, copy-and-rebuild cycle.
       </p>
     </div>
 
@@ -88,7 +83,6 @@ const areas: Area[] = [
           <div class="solution-area__content">
             <h3 class="solution-area__name">{area.name}.</h3>
             <p class="solution-area__body">{area.body}</p>
-            <p class="solution-area__hook">{area.hook}</p>
             <a href={area.href} class="solution-area__link">
               Explore {area.name}
               <span class="solution-area__arrow" aria-hidden="true">→</span>
@@ -213,32 +207,6 @@ const areas: Area[] = [
     text-wrap: pretty;
   }
 
-  /* Pull-quote hook: italic with a 2 px amber bar on the left. The bar
-     is a ::before pseudo so it can animate independently of the text. */
-  .solution-area__hook {
-    position: relative;
-    margin: 0 0 var(--space-8) 0;
-    padding-left: var(--space-6);
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-style: italic;
-    font-weight: var(--weight-regular);
-    line-height: 1.4;
-    color: var(--color-text-primary);
-    text-wrap: pretty;
-    max-width: 60ch;
-  }
-  .solution-area__hook::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: var(--color-accent-primary-hover);
-    transform-origin: top center;
-  }
-
   .solution-area__link {
     display: inline-flex;
     align-items: center;
@@ -280,13 +248,9 @@ const areas: Area[] = [
   .solutions-areas.animating .solution-area__num,
   .solutions-areas.animating .solution-area__name,
   .solutions-areas.animating .solution-area__body,
-  .solutions-areas.animating .solution-area__hook,
   .solutions-areas.animating .solution-area__link {
     opacity: 0;
     transform: translateY(8px);
-  }
-  .solutions-areas.animating .solution-area__hook::before {
-    transform: scaleY(0);
   }
 
   /* Heading reveals when the whole section first enters view. */
@@ -308,17 +272,9 @@ const areas: Area[] = [
     animation: areas-fade-in 420ms ease-out forwards;
     animation-delay: 160ms;
   }
-  .solutions-areas.animating .solution-area.in-view .solution-area__hook {
-    animation: areas-fade-in 420ms ease-out forwards;
-    animation-delay: 240ms;
-  }
-  .solutions-areas.animating .solution-area.in-view .solution-area__hook::before {
-    animation: areas-bar-grow 520ms ease-out forwards;
-    animation-delay: 240ms;
-  }
   .solutions-areas.animating .solution-area.in-view .solution-area__link {
     animation: areas-fade-in 420ms ease-out forwards;
-    animation-delay: 380ms;
+    animation-delay: 240ms;
   }
 
   @keyframes areas-fade-in {
@@ -327,25 +283,15 @@ const areas: Area[] = [
       transform: translateY(0);
     }
   }
-  @keyframes areas-bar-grow {
-    to {
-      transform: scaleY(1);
-    }
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .solutions-areas.animating .solutions-areas__heading-block,
     .solutions-areas.animating .solution-area__num,
     .solutions-areas.animating .solution-area__name,
     .solutions-areas.animating .solution-area__body,
-    .solutions-areas.animating .solution-area__hook,
     .solutions-areas.animating .solution-area__link {
       opacity: 1 !important;
       transform: none !important;
-      animation: none !important;
-    }
-    .solutions-areas.animating .solution-area__hook::before {
-      transform: scaleY(1) !important;
       animation: none !important;
     }
   }

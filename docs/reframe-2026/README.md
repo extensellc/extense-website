@@ -94,7 +94,7 @@ template wireframe + a content-variant table, not N independent docs.
 |------------------------|-----------|----------|-----------|----------|-------------|-----|
 | Home                   | done      | done     | done      | pending  | –           | [home.md](home.md) |
 | Capabilities (index)   | –         | –        | –         | –        | –           | – |
-| Solutions (index)      | –         | –        | –         | –        | –           | – |
+| Solutions (index)      | done      | done     | done      | pending  | –           | [solutions.md](solutions.md) |
 | Services (index)       | –         | –        | –         | –        | –           | – |
 | Industries (index)     | –         | –        | –         | –        | –           | – |
 | Resources (index)      | –         | –        | –         | –        | –           | – |

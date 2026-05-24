@@ -4,27 +4,24 @@
 
   Spec ref: Solutions-page redesign brief.
 
-  Section order:
+  Section order (reframed 2026 — old-site order, solution framing):
     1. TopNav (BaseLayout)
-    2. SolutionsHero — thesis ("Content compounds. So does the cost
-       of getting it wrong.") + content-pipeline visual.
-    3. SolutionsProblem — diagnosis ("The problem at scale.") — three
-       parallel constraints that take over once authorship stops being
-       the binding one.
-    4. SolutionsApproach — resolution ("Documentation is a SYSTEM, not
-       a deliverable.") — the single engineering principle.
-    5. SolutionsAreas — four editorial chapter-blocks for the four
-       solution sub-areas (TDP, Migration, Interop, AI-Ready), each
-       with body copy, a pull-quote curiosity hook, and a link to its
-       sub-page.
-    6. CTAModule (audience: general) — Sample Content Assessment.
-    7. Footer (BaseLayout)
+    2. SolutionsHero — "Content compounds. So does the cost of getting it
+       wrong." + content-pipeline visual.
+    3. SolutionsProblem — "Solving the Content Problem at Scale": asset/
+       liability intro + the Assess -> Architect -> Implement -> Optimize strip.
+    4. SolutionsAreas — "Our Solutions": the four solution cards (old-site
+       copy) linking to the sub-pages.
+    5. CTAModule (audience: general) — Sample Content Assessment.
+    6. Footer (BaseLayout)
+
+  (The standalone "Documentation is a system" principle section was dropped —
+  it restated the thesis the hero + framing section already carry.)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SolutionsHero from "../../components/site/SolutionsHero.astro";
 import SolutionsProblem from "../../components/site/SolutionsProblem.astro";
-import SolutionsApproach from "../../components/site/SolutionsApproach.astro";
 import SolutionsAreas from "../../components/site/SolutionsAreas.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 ---
@@ -35,7 +32,6 @@ import CTAModule from "../../components/site/CTAModule.astro";
 >
   <SolutionsHero />
   <SolutionsProblem />
-  <SolutionsApproach />
   <SolutionsAreas />
 
   <CTAModule
