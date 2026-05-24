@@ -3,9 +3,8 @@
   Footer — shared, all pages.
 
   Vertical stack:
-    1. Seven link columns mirroring the top-nav structure:
-       Capabilities | Solutions | Services | Industries | Resources |
-       Company | Legal.
+    1. Six link columns mirroring the top-nav structure:
+       Solutions | Services | Industries | Resources | Company | Legal.
        Each heading is a link to its section index (where one exists).
        Legal heading is plain text — there's no /legal index page.
     2. Centered single-line copyright on its own hairline-separated row.
@@ -38,16 +37,6 @@ interface FooterColumn {
 }
 
 const columns: FooterColumn[] = [
-  {
-    heading: "Capabilities",
-    headingHref: "/capabilities",
-    links: [
-      { label: "Information Architecture", href: "/capabilities/information-architecture" },
-      { label: "Content Migration",        href: "/capabilities/content-migration" },
-      { label: "CCMS & Publishing",        href: "/capabilities/ccms-and-publishing" },
-      { label: "AI-Ready Content",         href: "/capabilities/ai-ready-content" },
-    ],
-  },
   {
     heading: "Solutions",
     headingHref: "/solutions",
@@ -168,7 +157,7 @@ const columns: FooterColumn[] = [
     padding-bottom: var(--space-6);
   }
 
-  /* Seven link columns on desktop, reflowing on smaller widths.
+  /* Six link columns on desktop, reflowing on smaller widths.
      Compact gaps so the column packing feels dense. */
   .footer__columns {
     display: grid;
@@ -189,7 +178,7 @@ const columns: FooterColumn[] = [
          two columns is exactly the `gap` value — not "gap + each column's
          leftover internal whitespace" (which made COMPANY↔LEGAL look
          further apart than INDUSTRIES↔RESOURCES under fixed 1fr widths). */
-      grid-template-columns: repeat(7, max-content);
+      grid-template-columns: repeat(6, max-content);
       gap: var(--space-8);
       justify-content: center;
       /* Slight optical nudge left of true-center (~2mm). The track

@@ -29,17 +29,6 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
   {
-    label: "Capabilities",
-    href: "/capabilities",
-    matchPaths: [/^\/capabilities/],
-    children: [
-      { label: "Information Architecture", href: "/capabilities/information-architecture" },
-      { label: "Content Migration",        href: "/capabilities/content-migration" },
-      { label: "CCMS & Publishing",        href: "/capabilities/ccms-and-publishing" },
-      { label: "AI-Ready Content",         href: "/capabilities/ai-ready-content" },
-    ],
-  },
-  {
     label: "Solutions",
     href: "/solutions",
     matchPaths: [/^\/solutions/],
@@ -343,7 +332,7 @@ function isActive(item: NavItem): boolean {
     display: none;
   }
 
-  @media (min-width: 1140px) {
+  @media (min-width: 1024px) {
     .topnav__nav {
       display: block;
     }
@@ -498,7 +487,7 @@ function isActive(item: NavItem): boolean {
     white-space: nowrap;
     transition: background-color var(--duration-base) var(--easing-out);
   }
-  @media (min-width: 1140px) {
+  @media (min-width: 1024px) {
     .topnav__cta {
       display: inline-block;
     }
@@ -532,7 +521,7 @@ function isActive(item: NavItem): boolean {
     background-color: var(--color-surface-elevated);
   }
 
-  @media (min-width: 1140px) {
+  @media (min-width: 1024px) {
     .topnav__hamburger {
       display: none;
     }
