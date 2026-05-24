@@ -160,6 +160,15 @@ const stack = [
     margin: 0 0 var(--space-3) 0;
     text-wrap: balance;
   }
+  /* Sparing-amber accent rule above each title (tab-marker style). */
+  .why-card__title::before {
+    content: "";
+    display: block;
+    width: 32px;
+    height: 2px;
+    background: var(--color-accent-primary);
+    margin-bottom: var(--space-4);
+  }
   .why-card__body {
     font-family: var(--font-body);
     font-size: var(--text-body-sm);
@@ -239,5 +248,76 @@ const stack = [
     border: var(--border-hairline);
     border-radius: var(--radius-sm);
     padding: 6px 10px;
+    transition: border-color var(--duration-base) var(--easing-out),
+      color var(--duration-base) var(--easing-out);
+  }
+  .why-stack__badge:hover {
+    border-color: var(--color-text-secondary);
+    color: var(--color-text-primary);
+  }
+
+  /* ── Scroll reveal: differentiator cards fade/rise, staggered ── */
+  .home-section--why.is-animating .why-card {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .home-section--why.is-animating.drawn .why-card {
+    animation: why-reveal 460ms ease-out forwards;
+  }
+  .home-section--why.is-animating.drawn .why-card:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .home-section--why.is-animating.drawn .why-card:nth-child(2) {
+    animation-delay: 120ms;
+  }
+  .home-section--why.is-animating.drawn .why-card:nth-child(3) {
+    animation-delay: 240ms;
+  }
+  @keyframes why-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-section--why.is-animating .why-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
   }
 </style>
+
+<script>
+  // WhyChoose — staggered card reveal on viewport entry.
+  function setupWhyChoose() {
+    const section = document.querySelector<HTMLElement>(".home-section--why");
+    if (!section) return;
+    if (section.dataset.whyInit === "true") return;
+    section.dataset.whyInit = "true";
+
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) return;
+
+    section.classList.add("is-animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            section.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(section);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupWhyChoose);
+  document.addEventListener("astro:page-load", setupWhyChoose);
+</script>

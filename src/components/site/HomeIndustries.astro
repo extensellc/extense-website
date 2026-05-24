@@ -2,9 +2,10 @@
 /*
   HomeIndustries — homepage "your sector" section.
 
-  Five industry cards restored from the old ex-tense.co "Tailored for
-  High-Stakes Industries" section, rendered in the new design (hairline cards,
-  whole-card link). Replaces the public/private AudiencePivotCard.
+  Six industry cards (the five restored from the old ex-tense.co "Tailored for
+  High-Stakes Industries" section + Technology), rendered in the new design
+  (hairline cards, whole-card link). Replaces the public/private
+  AudiencePivotCard.
 
   "Automotive" was relabeled "Transportation" per decision; the old VIN copy is
   retained and it links to /industries/transportation.
@@ -43,6 +44,11 @@ const industries: Industry[] = [
     name: "Insurance",
     desc: "Product Disclosure Statements (PDS) and claims processing flows.",
     href: "/industries/insurance",
+  },
+  {
+    name: "Technology",
+    desc: "API references, developer portals, and product documentation for software and semiconductor platforms.",
+    href: "/industries/technology",
   },
 ];
 ---
@@ -114,7 +120,7 @@ const industries: Industry[] = [
     text-wrap: pretty;
   }
 
-  /* Grid: 1 / 2 / 3 columns (5 cards → 3 + 2 on desktop) */
+  /* Grid: 1 / 2 / 3 columns (6 cards → 2 × 3 on desktop) */
   .industries-grid {
     list-style: none;
     margin: 0;

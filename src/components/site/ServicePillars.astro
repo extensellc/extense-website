@@ -342,13 +342,28 @@ const services: Service[] = [
     transform: translateX(2px);
   }
 
-  /* ── Scroll-draw-in: icon strokes draw as each row enters the viewport ── */
+  /* ── Scroll reveal: as each row enters the viewport, the row fades/rises
+     and its icon strokes draw in (slightly delayed so the draw is visible). ── */
+  .home-section--service-pillars.is-animating .service-row__link {
+    opacity: 0;
+    transform: translateY(12px);
+  }
   .home-section--service-pillars.is-animating .service-row__svg > * {
     stroke-dasharray: 100;
     stroke-dashoffset: 100;
   }
+  .home-section--service-pillars.is-animating .service-row.drawn .service-row__link {
+    animation: sp-row-reveal 500ms ease-out forwards;
+  }
   .home-section--service-pillars.is-animating .service-row.drawn .service-row__svg > * {
-    animation: sp-icon-draw 600ms ease-out forwards;
+    animation: sp-icon-draw 700ms ease-out forwards;
+    animation-delay: 140ms;
+  }
+  @keyframes sp-row-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   @keyframes sp-icon-draw {
     to {
@@ -357,6 +372,11 @@ const services: Service[] = [
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .home-section--service-pillars.is-animating .service-row__link {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
     .home-section--service-pillars.is-animating .service-row__svg > * {
       stroke-dashoffset: 0 !important;
       animation: none !important;

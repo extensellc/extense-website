@@ -2,16 +2,17 @@
 /*
   ContentLifecycle — homepage "how content flows" section.
 
-  The five lifecycle stages as a left-to-right arrow-connected sequence:
-  Model → Author → Manage → Publish → Analyze. Content from the old
-  ex-tense.co "Content Engineering Lifecycle" section.
+  The five lifecycle stages as a horizontal timeline: a continuous hairline rail
+  with an amber node at each stage, numbered 01–05, each with name + a short
+  descriptor. Content from the old ex-tense.co "Content Engineering Lifecycle".
 
-  Deliberately distinct from ContentOpsStack (which is a bordered 5-column card
-  grid with icons + numbers): this is a borderless arrow-connected track, so the
-  two "how we work" sections read as different lenses, not a repeat.
+  Distinct from ContentOpsStack (a bordered card grid): this is a node-and-rail
+  timeline. On scroll, an amber fill sweeps the rail left-to-right, lighting each
+  node and revealing its text in sequence — the "Analyze → Model" loop is implied
+  by the closing descriptor.
 
-  Motion: stages fade/rise in left-to-right on viewport entry.
-  prefers-reduced-motion renders everything static.
+  prefers-reduced-motion renders the clean hairline timeline, no sweep.
+  Heading typography defined locally (Astro scopes index.astro's rules).
 */
 
 interface Stage {
@@ -20,11 +21,11 @@ interface Stage {
 }
 
 const stages: Stage[] = [
-  { name: "Model", desc: "Define Schema & Taxonomy" },
-  { name: "Author", desc: "Structured XML Writing" },
-  { name: "Manage", desc: "CCMS Version Control" },
-  { name: "Publish", desc: "Automated PDF / HTML5" },
-  { name: "Analyze", desc: "Usage Metrics" },
+  { name: "Model", desc: "Define schema, taxonomy, and the reuse model." },
+  { name: "Author", desc: "Structured XML authoring against the model." },
+  { name: "Manage", desc: "Version control, branching, and review in the CCMS." },
+  { name: "Publish", desc: "Automated output — PDF, HTML5, and portals." },
+  { name: "Analyze", desc: "Usage metrics that feed back into the model." },
 ];
 ---
 
@@ -42,17 +43,21 @@ const stages: Stage[] = [
       </p>
     </div>
 
-    <div class="lifecycle__track" role="list">
+    <div class="lifecycle" role="list">
       {stages.map((stage, i) => (
-        <>
-          <div class="lifecycle__stage" role="listitem">
-            <span class="lifecycle__stage-name">{stage.name}</span>
-            <span class="lifecycle__stage-desc">{stage.desc}</span>
+        <div class="lifecycle__stage" role="listitem" style={`--i:${i}`}>
+          <div class="lifecycle__head" aria-hidden="true">
+            <span class="lifecycle__node"></span>
+            {i < stages.length - 1 && (
+              <span class="lifecycle__connector">
+                <span class="lifecycle__connector-fill"></span>
+              </span>
+            )}
           </div>
-          {i < stages.length - 1 && (
-            <span class="lifecycle__arrow" aria-hidden="true">→</span>
-          )}
-        </>
+          <span class="lifecycle__num">{String(i + 1).padStart(2, "0")}</span>
+          <span class="lifecycle__name">{stage.name}</span>
+          <span class="lifecycle__desc">{stage.desc}</span>
+        </div>
       ))}
     </div>
   </div>
@@ -95,119 +100,145 @@ const stages: Stage[] = [
     text-wrap: pretty;
   }
 
-  /* Track */
-  .lifecycle__track {
+  /* Timeline */
+  .lifecycle {
     display: flex;
     align-items: flex-start;
-    gap: var(--space-4);
   }
-
   .lifecycle__stage {
     flex: 1 1 0;
     min-width: 0;
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    padding-top: var(--space-4);
-    border-top: 2px solid var(--color-border-subtle);
+    padding-right: var(--space-4);
   }
 
-  .lifecycle__stage-name {
+  /* Node + connecting rail */
+  .lifecycle__head {
+    display: flex;
+    align-items: center;
+    height: 11px;
+    margin-bottom: var(--space-4);
+  }
+  .lifecycle__node {
+    flex: 0 0 auto;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: var(--color-page-bg);
+    border: 1.5px solid var(--color-text-secondary);
+  }
+  .lifecycle__connector {
+    flex: 1 1 auto;
+    height: 1.5px;
+    margin-left: var(--space-2);
+    background: var(--color-border-subtle);
+    position: relative;
+    overflow: hidden;
+  }
+  .lifecycle__connector-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--color-accent-primary-hover);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .lifecycle__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-accent-primary);
+  }
+  .lifecycle__name {
     font-family: var(--font-display);
     font-size: var(--text-display-sm);
     font-weight: var(--weight-medium);
     color: var(--color-text-primary);
     line-height: var(--leading-snug);
   }
-  .lifecycle__stage-desc {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: var(--weight-regular);
-    letter-spacing: 0.04em;
+  .lifecycle__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
     color: var(--color-text-secondary);
-    line-height: var(--leading-snug);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
   }
 
-  .lifecycle__arrow {
-    flex: 0 0 auto;
-    align-self: flex-start;
-    padding-top: var(--space-4);
-    color: var(--color-accent-primary-hover);
-    font-size: 18px;
-    line-height: 1;
-  }
-
-  /* Tablet: 3 + 2 wrap is awkward; keep the row but let stages shrink.
-     Mobile: stack vertically, arrows rotate to point down. */
+  /* Mobile: stack vertically; drop the horizontal rail. */
   @media (max-width: 639px) {
-    .lifecycle__track {
+    .lifecycle {
       flex-direction: column;
-      align-items: stretch;
-      gap: var(--space-2);
+      gap: var(--space-8);
     }
     .lifecycle__stage {
-      flex: none;
+      padding-right: 0;
     }
-    .lifecycle__arrow {
-      align-self: center;
-      padding-top: var(--space-2);
-      transform: rotate(90deg);
+    .lifecycle__connector {
+      display: none;
+    }
+    .lifecycle__head {
+      margin-bottom: var(--space-2);
     }
   }
 
-  /* ── Scroll reveal: stages rise/fade left-to-right ── */
-  .home-section--lifecycle.is-animating .lifecycle__stage,
-  .home-section--lifecycle.is-animating .lifecycle__arrow {
+  /* ── Scroll sweep: amber fills the rail left-to-right, nodes light, text
+     reveals in sequence (staggered by --i). ── */
+  .home-section--lifecycle.is-animating .lifecycle__num,
+  .home-section--lifecycle.is-animating .lifecycle__name,
+  .home-section--lifecycle.is-animating .lifecycle__desc {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__stage,
-  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow {
-    animation: lc-reveal 420ms ease-out forwards;
+  .home-section--lifecycle.is-animating.drawn .lifecycle__node {
+    animation: lc-node 320ms ease-out forwards;
+    animation-delay: calc(var(--i) * 220ms);
   }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(1) { animation-delay: 0ms; }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow:nth-child(2) { animation-delay: 120ms; }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(3) { animation-delay: 200ms; }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow:nth-child(4) { animation-delay: 320ms; }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(5) { animation-delay: 400ms; }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow:nth-child(6) { animation-delay: 520ms; }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(7) { animation-delay: 600ms; }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow:nth-child(8) { animation-delay: 720ms; }
-  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(9) { animation-delay: 800ms; }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__connector-fill {
+    animation: lc-fill 260ms ease-out forwards;
+    animation-delay: calc(var(--i) * 220ms + 110ms);
+  }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__num,
+  .home-section--lifecycle.is-animating.drawn .lifecycle__name,
+  .home-section--lifecycle.is-animating.drawn .lifecycle__desc {
+    animation: lc-text 380ms ease-out forwards;
+    animation-delay: calc(var(--i) * 220ms);
+  }
 
-  @keyframes lc-reveal {
+  @keyframes lc-node {
+    to {
+      border-color: var(--color-accent-primary-hover);
+      background: var(--color-accent-primary-hover);
+    }
+  }
+  @keyframes lc-fill {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes lc-text {
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
-  /* Mobile arrows keep their rotation through the reveal. */
-  @media (max-width: 639px) {
-    @keyframes lc-reveal {
-      to {
-        opacity: 1;
-        transform: translateY(0) rotate(90deg);
-      }
-    }
-  }
 
   @media (prefers-reduced-motion: reduce) {
-    .home-section--lifecycle.is-animating .lifecycle__stage,
-    .home-section--lifecycle.is-animating .lifecycle__arrow {
+    .home-section--lifecycle.is-animating .lifecycle__num,
+    .home-section--lifecycle.is-animating .lifecycle__name,
+    .home-section--lifecycle.is-animating .lifecycle__desc {
       opacity: 1 !important;
       transform: none !important;
       animation: none !important;
-    }
-    @media (max-width: 639px) {
-      .home-section--lifecycle.is-animating .lifecycle__arrow {
-        transform: rotate(90deg) !important;
-      }
     }
   }
 </style>
 
 <script>
-  // ContentLifecycle — staggered reveal on viewport entry.
+  // ContentLifecycle — timeline sweep on viewport entry.
   function setupLifecycle() {
     const section = document.querySelector<HTMLElement>(
       ".home-section--lifecycle"

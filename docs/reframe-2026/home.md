@@ -8,6 +8,23 @@
 > Direction (locked this session): preserve the old site's *content*, render it
 > in the new site's *design*, sequence it to the **prospective client's
 > cognitive flow** (old order not strictly preserved — see Decision log).
+>
+> **Round-2 refinements (applied after first build — these supersede the
+> matching points in §5/§6 below):**
+> - **CTA moved to the closing position** (after Industries, before the footer);
+>   no longer mid-page. Tail order: …Why Choose → Industries → **CTA** → Footer.
+> - **Industries is now 6 cards** — added **Technology** ("API references,
+>   developer portals, and product documentation for software and semiconductor
+>   platforms." → `/industries/technology`). Grid is 2×3.
+> - **Service Pillars motion:** icons now stroke-draw *and* rows fade/rise on
+>   scroll (not just the hover color-shift).
+> - **Lifecycle reworked into a timeline:** amber nodes on a connecting rail,
+>   `01–05` numbers, a left-to-right scroll sweep, and an expanded one-line
+>   descriptor per stage.
+> - **Why Choose** gained a sparing-amber accent rule above each differentiator,
+>   a staggered card scroll-reveal, and a subtle toolchain-badge hover.
+> - **Hero metrics** left as a flat claim (not softened to "typically"), per
+>   direction.
 
 ---
 

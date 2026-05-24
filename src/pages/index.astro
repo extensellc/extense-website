@@ -9,9 +9,9 @@
     4.  Logo marquee — proof
     5.  Content Ops Stack — capability layers
     6.  Content Engineering Lifecycle — workflow stages
-    7.  CTA (CTAModule) — mid-page Sample Content Assessment
-    8.  Why Choose Extense — differentiators + pipeline + toolchain
-    9.  Industries — 5 sector cards
+    7.  Why Choose Extense — differentiators + pipeline + toolchain
+    8.  Industries — 6 sector cards
+    9.  CTA (CTAModule) — closing Sample Content Assessment
     10. Footer (BaseLayout)
 
   Persistent "Free Assessment" CTA lives in TopNav (sitewide).
@@ -56,14 +56,14 @@ import HomeIndustries from "../components/site/HomeIndustries.astro";
 
   <ContentLifecycle />
 
+  <WhyChoose />
+
+  <HomeIndustries />
+
   <CTAModule
     audience="general"
     body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
   />
-
-  <WhyChoose />
-
-  <HomeIndustries />
 </BaseLayout>
 
 <style>
