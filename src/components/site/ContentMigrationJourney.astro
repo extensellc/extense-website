@@ -1,0 +1,360 @@
+---
+/*
+  ContentMigrationJourney — "The Modernization Journey" section on
+  /solutions/content-migration.
+
+  The old ex-tense.co section, rebuilt in the new design: a 5-step strip
+  (Analyze -> Model -> Transform -> Enrich -> Go Live) reusing the
+  pipeline-stage vocabulary, plus three capability cards (Legacy
+  Conversion / Metadata Strategy / Quality Assurance) with the amber
+  accent + hover treatment.
+
+  Copy [OLD] with two voice swaps:
+    - intro: "we transform information architecture" -> "we re-engineer..."
+    - Metadata Strategy: "to enable future faceted search" -> "for future..."
+  (The STEP named "Transform" is kept — it's the literal XML-transformation
+  step, not the banned marketing verb.)
+
+  border-top hairline divides from the Deduplication section above.
+  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface Step {
+  num: string;
+  name: string;
+  detail: string;
+}
+
+const steps: Step[] = [
+  { num: "01", name: "Analyze", detail: "Dedup & Audit Legacy Source" },
+  { num: "02", name: "Model", detail: "Define Information Architecture" },
+  { num: "03", name: "Transform", detail: "Automated XML Conversion" },
+  { num: "04", name: "Enrich", detail: "Add Semantic Metadata" },
+  { num: "05", name: "Go Live", detail: "Validate, Baseline & Hand Off" },
+];
+
+interface Capability {
+  title: string;
+  body: string;
+}
+
+const capabilities: Capability[] = [
+  {
+    title: "Legacy Conversion",
+    body: "We build custom parsers for FrameMaker, InDesign, Word, and RoboHelp to extract maximum structure.",
+  },
+  {
+    title: "Metadata Strategy",
+    body: "Applying taxonomy tags during migration for future faceted search and dynamic filtering.",
+  },
+  {
+    title: "Quality Assurance",
+    body: "Automated schematron validation ensures every migrated topic adheres to your new content model.",
+  },
+];
+---
+
+<section class="cm-journey" aria-labelledby="cm-journey-heading">
+  <div class="container-data cm-journey__inner">
+    <div class="cm-journey__heading-block">
+      <h2 id="cm-journey-heading" class="cm-journey__heading">
+        The Modernization Journey
+      </h2>
+      <p class="cm-journey__subdeck">
+        We don&rsquo;t just move files; we re-engineer information architecture. From unstructured chaos to intelligent, reusable XML.
+      </p>
+    </div>
+
+    <ol class="cm-journey__steps" aria-label="Modernization journey">
+      {steps.map((step) => (
+        <li class="journey-step">
+          <p class="journey-step__num" aria-hidden="true">{step.num}</p>
+          <h3 class="journey-step__name">{step.name}</h3>
+          <p class="journey-step__detail">{step.detail}</p>
+        </li>
+      ))}
+    </ol>
+
+    <ul class="cm-journey__cards">
+      {capabilities.map((cap) => (
+        <li class="journey-card">
+          <span class="journey-card__rule" aria-hidden="true"></span>
+          <h3 class="journey-card__title">{cap.title}</h3>
+          <p class="journey-card__body">{cap.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cm-journey {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .cm-journey {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .cm-journey__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-16);
+  }
+
+  .cm-journey__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .cm-journey__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* ── 5-step strip — pipeline-stage vocabulary ─────────────────────── */
+  .cm-journey__steps {
+    list-style: none;
+    margin: 0 0 var(--space-16) 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  @media (min-width: 960px) {
+    .cm-journey__steps {
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .journey-step {
+    border-top: 2px solid var(--color-text-primary);
+    padding-top: var(--space-4);
+    position: relative;
+  }
+  .journey-step:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    line-height: 1;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary-hover);
+    bottom: calc(-1 * var(--space-8) - 8px);
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+  @media (min-width: 960px) {
+    .journey-step:not(:last-child)::after {
+      bottom: auto;
+      left: auto;
+      right: calc(-1 * var(--space-12) / 2 + 0px);
+      top: 34px;
+      transform: translate(50%, -50%) rotate(0deg);
+    }
+  }
+
+  .journey-step__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    margin: 0 0 var(--space-2) 0;
+    line-height: 1;
+  }
+  .journey-step__name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: var(--weight-medium);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .journey-step__detail {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ── 3 capability cards — amber accent + hover treatment ──────────── */
+  .cm-journey__cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .cm-journey__cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .journey-card {
+    position: relative;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .journey-card:hover {
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+  .journey-card__rule {
+    display: block;
+    width: 32px;
+    height: 2px;
+    background-color: var(--color-accent-primary-hover);
+    margin-bottom: var(--space-5);
+    transform-origin: left center;
+    transition: width var(--duration-base) var(--easing-out);
+  }
+  .journey-card:hover .journey-card__rule {
+    width: 48px;
+  }
+  .journey-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .journey-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ── Reveal animation — heading -> steps -> cards ─────────────────── */
+  .cm-journey.animating .cm-journey__heading-block,
+  .cm-journey.animating .journey-step,
+  .cm-journey.animating .journey-card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .cm-journey.animating .journey-card__rule {
+    transform: scaleX(0);
+  }
+  .cm-journey.animating .journey-step:nth-child(1) { --reveal-delay: 220ms; }
+  .cm-journey.animating .journey-step:nth-child(2) { --reveal-delay: 320ms; }
+  .cm-journey.animating .journey-step:nth-child(3) { --reveal-delay: 420ms; }
+  .cm-journey.animating .journey-step:nth-child(4) { --reveal-delay: 520ms; }
+  .cm-journey.animating .journey-step:nth-child(5) { --reveal-delay: 620ms; }
+  .cm-journey.animating .journey-card:nth-child(1) { --reveal-delay: 720ms; }
+  .cm-journey.animating .journey-card:nth-child(2) { --reveal-delay: 800ms; }
+  .cm-journey.animating .journey-card:nth-child(3) { --reveal-delay: 880ms; }
+
+  .cm-journey.animating.in-view .cm-journey__heading-block {
+    animation: cm-journey-fade-in 480ms ease-out forwards;
+  }
+  .cm-journey.animating.in-view .journey-step {
+    animation: cm-journey-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  .cm-journey.animating.in-view .journey-card {
+    animation: cm-journey-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  .cm-journey.animating.in-view .journey-card__rule {
+    animation: cm-journey-rule-grow 460ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes cm-journey-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes cm-journey-rule-grow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cm-journey.animating .cm-journey__heading-block,
+    .cm-journey.animating .journey-step,
+    .cm-journey.animating .journey-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .cm-journey.animating .journey-card__rule {
+      transform: scaleX(1) !important;
+      animation: none !important;
+    }
+    .journey-card,
+    .journey-card__rule {
+      transition: none;
+    }
+    .journey-card:hover {
+      translate: none;
+    }
+  }
+</style>
+
+<script>
+  function setupContentMigrationJourney() {
+    const sec = document.querySelector<HTMLElement>(".cm-journey");
+    if (!sec) return;
+    if (sec.dataset.journeyRevealInit === "true") return;
+    sec.dataset.journeyRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupContentMigrationJourney);
+  document.addEventListener("astro:page-load", setupContentMigrationJourney);
+</script>

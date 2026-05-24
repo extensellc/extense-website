@@ -1,0 +1,151 @@
+---
+/*
+  ContentMigrationDeduplication — "Automatic Topic Deduplication" section
+  on /solutions/content-migration.
+
+  The old ex-tense.co section, rebuilt in the new design as a focused
+  prose block. Lands the 15-30% deduplication figure (the page's headline
+  metric, confirmed as a typical Extense result) as a primary-color punch
+  line — NOT an amber stat block, per the single-accent rule.
+
+  Copy [OLD]: heading + body + "Typical result" line verbatim.
+  border-top hairline divides from the How Conversion Works section above.
+  Animation: viewport-triggered fade-up. prefers-reduced-motion: static.
+*/
+---
+
+<section class="cm-dedup" aria-labelledby="cm-dedup-heading">
+  <div class="container-prose cm-dedup__inner">
+    <h2 id="cm-dedup-heading" class="cm-dedup__heading">
+      Automatic Topic Deduplication
+    </h2>
+    <p class="cm-dedup__body">
+      During conversion, we analyze every paragraph and span across your entire document collection using industry-proven migration tools and structured content analysis. Exact-match duplicates are identified and consolidated into reusable warehouse topics with conref pointers &mdash; saving you from discovering redundancy months later.
+    </p>
+    <p class="cm-dedup__punch">
+      Typical result: <strong>15&ndash;30% of topics</strong> identified as duplicates and consolidated in the first pass.
+    </p>
+  </div>
+</section>
+
+<style>
+  .cm-dedup {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .cm-dedup {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .cm-dedup__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8) 0;
+    text-wrap: balance;
+  }
+
+  .cm-dedup__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6) 0;
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+
+  /* The result line reads heavier — same body type, primary color, with
+     the figure itself bolded. Not an amber stat block (single-accent rule). */
+  .cm-dedup__punch {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-primary);
+    margin: 0;
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .cm-dedup__punch strong {
+    font-weight: var(--weight-semibold);
+  }
+
+  /* Reveal animation — viewport-triggered, heading / body / punch stagger. */
+  .cm-dedup.animating .cm-dedup__heading,
+  .cm-dedup.animating .cm-dedup__body,
+  .cm-dedup.animating .cm-dedup__punch {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .cm-dedup.animating.in-view .cm-dedup__heading {
+    animation: cm-dedup-fade-in 480ms ease-out forwards;
+  }
+  .cm-dedup.animating.in-view .cm-dedup__body {
+    animation: cm-dedup-fade-in 420ms ease-out forwards;
+    animation-delay: 160ms;
+  }
+  .cm-dedup.animating.in-view .cm-dedup__punch {
+    animation: cm-dedup-fade-in 420ms ease-out forwards;
+    animation-delay: 300ms;
+  }
+
+  @keyframes cm-dedup-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cm-dedup.animating .cm-dedup__heading,
+    .cm-dedup.animating .cm-dedup__body,
+    .cm-dedup.animating .cm-dedup__punch {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupContentMigrationDeduplication() {
+    const sec = document.querySelector<HTMLElement>(".cm-dedup");
+    if (!sec) return;
+    if (sec.dataset.dedupRevealInit === "true") return;
+    sec.dataset.dedupRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupContentMigrationDeduplication);
+  document.addEventListener("astro:page-load", setupContentMigrationDeduplication);
+</script>

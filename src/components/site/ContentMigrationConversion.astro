@@ -1,0 +1,345 @@
+---
+/*
+  ContentMigrationConversion — "How Conversion Works" section on
+  /solutions/content-migration.
+
+  The old ex-tense.co three-column transformation, rebuilt in the new
+  design: messy Source Document -> clean DITA Output -> AI-Ready Content.
+  Amber index + accent rule + hover lift per column (matching the card
+  treatment elsewhere), amber arrows between columns, and a leading marker
+  per checklist item (muted dash for the "before" column, amber check for
+  the "after" columns).
+
+  Copy [OLD]: intro + all three checklists verbatim from ex-tense.co.
+  border-top hairline divides from the Source Formats section above.
+  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface Column {
+  num: string;
+  title: string;
+  kind: "before" | "after";
+  items: string[];
+}
+
+const columns: Column[] = [
+  {
+    num: "01",
+    title: "Source Document",
+    kind: "before",
+    items: [
+      "Inconsistent heading styles",
+      "Manual numbered lists",
+      "Embedded images at random DPI",
+      "No metadata or taxonomy",
+      "Duplicate content across files",
+    ],
+  },
+  {
+    num: "02",
+    title: "DITA Output",
+    kind: "after",
+    items: [
+      "Clean topic types (concept, task, reference)",
+      "Semantic <ol> and <steps> markup",
+      "Normalized images, consistent DPI",
+      "Rich metadata and SubjectScheme keys",
+      "Deduplicated with conref / conkeyref reuse",
+    ],
+  },
+  {
+    num: "03",
+    title: "AI-Ready Content",
+    kind: "after",
+    items: [
+      "Chunked topics optimized for RAG retrieval",
+      "Schema.org and JSON-LD metadata mapping",
+      "Semantic labels for LLM grounding and citation",
+      "Embedding-friendly short descriptions per topic",
+      "Knowledge-graph nodes from the subject-scheme taxonomy",
+    ],
+  },
+];
+---
+
+<section class="cm-conversion" aria-labelledby="cm-conversion-heading">
+  <div class="container-data cm-conversion__inner">
+    <div class="cm-conversion__heading-block">
+      <h2 id="cm-conversion-heading" class="cm-conversion__heading">
+        How Conversion Works
+      </h2>
+      <p class="cm-conversion__subdeck">
+        Our conversion methodology combines proven migration tools with deep DITA expertise to handle the heavy lifting. You focus on quality.
+      </p>
+    </div>
+
+    <ol class="cm-conversion__grid">
+      {columns.map((col) => (
+        <li class={`conv-card conv-card--${col.kind}`}>
+          <span class="conv-card__rule" aria-hidden="true"></span>
+          <p class="conv-card__num" aria-hidden="true">{col.num}</p>
+          <h3 class="conv-card__title">{col.title}</h3>
+          <ul class="conv-card__list">
+            {col.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .cm-conversion {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .cm-conversion {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .cm-conversion__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-12);
+  }
+
+  .cm-conversion__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .cm-conversion__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* 3-column grid; stacked on mobile. Generous gap so the amber arrow
+     has room in the gutter. */
+  .cm-conversion__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  @media (min-width: 860px) {
+    .cm-conversion__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .conv-card {
+    position: relative;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .conv-card:hover {
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+
+  /* Amber arrow between columns: "->" in the right gutter on desktop,
+     "v" below each column on mobile. */
+  .conv-card:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 22px;
+    line-height: 1;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary-hover);
+    bottom: calc(-1 * var(--space-8) - 4px);
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+  @media (min-width: 860px) {
+    .conv-card:not(:last-child)::after {
+      bottom: auto;
+      left: auto;
+      right: calc(-1 * var(--space-12) / 2);
+      top: var(--space-8);
+      transform: translate(50%, 0) rotate(0deg);
+    }
+  }
+
+  .conv-card__rule {
+    display: block;
+    width: 32px;
+    height: 2px;
+    background-color: var(--color-accent-primary-hover);
+    margin-bottom: var(--space-5);
+    transform-origin: left center;
+    transition: width var(--duration-base) var(--easing-out);
+  }
+  .conv-card:hover .conv-card__rule {
+    width: 48px;
+  }
+
+  .conv-card__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    line-height: 1;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .conv-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: balance;
+  }
+
+  .conv-card__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .conv-card__list li {
+    position: relative;
+    padding-left: var(--space-6);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-3);
+    text-wrap: pretty;
+  }
+  .conv-card__list li:last-child {
+    margin-bottom: 0;
+  }
+  .conv-card__list li::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  /* "before" column: muted dash markers (the legacy pain points). */
+  .conv-card--before .conv-card__list li::before {
+    content: "–";
+    color: var(--color-text-muted);
+  }
+  /* "after" columns: amber check markers (the engineered gains). */
+  .conv-card--after .conv-card__list li::before {
+    content: "✓";
+    color: var(--color-accent-primary-hover);
+  }
+
+  /* Reveal animation — viewport-triggered, heading then columns stagger. */
+  .cm-conversion.animating .cm-conversion__heading-block,
+  .cm-conversion.animating .conv-card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .cm-conversion.animating .conv-card__rule {
+    transform: scaleX(0);
+  }
+  .cm-conversion.animating .conv-card:nth-child(1) { --reveal-delay: 200ms; }
+  .cm-conversion.animating .conv-card:nth-child(2) { --reveal-delay: 320ms; }
+  .cm-conversion.animating .conv-card:nth-child(3) { --reveal-delay: 440ms; }
+
+  .cm-conversion.animating.in-view .cm-conversion__heading-block {
+    animation: cm-conversion-fade-in 480ms ease-out forwards;
+  }
+  .cm-conversion.animating.in-view .conv-card {
+    animation: cm-conversion-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  .cm-conversion.animating.in-view .conv-card__rule {
+    animation: cm-conversion-rule-grow 460ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes cm-conversion-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes cm-conversion-rule-grow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cm-conversion.animating .cm-conversion__heading-block,
+    .cm-conversion.animating .conv-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .cm-conversion.animating .conv-card__rule {
+      transform: scaleX(1) !important;
+      animation: none !important;
+    }
+    .conv-card,
+    .conv-card__rule {
+      transition: none;
+    }
+    .conv-card:hover {
+      translate: none;
+    }
+  }
+</style>
+
+<script>
+  function setupContentMigrationConversion() {
+    const sec = document.querySelector<HTMLElement>(".cm-conversion");
+    if (!sec) return;
+    if (sec.dataset.conversionRevealInit === "true") return;
+    sec.dataset.conversionRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupContentMigrationConversion);
+  document.addEventListener("astro:page-load", setupContentMigrationConversion);
+</script>

@@ -2,27 +2,29 @@
 /*
   /solutions/content-migration
 
-  Sub-page deep-dive on the Content Migration solution area.
+  Sub-page deep-dive on the Content Migration solution area. Reframed to
+  the old-site body (in the new design): see
+  docs/reframe-2026/content-migration.md.
 
-  Sections (building piece by piece):
+  Sections:
     1. Hero — "The conversion that finishes." + funnel SVG
     2. Siblings nav — back to /solutions + across to the other three
-                      sub-pages
-    3. The problem at scale (TODO)
-    4. The pipeline (TODO)
-    5. Sources — five editorial chapter-blocks (TODO)
-    6. Recovery rate (TODO)
-    7. CTA (TODO)
+    3. Source Formats We Convert From — chip band
+    4. How Conversion Works — 3-col source -> DITA -> AI-ready
+    5. Automatic Topic Deduplication — prose + 15-30%
+    6. The Modernization Journey — 5-step strip + 3 capability cards
+    7. Explore Related Solutions — Solution + Solution + Service three-up
+    8. CTA — closing Sample Content Assessment (amber line)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ContentMigrationHero from "../../components/site/ContentMigrationHero.astro";
 import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
-import ContentMigrationProblem from "../../components/site/ContentMigrationProblem.astro";
-import ContentMigrationPipeline from "../../components/site/ContentMigrationPipeline.astro";
-import ContentMigrationSources from "../../components/site/ContentMigrationSources.astro";
-import ContentMigrationROI from "../../components/site/ContentMigrationROI.astro";
-import CrossPillarLink from "../../components/site/CrossPillarLink.astro";
+import ContentMigrationFormats from "../../components/site/ContentMigrationFormats.astro";
+import ContentMigrationConversion from "../../components/site/ContentMigrationConversion.astro";
+import ContentMigrationDeduplication from "../../components/site/ContentMigrationDeduplication.astro";
+import ContentMigrationJourney from "../../components/site/ContentMigrationJourney.astro";
+import ContentMigrationRelated from "../../components/site/ContentMigrationRelated.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 ---
 
@@ -32,17 +34,15 @@ import CTAModule from "../../components/site/CTAModule.astro";
 >
   <ContentMigrationHero />
   <SolutionsSiblings currentSlug="content-migration" />
-  <ContentMigrationProblem />
-  <ContentMigrationPipeline />
-  <ContentMigrationSources />
-  <ContentMigrationROI />
-  <CrossPillarLink
-    href="/services"
-    label="See our content-migration services"
-  />
+  <ContentMigrationFormats />
+  <ContentMigrationConversion />
+  <ContentMigrationDeduplication />
+  <ContentMigrationJourney />
+  <ContentMigrationRelated />
   <CTAModule
     audience="general"
     compact
+    accentLine
     body="Send us a 20-page sample — FrameMaker, Word, RoboHelp, InDesign, scanned PDF, anything. We’ll return a conversion feasibility, content recovery rate, and migration-effort estimate within two business days."
   />
 </BaseLayout>

@@ -1,0 +1,186 @@
+---
+/*
+  ContentMigrationFormats — "Source Formats We Convert From" chip band on
+  /solutions/content-migration.
+
+  The old ex-tense.co section, rebuilt in the new design: a heading + a
+  band of hairline/mono format chips. Sits directly under the siblings row
+  (no border-top — the siblings row already carries a border-bottom).
+
+  Copy [OLD]: the 13 source formats verbatim from ex-tense.co.
+
+  Treatment: mono chips, amber border on hover, viewport-triggered
+  staggered fade-up (per-chip --i index drives the delay).
+  prefers-reduced-motion: static.
+*/
+
+const formats: string[] = [
+  "Microsoft Word",
+  "FrameMaker",
+  "InDesign",
+  "RoboHelp",
+  "MadCap Flare",
+  "DocBook",
+  "HTML",
+  "Markdown",
+  "AuthorIT",
+  "Confluence",
+  "SGML",
+  "Excel",
+  "PDF (OCR)",
+];
+---
+
+<section class="cm-formats" aria-labelledby="cm-formats-heading">
+  <div class="container-data cm-formats__inner">
+    <div class="cm-formats__heading-block">
+      <h2 id="cm-formats-heading" class="cm-formats__heading">
+        Source Formats We Convert From
+      </h2>
+      <p class="cm-formats__subdeck">
+        One engineered pipeline, every legacy estate &mdash; not a different tool and a different team for each format.
+      </p>
+    </div>
+
+    <ul class="cm-formats__chips">
+      {formats.map((fmt, i) => (
+        <li class="format-chip" style={`--i: ${i}`}>{fmt}</li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cm-formats {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    /* No border-top: the siblings row above carries a border-bottom. */
+  }
+
+  @media (max-width: 767px) {
+    .cm-formats {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .cm-formats__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-10);
+  }
+
+  .cm-formats__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .cm-formats__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+
+  .cm-formats__chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .format-chip {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    color: var(--color-text-primary);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--color-page-bg);
+    transition: border-color var(--duration-base) var(--easing-out),
+      color var(--duration-base) var(--easing-out);
+  }
+  .format-chip:hover {
+    border-color: var(--color-accent-primary-hover);
+  }
+
+  /* Reveal animation — viewport-triggered, heading then chips stagger
+     in (per-chip --i index drives the delay). */
+  .cm-formats.animating .cm-formats__heading-block,
+  .cm-formats.animating .format-chip {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .cm-formats.animating.in-view .cm-formats__heading-block {
+    animation: cm-formats-fade-in 480ms ease-out forwards;
+  }
+  .cm-formats.animating.in-view .format-chip {
+    animation: cm-formats-fade-in 380ms ease-out forwards;
+    animation-delay: calc(var(--i) * 40ms + 220ms);
+  }
+
+  @keyframes cm-formats-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cm-formats.animating .cm-formats__heading-block,
+    .cm-formats.animating .format-chip {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .format-chip {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function setupContentMigrationFormats() {
+    const sec = document.querySelector<HTMLElement>(".cm-formats");
+    if (!sec) return;
+    if (sec.dataset.formatsRevealInit === "true") return;
+    sec.dataset.formatsRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupContentMigrationFormats);
+  document.addEventListener("astro:page-load", setupContentMigrationFormats);
+</script>
