@@ -3,26 +3,26 @@
   /solutions/xml-data-interoperability
 
   Sub-page deep-dive on the XML Data Interoperability solution area.
+  Reframed to the old-site body (in the new design): see
+  docs/reframe-2026/xml-data-interoperability.md.
 
-  Sections (building piece by piece):
+  Sections:
     1. Hero — "One fact. Every system." + fabric SVG
-    2. Siblings nav — back to /solutions + across to the other three
-                      sub-pages
-    3. The problem (TODO)
-    4. The pipeline (TODO)
-    5. Patterns — five editorial chapter-blocks (TODO)
-    6. Closing prose — "When the schema is the contract." (TODO)
-    7. CTA (TODO)
+    2. Siblings nav
+    3. Enterprise Integration Standards — 6 cards
+    4. Transformation Technologies — 2-col spec table (10 rows)
+    5. The Interoperability Layer — 5-stage strip + AI-Ready callout
+    6. Explore Related Solutions — Solution + Solution + Service three-up
+    7. CTA — closing Sample Content Assessment (amber line)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import XmlDataInteropHero from "../../components/site/XmlDataInteropHero.astro";
 import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
-import XmlDataInteropProblem from "../../components/site/XmlDataInteropProblem.astro";
-import XmlDataInteropPipeline from "../../components/site/XmlDataInteropPipeline.astro";
-import XmlDataInteropPatterns from "../../components/site/XmlDataInteropPatterns.astro";
-import XmlDataInteropClosing from "../../components/site/XmlDataInteropClosing.astro";
-import CrossPillarLink from "../../components/site/CrossPillarLink.astro";
+import XmlDataInteropStandards from "../../components/site/XmlDataInteropStandards.astro";
+import XmlDataInteropTechnologies from "../../components/site/XmlDataInteropTechnologies.astro";
+import XmlDataInteropLayer from "../../components/site/XmlDataInteropLayer.astro";
+import XmlDataInteropRelated from "../../components/site/XmlDataInteropRelated.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 ---
 
@@ -32,17 +32,14 @@ import CTAModule from "../../components/site/CTAModule.astro";
 >
   <XmlDataInteropHero />
   <SolutionsSiblings currentSlug="xml-data-interoperability" />
-  <XmlDataInteropProblem />
-  <XmlDataInteropPipeline />
-  <XmlDataInteropPatterns />
-  <XmlDataInteropClosing />
-  <CrossPillarLink
-    href="/services"
-    label="See our XML engineering services"
-  />
+  <XmlDataInteropStandards />
+  <XmlDataInteropTechnologies />
+  <XmlDataInteropLayer />
+  <XmlDataInteropRelated />
   <CTAModule
     audience="general"
     compact
+    accentLine
     body="Send us a sample of your source data — XML, JSON, SGML, legacy DB exports, or code-spec. We’ll map the transformation path, identify integration points, and return a feasibility and effort estimate within two business days."
   />
 </BaseLayout>

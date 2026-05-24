@@ -1,0 +1,232 @@
+---
+/*
+  XmlDataInteropTechnologies — "Transformation Technologies" section on
+  /solutions/xml-data-interoperability.
+
+  The old ex-tense.co section, rebuilt as a two-column spec table (tool
+  name | full description) rather than 10 cards. Hairline-separated rows,
+  amber tool names, full [OLD] descriptions. Stacks (name above
+  description) on mobile.
+
+  border-top hairline divides from the Standards section above.
+  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface Tech {
+  name: string;
+  desc: string;
+}
+
+const technologies: Tech[] = [
+  {
+    name: "XSLT 3.0",
+    desc: "Streaming transforms for million-node documents. We write production XSLT for schema-to-schema conversion, DITA specialization mapping, and multi-format output generation.",
+  },
+  {
+    name: "XQuery & XPath 3.1",
+    desc: "Complex querying across document collections in BaseX, MarkLogic, or eXist-db. Extract, reshape, and aggregate content from heterogeneous XML repositories.",
+  },
+  {
+    name: "Schema Validation",
+    desc: "XSD, RelaxNG, and Schematron rule sets for content quality gates. We build CI-integrated validation that catches structural and business-rule violations before publish.",
+  },
+  {
+    name: "JSON ↔ XML Bridge",
+    desc: "Bidirectional conversion between XML and JSON/YAML for REST APIs, NoSQL databases, and modern front-ends. We preserve semantic structure — not just syntax — across formats.",
+  },
+  {
+    name: "Event-Driven Pipelines",
+    desc: "Apache Kafka, AWS EventBridge, and webhook-triggered XSLT transforms. Content changes propagate to downstream systems in near real-time — no batch lag.",
+  },
+  {
+    name: "XML Databases",
+    desc: "Native XML storage in MarkLogic, BaseX, or eXist-db for content repositories that need fine-grained XQuery access, versioning, and full-text search at scale.",
+  },
+  {
+    name: "GraphQL Content APIs",
+    desc: "Expose structured XML content through GraphQL endpoints — clients query exactly the fields, elements, and metadata they need. We build federated content graphs that unify custom XML repositories, taxonomy services, and asset stores behind a single query layer.",
+  },
+  {
+    name: "Custom Java & C# Solutions",
+    desc: "Programmatic XML processing with Saxon (Java), JAXB, or LINQ to XML (.NET) for transformations that exceed what XSLT can do alone — complex business logic, database lookups mid-transform, and API-driven content assembly. Production-grade, testable, and CI/CD-ready.",
+  },
+  {
+    name: "CSS-to-PDF Publishing",
+    desc: "Generate print-quality PDFs using CSS Paged Media with tools like Prince XML, Antenna House, or WeasyPrint. Style once in CSS, publish to PDF and web from the same source — replacing complex XSL-FO workflows with modern, designer-friendly stylesheets.",
+  },
+  {
+    name: "Python & Node.js Pipelines",
+    desc: "Modern scripting pipelines using lxml, Beautiful Soup, or fast-xml-parser for rapid prototyping, batch processing, and glue automation. Ideal for content migration scripts, metadata enrichment, and integration with AI/ML libraries for embedding generation and NLP analysis.",
+  },
+];
+---
+
+<section class="interop-tech" aria-labelledby="interop-tech-heading">
+  <div class="container-data interop-tech__inner">
+    <div class="interop-tech__heading-block">
+      <h2 id="interop-tech-heading" class="interop-tech__heading">
+        Transformation Technologies
+      </h2>
+      <p class="interop-tech__subdeck">
+        The engine room behind every interoperability pipeline. We select the right tool for each transformation stage.
+      </p>
+    </div>
+
+    <dl class="interop-tech__table">
+      {technologies.map((t, i) => (
+        <div class="tech-row" style={`--i: ${i}`}>
+          <dt class="tech-row__name">{t.name}</dt>
+          <dd class="tech-row__desc">{t.desc}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .interop-tech {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .interop-tech {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .interop-tech__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-12);
+  }
+
+  .interop-tech__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .interop-tech__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* Spec table — each row is a 2-col grid (name | description) on
+     desktop, stacked on mobile. Hairline separators; last row gets a
+     bottom hairline so the table closes cleanly. */
+  .interop-tech__table {
+    margin: 0;
+  }
+
+  .tech-row {
+    border-top: var(--border-hairline);
+    padding: var(--space-6) 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  .tech-row:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  @media (min-width: 768px) {
+    .tech-row {
+      grid-template-columns: 260px 1fr;
+      gap: var(--space-8);
+      align-items: baseline;
+    }
+  }
+
+  .tech-row__name {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.01em;
+    line-height: var(--leading-snug);
+    color: var(--color-accent-primary-pressed);
+  }
+
+  .tech-row__desc {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 70ch;
+    text-wrap: pretty;
+  }
+
+  /* Reveal — viewport-triggered, heading then rows stagger (per-row --i). */
+  .interop-tech.animating .interop-tech__heading-block,
+  .interop-tech.animating .tech-row {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .interop-tech.animating.in-view .interop-tech__heading-block {
+    animation: interop-tech-fade-in 480ms ease-out forwards;
+  }
+  .interop-tech.animating.in-view .tech-row {
+    animation: interop-tech-fade-in 400ms ease-out forwards;
+    animation-delay: calc(var(--i) * 60ms + 200ms);
+  }
+
+  @keyframes interop-tech-fade-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .interop-tech.animating .interop-tech__heading-block,
+    .interop-tech.animating .tech-row {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupXmlDataInteropTechnologies() {
+    const sec = document.querySelector<HTMLElement>(".interop-tech");
+    if (!sec) return;
+    if (sec.dataset.techRevealInit === "true") return;
+    sec.dataset.techRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupXmlDataInteropTechnologies);
+  document.addEventListener("astro:page-load", setupXmlDataInteropTechnologies);
+</script>

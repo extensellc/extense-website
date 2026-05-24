@@ -1,0 +1,279 @@
+---
+/*
+  XmlDataInteropStandards — "Enterprise Integration Standards" section on
+  /solutions/xml-data-interoperability.
+
+  The old ex-tense.co section, rebuilt in the new design: intro + six
+  industry/standards cards in a 3x2 grid with the amber card treatment
+  (mono index, draw-in accent rule, hover lift). Full [OLD] descriptions.
+
+  Voice swaps from the old copy: S1000D card "enabling ... to share" ->
+  "so ... share"; Semantic Web card "enabling knowledge graphs" -> "for
+  knowledge graphs".
+
+  No border-top: the siblings row above carries a border-bottom.
+  Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface Standard {
+  name: string;
+  body: string;
+}
+
+const standards: Standard[] = [
+  {
+    name: "S1000D & Defense Specs",
+    body: "We design and build XSLT pipelines that bridge S1000D Common Source Data Base (CSDB) modules and DITA topics — so commercial and military documentation share the same structured backbone. Our team has deep expertise in S1000D Issue 4.x/5.0, ATA iSpec 2200, and MIL-STD-40051, and we deliver automated BREX validation tailored to each program’s business rules.",
+  },
+  {
+    name: "IIoT & Industry 4.0",
+    body: "We tag content with machine-readable asset IDs and fault codes. When a sensor on a factory floor reports a fault, the HMI system queries the XML index and surfaces the exact repair procedure — zero manual lookup. Supports OPC-UA, MQTT payloads, and ISA-95 data models.",
+  },
+  {
+    name: "Healthcare & Life Sciences",
+    body: "HL7 FHIR resources, SPL drug labels, and IFU content mapped into DITA for regulatory submission and multi-channel delivery. Our pipelines produce FDA eSTAR-ready structured product labeling alongside patient-facing HTML5 portals — from the same XML source.",
+  },
+  {
+    name: "Semantic Web & Knowledge Graphs",
+    body: "We map DITA keys and subject-scheme taxonomies to RDF triples and OWL ontologies — for knowledge graphs that answer complex cross-system queries. Your documentation becomes a queryable dataset, not just a collection of files.",
+  },
+  {
+    name: "Financial & Regulatory (XBRL)",
+    body: "XBRL taxonomies for SEC/ESMA filings, FpML for derivatives documentation, and FIX protocol specs — all generated from structured XML. We automate the bridge between compliance data and human-readable reports so filings stay audit-ready.",
+  },
+  {
+    name: "API Documentation & Code Sync",
+    body: "We extract source-code comments via Doxygen, Swagger/OpenAPI, or Javadoc, convert them to DITA XML, and merge with human-authored guides. If a developer changes a parameter name, the documentation build fails until the reference is updated — guaranteeing 100% API accuracy.",
+  },
+];
+---
+
+<section class="interop-standards" aria-labelledby="interop-standards-heading">
+  <div class="container-data interop-standards__inner">
+    <div class="interop-standards__heading-block">
+      <h2 id="interop-standards-heading" class="interop-standards__heading">
+        Enterprise Integration Standards
+      </h2>
+      <p class="interop-standards__subdeck">
+        XML is the lingua franca of complex data. We build bridges between proprietary silos and open standards &mdash; so your content can flow across systems without manual rekeying.
+      </p>
+    </div>
+
+    <ul class="interop-standards__grid">
+      {standards.map((s, i) => (
+        <li class="std-card">
+          <span class="std-card__rule" aria-hidden="true"></span>
+          <p class="std-card__index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
+          <h3 class="std-card__name">{s.name}</h3>
+          <p class="std-card__body">{s.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .interop-standards {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    /* No border-top: the siblings row above carries a border-bottom. */
+  }
+
+  @media (max-width: 767px) {
+    .interop-standards {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .interop-standards__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-12);
+  }
+
+  .interop-standards__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .interop-standards__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* Grid: 1 / 2 / 3 columns (6 cards -> 3 x 2 on desktop). */
+  .interop-standards__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 600px) {
+    .interop-standards__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .interop-standards__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .std-card {
+    position: relative;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .std-card:hover {
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+
+  .std-card__rule {
+    display: block;
+    width: 32px;
+    height: 2px;
+    background-color: var(--color-accent-primary-hover);
+    margin-bottom: var(--space-5);
+    transform-origin: left center;
+    transition: width var(--duration-base) var(--easing-out);
+  }
+  .std-card:hover .std-card__rule {
+    width: 48px;
+  }
+
+  .std-card__index {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    line-height: 1;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .std-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .std-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Reveal — viewport-triggered, heading then cards stagger; accent rule
+     scales in alongside each card. */
+  .interop-standards.animating .interop-standards__heading-block,
+  .interop-standards.animating .std-card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .interop-standards.animating .std-card__rule {
+    transform: scaleX(0);
+  }
+  .interop-standards.animating .std-card:nth-child(1) { --reveal-delay: 200ms; }
+  .interop-standards.animating .std-card:nth-child(2) { --reveal-delay: 280ms; }
+  .interop-standards.animating .std-card:nth-child(3) { --reveal-delay: 360ms; }
+  .interop-standards.animating .std-card:nth-child(4) { --reveal-delay: 440ms; }
+  .interop-standards.animating .std-card:nth-child(5) { --reveal-delay: 520ms; }
+  .interop-standards.animating .std-card:nth-child(6) { --reveal-delay: 600ms; }
+
+  .interop-standards.animating.in-view .interop-standards__heading-block {
+    animation: interop-standards-fade-in 480ms ease-out forwards;
+  }
+  .interop-standards.animating.in-view .std-card {
+    animation: interop-standards-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  .interop-standards.animating.in-view .std-card__rule {
+    animation: interop-standards-rule-grow 460ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes interop-standards-fade-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes interop-standards-rule-grow {
+    to { transform: scaleX(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .interop-standards.animating .interop-standards__heading-block,
+    .interop-standards.animating .std-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .interop-standards.animating .std-card__rule {
+      transform: scaleX(1) !important;
+      animation: none !important;
+    }
+    .std-card,
+    .std-card__rule {
+      transition: none;
+    }
+    .std-card:hover {
+      translate: none;
+    }
+  }
+</style>
+
+<script>
+  function setupXmlDataInteropStandards() {
+    const sec = document.querySelector<HTMLElement>(".interop-standards");
+    if (!sec) return;
+    if (sec.dataset.standardsRevealInit === "true") return;
+    sec.dataset.standardsRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupXmlDataInteropStandards);
+  document.addEventListener("astro:page-load", setupXmlDataInteropStandards);
+</script>

@@ -1,0 +1,268 @@
+---
+/*
+  XmlDataInteropLayer — "The Interoperability Layer" section on
+  /solutions/xml-data-interoperability.
+
+  The old ex-tense.co section, rebuilt in the new design: intro + a
+  5-stage strip (Ingest -> Normalize -> Validate -> Enrich -> Deliver,
+  amber arrows, same vocabulary as the CM Journey strip) + an AI-Ready
+  Interoperability callout box (surface-elevated, amber left accent).
+
+  Copy [OLD]. border-top hairline divides from the Technologies section
+  above. Animation: viewport-triggered staggered fade-up. prefers-reduced-motion: static.
+*/
+
+interface Stage {
+  num: string;
+  name: string;
+  detail: string;
+}
+
+const stages: Stage[] = [
+  { num: "01", name: "Ingest", detail: "Sensors · APIs · Legacy Files · Code Repos" },
+  { num: "02", name: "Normalize", detail: "XSLT / XQuery transform to a canonical schema" },
+  { num: "03", name: "Validate", detail: "XSD + Schematron quality gates" },
+  { num: "04", name: "Enrich", detail: "Metadata · Taxonomy · RDF mapping" },
+  { num: "05", name: "Deliver", detail: "Portals · Chatbots · APIs · VR/AR" },
+];
+---
+
+<section class="interop-layer" aria-labelledby="interop-layer-heading">
+  <div class="container-data interop-layer__inner">
+    <div class="interop-layer__heading-block">
+      <h2 id="interop-layer-heading" class="interop-layer__heading">
+        The Interoperability Layer
+      </h2>
+      <p class="interop-layer__subdeck">
+        Every pipeline we build follows this five-stage architecture &mdash; from raw ingest to intelligent delivery.
+      </p>
+    </div>
+
+    <ol class="interop-layer__stages" aria-label="Interoperability layer">
+      {stages.map((stage) => (
+        <li class="layer-stage">
+          <p class="layer-stage__num" aria-hidden="true">{stage.num}</p>
+          <h3 class="layer-stage__name">{stage.name}</h3>
+          <p class="layer-stage__detail">{stage.detail}</p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="interop-layer__callout">
+      <p class="interop-layer__callout-label">AI-Ready Interoperability</p>
+      <p class="interop-layer__callout-body">
+        Structured XML is the ideal source for AI pipelines. We add semantic labels, embedding-friendly short descriptions, and JSON-LD mappings to every topic &mdash; making your content retrievable by RAG systems, citation-ready for LLMs, and indexable as knowledge-graph nodes.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .interop-layer {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .interop-layer {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .interop-layer__heading-block {
+    max-width: var(--container-prose, 720px);
+    margin-bottom: var(--space-16);
+  }
+
+  .interop-layer__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .interop-layer__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  /* 5-stage strip — same vocabulary as the CM Journey strip. */
+  .interop-layer__stages {
+    list-style: none;
+    margin: 0 0 var(--space-12) 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  @media (min-width: 960px) {
+    .interop-layer__stages {
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .layer-stage {
+    border-top: 2px solid var(--color-text-primary);
+    padding-top: var(--space-4);
+    position: relative;
+  }
+  .layer-stage:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    line-height: 1;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary-hover);
+    bottom: calc(-1 * var(--space-8) - 8px);
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+  @media (min-width: 960px) {
+    .layer-stage:not(:last-child)::after {
+      bottom: auto;
+      left: auto;
+      right: calc(-1 * var(--space-12) / 2 + 0px);
+      top: 34px;
+      transform: translate(50%, -50%) rotate(0deg);
+    }
+  }
+
+  .layer-stage__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary);
+    margin: 0 0 var(--space-2) 0;
+    line-height: 1;
+  }
+  .layer-stage__name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: var(--weight-medium);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .layer-stage__detail {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-regular);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* AI-Ready callout — surface-elevated box with an amber left accent. */
+  .interop-layer__callout {
+    background-color: var(--color-surface-elevated);
+    border-left: 3px solid var(--color-accent-primary-hover);
+    padding: var(--space-6) var(--space-8);
+  }
+  .interop-layer__callout-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .interop-layer__callout-body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    max-width: 80ch;
+    text-wrap: pretty;
+  }
+
+  /* Reveal — heading -> stages -> callout. */
+  .interop-layer.animating .interop-layer__heading-block,
+  .interop-layer.animating .layer-stage,
+  .interop-layer.animating .interop-layer__callout {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .interop-layer.animating .layer-stage:nth-child(1) { --reveal-delay: 220ms; }
+  .interop-layer.animating .layer-stage:nth-child(2) { --reveal-delay: 320ms; }
+  .interop-layer.animating .layer-stage:nth-child(3) { --reveal-delay: 420ms; }
+  .interop-layer.animating .layer-stage:nth-child(4) { --reveal-delay: 520ms; }
+  .interop-layer.animating .layer-stage:nth-child(5) { --reveal-delay: 620ms; }
+
+  .interop-layer.animating.in-view .interop-layer__heading-block {
+    animation: interop-layer-fade-in 480ms ease-out forwards;
+  }
+  .interop-layer.animating.in-view .layer-stage {
+    animation: interop-layer-fade-in 420ms ease-out forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  .interop-layer.animating.in-view .interop-layer__callout {
+    animation: interop-layer-fade-in 480ms ease-out forwards;
+    animation-delay: 720ms;
+  }
+
+  @keyframes interop-layer-fade-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .interop-layer.animating .interop-layer__heading-block,
+    .interop-layer.animating .layer-stage,
+    .interop-layer.animating .interop-layer__callout {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupXmlDataInteropLayer() {
+    const sec = document.querySelector<HTMLElement>(".interop-layer");
+    if (!sec) return;
+    if (sec.dataset.layerRevealInit === "true") return;
+    sec.dataset.layerRevealInit = "true";
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    sec.classList.add("animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sec.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    observer.observe(sec);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupXmlDataInteropLayer);
+  document.addEventListener("astro:page-load", setupXmlDataInteropLayer);
+</script>

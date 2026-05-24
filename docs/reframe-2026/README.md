@@ -104,7 +104,7 @@ template wireframe + a content-variant table, not N independent docs.
 | Service template (×3)  | –         | –        | –         | –        | –           | – |
 | Solution › Tech Docs   | done      | done     | done      | done     | done (uncommitted) | [technical-docs-and-publishing.md](technical-docs-and-publishing.md) |
 | Solution › Migration   | done      | done     | done      | done     | done (uncommitted) | [content-migration.md](content-migration.md) |
-| Solution › XML Interop  | –        | –        | –         | –        | –           | – |
+| Solution › XML Interop  | done     | done     | done      | done     | done (uncommitted) | [xml-data-interoperability.md](xml-data-interoperability.md) |
 | Solution › AI-Ready    | –         | –        | –         | –        | –           | – |
 
 > The 4 `/solutions/*` sub-pages are **bespoke** (each has its own components —
