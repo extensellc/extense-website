@@ -345,6 +345,7 @@ function isActive(item: NavItem): boolean {
   }
 
   .topnav__link {
+    position: relative;
     font-size: var(--text-body-sm);
     font-weight: var(--weight-medium);
     color: var(--color-text-primary);
@@ -361,6 +362,19 @@ function isActive(item: NavItem): boolean {
   .topnav__link.is-active {
     font-weight: var(--weight-semibold);
     color: var(--color-link);
+  }
+
+  /* "You are here" underline under the active nav item. Pseudo-element bar
+     (not text-decoration) so it survives the :hover text-decoration:none rule
+     and sits a few px below the label like a tab indicator. */
+  .topnav__link.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    background-color: var(--color-link);
   }
 
   .topnav__link.is-emphasis {
