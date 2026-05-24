@@ -20,15 +20,32 @@
 */
 
 interface Step {
+  id: string;
   name: string;
   desc: string;
 }
 
 const steps: Step[] = [
-  { name: "Assess", desc: "Audit existing content estate" },
-  { name: "Architect", desc: "Design information model" },
-  { name: "Implement", desc: "Deploy toolchain & migrate" },
-  { name: "Optimize", desc: "Measure, iterate, scale" },
+  {
+    id: "assess",
+    name: "Assess",
+    desc: "Audit the existing content estate — formats, volume, and the recoverable, reusable assets buried in legacy documents.",
+  },
+  {
+    id: "architect",
+    name: "Architect",
+    desc: "Design the information model — the schema, taxonomy, and reuse strategy everything downstream depends on.",
+  },
+  {
+    id: "implement",
+    name: "Implement",
+    desc: "Deploy the toolchain and migrate — conversion at scale, CCMS configuration, and the CI/CD that publishes it.",
+  },
+  {
+    id: "optimize",
+    name: "Optimize",
+    desc: "Measure, iterate, and scale — usage metrics and feedback that tighten the system release over release.",
+  },
 ];
 ---
 
@@ -50,6 +67,40 @@ const steps: Step[] = [
       {steps.map((step, i) => (
         <>
           <div class="solving-step" role="listitem">
+            <div class="solving-step__head">
+              <span class="solving-step__icon" aria-hidden="true">
+                {step.id === "assess" && (
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="10.5" cy="10.5" r="6.5" />
+                    <line x1="15.5" y1="15.5" x2="20.5" y2="20.5" />
+                  </svg>
+                )}
+                {step.id === "architect" && (
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="9" y="3" width="6" height="4" />
+                    <rect x="3" y="15" width="6" height="4" />
+                    <rect x="15" y="15" width="6" height="4" />
+                    <path d="M12 7 V11 M6 11 H18 M6 11 V15 M18 11 V15" />
+                  </svg>
+                )}
+                {step.id === "implement" && (
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="2" y="9" width="6" height="6" />
+                    <path d="M8 12 H20" />
+                    <path d="M16 8 L20 12 L16 16" />
+                  </svg>
+                )}
+                {step.id === "optimize" && (
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <line x1="3" y1="20" x2="21" y2="20" />
+                    <rect x="5" y="13" width="3.5" height="7" />
+                    <rect x="10.5" y="9" width="3.5" height="11" />
+                    <rect x="16" y="5" width="3.5" height="15" />
+                  </svg>
+                )}
+              </span>
+              <span class="solving-step__num">{String(i + 1).padStart(2, "0")}</span>
+            </div>
             <span class="solving-step__name">{step.name}</span>
             <span class="solving-step__desc">{step.desc}</span>
           </div>
@@ -117,7 +168,33 @@ const steps: Step[] = [
     padding: var(--space-6);
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-3);
+  }
+
+  .solving-step__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-1);
+  }
+
+  .solving-step__icon svg {
+    display: block;
+    width: 28px;
+    height: 28px;
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .solving-step__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    color: var(--color-accent-primary);
   }
 
   .solving-step__name {

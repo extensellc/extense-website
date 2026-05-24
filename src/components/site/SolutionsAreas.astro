@@ -1,33 +1,16 @@
 ---
 /*
-  SolutionsAreas — the four editorial chapter-blocks on /solutions.
+  SolutionsAreas — "Our Solutions" section on /solutions.
 
-  Sequenced after the approach principle. Each block is one solution
-  area, presented as an editorial section rather than a card:
+  The four solution areas as a 2x2 card grid (was a stacked editorial list).
+  Each card: amber number, name, body (old-site card copy), Explore link.
+  Hairline cards, no drop shadow (brand card pattern). Equal-height cards via
+  the grid; the body flex-grows so the Explore link bottom-aligns across a row.
 
-    01  Technical Docs & Publishing.
-    02  Content Migration.
-    03  XML Data Interoperability.
-    04  AI-Ready Content.
+  Animation: cards fade/rise in, staggered, when the section enters the
+  viewport. prefers-reduced-motion: static.
 
-  Per-block structure
-    - amber monospace number prefix (left column, narrow)
-    - display-serif name + body + pull-quote hook + Explore link
-      (right column, wide)
-    - hairline rule at the top of each block
-    - on the last block, hairline rule at the bottom too
-
-  Pull-quote
-    - italic display serif
-    - 2 px amber left bar via ::before
-    - bar scales in (top-to-bottom) when the block enters the viewport
-
-  Animation
-    - Each block has its own IntersectionObserver. When it scrolls into
-      view, it adds .in-view to itself; CSS fades up the contents and
-      grows the pull-quote bar.
-    - Each block is independent — they don't all animate at once.
-    - prefers-reduced-motion: static.
+  Heading typography defined locally (Astro scopes index.astro's rules).
 */
 
 interface Area {
@@ -68,26 +51,26 @@ const areas: Area[] = [
 <section class="solutions-areas" aria-labelledby="areas-heading">
   <div class="container-data solutions-areas__inner">
     <div class="solutions-areas__heading-block">
-      <h2 id="areas-heading" class="solutions-areas__heading">
-        Our Solutions
-      </h2>
+      <h2 id="areas-heading" class="solutions-areas__heading">Our Solutions</h2>
       <p class="solutions-areas__subdeck">
-        Four areas where engineered content replaces a hand-authored, copy-and-rebuild cycle.
+        Four areas where engineered content replaces a hand-authored,
+        copy-and-rebuild cycle.
       </p>
     </div>
 
-    <ol class="solutions-areas__list">
+    <ol class="solutions-areas__grid">
       {areas.map((area) => (
-        <li class="solution-area">
-          <div class="solution-area__num" aria-hidden="true">{area.num}</div>
-          <div class="solution-area__content">
-            <h3 class="solution-area__name">{area.name}.</h3>
-            <p class="solution-area__body">{area.body}</p>
-            <a href={area.href} class="solution-area__link">
-              Explore {area.name}
-              <span class="solution-area__arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
+        <li class="solution-card">
+          <span class="solution-card__num" aria-hidden="true">{area.num}</span>
+          <h3 class="solution-card__name">{area.name}</h3>
+          <p class="solution-card__body">{area.body}</p>
+          <a
+            href={area.href}
+            class="solution-card__link"
+            aria-label={`Explore ${area.name}`}
+          >
+            Explore <span class="solution-card__arrow" aria-hidden="true">→</span>
+          </a>
         </li>
       ))}
     </ol>
@@ -97,13 +80,9 @@ const areas: Area[] = [
 <style>
   .solutions-areas {
     padding-top: var(--section-pad-default);
-    /* Reduced bottom padding so the gap to the CTA below doesn't read
-       as dead space — the CTA's own padding-top (--space-32) already
-       provides substantial breathing room. */
     padding-bottom: var(--space-4);
     border-top: var(--border-hairline);
   }
-
   @media (max-width: 767px) {
     .solutions-areas {
       padding-top: var(--space-16);
@@ -113,9 +92,8 @@ const areas: Area[] = [
 
   .solutions-areas__heading-block {
     max-width: var(--container-prose, 720px);
-    margin-bottom: var(--space-16);
+    margin-bottom: var(--space-12);
   }
-
   .solutions-areas__heading {
     font-family: var(--font-display);
     font-size: var(--text-display-lg);
@@ -126,11 +104,6 @@ const areas: Area[] = [
     margin: 0;
     text-wrap: balance;
   }
-
-  .solutions-areas__heading em {
-    font-style: italic;
-  }
-
   .solutions-areas__subdeck {
     margin-top: var(--space-4);
     font-family: var(--font-body);
@@ -141,141 +114,98 @@ const areas: Area[] = [
     text-wrap: pretty;
   }
 
-  /* List of areas — flat list, no bullets. Each area separated by a
-     hairline at its top. Last area also gets a hairline at the bottom
-     so the section ends cleanly. */
-  .solutions-areas__list {
+  /* 2x2 card grid (single column on mobile). */
+  .solutions-areas__grid {
     list-style: none;
     margin: 0;
     padding: 0;
-  }
-
-  .solution-area {
-    border-top: var(--border-hairline);
-    padding-top: var(--space-12);
-    padding-bottom: var(--space-12);
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-6);
   }
-  .solution-area:last-child {
-    border-bottom: var(--border-hairline);
-  }
-
   @media (min-width: 768px) {
-    .solution-area {
-      /* Narrow left col for the number, wide right col for the content. */
-      grid-template-columns: 96px 1fr;
-      gap: var(--space-8);
-      padding-top: var(--space-16);
-      padding-bottom: var(--space-16);
+    .solutions-areas__grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  .solution-area__num {
+  .solution-card {
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .solution-card__num {
     font-family: var(--font-mono);
     font-size: 14px;
     font-weight: var(--weight-medium);
     letter-spacing: 0.08em;
     color: var(--color-accent-primary);
-    line-height: 1;
-    /* Pull up to align visually with the top of the name */
-    padding-top: 8px;
+    margin-bottom: var(--space-4);
   }
 
-  .solution-area__content {
-    max-width: 72ch;
-  }
-
-  .solution-area__name {
+  .solution-card__name {
     font-family: var(--font-display);
     font-size: var(--text-display-md);
     font-weight: var(--weight-regular);
     line-height: var(--leading-snug);
     letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
-    margin: 0 0 var(--space-6) 0;
+    margin: 0 0 var(--space-4) 0;
     text-wrap: balance;
   }
 
-  .solution-area__body {
+  .solution-card__body {
     font-family: var(--font-body);
-    font-size: var(--text-body-lg);
+    font-size: var(--text-body);
     color: var(--color-text-secondary);
-    line-height: 1.55;
-    margin: 0 0 var(--space-8) 0;
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-6) 0;
     text-wrap: pretty;
+    flex-grow: 1;
   }
 
-  .solution-area__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  .solution-card__link {
     font-family: var(--font-body);
     font-size: var(--text-body);
     font-weight: var(--weight-medium);
     color: var(--color-link);
     text-decoration: none;
+    margin-top: auto;
     transition: color var(--duration-base) var(--easing-out);
   }
-  .solution-area__link:hover,
-  .solution-area__link:focus-visible {
+  .solution-card__link:hover,
+  .solution-card__link:focus-visible {
     color: var(--color-link-hover);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
   }
-  .solution-area__arrow {
+  .solution-card__arrow {
     display: inline-block;
     transition: transform var(--duration-base) var(--easing-out);
   }
-  .solution-area__link:hover .solution-area__arrow {
+  .solution-card__link:hover .solution-card__arrow {
     transform: translateX(2px);
   }
 
-  /* ─────────────────────────────────────────────────────────────────
-     Reveal animation — per-block.
-
-     Each .solution-area has its own .in-view trigger. JS adds
-     .animating on init (no-JS fails open). When an individual area
-     scrolls into view, its in-view class fades up the elements and
-     scales the pull-quote bar in.
-     ───────────────────────────────────────────────────────────────── */
-  .solutions-areas.animating .solutions-areas__heading-block {
+  /* ── Reveal: cards fade/rise, staggered, on section entry. ── */
+  .solutions-areas.animating .solutions-areas__heading-block,
+  .solutions-areas.animating .solution-card {
     opacity: 0;
     transform: translateY(8px);
   }
-  .solutions-areas.animating .solution-area__num,
-  .solutions-areas.animating .solution-area__name,
-  .solutions-areas.animating .solution-area__body,
-  .solutions-areas.animating .solution-area__link {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  /* Heading reveals when the whole section first enters view. */
   .solutions-areas.animating.in-view .solutions-areas__heading-block {
     animation: areas-fade-in 480ms ease-out forwards;
   }
-
-  /* Per-area reveal: each area uses its own .in-view, set independently
-     by the observer. Inside each, items fade up in sequence; the
-     pull-quote bar scales in alongside the hook. */
-  .solutions-areas.animating .solution-area.in-view .solution-area__num {
-    animation: areas-fade-in 420ms ease-out forwards;
+  .solutions-areas.animating.in-view .solution-card {
+    animation: areas-fade-in 460ms ease-out forwards;
   }
-  .solutions-areas.animating .solution-area.in-view .solution-area__name {
-    animation: areas-fade-in 420ms ease-out forwards;
-    animation-delay: 80ms;
-  }
-  .solutions-areas.animating .solution-area.in-view .solution-area__body {
-    animation: areas-fade-in 420ms ease-out forwards;
-    animation-delay: 160ms;
-  }
-  .solutions-areas.animating .solution-area.in-view .solution-area__link {
-    animation: areas-fade-in 420ms ease-out forwards;
-    animation-delay: 240ms;
-  }
+  .solutions-areas.animating.in-view .solution-card:nth-child(1) { animation-delay: 120ms; }
+  .solutions-areas.animating.in-view .solution-card:nth-child(2) { animation-delay: 220ms; }
+  .solutions-areas.animating.in-view .solution-card:nth-child(3) { animation-delay: 320ms; }
+  .solutions-areas.animating.in-view .solution-card:nth-child(4) { animation-delay: 420ms; }
 
   @keyframes areas-fade-in {
     to {
@@ -286,10 +216,7 @@ const areas: Area[] = [
 
   @media (prefers-reduced-motion: reduce) {
     .solutions-areas.animating .solutions-areas__heading-block,
-    .solutions-areas.animating .solution-area__num,
-    .solutions-areas.animating .solution-area__name,
-    .solutions-areas.animating .solution-area__body,
-    .solutions-areas.animating .solution-area__link {
+    .solutions-areas.animating .solution-card {
       opacity: 1 !important;
       transform: none !important;
       animation: none !important;
@@ -298,14 +225,7 @@ const areas: Area[] = [
 </style>
 
 <script>
-  // ─────────────────────────────────────────────────────────
-  // SolutionsAreas — per-block viewport-triggered reveal
-  //
-  // Two observers:
-  //   1. One for the section's heading block (reveals when the section
-  //      first enters view)
-  //   2. One per .solution-area (each reveals when it scrolls in)
-  // ─────────────────────────────────────────────────────────
+  // SolutionsAreas — section-level staggered card reveal on viewport entry.
   function setupSolutionsAreas() {
     const sec = document.querySelector<HTMLElement>(".solutions-areas");
     if (!sec) return;
@@ -319,35 +239,18 @@ const areas: Area[] = [
 
     sec.classList.add("animating");
 
-    // Section-level observer — reveals the heading block on first entry.
-    const sectionObserver = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             sec.classList.add("in-view");
-            sectionObserver.unobserve(entry.target);
+            observer.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.15 }
     );
-    sectionObserver.observe(sec);
-
-    // Per-area observer — each block reveals independently as the user
-    // scrolls through the section.
-    const areaObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            areaObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
-    const areas = sec.querySelectorAll<HTMLElement>(".solution-area");
-    areas.forEach((area) => areaObserver.observe(area));
+    observer.observe(sec);
   }
 
   document.addEventListener("DOMContentLoaded", setupSolutionsAreas);
