@@ -1,0 +1,401 @@
+---
+/*
+  ServicePillars — homepage "what we deliver" section.
+
+  Seven services rendered as a numbered capabilities index (01–07), modeled on
+  PillarIndexRow's row layout but self-contained with its own line icons.
+
+  Scope copy condensed from the old ex-tense.co /services/* pages. Hrefs are
+  placeholders (/services/[slug]) pending the Services-section rework.
+
+  Motion: each row's icon strokes draw in (stroke-dasharray) as the row enters
+  the viewport — same mechanism as ContentOpsStack + the hero DITA tree.
+  prefers-reduced-motion renders everything static.
+
+  Heading/subdeck typography is defined locally because Astro scopes
+  index.astro's .home-section__heading rules to index.astro's own elements.
+*/
+
+interface Service {
+  id: string;
+  name: string;
+  scope: string;
+  href: string;
+}
+
+const services: Service[] = [
+  {
+    id: "technical-writing",
+    name: "Technical Writing",
+    scope:
+      "Topic-based authoring, Simplified Technical English, and regulatory submissions — structured content built to scale across products, languages, and channels.",
+    href: "/services/technical-writing",
+  },
+  {
+    id: "content-strategy",
+    name: "Content Strategy",
+    scope:
+      "Taxonomy, governance, and reuse architecture defined before tooling: legacy audit, reuse matrix, content model.",
+    href: "/services/content-strategy",
+  },
+  {
+    id: "dita-engineering",
+    name: "DITA Engineering",
+    scope:
+      "Semantic content models that drive automation — DITA 1.3/2.0, Schematron validation, SubjectScheme taxonomies, custom specializations.",
+    href: "/services/dita-engineering",
+  },
+  {
+    id: "publishing-engineering",
+    name: "Publishing Engineering",
+    scope:
+      "Pixel-perfect output from structured source — PDF via CSS Paged Media, responsive HTML5, portals, docs-as-code pipelines.",
+    href: "/services/publishing-engineering",
+  },
+  {
+    id: "ccms-services",
+    name: "CCMS Services",
+    scope:
+      "DBA-level administration and Tier 2/3 support for IXIASOFT, Tridion Docs, Heretto, and Paligo — so writers focus on writing.",
+    href: "/services/ccms-services",
+  },
+  {
+    id: "system-integration",
+    name: "System Integration",
+    scope:
+      "Connecting the CCMS to engineering, support, PLM, and translation systems, so content flows without manual handoffs.",
+    href: "/services/system-integration",
+  },
+  {
+    id: "xml-engineering",
+    name: "XML Engineering",
+    scope:
+      "Schema design, transformation pipelines, and validation frameworks that enforce quality at the structural level — before content reaches a reviewer.",
+    href: "/services/xml-engineering",
+  },
+];
+---
+
+<section
+  class="home-section home-section--service-pillars"
+  aria-labelledby="services-heading"
+>
+  <div class="container-data home-section__inner">
+    <div class="home-section__heading-block">
+      <h2 id="services-heading" class="home-section__heading">
+        Seven services. End to end.
+      </h2>
+      <p class="home-section__subdeck">
+        From strategy and authoring through engineering, publishing, and
+        integration — engaged individually or as one operation.
+      </p>
+    </div>
+
+    <ol class="service-index">
+      {services.map((s, i) => (
+        <li class="service-row">
+          <a href={s.href} class="service-row__link">
+            <span class="service-row__num">{String(i + 1).padStart(2, "0")}</span>
+            <span class="service-row__icon" aria-hidden="true">
+              {s.id === "technical-writing" && (
+                <svg class="service-row__svg" viewBox="0 0 24 24" fill="none">
+                  <path d="M6 3 h8 l5 5 v13 H6 Z" />
+                  <path d="M14 3 v5 h5" />
+                  <line x1="9" y1="13" x2="16" y2="13" />
+                  <line x1="9" y1="16" x2="16" y2="16" />
+                  <line x1="9" y1="19" x2="13" y2="19" />
+                </svg>
+              )}
+              {s.id === "content-strategy" && (
+                <svg class="service-row__svg" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="5" r="2" />
+                  <circle cx="5" cy="19" r="2" />
+                  <circle cx="12" cy="19" r="2" />
+                  <circle cx="19" cy="19" r="2" />
+                  <path d="M12 7 V13 M5 13 H19 M5 13 V17 M12 13 V17 M19 13 V17" />
+                </svg>
+              )}
+              {s.id === "dita-engineering" && (
+                <svg class="service-row__svg" viewBox="0 0 24 24" fill="none">
+                  <rect x="9" y="3" width="6" height="4" />
+                  <rect x="3" y="16" width="6" height="4" />
+                  <rect x="15" y="16" width="6" height="4" />
+                  <path d="M12 7 V11 M6 11 H18 M6 11 V16 M18 11 V16" />
+                </svg>
+              )}
+              {s.id === "publishing-engineering" && (
+                <svg class="service-row__svg" viewBox="0 0 24 24" fill="none">
+                  <rect x="2" y="9" width="6" height="6" />
+                  <path d="M8 12 H12" />
+                  <path d="M12 12 L19 5" />
+                  <path d="M12 12 H20" />
+                  <path d="M12 12 L19 19" />
+                </svg>
+              )}
+              {s.id === "ccms-services" && (
+                <svg class="service-row__svg" viewBox="0 0 24 24" fill="none">
+                  <rect x="4" y="4" width="16" height="4" />
+                  <rect x="4" y="10" width="16" height="4" />
+                  <rect x="4" y="16" width="16" height="4" />
+                </svg>
+              )}
+              {s.id === "system-integration" && (
+                <svg class="service-row__svg" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="3" />
+                  <circle cx="4" cy="4" r="1.6" />
+                  <circle cx="20" cy="4" r="1.6" />
+                  <circle cx="4" cy="20" r="1.6" />
+                  <circle cx="20" cy="20" r="1.6" />
+                  <path d="M9.9 9.9 L5.1 5.1 M14.1 9.9 L18.9 5.1 M9.9 14.1 L5.1 18.9 M14.1 14.1 L18.9 18.9" />
+                </svg>
+              )}
+              {s.id === "xml-engineering" && (
+                <svg class="service-row__svg" viewBox="0 0 24 24" fill="none">
+                  <path d="M8 7 L3 12 L8 17" />
+                  <path d="M16 7 L21 12 L16 17" />
+                  <line x1="14" y1="5" x2="10" y2="19" />
+                </svg>
+              )}
+            </span>
+            <div class="service-row__text">
+              <h3 class="service-row__name">{s.name}</h3>
+              <p class="service-row__scope">{s.scope}</p>
+            </div>
+            <span class="service-row__cta">
+              Read more <span class="service-row__arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  /* Section + heading typography mirrored from index.astro (Astro scoping). */
+  .home-section--service-pillars {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  @media (max-width: 767px) {
+    .home-section--service-pillars {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .home-section--service-pillars .home-section__heading-block {
+    max-width: var(--container-prose);
+    margin-bottom: var(--space-12);
+  }
+  .home-section--service-pillars .home-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+  .home-section--service-pillars .home-section__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+
+  /* Index list */
+  .service-index {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .service-row {
+    border-top: var(--border-hairline);
+  }
+  .service-row:last-child {
+    border-bottom: var(--border-hairline);
+  }
+
+  .service-row__link {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding: var(--space-8) 0;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: opacity var(--duration-base) var(--easing-out);
+  }
+  .service-row__link:hover,
+  .service-row__link:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+  }
+
+  /* Desktop: index | icon | text | cta */
+  @media (min-width: 1024px) {
+    .service-row__link {
+      grid-template-columns: auto 64px 1fr auto;
+      gap: var(--space-8);
+      align-items: center;
+    }
+  }
+  /* Tablet: index + icon inline, text + cta beneath */
+  @media (min-width: 600px) and (max-width: 1023px) {
+    .service-row__link {
+      grid-template-columns: auto 1fr;
+      column-gap: var(--space-6);
+      row-gap: var(--space-4);
+      align-items: start;
+    }
+    .service-row__num,
+    .service-row__icon {
+      grid-row: 1;
+    }
+    .service-row__text,
+    .service-row__cta {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .service-row__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary);
+    letter-spacing: 0.08em;
+    align-self: start;
+  }
+  @media (min-width: 1024px) {
+    .service-row__num {
+      align-self: center;
+    }
+  }
+
+  .service-row__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--color-text-primary);
+    transition: color 240ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  .service-row__link:hover .service-row__icon,
+  .service-row__link:focus-visible .service-row__icon {
+    color: var(--color-accent-primary-hover);
+  }
+
+  .service-row__svg {
+    width: 36px;
+    height: 36px;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .service-row__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+    text-wrap: balance;
+  }
+  .service-row__scope {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+    max-width: 64ch;
+  }
+
+  .service-row__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    white-space: nowrap;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .service-row__link:hover .service-row__cta,
+  .service-row__link:focus-visible .service-row__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .service-row__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .service-row__link:hover .service-row__arrow {
+    transform: translateX(2px);
+  }
+
+  /* ── Scroll-draw-in: icon strokes draw as each row enters the viewport ── */
+  .home-section--service-pillars.is-animating .service-row__svg > * {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .home-section--service-pillars.is-animating .service-row.drawn .service-row__svg > * {
+    animation: sp-icon-draw 600ms ease-out forwards;
+  }
+  @keyframes sp-icon-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-section--service-pillars.is-animating .service-row__svg > * {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ServicePillars — per-row icon stroke-draw on scroll.
+  function setupServicePillars() {
+    const section = document.querySelector<HTMLElement>(
+      ".home-section--service-pillars"
+    );
+    if (!section) return;
+    if (section.dataset.spInit === "true") return;
+    section.dataset.spInit = "true";
+
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) return;
+
+    section.classList.add("is-animating");
+
+    const rows = section.querySelectorAll<HTMLElement>(".service-row");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    rows.forEach((row) => observer.observe(row));
+  }
+
+  document.addEventListener("DOMContentLoaded", setupServicePillars);
+  document.addEventListener("astro:page-load", setupServicePillars);
+</script>

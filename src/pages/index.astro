@@ -1,117 +1,38 @@
 ---
 /*
-  / — homepage
+  / — homepage. Reframed 2026: solution-led, cognitive-flow order.
 
-  Spec ref: EXTENSE_DESIGN_BRIEF.md §8
+  Section order (full rationale in docs/reframe-2026/home.md):
+    1.  Hero (HomeHero) — solution-forward H1 + outcome sub-deck
+    2.  Service Pillars (7) — the offer
+    3.  Trust badges — credentials
+    4.  Logo marquee — proof
+    5.  Content Ops Stack — capability layers
+    6.  Content Engineering Lifecycle — workflow stages
+    7.  CTA (CTAModule) — mid-page Sample Content Assessment
+    8.  Why Choose Extense — differentiators + pipeline + toolchain
+    9.  Industries — 5 sector cards
+    10. Footer (BaseLayout)
 
-  Section order:
-    1. TopNav (BaseLayout)
-    2. Hero (Hero.universal)
-    3. Cost-of-being-wrong (DocumentRow.failureMode × 3)
-    4. Four pillars (PillarCard × 4)
-    5. Content Ops Stack (ContentOpsStack) — Strategy → Engineering → Automation → Delivery → Analyze
-    6. Outcome stats (StatBlock.three) — 60/72/85
-    7. Credentials strip (TrustBadges) — 13+/11+/DITA·S1000D/508
-    8. Proof bench (LogoBench.full)
-    9. Audience pivot (AudiencePivotCard × 2)
-   10. CTA (CTAModule, audience: general)
-   11. Footer (BaseLayout)
+  Persistent "Free Assessment" CTA lives in TopNav (sitewide).
+  Locked constraints still apply: no transformation verbs; stat numbers never amber.
 
-  Copy is placeholder pending Phase 4 practitioner session and copy phase.
-  Substantive directives that apply to this page:
-    - No CTA in hero
-    - No transformation language anywhere
-    - Stat numbers in --color-text-primary, never amber
-    - Lifecycle order on pillars: IA → Migration → CCMS → AI-Ready
-    - 60/72/85 trio (full deck of 5 lives only on /about)
+  Removed in the reframe: cost-of-being-wrong failure modes (problem-education),
+  the 4-pillar capabilities row (replaced by the 7 service pillars), the standalone
+  60/72/85 StatBlock (numbers now live in the hero sub-deck), and the public/private
+  AudiencePivotCard (replaced by the 5 industry cards).
 */
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HomeHero from "../components/site/HomeHero.astro";
-import DocumentRow from "../components/site/DocumentRow.astro";
-import PillarIndexRow from "../components/site/PillarIndexRow.astro";
-import ContentOpsStack from "../components/site/ContentOpsStack.astro";
-import StatBlock from "../components/site/StatBlock.astro";
+import ServicePillars from "../components/site/ServicePillars.astro";
 import TrustBadges from "../components/site/TrustBadges.astro";
 import LogoBench from "../components/site/LogoBench.astro";
-import AudiencePivotCard from "../components/site/AudiencePivotCard.astro";
+import ContentOpsStack from "../components/site/ContentOpsStack.astro";
+import ContentLifecycle from "../components/site/ContentLifecycle.astro";
 import CTAModule from "../components/site/CTAModule.astro";
-import AnimatedDivider from "../components/site/AnimatedDivider.astro";
-
-const failureModes = [
-  {
-    eyebrow: "LIFE SCIENCES",
-    heading: "An IFU error triggers an FDA Class I recall.",
-    body: "Direct remediation runs into the millions. Brand damage lasts years. The document was the safety control — and the safety control failed.",
-  },
-  {
-    eyebrow: "DEFENSE",
-    heading: "An S1000D conformance failure triggers a stop-work order.",
-    body: "Payment halts. The contract goes to risk. Cure-notice procedures begin. The data modules have to be reauthored before delivery resumes.",
-  },
-  {
-    eyebrow: "AUTOMOTIVE",
-    heading: "A dealer service-manual error voids OEM warranty exposure.",
-    body: "Claims liability moves from the dealer back to the manufacturer. A single procedure error, replicated across a service network, becomes a multi-million-dollar claim event.",
-  },
-  {
-    eyebrow: "GOVERNMENT",
-    heading: "A regulatory-instruction error invalidates filings across a fiscal year.",
-    body: "Guidance documents that carry a schema-level error propagate into every downstream form, audit reference, and submission. Errata can't reach all of them in time. Penalties and amendments follow.",
-  },
-  {
-    eyebrow: "SEMICONDUCTORS",
-    heading: "A datasheet spec error propagates to every system integrator.",
-    body: "Reference designs anchor to incorrect parameters. Field failures cluster across customers months after launch — and the traceability trail leads back to the source document.",
-  },
-];
-
-const pillars = [
-  {
-    pillar: "ia" as const,
-    name: "Information Architecture",
-    scope: "Schema design, taxonomy, reuse strategy. The decisions that determine what every downstream system can do with your content.",
-    href: "/capabilities/information-architecture",
-  },
-  {
-    pillar: "migration" as const,
-    name: "Content Migration",
-    scope: "Recovery operation. Convert legacy estates from FrameMaker, Word, and unstructured XML into clean, reusable DITA.",
-    href: "/capabilities/content-migration",
-  },
-  {
-    pillar: "ccms" as const,
-    name: "CCMS & Publishing",
-    scope: "Operating system for content, plus the CI/CD that closes the loop from source to published output across every format.",
-    href: "/capabilities/ccms-and-publishing",
-  },
-  {
-    pillar: "ai-ready" as const,
-    name: "AI-Ready Content",
-    scope: "Chunking, metadata, retrieval architecture. The translation layer between structured content and the AI systems that consume it.",
-    href: "/capabilities/ai-ready-content",
-  },
-];
-
-const stats = [
-  {
-    number: "60%",
-    label: "Faster publishing cycles",
-    context: "From quarterly publishing to per-merge releases.",
-  },
-  {
-    number: "72%",
-    label: "Translation cost savings",
-    // Non-breaking spaces inside each phrase so the wrap can only happen at
-    // the regular space between "cuts" and "localization".
-    context: "Single-source reuse cuts localization volume across markets.",
-  },
-  {
-    number: "85%",
-    label: "RAG retrieval precision",
-    context: "Structured content as the difference between accurate retrieval and hallucination.",
-  },
-];
+import WhyChoose from "../components/site/WhyChoose.astro";
+import HomeIndustries from "../components/site/HomeIndustries.astro";
 ---
 
 <BaseLayout
@@ -120,345 +41,44 @@ const stats = [
 >
   <HomeHero />
 
-  <section class="home-section home-section--failure-modes" aria-labelledby="failure-modes-heading">
-    <div class="container-data home-section__inner">
-      <h2 id="failure-modes-heading" class="home-section__heading">
-        What happens when documentation is wrong.
-      </h2>
-      <div class="home-section__failure-stack">
-        {failureModes.map((fm) => (
-          <DocumentRow
-            variant="failureMode"
-            eyebrow={fm.eyebrow}
-            heading={fm.heading}
-            body={fm.body}
-            headingLevel={3}
-          />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="home-section home-section--pillars" aria-labelledby="pillars-heading">
-    <div class="container-data home-section__inner">
-      <div class="home-section__heading-block">
-        <h2 id="pillars-heading" class="home-section__heading">
-          Four capabilities. One lifecycle.
-        </h2>
-        <p class="home-section__subdeck">
-          Most engagements move through more than one. Architecture sets the foundation; migration recovers what's there; CCMS and publishing operate the system; AI-ready content extends it.
-        </p>
-      </div>
-      <ol class="home-section__pillar-index">
-        {pillars.map((p, i) => (
-          <PillarIndexRow
-            num={String(i + 1).padStart(2, "0")}
-            pillar={p.pillar}
-            name={p.name}
-            scope={p.scope}
-            href={p.href}
-          />
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <ContentOpsStack />
-
-  <section class="home-section home-section--stats" aria-labelledby="stats-heading">
-    <div class="container-data home-section__inner">
-      <div class="home-section__heading-block">
-        <h2 id="stats-heading" class="home-section__heading">
-          What changes when you ship it.
-        </h2>
-        <p class="home-section__subdeck">
-          Three outcomes measured across recent production deployments.
-        </p>
-      </div>
-      <StatBlock variant="three" stats={stats} />
-    </div>
-  </section>
+  <ServicePillars />
 
   <TrustBadges />
 
   <section class="home-section home-section--logos" aria-label="Client proof">
-    <LogoBench variant="full" eyebrow="Trusted by Government Agencies, Fortune 500 Companies, & Non-Profit Organizations" />
+    <LogoBench
+      variant="full"
+      eyebrow="Trusted by Government Agencies, Fortune 500 Companies, & Non-Profit Organizations"
+    />
   </section>
 
-  <section class="home-section home-section--pivot" aria-labelledby="pivot-heading">
-    <div class="container-data home-section__inner">
-      <h2 id="pivot-heading" class="home-section__heading home-section__heading--center">
-        Where to next?
-      </h2>
-      <div class="home-section__pivot-grid">
-        <AudiencePivotCard
-          variant="public-sector"
-          eyebrow="Public Sector"
-          heading="For federal agencies and contractors."
-          description="Capability statement, NAICS codes, sole-source eligibility, and past performance with the IRS, the U.S. House, and the U.S. District Courts."
-          href="/industries/government-and-defense"
-          linkLabel="View Agencies"
-        />
-        <AudiencePivotCard
-          variant="private-sector"
-          eyebrow="Private Sector"
-          heading="For commercial buyers and partners."
-          description="Outcomes-led engagements with Toyota, FedEx, Morgan Stanley, and Fortune 500 documentation programs across regulated industries."
-          linkLabel="View Industries"
-          industries={[
-            { label: "Financial Services", href: "/industries/financial-services" },
-            { label: "Life Sciences",      href: "/industries/life-sciences" },
-            { label: "Transportation",     href: "/industries/transportation" },
-            { label: "Insurance",          href: "/industries/insurance" },
-            { label: "Technology",         href: "/industries/technology" },
-          ]}
-        />
-      </div>
-    </div>
-  </section>
+  <ContentOpsStack />
 
-  <AnimatedDivider />
+  <ContentLifecycle />
 
   <CTAModule
     audience="general"
     body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
   />
+
+  <WhyChoose />
+
+  <HomeIndustries />
 </BaseLayout>
 
 <style>
-  .home-section {
-    padding-top: var(--section-pad-default);
-    padding-bottom: var(--section-pad-default);
-  }
-
-
-  /* Hairline section dividers — surgical, not zebra-striped. Sections that
-     follow another light section get a top hairline; sections after the dark
-     failure-modes band don't need one (color change is the divider); the
-     trust-badges strip already has both top + bottom borders of its own.
-     (Ops Stack's border lives in its own component because Astro CSS scoping
-     prevents this stylesheet from reaching a section rendered there.) */
-  .home-section--stats,
-  .home-section--pivot {
-    border-top: var(--border-hairline);
-  }
-
-  /* Align the 60/72/85 outcome stats with the trust badges underneath them,
-     so 60% sits above 13+, 72% above 11+, 85% above the standards badge.
-     The badges run on a 4-column grid; the 3 stats fill columns 1-3 and
-     the 4th column (where the 508 badge sits below) is intentionally
-     empty. Items center-aligned so the text centers line up with the
-     badges' centered text. Desktop only — stacked layouts at smaller
-     widths already read fine. */
-  @media (min-width: 1024px) {
-    .home-section--stats :global(.stat-block--three) {
-      grid-template-columns: repeat(4, 1fr);
-      /* Match the trust-badges gap below so column widths (and therefore
-         column centers) are identical between the two grids. */
-      gap: var(--space-8);
-    }
-    .home-section--stats :global(.stat-block__item) {
-      align-items: center;
-      text-align: center;
-    }
-    /* Spread the three outcome stats across all four badge columns:
-         60% over column 1 (above 13+)
-         72% spanning columns 2-3 (between 11+ and DITA · S1000D)
-         85% over column 4 (above 508). */
-    .home-section--stats :global(.stat-block__item:nth-child(2)) {
-      grid-column: 2 / span 2;
-    }
-    .home-section--stats :global(.stat-block__item:nth-child(3)) {
-      grid-column: 4;
-    }
-    /* Cap the context line width so 60/72/85 sub-copy wraps predictably at
-       any viewport width. Combined with non-breaking spaces inside the 72%
-       context, the wrap falls between "cuts" and "localization" — that
-       string has only one breakable space left. */
-    .home-section--stats :global(.stat-block__context) {
-      max-width: 32ch;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .home-section {
-      padding-top: var(--space-16);
-      padding-bottom: var(--space-16);
-    }
-  }
-
-  .home-section__inner {
-    /* container utility provides max-width + padding */
-  }
-
-  .home-section__heading-block {
-    max-width: var(--container-prose);
-    margin-bottom: var(--space-12);
-  }
-
-  .home-section__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    text-wrap: balance;
-  }
-
-  .home-section__heading--center {
-    text-align: center;
-  }
-
-  .home-section__subdeck {
-    margin-top: var(--space-4);
-    font-family: var(--font-body);
-    font-size: var(--text-body-lg);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-normal);
-    max-width: 60ch;
-    text-wrap: pretty;
-  }
-
-  /* Failure modes section: container-prose width, heading + stack */
-  .home-section--failure-modes .home-section__heading {
-    margin-bottom: var(--space-12);
-  }
-
-  /* Failure modes as a dark band — the page's one moment of visual gravity.
-     Inverts the ink color so the section reads as a strong rhythmic break
-     between the hero and the rest of the white sections. DocumentRow is
-     unchanged; we re-tint its text and hairline rules with :global() since
-     they live inside a scoped component. */
-  .home-section--failure-modes {
-    background-color: #1a1817; /* matches --color-text-primary; the page ink */
-    color: #fffaf3;
-  }
-  .home-section--failure-modes .home-section__heading {
-    color: #fffaf3;
-  }
-  .home-section--failure-modes :global(.doc-row__rule) {
-    border-color: rgba(255, 251, 243, 0.14);
-  }
-  .home-section--failure-modes :global(.doc-row__eyebrow) {
-    color: var(--color-accent-primary);
-  }
-  /* DocumentRow's own scoped rule on .doc-row--failureMode .doc-row__heading
-     has specificity (0,4,0) — same as the override below. In dev mode the
-     homepage override wins on source order; in production, Astro's
-     inlineStylesheets pass injects DocumentRow's scoped <style> block AFTER
-     the homepage's external CSS link, so DocumentRow wins by source order
-     and the heading becomes dark-on-dark (invisible). Repeat the
-     .doc-row__heading class in the selector so this override sits at (0,5,0)
-     and wins on specificity regardless of cascade order. Same fix for body. */
-  .home-section--failure-modes :global(.doc-row--failureMode .doc-row__heading.doc-row__heading) {
-    color: #fffaf3;
-  }
-  .home-section--failure-modes :global(.doc-row--failureMode .doc-row__body.doc-row__body) {
-    color: #c4bbb1;
-  }
-
-  /* Failure modes grid — 5 industry scenarios.
-       Mobile (<600):     single column stack
-       Tablet (600-1023): 2 columns
-       Desktop (1024+):   6-column underlying grid; each card spans 2 cols.
-                          Row 1: cards 1-3 at cols 1-2, 3-4, 5-6 (3 across).
-                          Row 2: cards 4-5 at cols 2-3 and 4-5 (centered 2). */
-  .home-section__failure-stack {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-12);
-  }
-
-  @media (min-width: 600px) {
-    .home-section__failure-stack {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-8);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .home-section__failure-stack {
-      grid-template-columns: repeat(6, 1fr);
-      gap: var(--space-8);
-    }
-    .home-section__failure-stack > :global(.doc-row) {
-      grid-column: span 2;
-    }
-    .home-section__failure-stack > :global(.doc-row:nth-child(4)) {
-      grid-column: 2 / span 2;
-    }
-    .home-section__failure-stack > :global(.doc-row:nth-child(5)) {
-      grid-column: 4 / span 2;
-    }
-  }
-
-  /* Disable DocumentRow's stacked-sibling margin inside the grid -- the grid
-     handles spacing now. Without this, cards 2-5 would shift down by the
-     --space-12 margin-top within their grid cells.
-
-     Specificity bump (same root cause as the heading-color fix below):
-     DocumentRow's own .doc-row + .doc-row rule compiles to (0,4,0) once
-     Astro adds the scope attributes. In production, Astro inlines
-     DocumentRow's <style> AFTER the homepage's external CSS link, so an
-     equal-specificity homepage override loses by source order and the
-     stacked-margin reasserts itself — pushing the DEFENSE and AUTOMOTIVE
-     cards (and the row-2 cards) down by var(--space-12) inside their grid
-     cells. Repeating .doc-row in the selector lifts this rule to (0,5,0)
-     so it wins regardless of source order. */
-  .home-section__failure-stack :global(.doc-row + .doc-row.doc-row) {
-    margin-top: 0;
-  }
-
-  /* Pillars grid: 4-up desktop, 2×2 tablet, single column mobile */
-  .home-section__pillar-index {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  /* Legacy 4-up pillar grid (kept for any future use) */
-  .home-section__pillar-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-12);
-  }
-
-  @media (min-width: 600px) {
-    .home-section__pillar-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-8);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .home-section__pillar-grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-8);
-    }
-  }
-
-  /* Logos section uses LogoBench's own container-page. Extra padding-top so
-     the "Trusted by..." eyebrow and marquee don't read as crowded against
-     the trust badges strip directly above. */
+  /* Only the logo-marquee section is composed inline here; every other section
+     is a self-contained component with its own padding + hairline divider.
+     Extra top padding so the marquee doesn't read as crowded against the trust
+     badges strip directly above it. */
   .home-section--logos {
     padding-top: calc(var(--section-pad-default) + var(--space-12));
     padding-bottom: var(--section-pad-default);
   }
-
-  /* Audience pivot grid: 2-up desktop, stacked mobile */
-  .home-section__pivot-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-    margin-top: var(--space-12);
-  }
-
-  @media (min-width: 768px) {
-    .home-section__pivot-grid {
-      grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 767px) {
+    .home-section--logos {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-16);
     }
   }
 </style>

@@ -1,0 +1,243 @@
+---
+/*
+  WhyChoose — homepage "why us" section.
+
+  Three differentiators + the Author→Manage→Publish delivery pipeline + the
+  toolchain badge row. Content from the old ex-tense.co "Why Organizations
+  Choose Extense" section, with the prohibited "Enterprise Partner" /
+  woman-/minority-owned card replaced by "Regulated-Industry Track Record".
+
+  The old dark-blue tech-badge pills are restyled to hairline/mono badges to
+  fit the new design. Static (no scroll animation) — the page's motion budget
+  is carried by the hero, Ops Stack, Service Pillars, and Lifecycle.
+
+  Heading typography defined locally (Astro scopes index.astro's rules).
+*/
+
+interface Differentiator {
+  title: string;
+  body: string;
+}
+
+const differentiators: Differentiator[] = [
+  {
+    title: "Standards-First Engineering",
+    body: "Every engagement starts with proper information architecture — DITA specializations, Schematron rules, and content models designed for long-term maintainability.",
+  },
+  {
+    title: "End-to-End Ownership",
+    body: "From content strategy through publishing automation — a single team that understands the full stack. No hand-offs, no knowledge gaps.",
+  },
+  {
+    title: "Regulated-Industry Track Record",
+    body: "Thirteen-plus years engineering documentation for federal agencies, Fortune 500 manufacturers, life sciences, and financial institutions — sectors where a content error carries real downstream cost.",
+  },
+];
+
+const pipeline = [
+  { name: "Author", desc: "DITA XML & Structured Content" },
+  { name: "Manage", desc: "CCMS Version Control & Review" },
+  { name: "Publish", desc: "PDF · HTML5 · API · Mobile · IETM" },
+];
+
+const stack = [
+  "DITA-OT",
+  "XSLT 3.0",
+  "Schematron",
+  "IXIASOFT",
+  "Paligo",
+  "S1000D",
+  "Oxygen XML",
+  "XQuery",
+  "CI/CD",
+];
+---
+
+<section class="home-section home-section--why" aria-labelledby="why-heading">
+  <div class="container-data home-section__inner">
+    <div class="home-section__heading-block">
+      <h2 id="why-heading" class="home-section__heading">
+        Why Organizations Choose Extense
+      </h2>
+      <p class="home-section__subdeck">
+        We bring deep domain expertise where precision and compliance are
+        non-negotiable.
+      </p>
+    </div>
+
+    <div class="why-cards">
+      {differentiators.map((d) => (
+        <article class="why-card">
+          <h3 class="why-card__title">{d.title}</h3>
+          <p class="why-card__body">{d.body}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="why-delivery">
+      <div class="why-pipeline" role="list">
+        {pipeline.map((stage, i) => (
+          <>
+            <div class="why-pipeline__stage" role="listitem">
+              <span class="why-pipeline__name">{stage.name}</span>
+              <span class="why-pipeline__desc">{stage.desc}</span>
+            </div>
+            {i < pipeline.length - 1 && (
+              <span class="why-pipeline__arrow" aria-hidden="true">→</span>
+            )}
+          </>
+        ))}
+      </div>
+
+      <ul class="why-stack" aria-label="Toolchain">
+        {stack.map((tool) => (
+          <li class="why-stack__badge">{tool}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Section + heading typography mirrored from index.astro (Astro scoping). */
+  .home-section--why {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  @media (max-width: 767px) {
+    .home-section--why {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .home-section--why .home-section__heading-block {
+    max-width: var(--container-prose);
+    margin-bottom: var(--space-12);
+  }
+  .home-section--why .home-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+  .home-section--why .home-section__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+
+  /* Differentiator cards — hairline, radius-none, no shadow (brand card pattern) */
+  .why-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .why-cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .why-card {
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+  }
+  .why-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .why-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Delivery pipeline + toolchain, grouped in one hairline container */
+  .why-delivery {
+    margin-top: var(--space-12);
+    border: var(--border-hairline);
+    padding: var(--space-8);
+  }
+
+  .why-pipeline {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+  .why-pipeline__stage {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .why-pipeline__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    line-height: var(--leading-snug);
+  }
+  .why-pipeline__desc {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-snug);
+  }
+  .why-pipeline__arrow {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    color: var(--color-accent-primary-hover);
+    font-size: 18px;
+    line-height: 1;
+  }
+  @media (max-width: 639px) {
+    .why-pipeline {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-3);
+    }
+    .why-pipeline__arrow {
+      align-self: center;
+      transform: rotate(90deg);
+    }
+  }
+
+  .why-stack {
+    list-style: none;
+    margin: var(--space-8) 0 0 0;
+    padding: var(--space-8) 0 0 0;
+    border-top: var(--border-hairline);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .why-stack__badge {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+  }
+</style>

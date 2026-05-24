@@ -1,0 +1,242 @@
+---
+/*
+  ContentLifecycle — homepage "how content flows" section.
+
+  The five lifecycle stages as a left-to-right arrow-connected sequence:
+  Model → Author → Manage → Publish → Analyze. Content from the old
+  ex-tense.co "Content Engineering Lifecycle" section.
+
+  Deliberately distinct from ContentOpsStack (which is a bordered 5-column card
+  grid with icons + numbers): this is a borderless arrow-connected track, so the
+  two "how we work" sections read as different lenses, not a repeat.
+
+  Motion: stages fade/rise in left-to-right on viewport entry.
+  prefers-reduced-motion renders everything static.
+*/
+
+interface Stage {
+  name: string;
+  desc: string;
+}
+
+const stages: Stage[] = [
+  { name: "Model", desc: "Define Schema & Taxonomy" },
+  { name: "Author", desc: "Structured XML Writing" },
+  { name: "Manage", desc: "CCMS Version Control" },
+  { name: "Publish", desc: "Automated PDF / HTML5" },
+  { name: "Analyze", desc: "Usage Metrics" },
+];
+---
+
+<section
+  class="home-section home-section--lifecycle"
+  aria-labelledby="lifecycle-heading"
+>
+  <div class="container-data home-section__inner">
+    <div class="home-section__heading-block">
+      <h2 id="lifecycle-heading" class="home-section__heading">
+        The Content Engineering Lifecycle
+      </h2>
+      <p class="home-section__subdeck">
+        We don't just write words. We engineer information systems.
+      </p>
+    </div>
+
+    <div class="lifecycle__track" role="list">
+      {stages.map((stage, i) => (
+        <>
+          <div class="lifecycle__stage" role="listitem">
+            <span class="lifecycle__stage-name">{stage.name}</span>
+            <span class="lifecycle__stage-desc">{stage.desc}</span>
+          </div>
+          {i < stages.length - 1 && (
+            <span class="lifecycle__arrow" aria-hidden="true">→</span>
+          )}
+        </>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Section + heading typography mirrored from index.astro (Astro scoping). */
+  .home-section--lifecycle {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  @media (max-width: 767px) {
+    .home-section--lifecycle {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .home-section--lifecycle .home-section__heading-block {
+    max-width: var(--container-prose);
+    margin-bottom: var(--space-12);
+  }
+  .home-section--lifecycle .home-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+  .home-section--lifecycle .home-section__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+
+  /* Track */
+  .lifecycle__track {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .lifecycle__stage {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--color-border-subtle);
+  }
+
+  .lifecycle__stage-name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    line-height: var(--leading-snug);
+  }
+  .lifecycle__stage-desc {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-snug);
+  }
+
+  .lifecycle__arrow {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    padding-top: var(--space-4);
+    color: var(--color-accent-primary-hover);
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* Tablet: 3 + 2 wrap is awkward; keep the row but let stages shrink.
+     Mobile: stack vertically, arrows rotate to point down. */
+  @media (max-width: 639px) {
+    .lifecycle__track {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-2);
+    }
+    .lifecycle__stage {
+      flex: none;
+    }
+    .lifecycle__arrow {
+      align-self: center;
+      padding-top: var(--space-2);
+      transform: rotate(90deg);
+    }
+  }
+
+  /* ── Scroll reveal: stages rise/fade left-to-right ── */
+  .home-section--lifecycle.is-animating .lifecycle__stage,
+  .home-section--lifecycle.is-animating .lifecycle__arrow {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__stage,
+  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow {
+    animation: lc-reveal 420ms ease-out forwards;
+  }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(1) { animation-delay: 0ms; }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow:nth-child(2) { animation-delay: 120ms; }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(3) { animation-delay: 200ms; }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow:nth-child(4) { animation-delay: 320ms; }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(5) { animation-delay: 400ms; }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow:nth-child(6) { animation-delay: 520ms; }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(7) { animation-delay: 600ms; }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__arrow:nth-child(8) { animation-delay: 720ms; }
+  .home-section--lifecycle.is-animating.drawn .lifecycle__stage:nth-child(9) { animation-delay: 800ms; }
+
+  @keyframes lc-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Mobile arrows keep their rotation through the reveal. */
+  @media (max-width: 639px) {
+    @keyframes lc-reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0) rotate(90deg);
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-section--lifecycle.is-animating .lifecycle__stage,
+    .home-section--lifecycle.is-animating .lifecycle__arrow {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    @media (max-width: 639px) {
+      .home-section--lifecycle.is-animating .lifecycle__arrow {
+        transform: rotate(90deg) !important;
+      }
+    }
+  }
+</style>
+
+<script>
+  // ContentLifecycle — staggered reveal on viewport entry.
+  function setupLifecycle() {
+    const section = document.querySelector<HTMLElement>(
+      ".home-section--lifecycle"
+    );
+    if (!section) return;
+    if (section.dataset.lcInit === "true") return;
+    section.dataset.lcInit = "true";
+
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) return;
+
+    section.classList.add("is-animating");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            section.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(section);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupLifecycle);
+  document.addEventListener("astro:page-load", setupLifecycle);
+</script>

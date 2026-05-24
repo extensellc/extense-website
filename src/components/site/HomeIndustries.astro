@@ -1,0 +1,197 @@
+---
+/*
+  HomeIndustries — homepage "your sector" section.
+
+  Five industry cards restored from the old ex-tense.co "Tailored for
+  High-Stakes Industries" section, rendered in the new design (hairline cards,
+  whole-card link). Replaces the public/private AudiencePivotCard.
+
+  "Automotive" was relabeled "Transportation" per decision; the old VIN copy is
+  retained and it links to /industries/transportation.
+
+  Heading typography defined locally (Astro scopes index.astro's rules).
+*/
+
+interface Industry {
+  name: string;
+  desc: string;
+  href: string;
+}
+
+const industries: Industry[] = [
+  {
+    name: "Government & Defense",
+    desc: "S1000D compliance and mission-critical documentation support.",
+    href: "/industries/government-and-defense",
+  },
+  {
+    name: "Life Sciences",
+    desc: "Labeling, regulatory submission content, and FDA validation.",
+    href: "/industries/life-sciences",
+  },
+  {
+    name: "Transportation",
+    desc: "VIN-specific customization and after-sales service portal data.",
+    href: "/industries/transportation",
+  },
+  {
+    name: "Financial Services",
+    desc: "Secure, audit-ready policy and procedure management systems.",
+    href: "/industries/financial-services",
+  },
+  {
+    name: "Insurance",
+    desc: "Product Disclosure Statements (PDS) and claims processing flows.",
+    href: "/industries/insurance",
+  },
+];
+---
+
+<section
+  class="home-section home-section--industries"
+  aria-labelledby="industries-heading"
+>
+  <div class="container-data home-section__inner">
+    <div class="home-section__heading-block">
+      <h2 id="industries-heading" class="home-section__heading">
+        Tailored for High-Stakes Industries
+      </h2>
+      <p class="home-section__subdeck">
+        We understand the compliance and precision required in regulated sectors.
+      </p>
+    </div>
+
+    <ul class="industries-grid">
+      {industries.map((ind) => (
+        <li class="industries-grid__item">
+          <a href={ind.href} class="industry-tile">
+            <h3 class="industry-tile__name">{ind.name}</h3>
+            <p class="industry-tile__desc">{ind.desc}</p>
+            <span class="industry-tile__cta">
+              Learn more <span class="industry-tile__arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Section + heading typography mirrored from index.astro (Astro scoping). */
+  .home-section--industries {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  @media (max-width: 767px) {
+    .home-section--industries {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  .home-section--industries .home-section__heading-block {
+    max-width: var(--container-prose);
+    margin-bottom: var(--space-12);
+  }
+  .home-section--industries .home-section__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+  .home-section--industries .home-section__subdeck {
+    margin-top: var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+
+  /* Grid: 1 / 2 / 3 columns (5 cards → 3 + 2 on desktop) */
+  .industries-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 600px) {
+    .industries-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .industries-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .industries-grid__item {
+    display: flex;
+  }
+
+  .industry-tile {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+  .industry-tile:hover,
+  .industry-tile:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+  }
+
+  .industry-tile__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .industry-tile__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .industry-tile__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .industry-tile:hover .industry-tile__cta,
+  .industry-tile:focus-visible .industry-tile__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .industry-tile__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .industry-tile:hover .industry-tile__arrow {
+    transform: translateX(2px);
+  }
+</style>

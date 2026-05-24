@@ -111,6 +111,7 @@ function isActive(item: NavItem): boolean {
       <Logo height={80} />
     </a>
 
+    <div class="topnav__actions">
     <nav class="topnav__nav" aria-label="Main navigation">
       <ul class="topnav__list">
         {navItems.map((item) => {
@@ -156,6 +157,8 @@ function isActive(item: NavItem): boolean {
       </ul>
     </nav>
 
+    <a href="/contact" class="topnav__cta">Free Assessment</a>
+
     <button
       type="button"
       class="topnav__hamburger"
@@ -178,6 +181,7 @@ function isActive(item: NavItem): boolean {
         <line x1="4" y1="17" x2="20" y2="17"></line>
       </svg>
     </button>
+    </div>
   </div>
 
   <!-- Mobile drawer -->
@@ -250,6 +254,8 @@ function isActive(item: NavItem): boolean {
           );
         })}
       </ul>
+
+      <a href="/contact" class="topnav__drawer-cta">Free Assessment</a>
     </div>
   </div>
 </header>
@@ -446,6 +452,53 @@ function isActive(item: NavItem): boolean {
     font-weight: var(--weight-medium);
   }
 
+  /* Right-side actions group: nav + CTA at desktop, hamburger at mobile.
+     Grouped on the right (via .topnav__inner space-between) so the nav links
+     stay right-aligned, matching the original layout intent. */
+  .topnav__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  /* Persistent "Free Assessment" CTA. Hidden on mobile (the drawer carries its
+     own); shown alongside the nav at the desktop breakpoint. Amber gradient
+     matches the CTAModule primary button. */
+  .topnav__cta {
+    display: none;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    background-color: var(--color-accent-primary);
+    background-image: linear-gradient(
+      135deg,
+      var(--color-logo-gradient-1) 0%,
+      var(--color-accent-primary) 100%
+    );
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--duration-base) var(--easing-out);
+  }
+  @media (min-width: 1024px) {
+    .topnav__cta {
+      display: inline-block;
+    }
+  }
+  .topnav__cta:hover {
+    background-image: none;
+    background-color: var(--color-accent-primary-hover);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+  .topnav__cta:active {
+    background-image: none;
+    background-color: var(--color-accent-primary-pressed);
+    color: var(--color-page-bg);
+  }
+
   /* Hamburger */
   .topnav__hamburger {
     display: flex;
@@ -551,6 +604,33 @@ function isActive(item: NavItem): boolean {
     font-size: var(--text-body);
     font-weight: var(--weight-regular);
     border-bottom: none;
+  }
+
+  /* Mobile drawer CTA — full-width primary button at the foot of the drawer. */
+  .topnav__drawer-cta {
+    display: block;
+    margin-top: var(--space-8);
+    padding: 14px 28px;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    background-color: var(--color-accent-primary);
+    background-image: linear-gradient(
+      135deg,
+      var(--color-logo-gradient-1) 0%,
+      var(--color-accent-primary) 100%
+    );
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+  .topnav__drawer-cta:hover,
+  .topnav__drawer-cta:focus-visible {
+    background-image: none;
+    background-color: var(--color-accent-primary-hover);
+    color: var(--color-text-primary);
+    text-decoration: none;
   }
 
   /* Lock scroll on body when drawer is open */
