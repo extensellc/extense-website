@@ -1,0 +1,528 @@
+---
+/*
+  /services/technical-writing-content-development — service detail page.
+
+  First of the 7 /services/<slug> detail sub-pages. Built bespoke, reusing the
+  universal atoms (Hero, CTAModule, SiblingsBreadcrumb). Modeled on the old
+  ex-tense.co page, re-skinned to the new design system.
+
+  Shape: Hero -> sibling switcher -> Precision in Every Sentence (3 cards) ->
+  Documentation Types We Deliver (6 cards, 3+3) -> Our Quality Standard
+  (four-gate strip) -> Related Services (2 cards) -> CTA-as-closer.
+
+  Doc: docs/reframe-2026/technical-writing-content-development.md
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import SiblingsBreadcrumb from "../../components/nav/SiblingsBreadcrumb.astro";
+
+interface Feature {
+  icon: "modules" | "globe" | "pencil";
+  name: string;
+  desc: string;
+}
+
+const features: Feature[] = [
+  {
+    icon: "modules",
+    name: "Topic-Based Authoring",
+    desc: "Every concept, task, and reference is a standalone, reusable unit. We design topic hierarchies that support mix-and-match assembly for different audiences — operator guides, admin manuals, and API references — from the same source pool.",
+  },
+  {
+    icon: "globe",
+    name: "Simplified Technical English",
+    desc: "We write to ASD-STE100 — limiting vocabulary to ~900 approved words, enforcing sentence-length constraints, and eliminating ambiguity. The result: 30–40% reduction in translation cost and content that reads identically across cultures.",
+  },
+  {
+    icon: "pencil",
+    name: "Minimalist Design",
+    desc: "We focus on the instructional core. If the user doesn't need theory to complete the task, we move the theory to a separate concept topic. Every sentence must earn its place — reducing cognitive load and support ticket volume.",
+  },
+];
+
+interface DocType {
+  icon: "book" | "code" | "regdoc" | "wrench" | "bell" | "monitor";
+  name: string;
+  desc: string;
+}
+
+const docTypes: DocType[] = [
+  {
+    icon: "book",
+    name: "User & Admin Guides",
+    desc: "Task-oriented documentation with conditional profiling for different user roles — operators, administrators, and developers — from the same DITA source.",
+  },
+  {
+    icon: "code",
+    name: "API & Developer Docs",
+    desc: "OpenAPI/Swagger integration, code samples, endpoint reference, and getting-started tutorials. We merge auto-generated API specs with human-authored conceptual content.",
+  },
+  {
+    icon: "regdoc",
+    name: "Regulatory Submissions",
+    desc: "FDA eSTAR packages, S1000D data modules, SPL drug labels, and compliance documentation that meets the exact structural requirements of the target authority.",
+  },
+  {
+    icon: "wrench",
+    name: "Installation & Maintenance",
+    desc: "Step-by-step procedures with safety admonitions, illustrated parts catalogs, and troubleshooting decision trees for field service teams.",
+  },
+  {
+    icon: "bell",
+    name: "Release Notes & Changelogs",
+    desc: "Automated release note generation from JIRA/Azure DevOps tickets, merged with editorial summaries. Versioned, searchable, and linked to the affected documentation.",
+  },
+  {
+    icon: "monitor",
+    name: "UX Microcopy & In-App Help",
+    desc: "Tooltips, error messages, onboarding flows, and context-sensitive help strings authored in DITA and delivered as JSON snippets directly into your application UI.",
+  },
+];
+
+const gates = [
+  { num: "01", label: "Structural validation" },
+  { num: "02", label: "Terminology compliance" },
+  { num: "03", label: "Editorial review" },
+  { num: "04", label: "Output QA" },
+];
+
+interface Related {
+  name: string;
+  href: string;
+  desc: string;
+}
+
+const related: Related[] = [
+  {
+    name: "Structured Content Strategy",
+    href: "/services/structured-content-strategy",
+    desc: "Information architecture, taxonomy design, and content governance frameworks.",
+  },
+  {
+    name: "DITA Engineering",
+    href: "/services/dita-engineering",
+    desc: "Topic modeling, specialization, and constraint modules for scalable content architectures.",
+  },
+];
+---
+
+<BaseLayout
+  title="Technical Writing & Content Development — Extense LLC"
+  description="Information engineering, not just writing. Extense builds structured content with Simplified Technical English (ASD-STE100), topic-based authoring, and a four-gate quality review — from quick-start guides to 50,000-page technical data packages, cutting translation cost 30–40%."
+>
+  <Hero
+    variant="universal"
+    title="Technical Writing & Content Development"
+    subdeck="Information engineering, not just writing. We build structured content that scales from a 10-page quick-start to a 50,000-page data package &mdash; and cuts translation cost 30&ndash;40%."
+  />
+
+  <SiblingsBreadcrumb
+    variant="services"
+    current="/services/technical-writing-content-development"
+  />
+
+  <section class="twc-section" aria-labelledby="precision-heading">
+    <div class="container-page twc-section__inner">
+      <div class="twc-heading-block">
+        <h2 id="precision-heading" class="twc-heading">Precision in Every Sentence</h2>
+        <p class="twc-intro">
+          Technical writing is an engineering discipline. We employ Simplified Technical English (STE), minimalist principles, and information typing to ensure every topic is clear, translatable, and reusable.
+        </p>
+      </div>
+
+      <ul class="twc-features-grid">
+        {features.map((f) => (
+          <li class="twc-card">
+            <span class="twc-card__icon" aria-hidden="true">
+              {f.icon === "modules" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1" /><rect x="11" y="3" width="6" height="6" rx="1" /><rect x="3" y="11" width="6" height="6" rx="1" /><rect x="11" y="11" width="6" height="6" rx="1" /></svg>
+              )}
+              {f.icon === "globe" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" /><line x1="2.5" y1="10" x2="17.5" y2="10" /><path d="M10 2.5 c3.2 2.4 3.2 12.6 0 15 c-3.2 -2.4 -3.2 -12.6 0 -15 Z" /></svg>
+              )}
+              {f.icon === "pencil" && (
+                <svg viewBox="0 0 20 20"><path d="M3 17 l1-4 L13 4 l3 3 L7 16 Z" /><line x1="11.5" y1="5.5" x2="14.5" y2="8.5" /></svg>
+              )}
+            </span>
+            <h3 class="twc-card__title">{f.name}</h3>
+            <p class="twc-card__body">{f.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="twc-section" aria-labelledby="doctypes-heading">
+    <div class="container-page twc-section__inner">
+      <div class="twc-heading-block">
+        <h2 id="doctypes-heading" class="twc-heading">Documentation Types We Deliver</h2>
+        <p class="twc-intro">
+          From 10-page quick-start guides to 50,000-page technical data packages — we match the deliverable to the audience and regulatory context.
+        </p>
+      </div>
+
+      <ul class="twc-doctypes-grid">
+        {docTypes.map((d) => (
+          <li class="twc-card">
+            <span class="twc-card__icon" aria-hidden="true">
+              {d.icon === "book" && (
+                <svg viewBox="0 0 20 20"><path d="M10 5 C8 3.6 5.2 3.6 3 4.2 V15.2 C5.2 14.6 8 14.6 10 16 C12 14.6 14.8 14.6 17 15.2 V4.2 C14.8 3.6 12 3.6 10 5 Z" /><line x1="10" y1="5" x2="10" y2="16" /></svg>
+              )}
+              {d.icon === "code" && (
+                <svg viewBox="0 0 20 20"><polyline points="7,6 3,10 7,14" /><polyline points="13,6 17,10 13,14" /></svg>
+              )}
+              {d.icon === "regdoc" && (
+                <svg viewBox="0 0 20 20"><path d="M5 2.5 H11 L15.5 7 V16.5 a1 1 0 0 1 -1 1 H5 a1 1 0 0 1 -1 -1 V3.5 a1 1 0 0 1 1 -1 Z" /><polyline points="11,2.5 11,7 15.5,7" /><polyline points="6.8,12 8.8,14 13,9.8" /></svg>
+              )}
+              {d.icon === "wrench" && (
+                <svg viewBox="0 0 20 20"><path d="M13.8 2.8 a3.6 3.6 0 0 0 -4.5 4.7 L3 13.8 a1.6 1.6 0 0 0 2.2 2.2 l6.3 -6.3 a3.6 3.6 0 0 0 4.7 -4.5 l-2.4 2.4 l-2.2 -2.2 Z" /></svg>
+              )}
+              {d.icon === "bell" && (
+                <svg viewBox="0 0 20 20"><path d="M6 8.5 a4 4 0 0 1 8 0 c0 3.5 1.2 4.5 1.8 5.5 H4.2 C4.8 13 6 12 6 8.5 Z" /><path d="M8.4 16.5 a1.8 1.8 0 0 0 3.2 0" /></svg>
+              )}
+              {d.icon === "monitor" && (
+                <svg viewBox="0 0 20 20"><rect x="2.5" y="4" width="15" height="9.5" rx="1" /><line x1="7" y1="16.5" x2="13" y2="16.5" /><line x1="10" y1="13.5" x2="10" y2="16.5" /></svg>
+              )}
+            </span>
+            <h3 class="twc-card__title">{d.name}</h3>
+            <p class="twc-card__body">{d.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="twc-section" aria-labelledby="quality-heading">
+    <div class="container-page twc-section__inner">
+      <div class="twc-quality">
+        <h2 id="quality-heading" class="twc-quality__heading">Our Quality Standard</h2>
+        <p class="twc-quality__body">
+          Every deliverable passes a four-gate review: structural validation (Schematron), terminology compliance (STE word list), editorial review (peer + SME), and output QA (visual + accessibility). We don't ship content that hasn't cleared all four.
+        </p>
+        <ol class="twc-gates">
+          {gates.map((g) => (
+            <li class="twc-gate">
+              <span class="twc-gate__num">{g.num}</span>
+              <span class="twc-gate__label">{g.label}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="twc-section twc-related-section" aria-labelledby="related-heading">
+    <div class="container-page twc-section__inner">
+      <div class="twc-heading-block">
+        <h2 id="related-heading" class="twc-heading">Related Services</h2>
+      </div>
+
+      <ul class="twc-related-grid">
+        {related.map((r) => (
+          <li class="twc-related-card-item">
+            <a href={r.href} class="twc-related-card">
+              <span class="twc-related-card__eyebrow">Service</span>
+              <h3 class="twc-related-card__title">{r.name}</h3>
+              <p class="twc-related-card__body">{r.desc}</p>
+              <span class="twc-related-card__cta">
+                Explore <span class="twc-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    body="Send us a 20-page sample of your existing documentation. We'll analyze readability grade, reuse potential, STE compliance, and translation-cost impact — no commitment required."
+  />
+</BaseLayout>
+
+<style>
+  .twc-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+
+  @media (max-width: 767px) {
+    .twc-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Shared section heading block ─── */
+  .twc-heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
+  }
+
+  .twc-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .twc-intro {
+    margin: var(--space-4) auto 0 auto;
+    max-width: 80ch;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  /* ─── Card grids ─── */
+  .twc-features-grid,
+  .twc-doctypes-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 600px) {
+    .twc-doctypes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 768px) {
+    .twc-features-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .twc-doctypes-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ─── Card (feature + doc-type) ─── */
+  .twc-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+  }
+
+  .twc-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary-hover);
+    margin-bottom: var(--space-5);
+  }
+  .twc-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .twc-card__icon svg circle,
+  .twc-card__icon svg ellipse,
+  .twc-card__icon svg line,
+  .twc-card__icon svg polyline,
+  .twc-card__icon svg rect,
+  .twc-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .twc-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .twc-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Quality Standard callout ─── */
+  .twc-quality {
+    background-color: var(--color-surface-elevated);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-12);
+  }
+  @media (max-width: 767px) {
+    .twc-quality {
+      padding: var(--space-8);
+    }
+  }
+
+  .twc-quality__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+
+  .twc-quality__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-8) 0;
+    max-width: 80ch;
+    text-wrap: pretty;
+  }
+
+  .twc-gates {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6) var(--space-8);
+  }
+  @media (min-width: 768px) {
+    .twc-gates {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .twc-gate {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--color-accent-primary);
+  }
+
+  .twc-gate__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary-pressed);
+  }
+
+  .twc-gate__label {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    line-height: var(--leading-snug);
+    text-wrap: balance;
+  }
+
+  /* ─── Related Services ─── */
+  .twc-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .twc-related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .twc-related-card-item {
+    display: flex;
+  }
+
+  .twc-related-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .twc-related-card:hover,
+  .twc-related-card:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+
+  .twc-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+
+  .twc-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+
+  .twc-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+
+  .twc-related-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .twc-related-card:hover .twc-related-card__cta,
+  .twc-related-card:focus-visible .twc-related-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .twc-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .twc-related-card:hover .twc-related-card__arrow {
+    transform: translateX(2px);
+  }
+</style>

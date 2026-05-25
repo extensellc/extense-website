@@ -7,7 +7,9 @@
   Variants follow .audienceCategory naming pattern (extensible):
     .pillars    — IA · Migration · CCMS · AI-Ready (lifecycle order, meaningful)
     .industries — Financial Services · Life Sciences · Automotive · Insurance (stable order)
-    .services   — Project-Based · Staff Augmentation · Managed Services (work-state order)
+    .services   — the 7 expert services, content-lifecycle order (Technical
+                  Writing → Content Strategy → DITA → Publishing → CCMS →
+                  System Integration → XML)
 
   Visual treatment:
     - container-prose centered, hairline rules above and below, internal padding space-3
@@ -50,9 +52,13 @@ const industrySiblings: Sibling[] = [
 ];
 
 const serviceSiblings: Sibling[] = [
-  { label: "Project-Based", href: "/services/project-based" },
-  { label: "Staff Augmentation", href: "/services/staff-augmentation" },
-  { label: "Managed Services", href: "/services/managed-services" },
+  { label: "Technical Writing", href: "/services/technical-writing-content-development" },
+  { label: "Content Strategy", href: "/services/structured-content-strategy" },
+  { label: "DITA Engineering", href: "/services/dita-engineering" },
+  { label: "Publishing Engineering", href: "/services/publishing-engineering" },
+  { label: "CCMS Services", href: "/services/ccms-services" },
+  { label: "System Integration", href: "/services/system-integration" },
+  { label: "XML Engineering", href: "/services/xml-engineering" },
 ];
 
 const { variant, current } = Astro.props;
@@ -63,7 +69,7 @@ const siblings =
 
 const navLabel =
   variant === "pillars" ? "Capability lifecycle navigation" :
-  variant === "services" ? "Engagement model navigation" :
+  variant === "services" ? "Services navigation" :
   "Industries navigation";
 ---
 
