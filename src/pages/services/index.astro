@@ -147,7 +147,101 @@ const axisLabels = [
     variant="universal"
     title="Our Services"
     subdeck="From authoring to automation, we provide the expertise to optimize your content operations — so your documentation ships on schedule, stays consistent across every channel, and gives your AI clean, structured source to draw from."
-  />
+  >
+    <div class="svc-hero-visual">
+      <svg
+        class="svc-hero-flow"
+        id="svc-hero-flow"
+        viewBox="0 0 540 290"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <!-- Corner registration marks -->
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 516 12 L 528 12 L 528 24" />
+          <path d="M 12 266 L 12 278 L 24 278" />
+          <path d="M 516 278 L 528 278 L 528 266" />
+        </g>
+
+        <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: content.lifecycle</text>
+
+        <!-- Connectors (amber, draw left-to-right) -->
+        <path class="flow-conn" style="--d: 320ms" d="M84 135 L141 135 M137 131 L141 135 L137 139" />
+        <path class="flow-conn" style="--d: 520ms" d="M189 135 L246 135 M242 131 L246 135 L242 139" />
+        <path class="flow-conn" style="--d: 720ms" d="M294 135 L351 135 M347 131 L351 135 L347 139" />
+        <path class="flow-conn" style="--d: 920ms" d="M399 135 L456 135 M452 131 L456 135 L452 139" />
+
+        <!-- Stage 1: Author -->
+        <g class="fx" style="--d: 200ms">
+          <circle class="flow-node" cx="60" cy="135" r="24" />
+          <g class="flow-icon" transform="translate(50 125)">
+            <path d="M3 17 l1-4 L13 4 l3 3 L7 16 Z" />
+            <line x1="11.5" y1="5.5" x2="14.5" y2="8.5" />
+          </g>
+          <text class="flow-label" x="60" y="182" text-anchor="middle">AUTHOR</text>
+          <text class="flow-sub" x="60" y="197" text-anchor="middle">authoring</text>
+        </g>
+
+        <!-- Stage 2: Structure -->
+        <g class="fx" style="--d: 400ms">
+          <circle class="flow-node" cx="165" cy="135" r="24" />
+          <g class="flow-icon" transform="translate(155 125)">
+            <path d="M10 2.5 L17.5 7 L10 11.5 L2.5 7 Z" />
+            <path d="M2.5 11 L10 15.5 L17.5 11" />
+          </g>
+          <text class="flow-label" x="165" y="182" text-anchor="middle">STRUCTURE</text>
+          <text class="flow-sub" x="165" y="197" text-anchor="middle">IA · DITA</text>
+        </g>
+
+        <!-- Stage 3: Engineer -->
+        <g class="fx" style="--d: 600ms">
+          <circle class="flow-node" cx="270" cy="135" r="24" />
+          <g class="flow-icon" transform="translate(260 125)">
+            <circle cx="10" cy="10" r="3.2" />
+            <path d="M10 2 v2 M10 16 v2 M2 10 h2 M16 10 h2 M4.5 4.5 l1.4 1.4 M14.1 14.1 l1.4 1.4 M15.5 4.5 l-1.4 1.4 M5.9 14.1 l-1.4 1.4" />
+          </g>
+          <text class="flow-label" x="270" y="182" text-anchor="middle">ENGINEER</text>
+          <text class="flow-sub" x="270" y="197" text-anchor="middle">schema · API</text>
+        </g>
+
+        <!-- Stage 4: Publish -->
+        <g class="fx" style="--d: 800ms">
+          <circle class="flow-node" cx="375" cy="135" r="24" />
+          <g class="flow-icon" transform="translate(365 125)">
+            <rect x="4" y="3" width="12" height="14" rx="1" />
+            <line x1="7" y1="7" x2="13" y2="7" />
+            <line x1="7" y1="10" x2="13" y2="10" />
+            <line x1="7" y1="13" x2="11" y2="13" />
+          </g>
+          <text class="flow-label" x="375" y="182" text-anchor="middle">PUBLISH</text>
+          <text class="flow-sub" x="375" y="197" text-anchor="middle">multi-channel</text>
+        </g>
+
+        <!-- Stage 5: Operate (ongoing) -->
+        <g class="fx" style="--d: 1000ms">
+          <circle class="flow-node" cx="480" cy="135" r="24" />
+          <g class="flow-icon" transform="translate(470 125)">
+            <path d="M14.5 7 A5.5 5.5 0 1 0 15.5 11.5" />
+            <path d="M11 5.5 L14.8 6.8 L13.4 10.4" />
+          </g>
+          <text class="flow-label" x="480" y="182" text-anchor="middle">OPERATE</text>
+          <text class="flow-sub" x="480" y="197" text-anchor="middle">CCMS · SLA</text>
+        </g>
+
+        <!-- Bottom chrome -->
+        <g class="fx" style="--d: 1200ms">
+          <line class="chrome-rule" x1="30" y1="250" x2="510" y2="250" />
+          <text class="chrome chrome--strong" x="30" y="268">FIG. 01</text>
+          <text class="chrome" x="78" y="268">/</text>
+          <text class="chrome chrome--strong" x="86" y="268">content.lifecycle</text>
+          <rect class="build-dot" x="404" y="262" width="6" height="6" />
+          <text class="chrome chrome--strong" x="510" y="268" text-anchor="end">AUTHOR → OPERATE</text>
+        </g>
+      </svg>
+    </div>
+  </Hero>
 
   <section class="svc-section svc-expert" aria-labelledby="expert-heading">
     <div class="container-page svc-section__inner">
@@ -680,4 +774,144 @@ const axisLabels = [
     line-height: var(--leading-normal);
     max-width: 60ch;
   }
+
+  /* ─── Hero visual: content-lifecycle flow ─── */
+  .svc-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .svc-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+
+  .svc-hero-flow {
+    width: 540px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  .svc-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .svc-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .svc-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .svc-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .svc-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  .svc-hero-flow .flow-node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .svc-hero-flow .flow-icon path,
+  .svc-hero-flow .flow-icon line,
+  .svc-hero-flow .flow-icon circle,
+  .svc-hero-flow .flow-icon rect {
+    fill: none;
+    stroke: var(--color-text-primary);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .svc-hero-flow .flow-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.08em;
+  }
+  .svc-hero-flow .flow-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .svc-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 74;
+    stroke-dashoffset: 74;
+  }
+
+  /* Reveal: fade-in cascade left-to-right; connectors draw via dashoffset. */
+  .svc-hero-flow .fx {
+    opacity: 0;
+  }
+  .svc-hero-flow.drawn .fx {
+    animation: svc-flow-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .svc-hero-flow.drawn .flow-conn {
+    animation: svc-flow-draw 420ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes svc-flow-fade {
+    to { opacity: 1; }
+  }
+  @keyframes svc-flow-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .svc-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
 </style>
+
+<script>
+  function setupServicesHero() {
+    const svg = document.getElementById("svc-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupServicesHero);
+  document.addEventListener("astro:page-load", setupServicesHero);
+</script>
