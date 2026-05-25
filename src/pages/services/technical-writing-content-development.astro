@@ -116,7 +116,112 @@ const related: Related[] = [
     variant="universal"
     title="Technical Writing & Content Development"
     subdeck="Information engineering, not just writing. We build structured content that scales from a 10-page quick-start to a 50,000-page data package &mdash; including scaling across products, languages, and channels &mdash; and cuts translation cost 30&ndash;40%."
-  />
+  >
+    <div class="twc-hero-visual">
+      <svg
+        class="twc-hero-flow"
+        id="twc-hero-flow"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <!-- Corner registration marks -->
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: single.source</text>
+
+        <!-- Source pool: one set of reusable topic modules -->
+        <g class="fx" style="--d: 200ms">
+          <rect class="flow-box" x="34" y="92" width="188" height="136" rx="4" />
+          <rect class="flow-mod" x="50" y="108" width="44" height="45" rx="3" />
+          <line class="flow-modline" x1="58" y1="121" x2="76" y2="121" />
+          <rect class="flow-mod" x="106" y="108" width="44" height="45" rx="3" />
+          <line class="flow-modline" x1="114" y1="121" x2="132" y2="121" />
+          <rect class="flow-mod" x="162" y="108" width="44" height="45" rx="3" />
+          <line class="flow-modline" x1="170" y1="121" x2="188" y2="121" />
+          <rect class="flow-mod" x="50" y="167" width="44" height="45" rx="3" />
+          <line class="flow-modline" x1="58" y1="180" x2="76" y2="180" />
+          <rect class="flow-mod" x="106" y="167" width="44" height="45" rx="3" />
+          <line class="flow-modline" x1="114" y1="180" x2="132" y2="180" />
+          <rect class="flow-mod" x="162" y="167" width="44" height="45" rx="3" />
+          <line class="flow-modline" x1="170" y1="180" x2="188" y2="180" />
+        </g>
+        <g class="fx" style="--d: 320ms">
+          <text class="flow-label" x="128" y="250" text-anchor="middle">SOURCE TOPICS</text>
+          <text class="flow-sub" x="128" y="263" text-anchor="middle">authored once</text>
+        </g>
+
+        <!-- Distribution node + stub connector -->
+        <g class="fx" style="--d: 420ms">
+          <path class="flow-split" d="M252 154 L258 160 L252 166 L246 160 Z" />
+        </g>
+        <path class="flow-conn" style="--d: 420ms" d="M222 160 L246 160" />
+
+        <!-- Fan-out connectors -->
+        <path class="flow-conn" style="--d: 560ms" d="M258 160 L350 82" />
+        <path class="flow-conn" style="--d: 660ms" d="M258 160 L350 134" />
+        <path class="flow-conn" style="--d: 760ms" d="M258 160 L350 186" />
+        <path class="flow-conn" style="--d: 860ms" d="M258 160 L350 238" />
+
+        <!-- Outputs -->
+        <g class="fx" style="--d: 620ms">
+          <circle class="flow-dot" cx="350" cy="82" r="2.5" />
+          <g class="flow-icon" transform="translate(353 73)">
+            <path d="M10 5 C8 3.6 5.2 3.6 3 4.2 V15.2 C5.2 14.6 8 14.6 10 16 C12 14.6 14.8 14.6 17 15.2 V4.2 C14.8 3.6 12 3.6 10 5 Z" />
+            <line x1="10" y1="5" x2="10" y2="16" />
+          </g>
+          <text class="flow-label" x="380" y="78">User Guide</text>
+          <text class="flow-sub" x="380" y="91">topic-profiled</text>
+        </g>
+        <g class="fx" style="--d: 720ms">
+          <circle class="flow-dot" cx="350" cy="134" r="2.5" />
+          <g class="flow-icon" transform="translate(353 125)">
+            <polyline points="7,6 3,10 7,14" />
+            <polyline points="13,6 17,10 13,14" />
+          </g>
+          <text class="flow-label" x="380" y="130">API Reference</text>
+          <text class="flow-sub" x="380" y="143">OpenAPI merge</text>
+        </g>
+        <g class="fx" style="--d: 820ms">
+          <circle class="flow-dot" cx="350" cy="186" r="2.5" />
+          <g class="flow-icon" transform="translate(353 177)">
+            <rect x="2.5" y="4" width="15" height="9.5" rx="1" />
+            <line x1="7" y1="16.5" x2="13" y2="16.5" />
+            <line x1="10" y1="13.5" x2="10" y2="16.5" />
+          </g>
+          <text class="flow-label" x="380" y="182">In-App Help</text>
+          <text class="flow-sub" x="380" y="195">JSON strings</text>
+        </g>
+        <g class="fx" style="--d: 920ms">
+          <circle class="flow-dot" cx="350" cy="238" r="2.5" />
+          <g class="flow-icon" transform="translate(353 229)">
+            <rect x="4" y="3" width="12" height="14" rx="1" />
+            <line x1="7" y1="7" x2="13" y2="7" />
+            <line x1="7" y1="10" x2="13" y2="10" />
+            <line x1="7" y1="13" x2="11" y2="13" />
+          </g>
+          <text class="flow-label" x="380" y="234">PDF / HTML5</text>
+          <text class="flow-sub" x="380" y="247">multi-channel</text>
+        </g>
+
+        <!-- Bottom chrome -->
+        <g class="fx" style="--d: 1040ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <text class="chrome chrome--strong" x="30" y="302">FIG. 01</text>
+          <text class="chrome" x="78" y="302">/</text>
+          <text class="chrome chrome--strong" x="86" y="302">single-source.reuse</text>
+          <rect class="build-dot" x="470" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">AUTHOR ONCE → PUBLISH MANY</text>
+        </g>
+      </svg>
+    </div>
+  </Hero>
 
   <SiblingsBreadcrumb
     variant="services"
@@ -525,4 +630,166 @@ const related: Related[] = [
   .twc-related-card:hover .twc-related-card__arrow {
     transform: translateX(2px);
   }
+
+  /* ─── Hero visual: single-source reuse map ─── */
+  .twc-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .twc-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+
+  .twc-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  .twc-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .twc-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .twc-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .twc-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .twc-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  .twc-hero-flow .flow-box {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .twc-hero-flow .flow-mod {
+    fill: none;
+    stroke: var(--color-text-secondary);
+    stroke-width: 1.25;
+    vector-effect: non-scaling-stroke;
+  }
+  .twc-hero-flow .flow-modline {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .twc-hero-flow .flow-split {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .twc-hero-flow .flow-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  .twc-hero-flow .flow-icon path,
+  .twc-hero-flow .flow-icon line,
+  .twc-hero-flow .flow-icon rect,
+  .twc-hero-flow .flow-icon polyline,
+  .twc-hero-flow .flow-icon circle {
+    fill: none;
+    stroke: var(--color-text-primary);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .twc-hero-flow .flow-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.06em;
+  }
+  .twc-hero-flow .flow-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.03em;
+  }
+
+  .twc-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 140;
+    stroke-dashoffset: 140;
+  }
+
+  /* Reveal: fade-in cascade; connectors draw via dashoffset. */
+  .twc-hero-flow .fx {
+    opacity: 0;
+  }
+  .twc-hero-flow.drawn .fx {
+    animation: twc-flow-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .twc-hero-flow.drawn .flow-conn {
+    animation: twc-flow-draw 460ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes twc-flow-fade {
+    to { opacity: 1; }
+  }
+  @keyframes twc-flow-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .twc-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .twc-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
 </style>
+
+<script>
+  function setupTwcHero() {
+    const svg = document.getElementById("twc-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupTwcHero);
+  document.addEventListener("astro:page-load", setupTwcHero);
+</script>

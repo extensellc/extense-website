@@ -97,8 +97,13 @@ Order mirrors the old page; CTA moved to the close per your call.
   - **C:** "Information engineering, not just writing. We build structured
     content that's clear, translatable, and reusable — and cuts translation
     cost 30–40% across products, languages, and channels."
-- *No side visual (plain text hero) — keeps the detail page lighter than the
-  main `/services` hero. Open to adding a small visual later.*
+- **Side visual** (added per owner): a **single-source reuse map** SVG in the
+  hero side slot — a pool of 6 reusable topic modules fanning out via amber
+  connectors to 4 outputs (User Guide · API Reference · In-App Help · PDF /
+  HTML5). Document-grade idiom matching the `/services` hero flow (corner
+  registration marks, mono `FIG. 01 / single-source.reuse` chrome, scroll-reveal
+  with reduced-motion fallback). Visualizes the subdeck's "authored once →
+  scales across products, languages, and channels."
 
 ### Section 2 — Sibling switcher · `SiblingsBreadcrumb` (services, repointed)
 - 7 short labels: Technical Writing · Content Strategy · DITA Engineering ·
