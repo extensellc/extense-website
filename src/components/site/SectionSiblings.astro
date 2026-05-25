@@ -1,0 +1,181 @@
+---
+/*
+  SectionSiblings — sibling navigation for the /solutions/* and /services/*
+  sub-pages. Sits directly below the hero.
+
+  Layout: a mono "← {Section}" back-link to the section index, then the sibling
+  pages inline, separated by middle dots (·). The current page renders amber +
+  bold (not a link); the others are muted links. Hairline rules above and below.
+
+  (Industries / pillars use the separate nav/SiblingsBreadcrumb component.)
+
+  Props
+    variant — "solutions" | "services"
+    current — the current page's slug within that section
+*/
+
+interface Sibling {
+  slug: string;
+  label: string;
+}
+interface Section {
+  label: string;
+  href: string;
+  items: Sibling[];
+}
+
+const sections: Record<"solutions" | "services", Section> = {
+  solutions: {
+    label: "Solutions",
+    href: "/solutions",
+    items: [
+      { slug: "technical-docs-and-publishing", label: "Technical Docs & Publishing" },
+      { slug: "content-migration",             label: "Content Migration" },
+      { slug: "xml-data-interoperability",     label: "XML Data Interoperability" },
+      { slug: "ai-ready-content",              label: "AI-Ready Content" },
+    ],
+  },
+  services: {
+    label: "Services",
+    href: "/services",
+    items: [
+      { slug: "technical-writing-content-development", label: "Technical Writing" },
+      { slug: "structured-content-strategy",           label: "Content Strategy" },
+      { slug: "dita-engineering",                      label: "DITA Engineering" },
+      { slug: "publishing-engineering",                label: "Publishing Engineering" },
+      { slug: "ccms-services",                         label: "CCMS Services" },
+      { slug: "system-integration",                    label: "System Integration" },
+      { slug: "xml-engineering",                       label: "XML Engineering" },
+    ],
+  },
+};
+
+interface Props {
+  variant: "solutions" | "services";
+  current: string;
+}
+
+const { variant, current } = Astro.props;
+const section = sections[variant];
+---
+
+<nav class="section-siblings" aria-label={`${section.label} sub-pages`}>
+  <div class="container-data section-siblings__inner">
+    <a href={section.href} class="section-siblings__back">
+      <span class="section-siblings__back-arrow" aria-hidden="true">&larr;</span>
+      <span>{section.label}</span>
+    </a>
+    <ol class="section-siblings__list">
+      {section.items.map((item, i) => (
+        <>
+          <li class="section-siblings__item">
+            {item.slug === current ? (
+              <span class="section-siblings__current" aria-current="page">{item.label}</span>
+            ) : (
+              <a href={`${section.href}/${item.slug}`} class="section-siblings__link">{item.label}</a>
+            )}
+          </li>
+          {i < section.items.length - 1 && (
+            <li class="section-siblings__sep" aria-hidden="true">·</li>
+          )}
+        </>
+      ))}
+    </ol>
+  </div>
+</nav>
+
+<style>
+  .section-siblings {
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+  }
+
+  .section-siblings__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  /* "← Section" back link, mono small, sits to the left of the list. */
+  .section-siblings__back {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .section-siblings__back:hover,
+  .section-siblings__back:focus-visible {
+    color: var(--color-link-hover);
+  }
+  .section-siblings__back-arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .section-siblings__back:hover .section-siblings__back-arrow {
+    transform: translateX(-2px);
+  }
+
+  /* The sibling list, horizontal on desktop, separated by middle dots. */
+  .section-siblings__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    flex: 1;
+  }
+
+  .section-siblings__item {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .section-siblings__sep {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+    user-select: none;
+  }
+
+  .section-siblings__link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .section-siblings__link:hover,
+  .section-siblings__link:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  /* Current page: amber + bold, no link. */
+  .section-siblings__current {
+    color: var(--color-accent-primary-pressed);
+    font-weight: var(--weight-semibold);
+  }
+
+  @media (max-width: 767px) {
+    .section-siblings__inner {
+      gap: var(--space-4);
+    }
+    .section-siblings__list {
+      gap: var(--space-2) var(--space-3);
+    }
+  }
+</style>

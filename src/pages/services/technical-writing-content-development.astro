@@ -16,7 +16,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/site/Hero.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
-import SiblingsBreadcrumb from "../../components/nav/SiblingsBreadcrumb.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
 
 interface Feature {
   icon: "modules" | "globe" | "pencil";
@@ -223,10 +223,7 @@ const related: Related[] = [
     </div>
   </Hero>
 
-  <SiblingsBreadcrumb
-    variant="services"
-    current="/services/technical-writing-content-development"
-  />
+  <SectionSiblings variant="services" current="technical-writing-content-development" />
 
   <section class="twc-section" aria-labelledby="precision-heading">
     <div class="container-page twc-section__inner">

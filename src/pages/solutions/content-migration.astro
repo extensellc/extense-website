@@ -19,7 +19,7 @@
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ContentMigrationHero from "../../components/site/ContentMigrationHero.astro";
-import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
 import ContentMigrationFormats from "../../components/site/ContentMigrationFormats.astro";
 import ContentMigrationConversion from "../../components/site/ContentMigrationConversion.astro";
 import ContentMigrationDeduplication from "../../components/site/ContentMigrationDeduplication.astro";
@@ -33,7 +33,7 @@ import CTAModule from "../../components/site/CTAModule.astro";
   description="The conversion that finishes. Legacy estate (FrameMaker, Word, RoboHelp, InDesign, SGML, unstructured XML, scanned PDF) audited, parsed, deduplicated, and validated into clean reusable DITA."
 >
   <ContentMigrationHero />
-  <SolutionsSiblings currentSlug="content-migration" />
+  <SectionSiblings variant="solutions" current="content-migration" />
   <ContentMigrationFormats />
   <ContentMigrationConversion />
   <ContentMigrationDeduplication />

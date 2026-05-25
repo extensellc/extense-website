@@ -22,7 +22,7 @@
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AiReadyHero from "../../components/site/AiReadyHero.astro";
-import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
 import AiReadyProblem from "../../components/site/AiReadyProblem.astro";
 import AiReadyComparison from "../../components/site/AiReadyComparison.astro";
 import AiReadyUseCases from "../../components/site/AiReadyUseCases.astro";
@@ -38,7 +38,7 @@ import CTAModule from "../../components/site/CTAModule.astro";
   description="Retrievable by design. Typed DITA topics, metadata filters, and section-ID stability that turn 85% RAG precision into a measurable property of the corpus — and feed every AI system from one engineered source."
 >
   <AiReadyHero />
-  <SolutionsSiblings currentSlug="ai-ready-content" />
+  <SectionSiblings variant="solutions" current="ai-ready-content" />
   <AiReadyProblem />
   <AiReadyComparison />
   <AiReadyUseCases />

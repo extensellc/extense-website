@@ -18,7 +18,7 @@
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import TechDocsHero from "../../components/site/TechDocsHero.astro";
-import SolutionsSiblings from "../../components/site/SolutionsSiblings.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
 import TechDocsArchitecture from "../../components/site/TechDocsArchitecture.astro";
 import TechDocsFormats from "../../components/site/TechDocsFormats.astro";
 import TechDocsHeadless from "../../components/site/TechDocsHeadless.astro";
@@ -31,7 +31,7 @@ import CTAModule from "../../components/site/CTAModule.astro";
   description="One source, every output channel. A DITA-OT build pipeline that produces pixel-perfect PDF, responsive HTML5, EPUB3, IETM, SCORM, Markdown, and headless delivery from a single DITA repository."
 >
   <TechDocsHero />
-  <SolutionsSiblings currentSlug="technical-docs-and-publishing" />
+  <SectionSiblings variant="solutions" current="technical-docs-and-publishing" />
   <TechDocsArchitecture />
   <TechDocsFormats />
   <TechDocsHeadless />

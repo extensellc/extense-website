@@ -70,9 +70,12 @@ currently 404). Reusable atoms already shipped:
   Content Assessment" (the old "20-page sample" maps onto it cleanly); the old
   body is adapted as `[DRAFT]`. `compact` + `accentLine`, parity with the
   solution pages.
-- **Sibling switcher:** repoint `SiblingsBreadcrumb` `services` → the 7
-  services and place it under the hero (mirrors the industries pattern; the
-  only live use of the component). Short labels so 7 fit one line.
+- **Sibling switcher:** under the hero, via the shared **`SectionSiblings`**
+  component (back-link `← Services` + dot-separated siblings, current = amber +
+  bold). Short labels so 7 fit. *(Update: per owner, Solutions + Services now
+  share `SectionSiblings`; the old bespoke `SolutionsSiblings` and the
+  `SiblingsBreadcrumb` `services` variant were retired — Industries/pillars
+  still use `SiblingsBreadcrumb`.)*
 - **Keep** the bottom "Related Services" curated 2-card section `[OLD]`.
 - **Card style:** new-system idiom (left-aligned, bare line icon, no circular
   chip) for consistency with the shipped `/services` cards — not the old
@@ -105,10 +108,11 @@ Order mirrors the old page; CTA moved to the close per your call.
   with reduced-motion fallback). Visualizes the subdeck's "authored once →
   scales across products, languages, and channels."
 
-### Section 2 — Sibling switcher · `SiblingsBreadcrumb` (services, repointed)
-- 7 short labels: Technical Writing · Content Strategy · DITA Engineering ·
-  Publishing Engineering · CCMS Services · System Integration · XML
-  Engineering, current = Technical Writing.
+### Section 2 — Sibling switcher · `SectionSiblings` (variant="services")
+- `← Services` back-link + 7 short labels, dot-separated: Technical Writing ·
+  Content Strategy · DITA Engineering · Publishing Engineering · CCMS Services ·
+  System Integration · XML Engineering. Current (Technical Writing) renders
+  amber + bold. Shared with the 4 `/solutions/*` pages.
 
 ### Section 3 — Precision in Every Sentence · `[OLD]`
 - **Heading** `[OLD]`: "Precision in Every Sentence"
@@ -206,8 +210,11 @@ Order mirrors the old page; CTA moved to the close per your call.
   viewports vs. width-tuning). Chosen for the proof-of-depth signal across both
   Fortune 500 and federal evaluators; the products/languages/channels clause
   folds the old multi-axis benefit back in.)*
-- **D-4 — Repoint `SiblingsBreadcrumb` services → 7**, use as top sibling
-  switcher. *(Following the repoint task you flagged.)*
+- **D-4 — Sibling switcher = shared `SectionSiblings`.** *(Evolved per owner:
+  first repointed `SiblingsBreadcrumb` services → 7; then she preferred the
+  Solutions strip, so Solutions + Services were unified onto a new shared
+  `SectionSiblings` (back-link + dot separators + amber-bold current). Retired
+  `SolutionsSiblings` and the `SiblingsBreadcrumb` services variant.)*
 - **D-5 — Card idiom = new system** (left-aligned, no circular chip), not the
   old centered/chipped cards. *(Proposed — iterate on staging.)*
 - **D-6 — 6 doc-type cards in 3+3** (vs old 4+2). *(Proposed.)*
@@ -219,7 +226,7 @@ Order mirrors the old page; CTA moved to the close per your call.
 | Section | Component | Action |
 |---|---|---|
 | 1 Hero | `Hero` (universal) | New copy — blended `[DRAFT]` subdeck |
-| 2 Sibling switcher | `SiblingsBreadcrumb` (services) | **Repoint** variant → 7 services; render under hero |
+| 2 Sibling switcher | `SectionSiblings` (services) | **Shared** back-link + dot strip (also used by /solutions/*) |
 | 3 Precision | inline section + page-local feature cards | **New build** — 3 `[OLD]` cards |
 | 4 Doc Types | inline section + page-local type cards | **New build** — 6 `[OLD]` cards (3+3) |
 | 5 Quality Standard | inline callout (+ optional gate strip) | **New build** — `[OLD]` + `[DRAFT]` gate labels |
