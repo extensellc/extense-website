@@ -199,12 +199,13 @@ Order mirrors the old page; CTA moved to the close per your call.
 - **D-2 — CTA as closer:** old "Free Content Assessment" band → closing
   `CTAModule` (locked "Sample Content Assessment" heading). *(Your call.)*
 - **D-3 — Hero subdeck blended `[DRAFT]`:** old opener + a number.
-  *(Locked: **Option B**, then extended per owner — "…scales from a 10-page
-  quick-start to a 50,000-page data package — including scaling across
-  products, languages, and channels — and cuts translation cost 30–40%."
-  Chosen for the proof-of-depth signal across both Fortune 500 and federal
-  evaluators; the products/languages/channels clause folds the old multi-axis
-  benefit back in.)*
+  *(Locked: **Option B**, then extended + line-broken per owner — "…scales
+  from a 10-page quick-start to a 50,000-page data package — / including
+  scaling across products, languages, and channels — / while cutting
+  translation costs 30–40%." Two `<br>`s lock L3/L4 (deterministic across
+  viewports vs. width-tuning). Chosen for the proof-of-depth signal across both
+  Fortune 500 and federal evaluators; the products/languages/channels clause
+  folds the old multi-axis benefit back in.)*
 - **D-4 — Repoint `SiblingsBreadcrumb` services → 7**, use as top sibling
   switcher. *(Following the repoint task you flagged.)*
 - **D-5 — Card idiom = new system** (left-aligned, no circular chip), not the
