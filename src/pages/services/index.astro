@@ -167,11 +167,12 @@ const axisLabels = [
 
         <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: content.lifecycle</text>
 
-        <!-- Connectors (amber, draw left-to-right) -->
-        <path class="flow-conn" style="--d: 320ms" d="M84 135 L141 135 M137 131 L141 135 L137 139" />
-        <path class="flow-conn" style="--d: 520ms" d="M189 135 L246 135 M242 131 L246 135 L242 139" />
-        <path class="flow-conn" style="--d: 720ms" d="M294 135 L351 135 M347 131 L351 135 L347 139" />
-        <path class="flow-conn" style="--d: 920ms" d="M399 135 L456 135 M452 131 L456 135 L452 139" />
+        <!-- Connectors (amber, draw left-to-right). Endpoints sit in a gap
+             before the next circle so the arrowhead clears the node outline. -->
+        <path class="flow-conn" style="--d: 320ms" d="M87 135 L135 135 M130 130 L135 135 L130 140" />
+        <path class="flow-conn" style="--d: 520ms" d="M192 135 L240 135 M235 130 L240 135 L235 140" />
+        <path class="flow-conn" style="--d: 720ms" d="M297 135 L345 135 M340 130 L345 135 L340 140" />
+        <path class="flow-conn" style="--d: 920ms" d="M402 135 L450 135 M445 130 L450 135 L445 140" />
 
         <!-- Stage 1: Author -->
         <g class="fx" style="--d: 200ms">
@@ -223,8 +224,8 @@ const axisLabels = [
         <g class="fx" style="--d: 1000ms">
           <circle class="flow-node" cx="480" cy="135" r="24" />
           <g class="flow-icon" transform="translate(470 125)">
-            <path d="M14.5 7 A5.5 5.5 0 1 0 15.5 11.5" />
-            <path d="M11 5.5 L14.8 6.8 L13.4 10.4" />
+            <path d="M17.1 12.5 a7.5 7.5 0 1 1 -1.8 -7.8 L19.2 8.3" />
+            <path d="M19.2 3.3 L19.2 8.3 L14.2 8.3" />
           </g>
           <text class="flow-label" x="480" y="182" text-anchor="middle">OPERATE</text>
           <text class="flow-sub" x="480" y="197" text-anchor="middle">CCMS · SLA</text>
