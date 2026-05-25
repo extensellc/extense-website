@@ -57,10 +57,14 @@ interface Props {
 
 const { variant, current } = Astro.props;
 const section = sections[variant];
+
+// Services has 7 siblings — needs the wider page container to stay one line;
+// Solutions has 4 and sits comfortably in container-data.
+const containerClass = variant === "services" ? "container-page" : "container-data";
 ---
 
 <nav class="section-siblings" aria-label={`${section.label} sub-pages`}>
-  <div class="container-data section-siblings__inner">
+  <div class:list={[containerClass, "section-siblings__inner"]}>
     <a href={section.href} class="section-siblings__back">
       <span class="section-siblings__back-arrow" aria-hidden="true">&larr;</span>
       <span>{section.label}</span>
