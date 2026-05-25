@@ -426,8 +426,19 @@ const axisLabels = [
     }
   }
   @media (min-width: 1024px) {
+    /* 8 half-columns: each card spans 2, so the second row can be offset by
+       one half-column (a half-card) to straddle the cards above it. */
     .svc-expert__grid {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(8, 1fr);
+    }
+    .svc-service-card-item {
+      grid-column: span 2;
+    }
+    /* Push the first second-row card to start one half-column in (and keep
+       its 2-col span); cards 6 & 7 flow after it, so the whole second row
+       sits offset/centered. */
+    .svc-service-card-item:nth-child(5) {
+      grid-column: 2 / span 2;
     }
   }
 
