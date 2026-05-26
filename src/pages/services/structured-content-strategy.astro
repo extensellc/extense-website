@@ -98,7 +98,81 @@ const related: Related[] = [
     variant="universal"
     title="Structured Content Strategy"
     subdeck="Future-proof your content lifecycle by moving from documents to information assets &mdash; a reuse strategy that significantly cuts content volume and keeps every warning, procedure, and disclaimer consistent across the corpus."
-  />
+  >
+    <div class="scs-hero-visual">
+      <svg
+        class="scs-hero-flow"
+        id="scs-hero-flow"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <!-- Corner registration marks -->
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: content.model</text>
+
+        <!-- Root -->
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--root" x="215" y="44" width="130" height="34" rx="4" />
+          <text class="node-label" x="280" y="65" text-anchor="middle">CONTENT MODEL</text>
+        </g>
+
+        <!-- Connectors: root -> bus -> facets (drawn) -->
+        <path class="flow-conn" style="--d: 360ms" d="M280 78 L280 104 M110 104 L450 104 M110 104 L110 118 M280 104 L280 118 M450 104 L450 118" />
+
+        <!-- Facets -->
+        <g class="fx" style="--d: 440ms">
+          <rect class="node" x="55" y="118" width="110" height="30" rx="3" />
+          <text class="node-label" x="110" y="137" text-anchor="middle">PRODUCT</text>
+        </g>
+        <g class="fx" style="--d: 520ms">
+          <rect class="node" x="225" y="118" width="110" height="30" rx="3" />
+          <text class="node-label" x="280" y="137" text-anchor="middle">AUDIENCE</text>
+        </g>
+        <g class="fx" style="--d: 600ms">
+          <rect class="node" x="395" y="118" width="110" height="30" rx="3" />
+          <text class="node-label" x="450" y="137" text-anchor="middle">VERSION</text>
+        </g>
+
+        <!-- Leaves -->
+        <g class="fx" style="--d: 700ms">
+          <path class="leaf-guide" d="M64 150 L64 200" />
+          <path class="leaf-tick" d="M64 166 L74 166 M64 186 L74 186" />
+          <text class="leaf-label" x="80" y="170">v1</text>
+          <text class="leaf-label" x="80" y="190">v2</text>
+        </g>
+        <g class="fx" style="--d: 780ms">
+          <path class="leaf-guide" d="M234 150 L234 200" />
+          <path class="leaf-tick" d="M234 166 L244 166 M234 186 L244 186" />
+          <text class="leaf-label" x="250" y="170">Operator</text>
+          <text class="leaf-label" x="250" y="190">Admin</text>
+        </g>
+        <g class="fx" style="--d: 860ms">
+          <path class="leaf-guide" d="M404 150 L404 200" />
+          <path class="leaf-tick" d="M404 166 L414 166 M404 186 L414 186" />
+          <text class="leaf-label" x="420" y="170">2024</text>
+          <text class="leaf-label" x="420" y="190">2025</text>
+        </g>
+
+        <!-- Bottom chrome -->
+        <g class="fx" style="--d: 1000ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="232" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="246" y="302">FIG. 02</text>
+          <text class="chrome" x="296" y="302">/</text>
+          <text class="chrome chrome--strong" x="304" y="302">taxonomy.model</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">CLASSIFY · GOVERN · REUSE</text>
+        </g>
+      </svg>
+    </div>
+  </Hero>
 
   <SectionSiblings variant="services" current="structured-content-strategy" />
 
@@ -540,4 +614,145 @@ const related: Related[] = [
   .scs-related-card:hover .scs-related-card__arrow {
     transform: translateX(2px);
   }
+
+  /* ─── Hero visual: taxonomy / content-model tree ─── */
+  .scs-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .scs-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+
+  .scs-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  .scs-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .scs-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .scs-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .scs-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .scs-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  .scs-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .scs-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.06em;
+  }
+  .scs-hero-flow .leaf-guide {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+  .scs-hero-flow .leaf-tick {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+  .scs-hero-flow .leaf-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.03em;
+  }
+
+  .scs-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 410;
+    stroke-dashoffset: 410;
+  }
+
+  /* Reveal: staggered fade-in; the connector tree draws via dashoffset. */
+  .scs-hero-flow .fx {
+    opacity: 0;
+  }
+  .scs-hero-flow.drawn .fx {
+    animation: scs-flow-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .scs-hero-flow.drawn .flow-conn {
+    animation: scs-flow-draw 520ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes scs-flow-fade {
+    to { opacity: 1; }
+  }
+  @keyframes scs-flow-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scs-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .scs-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
 </style>
+
+<script>
+  function setupScsHero() {
+    const svg = document.getElementById("scs-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupScsHero);
+  document.addEventListener("astro:page-load", setupScsHero);
+</script>

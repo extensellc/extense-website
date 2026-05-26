@@ -67,7 +67,14 @@ hairline card w/ bare amber line icon (no chip), `#fef3c7` callout fill, mono
 ## 5. Wireframe
 Order mirrors the old page; CTA added at the close.
 
-### Section 1 — Hero · universal `Hero` (text-only)
+### Section 1 — Hero · universal `Hero` (+ taxonomy-tree side visual)
+- **Side visual** (added per owner): a **taxonomy / content-model tree** SVG —
+  a `CONTENT MODEL` root branching to `PRODUCT · AUDIENCE · VERSION` facets with
+  leaf values, document-grade chrome (`FIG. 02 / taxonomy.model`, `CLASSIFY ·
+  GOVERN · REUSE`), amber connector draw + scroll-reveal (reduced-motion
+  fallback). Chosen over the "faceted topic" option: shows the strategic
+  deliverable (the IA/model), reads as IA depth, and is distinct from TW's
+  fan-out.
 - **H1** `[OLD]`: "Structured Content Strategy"
 - **Subdeck** `[DRAFT]` (A, revised per owner): "Future-proof your content
   lifecycle by moving from documents to information assets — a reuse strategy
@@ -152,7 +159,8 @@ Order mirrors the old page; CTA added at the close.
 ## 6. Decision log
 - **D-1 — Bespoke + shared atoms; no new kit.** *(Locked.)*
 - **D-2 — Hero subdeck `[DRAFT]` A** (benefit-led, 40–60%). *(Locked.)*
-- **D-3 — Text-only hero** (visual can be added later, as on TW). *(Locked.)*
+- **D-3 — Hero visual = taxonomy / content-model tree** (added per owner after
+  reviewing two mockups; chosen over "faceted topic"). *(Locked.)*
 - **D-4 — Cards = new-system idiom** (no circular chip). *(Following TW.)*
 - **D-5 — 40–60% as a `#fef3c7` stat panel** beside the reuse text. *(Proposed.)*
 - **D-6 — Roadmap = 5-step strip, mono `01–05` + amber connectors.** *(Proposed.)*
