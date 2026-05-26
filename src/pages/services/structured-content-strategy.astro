@@ -57,13 +57,14 @@ interface Step {
   num: string;
   title: string;
   desc: string;
+  deliverable: string;
 }
 const steps: Step[] = [
-  { num: "01", title: "Audit", desc: "Quantitative analysis of existing docs." },
-  { num: "02", title: "Reuse Matrix", desc: "Identifying commonalities across products." },
-  { num: "03", title: "Model Design", desc: "Mapping content to DITA structure." },
-  { num: "04", title: "Workflow Def", desc: "Authoring > Review > Translation > Publish." },
-  { num: "05", title: "Pilot", desc: "Testing the strategy with a small dataset." },
+  { num: "01", title: "Audit", desc: "Quantitative analysis of existing docs.", deliverable: "Content inventory + ROT metrics" },
+  { num: "02", title: "Reuse Matrix", desc: "Identifying commonalities across products.", deliverable: "Reuse candidate map" },
+  { num: "03", title: "Model Design", desc: "Mapping content to DITA structure.", deliverable: "DITA information model" },
+  { num: "04", title: "Workflow Def", desc: "Authoring > Review > Translation > Publish.", deliverable: "Authoring + governance workflow" },
+  { num: "05", title: "Pilot", desc: "Testing the strategy with a small dataset.", deliverable: "Validated proof-of-concept" },
 ];
 
 interface Related {
@@ -247,6 +248,9 @@ const related: Related[] = [
     <div class="container-page scs-section__inner">
       <div class="scs-heading-block">
         <h2 id="roadmap-heading" class="scs-heading">Strategic Roadmap</h2>
+        <p class="scs-intro">
+          We run the strategy as a phased engagement &mdash; each step produces a concrete deliverable the next one builds on, and the model is proven on a pilot before anything scales.
+        </p>
       </div>
 
       <ol class="scs-roadmap">
@@ -256,6 +260,10 @@ const related: Related[] = [
               <span class="scs-step__num">{s.num}</span>
               <h3 class="scs-step__title">{s.title}</h3>
               <p class="scs-step__desc">{s.desc}</p>
+              <p class="scs-step__output">
+                <span class="scs-step__output-label">Output</span>
+                {s.deliverable}
+              </p>
             </li>
             {i < steps.length - 1 && (
               <li class="scs-step__arrow" aria-hidden="true">&rarr;</li>
@@ -521,6 +529,27 @@ const related: Related[] = [
     line-height: var(--leading-normal);
     margin: 0;
     text-wrap: pretty;
+  }
+  .scs-step__output {
+    margin: var(--space-4) 0 0 0;
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: var(--border-hairline);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-primary);
+    line-height: var(--leading-snug);
+    text-wrap: pretty;
+  }
+  .scs-step__output-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-1);
   }
   .scs-step__arrow {
     flex: 0 0 auto;
