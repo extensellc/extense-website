@@ -68,8 +68,8 @@ const href = `/contact?audience=${audience}`;
   .cta-module {
     background-color: var(--color-surface-elevated);
     width: 100%;
-    padding-top: var(--space-32);
-    padding-bottom: var(--space-32);
+    padding-top: var(--space-24);
+    padding-bottom: var(--space-24);
     position: relative;
   }
 
@@ -118,18 +118,18 @@ const href = `/contact?audience=${audience}`;
      Used on the /solutions sub-pages where the preceding section already
      carries enough breathing room before the CTA. */
   .cta-module--compact {
-    padding-top: var(--space-24);
-    padding-bottom: var(--space-24);
+    padding-top: var(--space-20);
+    padding-bottom: var(--space-20);
   }
 
   @media (max-width: 767px) {
     .cta-module {
-      padding-top: var(--space-20);
-      padding-bottom: var(--space-20);
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
     }
     .cta-module--compact {
-      padding-top: 60px;
-      padding-bottom: 60px;
+      padding-top: 48px;
+      padding-bottom: 48px;
     }
   }
 
@@ -138,8 +138,9 @@ const href = `/contact?audience=${audience}`;
   }
 
   .cta-module__content {
-    max-width: var(--container-prose);
+    max-width: var(--container-data);
     margin: 0 auto;
+    text-align: center;
   }
 
   .cta-module__heading {
