@@ -80,13 +80,14 @@ const areas: Area[] = [
 <style>
   .solutions-areas {
     padding-top: var(--section-pad-default);
-    padding-bottom: var(--space-4);
+    /* Extra bottom space so the CTA's amber accent line clears the cards. */
+    padding-bottom: var(--space-16);
     border-top: var(--border-hairline);
   }
   @media (max-width: 767px) {
     .solutions-areas {
       padding-top: var(--space-16);
-      padding-bottom: var(--space-6);
+      padding-bottom: var(--space-12);
     }
   }
 
