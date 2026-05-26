@@ -69,9 +69,11 @@ Order mirrors the old page; CTA added at the close.
 
 ### Section 1 — Hero · universal `Hero` (text-only)
 - **H1** `[OLD]`: "Structured Content Strategy"
-- **Subdeck** `[DRAFT, A]`: "Move from documents to information assets — a reuse
-  strategy that cuts content volume 40–60% and keeps every warning, procedure,
-  and disclaimer consistent across the corpus."
+- **Subdeck** `[DRAFT]` (A, revised per owner): "Future-proof your content
+  lifecycle by moving from documents to information assets — a reuse strategy
+  that significantly cuts content volume and keeps every warning, procedure, and
+  disclaimer consistent across the corpus." *(The concrete 40–60% number lives
+  in the stat panel below, so the page keeps its specificity.)*
 
 ### Section 2 — Sibling switcher · `SectionSiblings` (variant="services")
 - `← Services` + 7 dot-separated siblings; current = **Content Strategy**
