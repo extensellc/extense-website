@@ -35,9 +35,15 @@ interface Props {
    * Eyebrow above H1 (small label). Used on some interior pages.
    */
   eyebrow?: string;
+  /**
+   * Optional max-width for the subdeck paragraph (any CSS length, e.g.
+   * "580px"). Lets a page tighten the subdeck's wrap without affecting the
+   * shared default. Omit to use the natural content-column width.
+   */
+  subdeckMaxWidth?: string;
 }
 
-const { title, subdeck, variant = "universal", badges, eyebrow } = Astro.props;
+const { title, subdeck, variant = "universal", badges, eyebrow, subdeckMaxWidth } = Astro.props;
 const hasSideContent = Astro.slots.has('default');
 ---
 
@@ -54,7 +60,7 @@ const hasSideContent = Astro.slots.has('default');
 
       <h1 class="hero__title">{title}</h1>
 
-      {subdeck && <p class="hero__subdeck"><Fragment set:html={subdeck} /></p>}
+      {subdeck && <p class="hero__subdeck" style={subdeckMaxWidth ? `max-width: ${subdeckMaxWidth};` : undefined}><Fragment set:html={subdeck} /></p>}
     </div>
 
     {hasSideContent && (
