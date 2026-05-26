@@ -109,6 +109,10 @@ Order mirrors the old page; CTA added at the close.
 
 ### Section 5 — Key Strategic Pillars · `[OLD]` (3 cards)
 - **Heading** `[OLD]`: "Key Strategic Pillars"
+- **Intro** `[DRAFT]` (added per owner, option A): "A structured content strategy
+  rests on three foundations — how content is classified, who governs its reuse,
+  and which legacy content is worth keeping. We settle all three before a CCMS
+  enters the picture." (Maps to the three cards in order.)
 - **3 cards** `[OLD]` (3-up; bare amber line icon + title + body):
   1. **Taxonomy & Metadata** — "We design the classification systems that make
      your content findable. This includes defining facet values for product,
