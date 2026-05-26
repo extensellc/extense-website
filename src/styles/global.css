@@ -217,6 +217,13 @@ hr {
   max-width: calc(var(--container-page) + (var(--container-padding) * 2));
 }
 
+/* Section band — subtle warm fill for alternating section rhythm.
+   Apply to a full-width <section>; pair with white card fills inside so
+   cards stay legible against the tint. */
+.section-band {
+  background-color: var(--color-surface-band);
+}
+
 /* Visually hidden — for screen-reader-only content */
 .sr-only {
   position: absolute;
