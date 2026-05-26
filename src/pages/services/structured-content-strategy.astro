@@ -213,7 +213,7 @@ const related: Related[] = [
     </div>
   </section>
 
-  <section class="scs-section" aria-labelledby="pillars-heading">
+  <section class="scs-section scs-section--band" aria-labelledby="pillars-heading">
     <div class="container-page scs-section__inner">
       <div class="scs-heading-block">
         <h2 id="pillars-heading" class="scs-heading">Key Strategic Pillars</h2>
@@ -310,6 +310,10 @@ const related: Related[] = [
     padding-top: var(--section-pad-default);
     padding-bottom: var(--section-pad-default);
     border-top: var(--border-hairline);
+  }
+
+  .scs-section--band {
+    background-color: var(--color-surface-band);
   }
   @media (max-width: 767px) {
     .scs-section {
@@ -446,6 +450,7 @@ const related: Related[] = [
     flex-direction: column;
     border: var(--border-hairline);
     padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
   }
   .scs-card__icon {
     display: inline-flex;

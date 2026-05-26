@@ -256,7 +256,7 @@ const related: Related[] = [
     </div>
   </section>
 
-  <section class="twc-section" aria-labelledby="doctypes-heading">
+  <section class="twc-section twc-section--band" aria-labelledby="doctypes-heading">
     <div class="container-page twc-section__inner">
       <div class="twc-heading-block">
         <h2 id="doctypes-heading" class="twc-heading">Documentation Types We Deliver</h2>
@@ -353,6 +353,10 @@ const related: Related[] = [
     border-top: var(--border-hairline);
   }
 
+  .twc-section--band {
+    background-color: var(--color-surface-band);
+  }
+
   @media (max-width: 767px) {
     .twc-section {
       padding-top: var(--space-16);
@@ -420,6 +424,7 @@ const related: Related[] = [
     flex-direction: column;
     border: var(--border-hairline);
     padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
   }
 
   .twc-card__icon {

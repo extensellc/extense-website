@@ -12,6 +12,8 @@
   /* Surfaces & text */
   --color-page-bg: #ffffff;
   --color-surface-elevated: #ffffff;
+  /* Warm tint for alternating section bands (border-subtle hue @ 32%). */
+  --color-surface-band: rgb(229 223 215 / 0.32);
   --color-text-primary: #1a1817;
   --color-text-secondary: #6b6560;
   --color-text-muted: #9c958e;
