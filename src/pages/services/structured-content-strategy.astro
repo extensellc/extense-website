@@ -1,0 +1,543 @@
+---
+/*
+  /services/structured-content-strategy — service detail page.
+
+  Second of the 7 /services/<slug> detail sub-pages. Built bespoke (page-local
+  CSS), reusing the shared atoms (Hero, SectionSiblings, CTAModule) and the
+  card / related-card / #fef3c7 callout patterns proven on the Technical
+  Writing page. Modeled on the old ex-tense.co page, re-skinned.
+
+  Shape: Hero -> sibling switcher -> Strategy Before Technology (intro + reuse
+  paradigm: 40-60% stat panel + reuse list) -> Key Strategic Pillars (3 cards)
+  -> Strategic Roadmap (5-step 01-05 strip) -> Related Services (3 cards) ->
+  CTA-as-closer.
+
+  Doc: docs/reframe-2026/structured-content-strategy.md
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+
+interface ReuseItem {
+  term: string;
+  desc: string;
+}
+const reuseList: ReuseItem[] = [
+  { term: "Fragment Reuse", desc: "Warnings, notes, and legal disclaimers." },
+  { term: "Topic Reuse", desc: "Procedures common across product families." },
+  { term: "Map Reuse", desc: "Entire deliverables constructed from shared chapters." },
+];
+
+interface Pillar {
+  icon: "taxonomy" | "governance" | "legacy";
+  name: string;
+  body: string;
+}
+const pillars: Pillar[] = [
+  {
+    icon: "taxonomy",
+    name: "Taxonomy & Metadata",
+    body: "We design the classification systems that make your content findable. This includes defining facet values for product, version, audience, and user role.",
+  },
+  {
+    icon: "governance",
+    name: "Governance Models",
+    body: "Who owns the content? Who approves the reuse? We establish the Governance Committees and Style Guides (“The Rules of the Road”) to prevent content chaos.",
+  },
+  {
+    icon: "legacy",
+    name: "Legacy Analysis",
+    body: "Not everything should be migrated. We perform ROT (Redundant, Obsolete, Trivial) analysis to ensure you only migrate valuable content to the new system.",
+  },
+];
+
+interface Step {
+  num: string;
+  title: string;
+  desc: string;
+}
+const steps: Step[] = [
+  { num: "01", title: "Audit", desc: "Quantitative analysis of existing docs." },
+  { num: "02", title: "Reuse Matrix", desc: "Identifying commonalities across products." },
+  { num: "03", title: "Model Design", desc: "Mapping content to DITA structure." },
+  { num: "04", title: "Workflow Def", desc: "Authoring > Review > Translation > Publish." },
+  { num: "05", title: "Pilot", desc: "Testing the strategy with a small dataset." },
+];
+
+interface Related {
+  name: string;
+  href: string;
+  desc: string;
+}
+const related: Related[] = [
+  {
+    name: "Technical Writing",
+    href: "/services/technical-writing-content-development",
+    desc: "Professional documentation development for complex technical products and systems.",
+  },
+  {
+    name: "DITA Engineering",
+    href: "/services/dita-engineering",
+    desc: "Topic modeling, specialization, and constraint modules for scalable content architectures.",
+  },
+  {
+    name: "CCMS Services",
+    href: "/services/ccms-services",
+    desc: "Platform selection, configuration, and ongoing support for enterprise content management.",
+  },
+];
+---
+
+<BaseLayout
+  title="Structured Content Strategy — Extense LLC"
+  description="Strategy before technology. Information architecture, taxonomy, governance, and reuse models that cut content volume 40–60% — written once, referenced everywhere, consistent across the corpus."
+>
+  <Hero
+    variant="universal"
+    title="Structured Content Strategy"
+    subdeck="Move from documents to information assets &mdash; a reuse strategy that cuts content volume 40&ndash;60% and keeps every warning, procedure, and disclaimer consistent across the corpus."
+  />
+
+  <SectionSiblings variant="services" current="structured-content-strategy" />
+
+  <section class="scs-section" aria-labelledby="strategy-heading">
+    <div class="container-page scs-section__inner">
+      <div class="scs-heading-block">
+        <h2 id="strategy-heading" class="scs-heading">Strategy Before Technology</h2>
+        <p class="scs-intro">
+          Buying a CCMS does not solve your content problems. A robust strategy defines how your content behaves, who it serves, and where it flows.
+        </p>
+      </div>
+
+      <div class="scs-reuse">
+        <div class="scs-stat">
+          <span class="scs-stat__num">40&ndash;60%</span>
+          <span class="scs-stat__label">Content reduction</span>
+        </div>
+        <div class="scs-reuse__content">
+          <h3 class="scs-reuse__subheading">The &ldquo;Reuse&rdquo; Paradigm</h3>
+          <p class="scs-reuse__body">
+            Traditional authoring locks information inside linear documents. If a safety warning changes, you have to find and update it in 50 different user manuals. Our structured content strategy breaks these documents down into modular components (Topics) that are written once and referenced everywhere. We analyze your entire corpus to identify high-value reuse candidates:
+          </p>
+          <ul class="scs-reuse__list">
+            {reuseList.map((r) => (
+              <li><strong>{r.term}</strong> &mdash; {r.desc}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scs-section" aria-labelledby="pillars-heading">
+    <div class="container-page scs-section__inner">
+      <div class="scs-heading-block">
+        <h2 id="pillars-heading" class="scs-heading">Key Strategic Pillars</h2>
+      </div>
+
+      <ul class="scs-pillars-grid">
+        {pillars.map((p) => (
+          <li class="scs-card">
+            <span class="scs-card__icon" aria-hidden="true">
+              {p.icon === "taxonomy" && (
+                <svg viewBox="0 0 20 20"><rect x="7.5" y="2.5" width="5" height="4" rx="1" /><rect x="2.5" y="13.5" width="5" height="4" rx="1" /><rect x="12.5" y="13.5" width="5" height="4" rx="1" /><path d="M10 6.5 V9.5 M5 13.5 V11 H15 V13.5" /></svg>
+              )}
+              {p.icon === "governance" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /><polyline points="7.4,9.8 9.2,11.6 12.8,7.8" /></svg>
+              )}
+              {p.icon === "legacy" && (
+                <svg viewBox="0 0 20 20"><path d="M3.5 4.5 H16.5 L11 11 V16 L9 14.6 V11 Z" /></svg>
+              )}
+            </span>
+            <h3 class="scs-card__title">{p.name}</h3>
+            <p class="scs-card__body">{p.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="scs-section" aria-labelledby="roadmap-heading">
+    <div class="container-page scs-section__inner">
+      <div class="scs-heading-block">
+        <h2 id="roadmap-heading" class="scs-heading">Strategic Roadmap</h2>
+      </div>
+
+      <ol class="scs-roadmap">
+        {steps.map((s, i) => (
+          <>
+            <li class="scs-step">
+              <span class="scs-step__num">{s.num}</span>
+              <h3 class="scs-step__title">{s.title}</h3>
+              <p class="scs-step__desc">{s.desc}</p>
+            </li>
+            {i < steps.length - 1 && (
+              <li class="scs-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="scs-section scs-related-section" aria-labelledby="related-heading">
+    <div class="container-page scs-section__inner">
+      <div class="scs-heading-block">
+        <h2 id="related-heading" class="scs-heading">Related Services</h2>
+      </div>
+
+      <ul class="scs-related-grid">
+        {related.map((r) => (
+          <li class="scs-related-card-item">
+            <a href={r.href} class="scs-related-card">
+              <span class="scs-related-card__eyebrow">Service</span>
+              <h3 class="scs-related-card__title">{r.name}</h3>
+              <p class="scs-related-card__body">{r.desc}</p>
+              <span class="scs-related-card__cta">
+                Explore <span class="scs-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    body="Send us a sample of your content estate. We'll map reuse potential, run a ROT pass, and sketch a target information model — so you can see the volume you'd cut before committing to a platform. No commitment required."
+  />
+</BaseLayout>
+
+<style>
+  .scs-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  @media (max-width: 767px) {
+    .scs-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Shared section heading block ─── */
+  .scs-heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
+  }
+  .scs-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .scs-intro {
+    margin: var(--space-4) auto 0 auto;
+    max-width: 80ch;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  /* ─── Reuse paradigm: stat panel + text ─── */
+  .scs-reuse {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: stretch;
+  }
+  @media (min-width: 900px) {
+    .scs-reuse {
+      grid-template-columns: 300px 1fr;
+      gap: var(--space-12);
+    }
+  }
+
+  .scs-stat {
+    background-color: #fef3c7;
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: var(--space-3);
+  }
+  .scs-stat__num {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-accent-primary-pressed);
+  }
+  .scs-stat__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .scs-reuse__subheading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .scs-reuse__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .scs-reuse__list {
+    list-style: none;
+    margin: var(--space-5) 0 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .scs-reuse__list li {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--color-accent-primary);
+    text-wrap: pretty;
+  }
+  .scs-reuse__list strong {
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  /* ─── Pillars (cards) ─── */
+  .scs-pillars-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .scs-pillars-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .scs-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+  }
+  .scs-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary-hover);
+    margin-bottom: var(--space-5);
+  }
+  .scs-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .scs-card__icon svg circle,
+  .scs-card__icon svg ellipse,
+  .scs-card__icon svg line,
+  .scs-card__icon svg polyline,
+  .scs-card__icon svg rect,
+  .scs-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .scs-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .scs-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Strategic Roadmap (5-step strip) ─── */
+  .scs-roadmap {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .scs-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+  }
+  .scs-step__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary-pressed);
+  }
+  .scs-step__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .scs-step__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .scs-step__arrow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    color: var(--color-accent-primary-hover);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+  @media (max-width: 767px) {
+    .scs-roadmap {
+      flex-direction: column;
+    }
+    .scs-step__arrow {
+      align-self: center;
+      transform: rotate(90deg);
+      padding: var(--space-1) 0;
+    }
+  }
+
+  /* ─── Related Services ─── */
+  .scs-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .scs-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .scs-related-card-item {
+    display: flex;
+  }
+  .scs-related-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .scs-related-card:hover,
+  .scs-related-card:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+  .scs-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .scs-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .scs-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .scs-related-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .scs-related-card:hover .scs-related-card__cta,
+  .scs-related-card:focus-visible .scs-related-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .scs-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .scs-related-card:hover .scs-related-card__arrow {
+    transform: translateX(2px);
+  }
+</style>
