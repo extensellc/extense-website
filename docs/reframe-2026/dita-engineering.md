@@ -235,7 +235,10 @@ Result), side callouts (Core Competencies, Governance Deliverables), and
 ## 6. Decision log
 - **D-1 — Faithful, all 11 sections.** *(Locked.)*
 - **D-2 — Hero subdeck `[DRAFT]` A.** *(Locked.)*
-- **D-3 — Text-only hero.** *(Locked.)*
+- **D-3 — Hero visual = DITA specialization model** (added per owner; chosen
+  over "engineer the standard" + "DITA-OT build"). `<topic>` deriving into
+  `<concept>`/`<task>`/`<reference>` + a custom amber `<api-operation>`, code-
+  style tags, scroll-reveal. *(Locked.)*
 - **D-4 — Bespoke + shared atoms.** *(Locked.)*
 - **D-5 — CTA-as-closer added** (old page had none). *(Following.)*
 - **D-6 — Umbrella heading for the Specialization/Constraints/SubjectScheme

@@ -189,7 +189,69 @@ const related: Related[] = [
     variant="universal"
     title="DITA Engineering & Architecture"
     subdeck="Out-of-the-box DITA is rarely enough. We engineer the semantic model &mdash; specialization, constraints, and SubjectScheme &mdash; that enforces consistency across teams of 50+ writers and feeds automation, search, and AI."
-  />
+  >
+    <div class="dita-hero-visual">
+      <svg
+        class="dita-hero-flow"
+        id="dita-hero-flow"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <!-- Corner registration marks -->
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: dita.model</text>
+
+        <!-- Base type -->
+        <g class="fx" style="--d: 200ms">
+          <rect class="node" x="225" y="44" width="110" height="30" rx="4" />
+          <text class="node-label" x="280" y="63" text-anchor="middle">&lt;topic&gt;</text>
+        </g>
+
+        <!-- Specialization connectors: base -> standard types (drawn) -->
+        <path class="flow-conn" style="--d: 340ms" d="M280 74 L280 100 M100 100 L460 100 M100 100 L100 120 M280 100 L280 120 M460 100 L460 120" />
+
+        <!-- Standard derived types -->
+        <g class="fx" style="--d: 440ms">
+          <rect class="node" x="45" y="120" width="110" height="32" rx="3" />
+          <text class="node-label" x="100" y="140" text-anchor="middle">&lt;concept&gt;</text>
+        </g>
+        <g class="fx" style="--d: 520ms">
+          <rect class="node" x="225" y="120" width="110" height="32" rx="3" />
+          <text class="node-label" x="280" y="140" text-anchor="middle">&lt;task&gt;</text>
+        </g>
+        <g class="fx" style="--d: 600ms">
+          <rect class="node" x="405" y="120" width="110" height="32" rx="3" />
+          <text class="node-label" x="460" y="140" text-anchor="middle">&lt;reference&gt;</text>
+        </g>
+
+        <!-- Custom specialization derived from reference -->
+        <path class="flow-conn" style="--d: 680ms" d="M460 152 L460 180" />
+        <g class="fx" style="--d: 760ms">
+          <rect class="node node--custom" x="388" y="180" width="144" height="34" rx="3" />
+          <text class="node-label node-label--custom" x="460" y="201" text-anchor="middle">&lt;api-operation&gt;</text>
+          <text class="node-caption" x="460" y="231" text-anchor="middle">custom topic type</text>
+        </g>
+
+        <!-- Bottom chrome -->
+        <g class="fx" style="--d: 920ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="232" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="246" y="302">FIG. 02</text>
+          <text class="chrome" x="296" y="302">/</text>
+          <text class="chrome chrome--strong" x="304" y="302">specialization.model</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">STANDARD → CUSTOM</text>
+        </g>
+      </svg>
+    </div>
+  </Hero>
 
   <SectionSiblings variant="services" current="dita-engineering" />
 
@@ -887,4 +949,140 @@ const related: Related[] = [
   .dita-related-card:hover .dita-related-card__arrow {
     transform: translateX(2px);
   }
+
+  /* ─── Hero visual: DITA specialization model ─── */
+  .dita-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .dita-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+
+  .dita-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+
+  .dita-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .dita-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .dita-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .dita-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .dita-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+
+  .dita-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .dita-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .dita-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .dita-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .dita-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .dita-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 460;
+    stroke-dashoffset: 460;
+  }
+
+  /* Reveal: staggered fade-in; specialization connectors draw via dashoffset. */
+  .dita-hero-flow .fx {
+    opacity: 0;
+  }
+  .dita-hero-flow.drawn .fx {
+    animation: dita-flow-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .dita-hero-flow.drawn .flow-conn {
+    animation: dita-flow-draw 520ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes dita-flow-fade {
+    to { opacity: 1; }
+  }
+  @keyframes dita-flow-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dita-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .dita-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
 </style>
+
+<script>
+  function setupDitaHero() {
+    const svg = document.getElementById("dita-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupDitaHero);
+  document.addEventListener("astro:page-load", setupDitaHero);
+</script>
