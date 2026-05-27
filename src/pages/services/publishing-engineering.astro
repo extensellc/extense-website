@@ -1,0 +1,815 @@
+---
+/*
+  /services/publishing-engineering — service detail page (4th of 7).
+
+  Built bespoke (page-local CSS, prefix `pub-`), reusing the shared atoms
+  (Hero, SectionSiblings, CTAModule) and the patterns proven on DITA
+  Engineering (icon-card grids, 3-card row, 01-0N strip, #fef3c7 callout,
+  related cards, hero node-graph visual). Faithful rebuild of the old
+  ex-tense.co page (7 sections).
+
+  Shape: Hero (visual B: one source -> many outputs) -> switcher ->
+  Modern Publishing Technologies (6 icon cards) -> Core Transformation Engine
+  (3 cards) -> Rendering Pipeline (5-step) -> Automated Localization Publishing
+  (callout) -> Advanced Output Formats (6 icon cards) -> Related (3 cards) -> CTA.
+
+  Doc: docs/reframe-2026/publishing-engineering.md
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon?: string;
+}
+
+const modernTech: Card[] = [
+  {
+    title: "CSS Paged Media → PDF",
+    body: "Replace complex XSL-FO stylesheets with CSS you already know. Using Prince XML, Antenna House CSS, or WeasyPrint, we generate print-quality PDFs with CSS Paged Media — the same styling language your web team uses. Designers can own the PDF layout without learning FO.",
+    icon: "pagefold",
+  },
+  {
+    title: "GraphQL Content APIs",
+    body: "Serve published content through GraphQL endpoints where consumers request exactly the fields and fragments they need. We build the schema, resolvers, and caching layer — so front-end teams, mobile apps, and chatbots can query your content like a database.",
+    icon: "graph",
+  },
+  {
+    title: "Headless & Decoupled Delivery",
+    body: "Publish structured content as JSON to headless CMS platforms (Contentful, Strapi) or custom REST APIs. The content is authored once in DITA and delivered to any front-end — React portals, mobile apps, kiosk displays, VR/AR interfaces — without format lock-in.",
+    icon: "plug",
+  },
+  {
+    title: "Static Site Generators",
+    body: "Build DITA output into Jamstack-ready sites using Gatsby, Astro, Hugo, or Eleventy. Combined with CDN deployment (CloudFront, Netlify, Vercel), your documentation loads in milliseconds with zero server infrastructure to maintain.",
+    icon: "globe",
+  },
+  {
+    title: "Docs-as-Code Pipelines",
+    body: "Git-based authoring workflows with pull requests, branch previews, and automated quality checks. Every commit triggers validation, build, and deploy — the same CI/CD discipline your engineering team applies to code, now applied to content.",
+    icon: "branch",
+  },
+  {
+    title: "Containerized Build Environments",
+    body: "DITA-OT packaged in Docker containers for reproducible builds across developer machines, CI servers, and cloud platforms. No more 'works on my machine' — every build runs in an identical, version-locked environment.",
+    icon: "cube",
+  },
+];
+
+const coreEngine: Card[] = [
+  {
+    title: "DITA-OT Customization",
+    body: "The DITA Open Toolkit is the industry standard engine. We write custom plugins (XSLT/Java) to override default behaviors, ensuring your fonts, colors, and layouts match your corporate branding exactly.",
+  },
+  {
+    title: "XSL-FO & PDF Formatting",
+    body: "Print is not dead. We master XSL-FO (Formatting Objects) to handle complex pagination, float handling, change bars, and multi-column layouts for regulatory PDF deliverables.",
+  },
+  {
+    title: "Responsive HTML5",
+    body: "We build modern, Bootstrap-based or custom HTML5 outputs that integrate with your corporate website. We handle search indexing, TOC generation, and context-sensitive linking.",
+  },
+];
+
+interface Step {
+  num: string;
+  title: string;
+  desc: string;
+}
+const pipeline: Step[] = [
+  { num: "01", title: "Source", desc: "Verified DITA map." },
+  { num: "02", title: "Pre-Process", desc: "Link resolution & keyref expansion." },
+  { num: "03", title: "Transformation", desc: "XSLT application." },
+  { num: "04", title: "Post-Process", desc: "CSS / JS injection." },
+  { num: "05", title: "Artifact", desc: "Final PDF / ZIP." },
+];
+
+const advancedFormats: Card[] = [
+  {
+    title: "EPUB 3 & Digital Publishing",
+    body: "Accessible, reflowable eBooks with embedded media, MathML equations, and semantic navigation. We build EPUB3 outputs that pass validation and render consistently across Kindle, Apple Books, and Kobo.",
+    icon: "book",
+  },
+  {
+    title: "Markdown & Developer Docs",
+    body: "Convert DITA to GitHub-flavored Markdown for developer portals, README files, and wikis. API reference content authored in DITA publishes alongside code in the same repository and rendering pipeline developers already use.",
+    icon: "code",
+  },
+  {
+    title: "Embedded Help & Microcontent",
+    body: "Deliver topic fragments — tooltips, inline hints, contextual panels — directly into application UIs. We build the API layer and JavaScript widgets that pull DITA-sourced microcontent into your product in real time.",
+    icon: "bubble",
+  },
+  {
+    title: "SCORM & eLearning Packages",
+    body: "Package DITA Learning & Training content as SCORM 1.2 or 2004 modules. We build the transform layer that adds interactive assessments, completion tracking, and LMS API integration — from the same structured source as your documentation.",
+    icon: "gradcap",
+  },
+  {
+    title: "JSON & YAML Data Feeds",
+    body: "Structured content as machine-readable data. We build DITA-OT plugins that output JSON or YAML — feeding product catalogs, configuration portals, knowledge bases, and AI/RAG pipelines from your single source.",
+    icon: "braces",
+  },
+  {
+    title: "Multi-Brand & White-Label",
+    body: "One source, multiple brand identities. We configure parameterized publishing pipelines where logos, color schemes, legal text, and terminology switch automatically based on build profiles — supporting OEM and partner documentation programs.",
+    icon: "swatches",
+  },
+];
+
+interface Related {
+  name: string;
+  href: string;
+  desc: string;
+}
+const related: Related[] = [
+  {
+    name: "DITA Engineering",
+    href: "/services/dita-engineering",
+    desc: "Topic modeling, specialization, and constraint modules for scalable content architectures.",
+  },
+  {
+    name: "XML Engineering",
+    href: "/services/xml-engineering",
+    desc: "Custom schema design, XSLT transformation, and validation pipelines.",
+  },
+  {
+    name: "CCMS Services",
+    href: "/services/ccms-services",
+    desc: "Platform selection, configuration, and ongoing support for enterprise content management.",
+  },
+];
+---
+
+<BaseLayout
+  title="Publishing Engineering & Automation — Extense LLC"
+  description="Pixel-perfect outputs from a single structured source — PDF, HTML5, WebHelp, EPUB, and custom portals. Extense engineers the transforms and automates the build, from the DITA-OT engine to the rendering pipeline, localization, and advanced output formats."
+>
+  <Hero
+    variant="universal"
+    title="Publishing Engineering & Automation"
+    subdeck="Pixel-perfect outputs from a single structured source &mdash; PDF, HTML5, WebHelp, EPUB, and custom portals. We engineer the transforms and automate the build, so every output rebuilds itself on each commit."
+  >
+    <div class="pub-hero-visual">
+      <svg
+        class="pub-hero-flow"
+        id="pub-hero-flow"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: single.source</text>
+
+        <!-- Single engineered source -->
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="210" y="54" width="140" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="280" y="79" text-anchor="middle">&lt;map&gt;</text>
+          <text class="node-caption" x="280" y="116" text-anchor="middle">one engineered source</text>
+        </g>
+
+        <!-- Fan: source -> bus -> outputs (drawn) -->
+        <path class="flow-conn" style="--d: 340ms" d="M280 94 L280 140 M77 140 L485 140 M77 140 L77 168 M213 140 L213 168 M349 140 L349 168 M485 140 L485 168" />
+
+        <!-- Output formats -->
+        <g class="fx" style="--d: 460ms">
+          <rect class="node" x="25" y="168" width="104" height="44" rx="3" />
+          <text class="node-label" x="77" y="195" text-anchor="middle">PDF</text>
+        </g>
+        <g class="fx" style="--d: 540ms">
+          <rect class="node" x="161" y="168" width="104" height="44" rx="3" />
+          <text class="node-label" x="213" y="195" text-anchor="middle">HTML5</text>
+        </g>
+        <g class="fx" style="--d: 620ms">
+          <rect class="node" x="297" y="168" width="104" height="44" rx="3" />
+          <text class="node-label" x="349" y="195" text-anchor="middle">EPUB</text>
+        </g>
+        <g class="fx" style="--d: 700ms">
+          <rect class="node" x="433" y="168" width="104" height="44" rx="3" />
+          <text class="node-label" x="485" y="195" text-anchor="middle">JSON</text>
+        </g>
+
+        <!-- Bottom chrome -->
+        <g class="fx" style="--d: 840ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="232" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+          <text class="chrome" x="296" y="302">/</text>
+          <text class="chrome chrome--strong" x="304" y="302">single.source</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">ONE &rarr; MANY</text>
+        </g>
+      </svg>
+    </div>
+  </Hero>
+
+  <SectionSiblings variant="services" current="publishing-engineering" />
+
+  <!-- S3 Modern Publishing Technologies -->
+  <section class="pub-section" aria-labelledby="modern-heading">
+    <div class="container-page pub-section__inner">
+      <div class="pub-heading-block">
+        <h2 id="modern-heading" class="pub-heading">Modern Publishing Technologies</h2>
+        <p class="pub-intro">
+          Beyond traditional XSLT pipelines &mdash; we implement the latest tools and approaches that are reshaping how structured content reaches its audience.
+        </p>
+      </div>
+      <ul class="pub-grid-6">
+        {modernTech.map((c) => (
+          <li class="pub-card">
+            <span class="pub-card__icon" aria-hidden="true">
+              {c.icon === "pagefold" && (
+                <svg viewBox="0 0 20 20"><path d="M5 2.5 H12 L15.5 6 V17.5 H5 Z" /><polyline points="12,2.5 12,6 15.5,6" /></svg>
+              )}
+              {c.icon === "graph" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="5" r="1.8" /><circle cx="5" cy="14" r="1.8" /><circle cx="15" cy="14" r="1.8" /><path d="M9 6.4 L6 12.6 M11 6.4 L14 12.6 M6.8 14 H13.2" /></svg>
+              )}
+              {c.icon === "plug" && (
+                <svg viewBox="0 0 20 20"><line x1="8" y1="2.5" x2="8" y2="5.5" /><line x1="12" y1="2.5" x2="12" y2="5.5" /><path d="M5.5 5.5 H14.5 V9 a4.5 4.5 0 0 1 -9 0 Z" /><line x1="10" y1="13.5" x2="10" y2="17.5" /></svg>
+              )}
+              {c.icon === "globe" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><line x1="3" y1="10" x2="17" y2="10" /><path d="M10 3 C13 6 13 14 10 17 C7 14 7 6 10 3 Z" /></svg>
+              )}
+              {c.icon === "branch" && (
+                <svg viewBox="0 0 20 20"><circle cx="6" cy="5" r="1.8" /><circle cx="6" cy="15" r="1.8" /><circle cx="14" cy="9" r="1.8" /><path d="M6 6.8 V13.2 M6 9.5 a5 5 0 0 0 6.2 -1.2" /></svg>
+              )}
+              {c.icon === "cube" && (
+                <svg viewBox="0 0 20 20"><path d="M10 3 L17 6.5 V13.5 L10 17 L3 13.5 V6.5 Z" /><polyline points="3,6.5 10,10 17,6.5" /><line x1="10" y1="10" x2="10" y2="17" /></svg>
+              )}
+            </span>
+            <h3 class="pub-card__title">{c.title}</h3>
+            <p class="pub-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S4 The Core Transformation Engine -->
+  <section class="pub-section pub-section--band" aria-labelledby="engine-heading">
+    <div class="container-page pub-section__inner">
+      <div class="pub-heading-block">
+        <h2 id="engine-heading" class="pub-heading">The Core Transformation Engine</h2>
+        <p class="pub-intro">
+          Your content is XML data. To the user, it needs to be a beautiful PDF or a responsive website. We build the engines that make that conversion happen automatically.
+        </p>
+      </div>
+      <ul class="pub-grid-3">
+        {coreEngine.map((c) => (
+          <li class="pub-card pub-card--accent">
+            <h3 class="pub-card__title">{c.title}</h3>
+            <p class="pub-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S5 The Rendering Pipeline -->
+  <section class="pub-section" aria-labelledby="pipeline-heading">
+    <div class="container-page pub-section__inner">
+      <div class="pub-heading-block">
+        <h2 id="pipeline-heading" class="pub-heading">The Rendering Pipeline</h2>
+        <p class="pub-intro">
+          Every output runs the same five stages &mdash; from a verified DITA map to a finished, packaged artifact.
+        </p>
+      </div>
+      <ol class="pub-roadmap">
+        {pipeline.map((s, i) => (
+          <>
+            <li class="pub-step">
+              <span class="pub-step__num">{s.num}</span>
+              <h3 class="pub-step__title">{s.title}</h3>
+              <p class="pub-step__desc">{s.desc}</p>
+            </li>
+            {i < pipeline.length - 1 && (
+              <li class="pub-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- S6 Automated Localization Publishing -->
+  <section class="pub-section pub-section--band" aria-labelledby="localization-heading">
+    <div class="container-page pub-section__inner">
+      <div class="pub-heading-block">
+        <h2 id="localization-heading" class="pub-heading">Automated Localization Publishing</h2>
+      </div>
+      <div class="pub-callout">
+        <p class="pub-callout__body">
+          One of the biggest bottlenecks in publishing is handling languages. Our pipelines automatically detect the <code>xml:lang</code> attribute of the root map and switch the generated static text (like "Table of Contents" becoming "Table des matières") automatically. We configure font-mappings to ensure CJK (Chinese, Japanese, Korean) characters render correctly without tofu boxes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 Advanced Output Formats -->
+  <section class="pub-section" aria-labelledby="advanced-heading">
+    <div class="container-page pub-section__inner">
+      <div class="pub-heading-block">
+        <h2 id="advanced-heading" class="pub-heading">Advanced Output Formats</h2>
+        <p class="pub-intro">
+          Not every deliverable is a PDF or a website. We build custom transforms for specialized output targets.
+        </p>
+      </div>
+      <ul class="pub-grid-6">
+        {advancedFormats.map((c) => (
+          <li class="pub-card">
+            <span class="pub-card__icon" aria-hidden="true">
+              {c.icon === "book" && (
+                <svg viewBox="0 0 20 20"><path d="M10 5 C8 3.6 5 3.6 3 4.6 V15.2 C5 14.2 8 14.2 10 15.6 C12 14.2 15 14.2 17 15.2 V4.6 C15 3.6 12 3.6 10 5 Z" /><line x1="10" y1="5" x2="10" y2="15.6" /></svg>
+              )}
+              {c.icon === "code" && (
+                <svg viewBox="0 0 20 20"><polyline points="7,6 3,10 7,14" /><polyline points="13,6 17,10 13,14" /><line x1="11.5" y1="4.5" x2="8.5" y2="15.5" /></svg>
+              )}
+              {c.icon === "bubble" && (
+                <svg viewBox="0 0 20 20"><path d="M3.5 4.5 H16.5 V13 H9 L5.5 16 V13 H3.5 Z" /></svg>
+              )}
+              {c.icon === "gradcap" && (
+                <svg viewBox="0 0 20 20"><path d="M10 4 L18 7.5 L10 11 L2 7.5 Z" /><path d="M5.5 9 V13.5 C5.5 14.6 14.5 14.6 14.5 13.5 V9" /><line x1="18" y1="7.5" x2="18" y2="11.5" /></svg>
+              )}
+              {c.icon === "braces" && (
+                <svg viewBox="0 0 20 20"><path d="M8 3.5 C6 3.5 6.5 6.5 6.5 8 C6.5 9 5 10 5 10 C5 10 6.5 11 6.5 12 C6.5 13.5 6 16.5 8 16.5" /><path d="M12 3.5 C14 3.5 13.5 6.5 13.5 8 C13.5 9 15 10 15 10 C15 10 13.5 11 13.5 12 C13.5 13.5 14 16.5 12 16.5" /></svg>
+              )}
+              {c.icon === "swatches" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="6.5" width="9" height="9" rx="1" /><path d="M7 6.5 V5 a1 1 0 0 1 1 -1 H16 a1 1 0 0 1 1 1 V13 a1 1 0 0 1 -1 1 H12" /></svg>
+              )}
+            </span>
+            <h3 class="pub-card__title">{c.title}</h3>
+            <p class="pub-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S8 Related -->
+  <section class="pub-section pub-section--band" aria-labelledby="related-heading">
+    <div class="container-page pub-section__inner">
+      <div class="pub-heading-block">
+        <h2 id="related-heading" class="pub-heading">Related Services</h2>
+      </div>
+      <ul class="pub-related-grid">
+        {related.map((r) => (
+          <li class="pub-related-card-item">
+            <a href={r.href} class="pub-related-card">
+              <span class="pub-related-card__eyebrow">Service</span>
+              <h3 class="pub-related-card__title">{r.name}</h3>
+              <p class="pub-related-card__body">{r.desc}</p>
+              <span class="pub-related-card__cta">
+                Explore <span class="pub-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Sample Output Build"
+    body="Send us a sample DITA map and the output you need — PDF, HTML5, EPUB, or a data feed. We'll build a proof-of-concept render and return the pipeline plan: transforms, plugins, and the automation to keep it current. No commitment required."
+  />
+</BaseLayout>
+
+<style>
+  .pub-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .pub-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .pub-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Heading block ─── */
+  .pub-heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
+  }
+  .pub-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .pub-intro {
+    margin: var(--space-4) auto 0 auto;
+    max-width: 80ch;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  /* ─── Card grids ─── */
+  .pub-grid-3,
+  .pub-grid-6 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 600px) {
+    .pub-grid-6 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 768px) {
+    .pub-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .pub-grid-6 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .pub-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .pub-card--accent {
+    border-top: 2px solid var(--color-accent-primary);
+  }
+  .pub-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .pub-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .pub-card__icon svg circle,
+  .pub-card__icon svg ellipse,
+  .pub-card__icon svg line,
+  .pub-card__icon svg polyline,
+  .pub-card__icon svg rect,
+  .pub-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .pub-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .pub-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Rendering Pipeline strip (roadmap pattern) ─── */
+  .pub-roadmap {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .pub-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    background-color: var(--color-page-bg);
+  }
+  .pub-step__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary);
+  }
+  .pub-step__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .pub-step__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .pub-step__arrow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    color: var(--color-accent-primary);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+  @media (max-width: 767px) {
+    .pub-roadmap {
+      flex-direction: column;
+    }
+    .pub-step__arrow {
+      align-self: center;
+      transform: rotate(90deg);
+      padding: var(--space-1) 0;
+    }
+  }
+
+  /* ─── Localization callout ─── */
+  .pub-callout {
+    background-color: #fef3c7;
+    border-left: 3px solid var(--color-accent-primary);
+    border-radius: var(--radius-sm);
+    padding: var(--space-8) var(--space-12);
+    max-width: 90ch;
+    margin: 0 auto;
+  }
+  @media (max-width: 767px) {
+    .pub-callout {
+      padding: var(--space-6) var(--space-8);
+    }
+  }
+  .pub-callout__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .pub-callout__body code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background-color: rgb(255 255 255 / 0.6);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+  }
+
+  /* ─── Related ─── */
+  .pub-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .pub-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .pub-related-card-item {
+    display: flex;
+  }
+  .pub-related-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    background-color: var(--color-page-bg);
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .pub-related-card:hover,
+  .pub-related-card:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+  .pub-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .pub-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .pub-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .pub-related-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .pub-related-card:hover .pub-related-card__cta,
+  .pub-related-card:focus-visible .pub-related-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .pub-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .pub-related-card:hover .pub-related-card__arrow {
+    transform: translateX(2px);
+  }
+
+  /* ─── Hero visual: one source -> many outputs ─── */
+  .pub-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .pub-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+  .pub-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .pub-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .pub-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .pub-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .pub-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .pub-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .pub-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .pub-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .pub-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .pub-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .pub-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+  .pub-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 620;
+    stroke-dashoffset: 620;
+  }
+
+  .pub-hero-flow .fx {
+    opacity: 0;
+  }
+  .pub-hero-flow.drawn .fx {
+    animation: pub-flow-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .pub-hero-flow.drawn .flow-conn {
+    animation: pub-flow-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes pub-flow-fade {
+    to { opacity: 1; }
+  }
+  @keyframes pub-flow-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pub-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .pub-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupPubHero() {
+    const svg = document.getElementById("pub-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupPubHero);
+  document.addEventListener("astro:page-load", setupPubHero);
+</script>

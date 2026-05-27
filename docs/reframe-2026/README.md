@@ -109,6 +109,7 @@ template wireframe + a content-variant table, not N independent docs.
 | Service › Tech Writing | done      | done     | done      | done     | done        | [technical-writing-content-development.md](technical-writing-content-development.md) |
 | Service › Content Strat| done      | done     | done      | done     | done        | [structured-content-strategy.md](structured-content-strategy.md) |
 | Service › DITA Eng     | done      | done     | done      | done     | done        | [dita-engineering.md](dita-engineering.md) |
+| Service › Publishing Eng| done     | done     | done      | done     | done        | [publishing-engineering.md](publishing-engineering.md) |
 
 > The 4 `/solutions/*` sub-pages are **bespoke** (each has its own components —
 > `TechDocs*`, etc.), so they get one doc each, not a shared template. (The
