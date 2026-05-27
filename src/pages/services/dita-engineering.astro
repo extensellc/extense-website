@@ -378,7 +378,7 @@ const related: Related[] = [
       </div>
       <ul class="dita-grid-3">
         {legacyCards.map((c) => (
-          <li class="dita-card dita-card--accent dita-card--center">
+          <li class="dita-card dita-card--accent">
             <h3 class="dita-card__title">{c.title}</h3>
             <p class="dita-card__body">{c.body}</p>
           </li>
@@ -713,9 +713,6 @@ const related: Related[] = [
   }
   .dita-card--accent {
     border-top: 2px solid var(--color-accent-primary);
-  }
-  .dita-card--center {
-    text-align: center;
   }
   .dita-card__icon {
     display: inline-flex;
