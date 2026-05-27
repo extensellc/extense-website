@@ -428,13 +428,13 @@ const related: Related[] = [
       </div>
       <ul class="dita-grid-3">
         {aiCards.map((c) => (
-          <li class="dita-card">
+          <li class="dita-card dita-card--accent">
             <h3 class="dita-card__title">{c.title}</h3>
             <p class="dita-card__body">{c.body}</p>
           </li>
         ))}
       </ul>
-      <div class="dita-subblock">
+      <div class="dita-subblock dita-subblock--center">
         <h3 class="dita-subblock__title">From Documentation to Data Asset</h3>
         <p class="dita-subblock__body">
           Well-engineered DITA is <strong>70%</strong> of what you need for an AI content pipeline. The topic architecture provides natural chunk boundaries, metadata provides filter dimensions, and short descriptions provide ready-made summaries. We close the remaining 30% with transform plugins, embedding pipelines, and delivery API integration.
