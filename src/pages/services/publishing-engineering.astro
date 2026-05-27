@@ -81,11 +81,11 @@ interface Step {
   desc: string;
 }
 const pipeline: Step[] = [
-  { num: "01", title: "Source", desc: "Verified DITA map." },
-  { num: "02", title: "Pre-Process", desc: "Link resolution & keyref expansion." },
-  { num: "03", title: "Transformation", desc: "XSLT application." },
-  { num: "04", title: "Post-Process", desc: "CSS / JS injection." },
-  { num: "05", title: "Artifact", desc: "Final PDF / ZIP." },
+  { num: "01", title: "Source", desc: "The build starts from a verified DITA map — topics validated, references checked, and the content set locked." },
+  { num: "02", title: "Pre-Process", desc: "Links and keyrefs resolve, conrefs pull in, and DITAVAL filtering trims the map to the target audience." },
+  { num: "03", title: "Transformation", desc: "The DITA-OT applies your XSLT, mapping every element to the output's structure, styles, and metadata." },
+  { num: "04", title: "Post-Process", desc: "Output-specific CSS, JavaScript, fonts, and assets are injected, and cross-references are rewritten for the target." },
+  { num: "05", title: "Artifact", desc: "The finished deliverable is packaged and versioned — a print-ready PDF, a zipped HTML site, or a data feed." },
 ];
 
 const advancedFormats: Card[] = [
