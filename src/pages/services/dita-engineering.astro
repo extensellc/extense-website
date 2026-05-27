@@ -377,7 +377,7 @@ const related: Related[] = [
           </li>
         ))}
       </ul>
-      <div class="dita-subblock">
+      <div class="dita-subblock dita-subblock--center">
         <h3 class="dita-subblock__title">Deduplication at Conversion Time</h3>
         <p class="dita-subblock__body">
           During conversion, we analyze every paragraph and span across your entire document collection using structured content analysis. Exact-match and near-match duplicates are identified, consolidated into reusable warehouse topics with conref pointers, and tracked in a deduplication report — saving you from discovering redundancy months later. <strong>Typical result:</strong> 15–30% of content identified as duplicate and consolidated in the first pass.
@@ -820,6 +820,11 @@ const related: Related[] = [
     padding-top: var(--space-8);
     border-top: var(--border-hairline);
     max-width: 90ch;
+  }
+  .dita-subblock--center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
   }
   .dita-subblock__title {
     font-family: var(--font-display);
