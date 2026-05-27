@@ -63,6 +63,7 @@ const techniques: RichCard[] = [
 interface Card {
   title: string;
   body: string;
+  icon?: string;
 }
 const legacyCards: Card[] = [
   {
@@ -107,26 +108,32 @@ const deliveryCards: Card[] = [
   {
     title: "Static Site Publishing",
     body: "DITA-OT builds HTML5 output deployed to AWS S3 + CloudFront, Azure Blob, Netlify, or GitHub Pages. CI/CD pipelines trigger rebuilds on every commit — your documentation site is always current.",
+    icon: "globe",
   },
   {
     title: "Headless Content APIs",
     body: "Transform DITA to JSON and serve through REST or GraphQL endpoints. Applications, chatbots, and embedded help panels pull exactly the content they need at runtime — no monolithic help portal required.",
+    icon: "api",
   },
   {
     title: "PDF & Print",
     body: "Branded PDF output via XSL-FO or CSS Paged Media (Prince XML, Antenna House). We build PDF plugins that match your corporate identity — cover pages, headers, footers, legal boilerplate — all templated and automated.",
+    icon: "print",
   },
   {
     title: "Portal & CMS Integration",
     body: "Publish DITA output into Drupal, WordPress, Salesforce Knowledge, or SharePoint. We build the connector layer that maps topics to CMS content types, preserves navigation hierarchy, and handles incremental updates.",
+    icon: "integration",
   },
   {
     title: "Context-Sensitive Help",
     body: "Map topics to application screens using resource IDs. We configure the delivery layer so your software's help button retrieves the right topic for the current context — in-app panels, modals, or external links.",
+    icon: "help",
   },
   {
     title: "Hosted Documentation Portals",
     body: "Fully managed documentation hosting with search, versioning, access control, and analytics. We set up and maintain the infrastructure so your team focuses on content, not servers.",
+    icon: "server",
   },
 ];
 
@@ -455,6 +462,26 @@ const related: Related[] = [
       <ul class="dita-grid-6">
         {deliveryCards.map((c) => (
           <li class="dita-card">
+            <span class="dita-card__icon" aria-hidden="true">
+              {c.icon === "globe" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><line x1="3" y1="10" x2="17" y2="10" /><path d="M10 3 C13 6 13 14 10 17 C7 14 7 6 10 3 Z" /></svg>
+              )}
+              {c.icon === "api" && (
+                <svg viewBox="0 0 20 20"><polyline points="7,6 3,10 7,14" /><polyline points="13,6 17,10 13,14" /><line x1="11.5" y1="4.5" x2="8.5" y2="15.5" /></svg>
+              )}
+              {c.icon === "print" && (
+                <svg viewBox="0 0 20 20"><polyline points="6,7.5 6,3.5 14,3.5 14,7.5" /><path d="M6 13.5 H4.5 A1.5 1.5 0 0 1 3 12 V9.5 A1.5 1.5 0 0 1 4.5 8 H15.5 A1.5 1.5 0 0 1 17 9.5 V12 A1.5 1.5 0 0 1 15.5 13.5 H14" /><rect x="6" y="12" width="8" height="4.5" rx="0.5" /></svg>
+              )}
+              {c.icon === "integration" && (
+                <svg viewBox="0 0 20 20"><rect x="2.5" y="5.5" width="6" height="6" rx="1" /><rect x="11.5" y="8.5" width="6" height="6" rx="1" /><line x1="8.5" y1="8.5" x2="11.5" y2="11.5" /></svg>
+              )}
+              {c.icon === "help" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><path d="M8 8.2 A2 2 0 1 1 10.6 10 C9.9 10.4 9.7 10.9 9.7 11.6" /><line x1="9.7" y1="13.8" x2="9.7" y2="14" /></svg>
+              )}
+              {c.icon === "server" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="5" rx="1" /><rect x="3" y="11" width="14" height="5" rx="1" /><line x1="6" y1="6.5" x2="6.4" y2="6.5" /><line x1="6" y1="13.5" x2="6.4" y2="13.5" /></svg>
+              )}
+            </span>
             <h3 class="dita-card__title">{c.title}</h3>
             <p class="dita-card__body">{c.body}</p>
           </li>
@@ -689,6 +716,28 @@ const related: Related[] = [
   }
   .dita-card--center {
     text-align: center;
+  }
+  .dita-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .dita-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .dita-card__icon svg circle,
+  .dita-card__icon svg ellipse,
+  .dita-card__icon svg line,
+  .dita-card__icon svg polyline,
+  .dita-card__icon svg rect,
+  .dita-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .dita-card__title {
     font-family: var(--font-display);
