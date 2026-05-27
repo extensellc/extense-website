@@ -141,26 +141,32 @@ const ditaotCards: Card[] = [
   {
     title: "DITA-OT Upgrades",
     body: "Migrating from DITA-OT 2.x or 3.x to 4.x? We handle the upgrade — testing your existing plugins for compatibility, updating deprecated Ant targets, resolving XSLT conflicts, and validating output parity against your current builds.",
+    icon: "upgrade",
   },
   {
     title: "Custom Plugin Development",
     body: "We build DITA-OT plugins for branded HTML5 themes, custom PDF layouts, JSON/YAML output, SCORM packaging, Salesforce Knowledge export, and any transform target your pipeline requires. Delivered with unit tests and documentation.",
+    icon: "plugin",
   },
   {
     title: "CI/CD Pipeline Integration",
     body: "DITA-OT wrapped in Docker containers, triggered by GitHub Actions, Jenkins, GitLab CI, or Azure DevOps. We build the pipeline that validates, transforms, and deploys on every merge — with build failure notifications and output artifact archiving.",
+    icon: "cicd",
   },
   {
     title: "Performance Optimization",
     body: "Slow builds with large document sets? We profile your DITA-OT pipeline, optimize XSLT transforms, configure parallel processing, and implement incremental builds so only changed topics are re-rendered.",
+    icon: "performance",
   },
   {
     title: "Troubleshooting & Support",
     body: "Broken builds, rendering inconsistencies, plugin conflicts, and encoding issues. We diagnose and fix DITA-OT problems — and document the root cause so your team can avoid repeat issues.",
+    icon: "support",
   },
   {
     title: "DITA-OT Managed Service",
     body: "Ongoing maintenance contract: we monitor your build pipelines, apply DITA-OT patch releases, update plugins for compatibility, and provide a dedicated support channel for your publishing team. SLA-backed response times.",
+    icon: "managed",
   },
 ];
 
@@ -502,6 +508,26 @@ const related: Related[] = [
       <ul class="dita-grid-6">
         {ditaotCards.map((c) => (
           <li class="dita-card">
+            <span class="dita-card__icon" aria-hidden="true">
+              {c.icon === "upgrade" && (
+                <svg viewBox="0 0 20 20"><polyline points="5,11 10,6 15,11" /><polyline points="5,15 10,10 15,15" /></svg>
+              )}
+              {c.icon === "plugin" && (
+                <svg viewBox="0 0 20 20"><line x1="8" y1="2.5" x2="8" y2="5.5" /><line x1="12" y1="2.5" x2="12" y2="5.5" /><path d="M5.5 5.5 H14.5 V9 a4.5 4.5 0 0 1 -9 0 Z" /><line x1="10" y1="13.5" x2="10" y2="17.5" /></svg>
+              )}
+              {c.icon === "cicd" && (
+                <svg viewBox="0 0 20 20"><path d="M15.5 6.5 A6 6 0 1 0 16.5 10" /><polyline points="15.5,3 15.5,6.5 12,6.5" /></svg>
+              )}
+              {c.icon === "performance" && (
+                <svg viewBox="0 0 20 20"><path d="M4 14 A7 7 0 0 1 16 14" /><line x1="10" y1="14" x2="13" y2="9.5" /><circle cx="10" cy="14" r="0.8" /></svg>
+              )}
+              {c.icon === "support" && (
+                <svg viewBox="0 0 20 20"><path d="M13.5 3 a3.5 3.5 0 0 0 -3.4 5.9 L4 15 l1.5 1.5 l6.1 -6.1 A3.5 3.5 0 0 0 17 6.5 L14.8 8.7 L12.3 6.2 Z" /></svg>
+              )}
+              {c.icon === "managed" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.5" /><path d="M10 2.5 V4 M10 16 V17.5 M2.5 10 H4 M16 10 H17.5 M4.7 4.7 L5.8 5.8 M14.2 14.2 L15.3 15.3 M4.7 15.3 L5.8 14.2 M14.2 5.8 L15.3 4.7" /></svg>
+              )}
+            </span>
             <h3 class="dita-card__title">{c.title}</h3>
             <p class="dita-card__body">{c.body}</p>
           </li>
