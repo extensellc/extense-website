@@ -1,0 +1,320 @@
+---
+/*
+  TEMP MOCK — hero-visual candidates for /services/publishing-engineering.
+  Not linked in nav. DELETE once the visual is chosen.
+  Three concepts rendered in the established hero node-graph idiom
+  (corner marks, mono FIG. chrome, amber connectors). Shown statically
+  (no scroll-reveal) for side-by-side comparison.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const candidates = [
+  {
+    id: "A",
+    name: "Linear pipeline",
+    note: "Source flows left-to-right through transform and render stages to a single artifact. Mirrors the page's Rendering Pipeline section.",
+  },
+  {
+    id: "B",
+    name: "One source -> many outputs (fan)",
+    note: "A single engineered source fans out to multiple output formats. Closest in spirit to 'publish once, deliver anywhere'.",
+  },
+  {
+    id: "C",
+    name: "Transform hub (engine in, outputs out)",
+    note: "The DITA-OT engine at the center, one input, three outputs. Echoes the 'Core Transformation Engine' section.",
+  },
+];
+---
+
+<BaseLayout title="[MOCK] Publishing hero visuals — Extense LLC" description="Temporary mockup page.">
+  <section class="mock">
+    <div class="mock__inner">
+      <p class="mock__kicker">TEMP MOCK &middot; delete after selection</p>
+      <h1 class="mock__title">Publishing Engineering &mdash; hero visual candidates</h1>
+      <p class="mock__lead">Three concepts in the established hero idiom. Pick A, B, or C (or ask for a tweak); I'll build the real page with it and remove this page.</p>
+
+      <!-- A — Linear pipeline -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">A</span> {candidates[0].name}</p>
+        <p class="mock__desc">{candidates[0].note}</p>
+        <div class="pub-hero-visual">
+          <svg class="pub-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: publish.pipeline</text>
+
+            <g>
+              <rect class="node" x="22" y="132" width="104" height="46" rx="3" />
+              <text class="node-label" x="74" y="160" text-anchor="middle">&lt;map&gt;</text>
+              <text class="node-caption" x="74" y="196" text-anchor="middle">DITA source</text>
+            </g>
+            <g>
+              <rect class="node" x="159" y="132" width="104" height="46" rx="3" />
+              <text class="node-label" x="211" y="160" text-anchor="middle">transform</text>
+              <text class="node-caption" x="211" y="196" text-anchor="middle">XSLT / OT</text>
+            </g>
+            <g>
+              <rect class="node" x="296" y="132" width="104" height="46" rx="3" />
+              <text class="node-label" x="348" y="160" text-anchor="middle">render</text>
+              <text class="node-caption" x="348" y="196" text-anchor="middle">CSS / FO</text>
+            </g>
+            <g>
+              <rect class="node node--custom" x="433" y="132" width="104" height="46" rx="3" />
+              <text class="node-label node-label--custom" x="485" y="160" text-anchor="middle">PDF &middot; HTML5</text>
+              <text class="node-caption" x="485" y="196" text-anchor="middle">artifact</text>
+            </g>
+
+            <path class="conn" d="M126 155 L159 155" />
+            <path class="conn" d="M154 150 L159 155 L154 160" />
+            <path class="conn" d="M263 155 L296 155" />
+            <path class="conn" d="M291 150 L296 155 L291 160" />
+            <path class="conn" d="M400 155 L433 155" />
+            <path class="conn" d="M428 150 L433 155 L428 160" />
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">render.pipeline</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">SOURCE &rarr; ARTIFACT</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- B — Fan-out -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">B</span> {candidates[1].name}</p>
+        <p class="mock__desc">{candidates[1].note}</p>
+        <div class="pub-hero-visual">
+          <svg class="pub-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: single.source</text>
+
+            <g>
+              <rect class="node node--custom" x="210" y="54" width="140" height="40" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="79" text-anchor="middle">&lt;map&gt;</text>
+              <text class="node-caption" x="280" y="116" text-anchor="middle">one engineered source</text>
+            </g>
+
+            <path class="conn" d="M280 94 L280 140 M77 140 L485 140 M77 140 L77 168 M213 140 L213 168 M349 140 L349 168 M485 140 L485 168" />
+
+            <g>
+              <rect class="node" x="25" y="168" width="104" height="44" rx="3" />
+              <text class="node-label" x="77" y="195" text-anchor="middle">PDF</text>
+            </g>
+            <g>
+              <rect class="node" x="161" y="168" width="104" height="44" rx="3" />
+              <text class="node-label" x="213" y="195" text-anchor="middle">HTML5</text>
+            </g>
+            <g>
+              <rect class="node" x="297" y="168" width="104" height="44" rx="3" />
+              <text class="node-label" x="349" y="195" text-anchor="middle">EPUB</text>
+            </g>
+            <g>
+              <rect class="node" x="433" y="168" width="104" height="44" rx="3" />
+              <text class="node-label" x="485" y="195" text-anchor="middle">JSON</text>
+            </g>
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">single.source</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">ONE &rarr; MANY</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- C — Transform hub -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">C</span> {candidates[2].name}</p>
+        <p class="mock__desc">{candidates[2].note}</p>
+        <div class="pub-hero-visual">
+          <svg class="pub-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: transform.engine</text>
+
+            <g>
+              <rect class="node" x="22" y="140" width="92" height="34" rx="3" />
+              <text class="node-label" x="68" y="162" text-anchor="middle">&lt;map&gt;</text>
+            </g>
+
+            <g>
+              <rect class="node node--custom" x="190" y="128" width="170" height="58" rx="4" />
+              <text class="node-label node-label--custom" x="275" y="153" text-anchor="middle">DITA-OT</text>
+              <text class="node-caption" x="275" y="172" text-anchor="middle">transform engine</text>
+            </g>
+
+            <g>
+              <rect class="node" x="448" y="100" width="90" height="30" rx="3" />
+              <text class="node-label" x="493" y="120" text-anchor="middle">PDF</text>
+            </g>
+            <g>
+              <rect class="node" x="448" y="142" width="90" height="30" rx="3" />
+              <text class="node-label" x="493" y="162" text-anchor="middle">HTML5</text>
+            </g>
+            <g>
+              <rect class="node" x="448" y="184" width="90" height="30" rx="3" />
+              <text class="node-label" x="493" y="204" text-anchor="middle">EPUB</text>
+            </g>
+
+            <path class="conn" d="M114 157 L190 157" />
+            <path class="conn" d="M185 152 L190 157 L185 162" />
+            <path class="conn" d="M360 157 L408 157 M408 115 L408 199 M408 115 L448 115 M408 157 L448 157 M408 199 L448 199" />
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">transform.engine</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">IN &rarr; OUT</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .mock {
+    padding: var(--space-16) 0 var(--space-24);
+  }
+  .mock__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+  .mock__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3);
+  }
+  .mock__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3);
+  }
+  .mock__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-16);
+  }
+  .mock__block {
+    margin-bottom: var(--space-16);
+    padding-top: var(--space-8);
+    border-top: var(--border-hairline);
+  }
+  .mock__label {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .mock__id {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #fef3c7;
+    color: var(--color-accent-primary-pressed);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+  }
+  .mock__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6);
+    max-width: 60ch;
+  }
+
+  /* ─── Hero visual idiom (static; mirrors the DITA hero) ─── */
+  .pub-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: var(--space-6);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-page-bg);
+  }
+  .pub-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .pub-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .pub-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .pub-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .pub-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .pub-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .pub-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .pub-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .pub-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .pub-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .pub-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+  .pub-hero-flow .conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+</style>
