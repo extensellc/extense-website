@@ -324,7 +324,7 @@ const related: Related[] = [
       </div>
       <ul class="dita-grid-3">
         {techniques.map((t) => (
-          <li class="dita-card">
+          <li class="dita-card dita-card--accent">
             <h3 class="dita-card__title">{t.title}</h3>
             <p class="dita-card__body" set:html={t.body} />
           </li>
@@ -676,6 +676,9 @@ const related: Related[] = [
     border: var(--border-hairline);
     padding: var(--space-6) var(--space-6) var(--space-8);
     background-color: var(--color-page-bg);
+  }
+  .dita-card--accent {
+    border-top: 2px solid var(--color-accent-primary);
   }
   .dita-card__title {
     font-family: var(--font-display);
