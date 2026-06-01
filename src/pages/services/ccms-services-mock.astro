@@ -18,12 +18,22 @@ const candidates = [
   {
     id: "B",
     name: "CCMS hub with admin disciplines",
-    note: "Central amber <ccms> node with four admin disciplines arranged around it (User Support, Schema Ops, Integrations, Backup & DR). Most directly captures the 'managed services' thesis.",
+    note: "Central amber <ccms> node with four admin disciplines arranged around it (User Support, Schema Ops, Integrations, Backup & DR). Captures the breadth of the managed surface.",
   },
   {
     id: "C",
     name: "Multi-platform convergence (many -> one)",
     note: "Four platform pills on the left (IXIASOFT, Tridion, Heretto, Paligo) all converging into a single amber managed-service hub. Inverts the Publishing fan so it reads distinctly.",
+  },
+  {
+    id: "D",
+    name: "Responsibility stack (writers above, ops below)",
+    note: "Your writers stay above the amber line; everything below -- workflows, schema, infrastructure, integrations -- is run by Extense. Most directly renders the page's headline promise ('so your writers focus on writing').",
+  },
+  {
+    id: "E",
+    name: "Continuous-operations timeline",
+    note: "Horizontal time axis with cadenced events plotted along it (daily monitor, weekly patch, monthly audit, quarterly DR drill, annual upgrade). Captures the ongoing nature of managed services -- distinct from every other detail-page hero, which are snapshot diagrams.",
   },
 ];
 ---
@@ -33,7 +43,7 @@ const candidates = [
     <div class="mock__inner">
       <p class="mock__kicker">TEMP MOCK &middot; delete after selection</p>
       <h1 class="mock__title">CCMS Services &mdash; hero visual candidates</h1>
-      <p class="mock__lead">Three concepts in the established hero idiom. Pick A, B, or C (or ask for a tweak); I'll build the real page with it and remove this page.</p>
+      <p class="mock__lead">Five concepts in the established hero idiom. Pick A, B, C, D, or E (or ask for a tweak); I'll build the real page with it and remove this page.</p>
 
       <!-- A — Workflow state graph -->
       <div class="mock__block">
@@ -184,6 +194,130 @@ const candidates = [
             <text class="chrome" x="296" y="302">/</text>
             <text class="chrome chrome--strong" x="304" y="302">managed.platforms</text>
             <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">MANY &rarr; ONE</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- D — Responsibility stack -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">D</span> {candidates[3].name}</p>
+        <p class="mock__desc">{candidates[3].note}</p>
+        <div class="ccms-hero-visual">
+          <svg class="ccms-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: shared.ownership</text>
+
+            <!-- Top: your writers (above the line) -->
+            <g>
+              <rect class="node" x="30" y="46" width="500" height="40" rx="3" />
+              <text class="node-label" x="280" y="71" text-anchor="middle">your writers</text>
+            </g>
+
+            <!-- Demarcation rule (amber) -->
+            <line class="conn" x1="30" y1="110" x2="530" y2="110" />
+
+            <!-- Demarcation chip sitting on the rule -->
+            <g>
+              <rect class="node node--custom" x="210" y="98" width="140" height="24" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="115" text-anchor="middle">extense.ops</text>
+            </g>
+
+            <!-- 4 ops layers below -->
+            <g>
+              <rect class="node" x="30" y="132" width="500" height="32" rx="3" />
+              <text class="node-label" x="280" y="153" text-anchor="middle">workflows &amp; approval</text>
+            </g>
+            <g>
+              <rect class="node" x="30" y="168" width="500" height="32" rx="3" />
+              <text class="node-label" x="280" y="189" text-anchor="middle">schema &amp; indexing</text>
+            </g>
+            <g>
+              <rect class="node" x="30" y="204" width="500" height="32" rx="3" />
+              <text class="node-label" x="280" y="225" text-anchor="middle">infrastructure &amp; backups</text>
+            </g>
+            <g>
+              <rect class="node" x="30" y="240" width="500" height="32" rx="3" />
+              <text class="node-label" x="280" y="261" text-anchor="middle">integrations &amp; releases</text>
+            </g>
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">shared.ownership</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">WRITERS &mdash; OPS</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- E — Continuous-operations timeline -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">E</span> {candidates[4].name}</p>
+        <p class="mock__desc">{candidates[4].note}</p>
+        <div class="ccms-hero-visual">
+          <svg class="ccms-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: ops.timeline</text>
+
+            <!-- 5 event boxes at top -->
+            <g>
+              <rect class="node" x="49" y="70" width="78" height="44" rx="3" />
+              <text class="node-label" x="88" y="97" text-anchor="middle">monitor</text>
+            </g>
+            <g>
+              <rect class="node" x="145" y="70" width="78" height="44" rx="3" />
+              <text class="node-label" x="184" y="97" text-anchor="middle">patch</text>
+            </g>
+            <g>
+              <rect class="node" x="241" y="70" width="78" height="44" rx="3" />
+              <text class="node-label" x="280" y="97" text-anchor="middle">audit</text>
+            </g>
+            <g>
+              <rect class="node" x="337" y="70" width="78" height="44" rx="3" />
+              <text class="node-label" x="376" y="97" text-anchor="middle">DR drill</text>
+            </g>
+            <g>
+              <rect class="node" x="433" y="70" width="78" height="44" rx="3" />
+              <text class="node-label" x="472" y="97" text-anchor="middle">upgrade</text>
+            </g>
+
+            <!-- Connectors from each event down to axis -->
+            <path class="conn" d="M88 114 L88 174" />
+            <path class="conn" d="M184 114 L184 174" />
+            <path class="conn" d="M280 114 L280 174" />
+            <path class="conn" d="M376 114 L376 174" />
+            <path class="conn" d="M472 114 L472 174" />
+
+            <!-- Time axis with right-end chevron -->
+            <line class="chrome-rule" x1="20" y1="180" x2="535" y2="180" />
+            <path class="conn" d="M530 175 L540 180 L530 185" />
+
+            <!-- Tick marks on axis -->
+            <line class="chrome-rule" x1="88" y1="174" x2="88" y2="186" />
+            <line class="chrome-rule" x1="184" y1="174" x2="184" y2="186" />
+            <line class="chrome-rule" x1="280" y1="174" x2="280" y2="186" />
+            <line class="chrome-rule" x1="376" y1="174" x2="376" y2="186" />
+            <line class="chrome-rule" x1="472" y1="174" x2="472" y2="186" />
+
+            <!-- Cadence labels below axis -->
+            <text class="node-caption" x="88" y="204" text-anchor="middle">DAILY</text>
+            <text class="node-caption" x="184" y="204" text-anchor="middle">WEEKLY</text>
+            <text class="node-caption" x="280" y="204" text-anchor="middle">MONTHLY</text>
+            <text class="node-caption" x="376" y="204" text-anchor="middle">QUARTERLY</text>
+            <text class="node-caption" x="472" y="204" text-anchor="middle">ANNUAL</text>
+
+            <!-- Continuous-service chip -->
+            <g>
+              <rect class="node node--custom" x="190" y="230" width="180" height="26" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="248" text-anchor="middle">extense.ops &middot; continuous</text>
+            </g>
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">ops.timeline</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">CONTINUOUS</text>
           </svg>
         </div>
       </div>
