@@ -1,0 +1,900 @@
+---
+/*
+  /services/ccms-services -- service detail page (5th of 7).
+
+  Built bespoke (page-local CSS, prefix `ccms-`), reusing the shared atoms
+  (Hero, SectionSiblings, CTAModule) and the patterns proven on DITA +
+  Publishing (icon-card grids, 3-card row, related cards, hero node-graph
+  visual). Faithful rebuild of the old ex-tense.co page (10 sections);
+  the old mid-page "Free CCMS Health Check" banner is folded into the
+  end CTA (single conversion zone at the bottom).
+
+  Shape: Hero (visual E -- ops.timeline) -> switcher -> Expert Administration
+  (3 icon cards) -> Operational Services (6 icon cards, band) -> Platforms
+  We Support (6 text cards) -> Workflow & Configuration (3 cards, band) ->
+  Upgrades & Integration (3 cards) -> Engagement Models (3 cards w/ eyebrow
+  + checklist, band) -> Knowledge Transfer & Handoff (3 cards) -> Related
+  (3 cards, band) -> CTA "Free CCMS Health Check".
+
+  Doc: docs/reframe-2026/ccms-services.md
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon?: string;
+}
+
+const expertAdmin: Card[] = [
+  {
+    title: "User Support (Tier 2/3)",
+    body: "When a writer says “I can’t check in this file,” it’s usually a locked resource, a validation error, or a merge conflict. We are the helpdesk that speaks DITA — resolving content-specific issues that generic IT support cannot diagnose.",
+    icon: "support",
+  },
+  {
+    title: "Performance Tuning",
+    body: "Optimizing XML database indexing, search configurations, and query performance for large repositories (1M+ objects). We profile slow operations, restructure indexes, and implement caching strategies that keep response times under 2 seconds.",
+    icon: "gauge",
+  },
+  {
+    title: "Schema & DTD Updates",
+    body: "Deploying new DTDs, specializations, and constraint modules without breaking legacy content. We test schema changes against the full repository, produce migration scripts, and validate backward compatibility before going live.",
+    icon: "layers",
+  },
+];
+
+const operationalServices: Card[] = [
+  {
+    title: "User Onboarding",
+    body: "Workspace setup, role-based permissions, tool preferences, and authoring environment configuration for new hires — writers are productive on day one.",
+    icon: "user-add",
+  },
+  {
+    title: "Platform Migration",
+    body: "Moving from CCMS A to CCMS B (e.g., IXIASOFT to Heretto, Vasont to Paligo). We handle data export, schema mapping, metadata preservation, and link integrity verification.",
+    icon: "swap",
+  },
+  {
+    title: "Repository Cleanup",
+    body: "Identifying and archiving orphaned topics, broken conrefs, unused images, and stale branches. We produce a ROT (Redundant, Outdated, Trivial) report with automated remediation scripts.",
+    icon: "trash",
+  },
+  {
+    title: "Access Control & Auditing",
+    body: "Role-based access control, branch policies, and audit trail configuration for regulated environments. Every view, edit, and export is logged for compliance reporting.",
+    icon: "shield",
+  },
+  {
+    title: "Backup & Disaster Recovery",
+    body: "Scheduled backups, restore testing, and DR runbook development. We ensure your content repository has the same RTO/RPO guarantees as your production databases.",
+    icon: "database",
+  },
+  {
+    title: "Health Monitoring",
+    body: "Proactive monitoring of system health, storage utilization, indexing performance, and queue backlogs. We alert and remediate before your writers notice a slowdown.",
+    icon: "heartbeat",
+  },
+];
+
+const platforms: Card[] = [
+  {
+    title: "IXIASOFT CCMS",
+    body: "Full administration for IXIASOFT 4.x and 5.x — including TEXTML Server tuning, collaborative review configuration, output generator management, and custom dashboard development.",
+  },
+  {
+    title: "Tridion Docs (SDL)",
+    body: "Publication Manager configuration, condition metadata management, translation integration, and performance optimization for Tridion Docs on-premise and cloud deployments.",
+  },
+  {
+    title: "Heretto (easyDITA)",
+    body: "Cloud-native administration — API integrations, webhook pipelines, custom publishing configurations, and SSO/SCIM user provisioning for Heretto’s SaaS platform.",
+  },
+  {
+    title: "Paligo",
+    body: "Taxonomy and variable management, publishing portal configuration, Salesforce Knowledge integration, and multi-language workflow setup for Paligo’s structured authoring environment.",
+  },
+  {
+    title: "Vasont / Astoria",
+    body: "Legacy platform support, migration planning, repository maintenance, and publishing pipeline management for Vasont and Astoria CMS installations.",
+  },
+  {
+    title: "Git-Based & Open Source",
+    body: "For teams running DITA on Git (GitHub, GitLab, Bitbucket) with DITA-OT CI/CD pipelines — we provide the same managed service discipline: access control, branch strategy, build monitoring, and publishing automation.",
+  },
+];
+
+const workflowConfig: Card[] = [
+  {
+    title: "Review & Approval Workflows",
+    body: "We design multi-stage review chains — author → SME review → editorial → approval → publish — with automated notifications, deadlines, and escalation rules. Workflows adapt to your org structure, not the other way around.",
+  },
+  {
+    title: "Branching & Release Management",
+    body: "Version branching strategies for parallel product releases, patch documentation, and long-lived maintenance branches. We configure branch policies, merge rules, and baseline snapshots that map to your product release cadence.",
+  },
+  {
+    title: "Publishing Triggers & Automation",
+    body: "Automated publishing on workflow state change — when content reaches “Approved,” the pipeline builds and deploys without manual intervention. We wire CCMS events to DITA-OT builds, webhook-triggered deployments, and notification channels.",
+  },
+];
+
+const upgrades: Card[] = [
+  {
+    title: "Platform Version Upgrades",
+    body: "Major and minor version upgrades — IXIASOFT 5 → 6, Tridion 14 → 15, Heretto API changes. We run the upgrade in a staging environment, regression-test your customizations, validate content integrity, and execute the cutover with rollback procedures in place.",
+  },
+  {
+    title: "TMS & Localization Connectors",
+    body: "Configuring and maintaining integrations with translation management systems — Trados, memoQ, Phrase, Memsource. We manage the XLIFF round-trip, status callbacks, and automated handoff triggers so localization runs without manual file shuffling.",
+  },
+  {
+    title: "JIRA, Git & CI/CD Integration",
+    body: "Connecting your CCMS to engineering workflows — JIRA ticket sync, Git-based content versioning, and CI/CD pipeline triggers. We build and maintain the middleware that keeps content operations synchronized with product development.",
+  },
+];
+
+interface EngagementCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+  checklist: string[];
+}
+
+const engagement: EngagementCard[] = [
+  {
+    eyebrow: "FOR 20+ WRITERS",
+    title: "Dedicated Admin",
+    body: "A named Extense CCMS administrator embedded in your team — full-time or part-time. They attend your standups, know your content architecture, and respond within your SLA. Ideal for large teams (20+ writers) with complex configurations.",
+    checklist: [
+      "Named resource, consistent context",
+      "2-hour response SLA (business hours)",
+      "Monthly reporting & roadmap reviews",
+    ],
+  },
+  {
+    eyebrow: "FOR 5–20 WRITERS",
+    title: "Shared Pool",
+    body: "Access to our CCMS engineering team on a monthly retainer with a block of hours. Tickets are triaged by priority and handled by the specialist with the right platform expertise. Ideal for mid-size teams (5–20 writers) with periodic needs.",
+    checklist: [
+      "Platform-certified specialists",
+      "4-hour response SLA (business hours)",
+      "Rollover unused hours (up to 20%)",
+    ],
+  },
+  {
+    eyebrow: "ONE-TIME · ANNUAL",
+    title: "Project-Based",
+    body: "Fixed-scope engagements for upgrades, migrations, workflow redesigns, or performance overhauls. Defined deliverables, timeline, and budget. Ideal for one-time initiatives or annual maintenance windows.",
+    checklist: [
+      "Fixed price, defined scope",
+      "Knowledge transfer included",
+      "Post-project support period",
+    ],
+  },
+];
+
+const knowledgeTransfer: Card[] = [
+  {
+    title: "Admin Runbooks",
+    body: "Step-by-step operational runbooks for every recurring task — user provisioning, schema deployment, backup procedures, and incident response. Your team can execute day-to-day operations independently.",
+  },
+  {
+    title: "CCMS Admin Training",
+    body: "Hands-on training for your designated CCMS administrators — platform-specific configuration, workflow management, publishing pipeline troubleshooting, and performance monitoring. We train to your actual environment, not generic courseware.",
+  },
+  {
+    title: "Gradual Handoff",
+    body: "Our engagement model supports a planned transition from fully managed to self-sufficient. We start with full administration, progressively hand off tasks as your team gains confidence, and step back to advisory-only when you’re ready.",
+  },
+];
+
+interface Related {
+  name: string;
+  href: string;
+  desc: string;
+}
+const related: Related[] = [
+  {
+    name: "DITA Engineering",
+    href: "/services/dita-engineering",
+    desc: "Topic modeling, specialization, and constraint modules for scalable content architectures.",
+  },
+  {
+    name: "System Integration",
+    href: "/services/system-integration",
+    desc: "Connecting CCMS, CMS, and enterprise platforms via APIs and middleware.",
+  },
+  {
+    name: "Publishing Engineering",
+    href: "/services/publishing-engineering",
+    desc: "Custom multi-channel publishing pipelines for PDF, HTML5, EPUB, and API documentation.",
+  },
+];
+---
+
+<BaseLayout
+  title="CCMS Managed Services & Administration — Extense LLC"
+  description="DBA-level administration, ongoing optimization, and Tier 2/3 support for your Component Content Management System — so your writers focus on writing. Extense runs IXIASOFT, Tridion Docs, Heretto, Paligo, Vasont/Astoria, and Git-based DITA on a continuous cadence."
+>
+  <Hero
+    variant="universal"
+    title="CCMS Managed Services & Administration"
+    subdeck="DBA-level administration, ongoing optimization, and Tier 2/3 support for your Component Content Management System &mdash; so your writers focus on writing."
+  >
+    <div class="ccms-hero-visual">
+      <svg
+        class="ccms-hero-flow"
+        id="ccms-hero-flow"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: ops.timeline</text>
+
+        <!-- 5 event boxes at top -->
+        <g class="fx" style="--d: 200ms">
+          <rect class="node" x="49" y="70" width="78" height="44" rx="3" />
+          <text class="node-label" x="88" y="97" text-anchor="middle">monitor</text>
+        </g>
+        <g class="fx" style="--d: 280ms">
+          <rect class="node" x="145" y="70" width="78" height="44" rx="3" />
+          <text class="node-label" x="184" y="97" text-anchor="middle">patch</text>
+        </g>
+        <g class="fx" style="--d: 360ms">
+          <rect class="node" x="241" y="70" width="78" height="44" rx="3" />
+          <text class="node-label" x="280" y="97" text-anchor="middle">audit</text>
+        </g>
+        <g class="fx" style="--d: 440ms">
+          <rect class="node" x="337" y="70" width="78" height="44" rx="3" />
+          <text class="node-label" x="376" y="97" text-anchor="middle">DR drill</text>
+        </g>
+        <g class="fx" style="--d: 520ms">
+          <rect class="node" x="433" y="70" width="78" height="44" rx="3" />
+          <text class="node-label" x="472" y="97" text-anchor="middle">upgrade</text>
+        </g>
+
+        <!-- Connectors (draw): each event down to axis -->
+        <path class="flow-conn" style="--d: 240ms" d="M88 114 L88 174" />
+        <path class="flow-conn" style="--d: 320ms" d="M184 114 L184 174" />
+        <path class="flow-conn" style="--d: 400ms" d="M280 114 L280 174" />
+        <path class="flow-conn" style="--d: 480ms" d="M376 114 L376 174" />
+        <path class="flow-conn" style="--d: 560ms" d="M472 114 L472 174" />
+
+        <!-- Time axis + arrow + ticks (fade in together) -->
+        <g class="fx" style="--d: 640ms">
+          <line class="chrome-rule" x1="20" y1="180" x2="535" y2="180" />
+          <path class="conn" d="M530 175 L540 180 L530 185" />
+          <line class="chrome-rule" x1="88" y1="174" x2="88" y2="186" />
+          <line class="chrome-rule" x1="184" y1="174" x2="184" y2="186" />
+          <line class="chrome-rule" x1="280" y1="174" x2="280" y2="186" />
+          <line class="chrome-rule" x1="376" y1="174" x2="376" y2="186" />
+          <line class="chrome-rule" x1="472" y1="174" x2="472" y2="186" />
+        </g>
+
+        <!-- Cadence labels -->
+        <g class="fx" style="--d: 720ms">
+          <text class="node-caption" x="88" y="204" text-anchor="middle">DAILY</text>
+          <text class="node-caption" x="184" y="204" text-anchor="middle">WEEKLY</text>
+          <text class="node-caption" x="280" y="204" text-anchor="middle">MONTHLY</text>
+          <text class="node-caption" x="376" y="204" text-anchor="middle">QUARTERLY</text>
+          <text class="node-caption" x="472" y="204" text-anchor="middle">ANNUAL</text>
+        </g>
+
+        <!-- Continuous-service chip -->
+        <g class="fx" style="--d: 820ms">
+          <rect class="node node--custom" x="190" y="230" width="180" height="26" rx="3" />
+          <text class="node-label node-label--custom" x="280" y="248" text-anchor="middle">extense.ops &middot; continuous</text>
+        </g>
+
+        <!-- Bottom chrome -->
+        <g class="fx" style="--d: 920ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="232" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+          <text class="chrome" x="296" y="302">/</text>
+          <text class="chrome chrome--strong" x="304" y="302">ops.timeline</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">CONTINUOUS</text>
+        </g>
+      </svg>
+    </div>
+  </Hero>
+
+  <SectionSiblings variant="services" current="ccms-services" />
+
+  <!-- S3 Expert Administration -->
+  <section class="ccms-section" aria-labelledby="expert-heading">
+    <div class="container-page ccms-section__inner">
+      <div class="ccms-heading-block">
+        <h2 id="expert-heading" class="ccms-heading">Expert Administration</h2>
+        <p class="ccms-intro">
+          A CCMS is a database application with XML-aware workflows, access controls, and publishing integrations. It requires dedicated operational expertise &mdash; not just an IT generalist.
+        </p>
+      </div>
+      <ul class="ccms-grid-3">
+        {expertAdmin.map((c) => (
+          <li class="ccms-card ccms-card--accent">
+            <span class="ccms-card__icon" aria-hidden="true">
+              {c.icon === "support" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="6.5" /><circle cx="10" cy="10" r="2.5" /><line x1="10" y1="3.5" x2="10" y2="5.5" /><line x1="10" y1="14.5" x2="10" y2="16.5" /><line x1="3.5" y1="10" x2="5.5" y2="10" /><line x1="14.5" y1="10" x2="16.5" y2="10" /></svg>
+              )}
+              {c.icon === "gauge" && (
+                <svg viewBox="0 0 20 20"><path d="M4 14 A7 7 0 0 1 16 14" /><line x1="10" y1="14" x2="13" y2="9.5" /><circle cx="10" cy="14" r="0.8" /></svg>
+              )}
+              {c.icon === "layers" && (
+                <svg viewBox="0 0 20 20"><path d="M10 3 L17 6.5 L10 10 L3 6.5 Z" /><polyline points="3,10.5 10,14 17,10.5" /><polyline points="3,14 10,17.5 17,14" /></svg>
+              )}
+            </span>
+            <h3 class="ccms-card__title">{c.title}</h3>
+            <p class="ccms-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S4 Operational Services (band) -->
+  <section class="ccms-section ccms-section--band" aria-labelledby="ops-heading">
+    <div class="container-page ccms-section__inner">
+      <div class="ccms-heading-block">
+        <h2 id="ops-heading" class="ccms-heading">Operational Services</h2>
+        <p class="ccms-intro">
+          Ongoing administration tasks that keep your CCMS healthy and your content team productive.
+        </p>
+      </div>
+      <ul class="ccms-grid-6">
+        {operationalServices.map((c) => (
+          <li class="ccms-card">
+            <span class="ccms-card__icon" aria-hidden="true">
+              {c.icon === "user-add" && (
+                <svg viewBox="0 0 20 20"><circle cx="8" cy="6.5" r="2.5" /><path d="M3 16 a5 5 0 0 1 10 0" /><line x1="15" y1="4" x2="15" y2="8" /><line x1="13" y1="6" x2="17" y2="6" /></svg>
+              )}
+              {c.icon === "swap" && (
+                <svg viewBox="0 0 20 20"><line x1="14" y1="6" x2="4" y2="6" /><polyline points="6,4 4,6 6,8" /><line x1="6" y1="14" x2="16" y2="14" /><polyline points="14,12 16,14 14,16" /></svg>
+              )}
+              {c.icon === "trash" && (
+                <svg viewBox="0 0 20 20"><polyline points="3,5 17,5" /><polyline points="8,5 8,3.5 12,3.5 12,5" /><path d="M5 5 L6 17 H14 L15 5" /><line x1="9" y1="8" x2="9" y2="14" /><line x1="11" y1="8" x2="11" y2="14" /></svg>
+              )}
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /><polyline points="7.4,9.8 9.2,11.6 12.8,7.8" /></svg>
+              )}
+              {c.icon === "database" && (
+                <svg viewBox="0 0 20 20"><ellipse cx="10" cy="5" rx="6" ry="2" /><path d="M4 5 V10 a6 2 0 0 0 12 0 V5" /><path d="M4 10 V15 a6 2 0 0 0 12 0 V10" /></svg>
+              )}
+              {c.icon === "heartbeat" && (
+                <svg viewBox="0 0 20 20"><polyline points="2,10 6,10 7,7 9,13 11,5 13,12 14,10 18,10" /></svg>
+              )}
+            </span>
+            <h3 class="ccms-card__title">{c.title}</h3>
+            <p class="ccms-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S5 Platforms We Support -->
+  <section class="ccms-section" aria-labelledby="platforms-heading">
+    <div class="container-page ccms-section__inner">
+      <div class="ccms-heading-block">
+        <h2 id="platforms-heading" class="ccms-heading">Platforms We Support</h2>
+        <p class="ccms-intro">
+          We provide managed services across the major CCMS platforms &mdash; not just one vendor. If your team uses it, we administer it.
+        </p>
+      </div>
+      <ul class="ccms-grid-6">
+        {platforms.map((c) => (
+          <li class="ccms-card">
+            <h3 class="ccms-card__title">{c.title}</h3>
+            <p class="ccms-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S6 Workflow & Configuration Services (band) -->
+  <section class="ccms-section ccms-section--band" aria-labelledby="workflow-heading">
+    <div class="container-page ccms-section__inner">
+      <div class="ccms-heading-block">
+        <h2 id="workflow-heading" class="ccms-heading">Workflow & Configuration Services</h2>
+        <p class="ccms-intro">
+          A CCMS is only as effective as its workflows. We design and implement the operational logic that governs how content moves from draft to published.
+        </p>
+      </div>
+      <ul class="ccms-grid-3">
+        {workflowConfig.map((c) => (
+          <li class="ccms-card ccms-card--accent">
+            <h3 class="ccms-card__title">{c.title}</h3>
+            <p class="ccms-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S7 Upgrades & Integration Management -->
+  <section class="ccms-section" aria-labelledby="upgrades-heading">
+    <div class="container-page ccms-section__inner">
+      <div class="ccms-heading-block">
+        <h2 id="upgrades-heading" class="ccms-heading">Upgrades & Integration Management</h2>
+        <p class="ccms-intro">
+          Keeping your CCMS current and connected to the tools your teams depend on.
+        </p>
+      </div>
+      <ul class="ccms-grid-3">
+        {upgrades.map((c) => (
+          <li class="ccms-card ccms-card--accent">
+            <h3 class="ccms-card__title">{c.title}</h3>
+            <p class="ccms-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S8 Engagement Models (band) -->
+  <section class="ccms-section ccms-section--band" aria-labelledby="engagement-heading">
+    <div class="container-page ccms-section__inner">
+      <div class="ccms-heading-block">
+        <h2 id="engagement-heading" class="ccms-heading">Engagement Models</h2>
+        <p class="ccms-intro">
+          Flexible service models that fit your team size, budget, and operational maturity.
+        </p>
+      </div>
+      <ul class="ccms-grid-3">
+        {engagement.map((e) => (
+          <li class="ccms-card ccms-card--accent ccms-engagement">
+            <span class="ccms-engagement__eyebrow">{e.eyebrow}</span>
+            <h3 class="ccms-card__title">{e.title}</h3>
+            <p class="ccms-card__body">{e.body}</p>
+            <ul class="ccms-engagement__checklist">
+              {e.checklist.map((item) => (
+                <li>
+                  <span class="ccms-engagement__mark" aria-hidden="true">&#10003;</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S9 Knowledge Transfer & Handoff -->
+  <section class="ccms-section" aria-labelledby="kt-heading">
+    <div class="container-page ccms-section__inner">
+      <div class="ccms-heading-block">
+        <h2 id="kt-heading" class="ccms-heading">Knowledge Transfer & Handoff</h2>
+        <p class="ccms-intro">
+          We don&rsquo;t create dependencies. Every engagement includes documentation and training so your internal team grows more capable, not more reliant on us.
+        </p>
+      </div>
+      <ul class="ccms-grid-3">
+        {knowledgeTransfer.map((c) => (
+          <li class="ccms-card ccms-card--accent">
+            <h3 class="ccms-card__title">{c.title}</h3>
+            <p class="ccms-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S10 Related (band) -->
+  <section class="ccms-section ccms-section--band" aria-labelledby="related-heading">
+    <div class="container-page ccms-section__inner">
+      <div class="ccms-heading-block">
+        <h2 id="related-heading" class="ccms-heading">Related Services</h2>
+      </div>
+      <ul class="ccms-related-grid">
+        {related.map((r) => (
+          <li class="ccms-related-card-item">
+            <a href={r.href} class="ccms-related-card">
+              <span class="ccms-related-card__eyebrow">Service</span>
+              <h3 class="ccms-related-card__title">{r.name}</h3>
+              <p class="ccms-related-card__body">{r.desc}</p>
+              <span class="ccms-related-card__cta">
+                Explore <span class="ccms-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Free CCMS Health Check"
+    body="We'll audit your CCMS configuration — permissions model, indexing strategy, workflow bottlenecks, and orphan content ratio. You'll receive a prioritized remediation plan and the ops cadence we'd recommend. No commitment required."
+  />
+</BaseLayout>
+
+<style>
+  .ccms-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .ccms-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .ccms-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Heading block ─── */
+  .ccms-heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
+  }
+  .ccms-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .ccms-intro {
+    margin: var(--space-4) auto 0 auto;
+    max-width: 80ch;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  /* ─── Card grids ─── */
+  .ccms-grid-3,
+  .ccms-grid-6 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 600px) {
+    .ccms-grid-6 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 768px) {
+    .ccms-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .ccms-grid-6 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .ccms-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .ccms-card--accent {
+    border-top: 2px solid var(--color-accent-primary);
+  }
+  .ccms-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .ccms-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .ccms-card__icon svg circle,
+  .ccms-card__icon svg ellipse,
+  .ccms-card__icon svg line,
+  .ccms-card__icon svg polyline,
+  .ccms-card__icon svg rect,
+  .ccms-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ccms-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .ccms-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Engagement Models extras (eyebrow + checklist) ─── */
+  .ccms-engagement__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .ccms-engagement__checklist {
+    list-style: none;
+    margin: var(--space-5) 0 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .ccms-engagement__checklist li {
+    display: flex;
+    gap: var(--space-3);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+  .ccms-engagement__mark {
+    flex: 0 0 auto;
+    color: var(--color-accent-primary);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* ─── Related ─── */
+  .ccms-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .ccms-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ccms-related-card-item {
+    display: flex;
+  }
+  .ccms-related-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    background-color: var(--color-page-bg);
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .ccms-related-card:hover,
+  .ccms-related-card:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+  .ccms-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .ccms-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .ccms-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .ccms-related-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .ccms-related-card:hover .ccms-related-card__cta,
+  .ccms-related-card:focus-visible .ccms-related-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .ccms-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .ccms-related-card:hover .ccms-related-card__arrow {
+    transform: translateX(2px);
+  }
+
+  /* ─── Hero visual: continuous-operations timeline ─── */
+  .ccms-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .ccms-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+  .ccms-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .ccms-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .ccms-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .ccms-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .ccms-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .ccms-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .ccms-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .ccms-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .ccms-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .ccms-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .ccms-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .ccms-hero-flow .conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+  .ccms-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 80;
+    stroke-dashoffset: 80;
+  }
+
+  .ccms-hero-flow .fx {
+    opacity: 0;
+  }
+  .ccms-hero-flow.drawn .fx {
+    animation: ccms-flow-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .ccms-hero-flow.drawn .flow-conn {
+    animation: ccms-flow-draw 520ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes ccms-flow-fade {
+    to { opacity: 1; }
+  }
+  @keyframes ccms-flow-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ccms-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .ccms-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupCcmsHero() {
+    const svg = document.getElementById("ccms-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupCcmsHero);
+  document.addEventListener("astro:page-load", setupCcmsHero);
+</script>
