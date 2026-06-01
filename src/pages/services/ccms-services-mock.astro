@@ -35,6 +35,11 @@ const candidates = [
     name: "Continuous-operations timeline",
     note: "Horizontal time axis with cadenced events plotted along it (daily monitor, weekly patch, monthly audit, quarterly DR drill, annual upgrade). Captures the ongoing nature of managed services -- distinct from every other detail-page hero, which are snapshot diagrams.",
   },
+  {
+    id: "F",
+    name: "Managed continuum (D + E combined: scope x time)",
+    note: "Your writers above the amber line; below, three ops surfaces as horizontal swimlanes (workflows & approval / schema & indexing / infrastructure & backups), each with cadence ticks across daily->annual and a continuation arrow at the right. Carries D's responsibility scope AND E's continuous-time dimension in one diagram.",
+  },
 ];
 ---
 
@@ -43,7 +48,7 @@ const candidates = [
     <div class="mock__inner">
       <p class="mock__kicker">TEMP MOCK &middot; delete after selection</p>
       <h1 class="mock__title">CCMS Services &mdash; hero visual candidates</h1>
-      <p class="mock__lead">Five concepts in the established hero idiom. Pick A, B, C, D, or E (or ask for a tweak); I'll build the real page with it and remove this page.</p>
+      <p class="mock__lead">Six concepts in the established hero idiom. Pick A through F (or ask for a tweak); I'll build the real page with it and remove this page.</p>
 
       <!-- A — Workflow state graph -->
       <div class="mock__block">
@@ -318,6 +323,78 @@ const candidates = [
             <text class="chrome" x="296" y="302">/</text>
             <text class="chrome chrome--strong" x="304" y="302">ops.timeline</text>
             <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">CONTINUOUS</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- F — Managed continuum (D + E combined: scope x time) -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">F</span> {candidates[5].name}</p>
+        <p class="mock__desc">{candidates[5].note}</p>
+        <div class="ccms-hero-visual">
+          <svg class="ccms-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: managed.continuum</text>
+
+            <!-- Top: your writers (above the line) -->
+            <g>
+              <rect class="node" x="30" y="46" width="500" height="34" rx="3" />
+              <text class="node-label" x="280" y="68" text-anchor="middle">your writers</text>
+            </g>
+
+            <!-- Amber demarcation rule -->
+            <line class="conn" x1="30" y1="100" x2="530" y2="100" />
+
+            <!-- extense.ops chip on the rule -->
+            <g>
+              <rect class="node node--custom" x="220" y="88" width="120" height="24" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="105" text-anchor="middle">extense.ops</text>
+            </g>
+
+            <!-- Lane 1: workflows & approval -->
+            <text class="node-label" x="30" y="138" text-anchor="start">workflows &amp; approval</text>
+            <line class="chrome-rule" x1="210" y1="135" x2="525" y2="135" />
+            <rect class="build-dot" x="213" y="133" width="4" height="4" />
+            <rect class="build-dot" x="288" y="133" width="4" height="4" />
+            <rect class="build-dot" x="363" y="133" width="4" height="4" />
+            <rect class="build-dot" x="438" y="133" width="4" height="4" />
+            <rect class="build-dot" x="513" y="133" width="4" height="4" />
+            <path class="conn" d="M530 130 L540 135 L530 140" />
+
+            <!-- Lane 2: schema & indexing -->
+            <text class="node-label" x="30" y="174" text-anchor="start">schema &amp; indexing</text>
+            <line class="chrome-rule" x1="210" y1="171" x2="525" y2="171" />
+            <rect class="build-dot" x="213" y="169" width="4" height="4" />
+            <rect class="build-dot" x="288" y="169" width="4" height="4" />
+            <rect class="build-dot" x="363" y="169" width="4" height="4" />
+            <rect class="build-dot" x="438" y="169" width="4" height="4" />
+            <rect class="build-dot" x="513" y="169" width="4" height="4" />
+            <path class="conn" d="M530 166 L540 171 L530 176" />
+
+            <!-- Lane 3: infrastructure & backups -->
+            <text class="node-label" x="30" y="210" text-anchor="start">infrastructure &amp; backups</text>
+            <line class="chrome-rule" x1="210" y1="207" x2="525" y2="207" />
+            <rect class="build-dot" x="213" y="205" width="4" height="4" />
+            <rect class="build-dot" x="288" y="205" width="4" height="4" />
+            <rect class="build-dot" x="363" y="205" width="4" height="4" />
+            <rect class="build-dot" x="438" y="205" width="4" height="4" />
+            <rect class="build-dot" x="513" y="205" width="4" height="4" />
+            <path class="conn" d="M530 202 L540 207 L530 212" />
+
+            <!-- Cadence labels (the time axis) -->
+            <text class="node-caption" x="215" y="234" text-anchor="middle">DAILY</text>
+            <text class="node-caption" x="290" y="234" text-anchor="middle">WEEKLY</text>
+            <text class="node-caption" x="365" y="234" text-anchor="middle">MONTHLY</text>
+            <text class="node-caption" x="440" y="234" text-anchor="middle">QUARTERLY</text>
+            <text class="node-caption" x="515" y="234" text-anchor="middle">ANNUAL</text>
+
+            <!-- Bottom chrome -->
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">managed.continuum</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">SCOPE &times; TIME</text>
           </svg>
         </div>
       </div>
