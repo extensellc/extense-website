@@ -214,7 +214,7 @@ const candidates = [
 
             <!-- Top: your writers (above the line) -->
             <g>
-              <rect class="node" x="30" y="46" width="500" height="40" rx="3" />
+              <rect class="node node--soft" x="30" y="46" width="500" height="40" rx="3" />
               <text class="node-label" x="280" y="71" text-anchor="middle">your writers</text>
             </g>
 
@@ -338,7 +338,7 @@ const candidates = [
 
             <!-- Top: your writers (above the line) -->
             <g>
-              <rect class="node" x="30" y="46" width="500" height="34" rx="3" />
+              <rect class="node node--soft" x="30" y="46" width="500" height="34" rx="3" />
               <text class="node-label" x="280" y="68" text-anchor="middle">your writers</text>
             </g>
 
@@ -520,6 +520,11 @@ const candidates = [
   .ccms-hero-flow .node--custom {
     fill: #fef3c7;
     stroke: var(--color-accent-primary);
+  }
+  .ccms-hero-flow .node--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
   }
   .ccms-hero-flow .node-label {
     font-family: var(--font-mono);
