@@ -25,6 +25,11 @@ const candidates = [
     name: "Beyond well-formedness (raw -> governed)",
     note: "Soft-dashed 'well-formed only' element on top, amber extense.rules band across the middle, governed amber element below. Renders the page's opening thesis ('XML is just text until you enforce the rules'). Same idiom as SI's D, applied to XML governance.",
   },
+  {
+    id: "D",
+    name: "Three pillars feeding into governed XML",
+    note: "Three amber pillar chips at top -- schema / transform / validate -- the three engineering layers the page names. Convergent lines drop into a central amber 'extense.engineering' chip below; that chip sits between a soft-dashed raw <chapter> on the left and an amber governed <chapter> on the right. Carries all three pillars AND the raw->governed outcome.",
+  },
 ];
 ---
 
@@ -33,7 +38,7 @@ const candidates = [
     <div class="mock__inner">
       <p class="mock__kicker">TEMP MOCK &middot; delete after selection</p>
       <h1 class="mock__title">XML Engineering &mdash; hero visual candidates</h1>
-      <p class="mock__lead">Three concepts in the established hero idiom. Pick A, B, or C (or ask for a tweak); I'll build the real page with it and remove this page.</p>
+      <p class="mock__lead">Four concepts in the established hero idiom. Pick A, B, C, or D (or ask for a tweak); I'll build the real page with it and remove this page.</p>
 
       <!-- A — Schematron rule overlay -->
       <div class="mock__block">
@@ -178,6 +183,68 @@ const candidates = [
             <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
             <text class="chrome" x="296" y="302">/</text>
             <text class="chrome chrome--strong" x="304" y="302">beyond.well-formedness</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">RAW &rarr; GOVERNED</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- D — Three pillars feeding into governed XML -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">D</span> {candidates[3].name}</p>
+        <p class="mock__desc">{candidates[3].note}</p>
+        <div class="xe-hero-visual">
+          <svg class="xe-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: engineering.layers</text>
+
+            <!-- Three pillar chips at top (custom amber) -->
+            <g>
+              <rect class="node node--custom" x="40" y="46" width="140" height="30" rx="3" />
+              <text class="node-label node-label--custom" x="110" y="65" text-anchor="middle">schema</text>
+            </g>
+            <g>
+              <rect class="node node--custom" x="210" y="46" width="140" height="30" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="65" text-anchor="middle">transform</text>
+            </g>
+            <g>
+              <rect class="node node--custom" x="380" y="46" width="140" height="30" rx="3" />
+              <text class="node-label node-label--custom" x="450" y="65" text-anchor="middle">validate</text>
+            </g>
+
+            <!-- Convergent connectors from pillar bottoms to engineering chip top -->
+            <path class="conn" d="M110 76 L280 200" />
+            <path class="conn" d="M280 76 L280 200" />
+            <path class="conn" d="M450 76 L280 200" />
+
+            <!-- Bottom row: raw → engineering → governed -->
+            <g>
+              <rect class="node node--soft" x="24" y="200" width="130" height="44" rx="3" />
+              <text class="node-label label--muted" x="89" y="227" text-anchor="middle">&lt;chapter&gt;</text>
+              <text class="node-caption" x="89" y="262" text-anchor="middle">well-formed</text>
+            </g>
+
+            <g>
+              <rect class="node node--custom" x="190" y="200" width="180" height="44" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="227" text-anchor="middle">extense.engineering</text>
+            </g>
+
+            <g>
+              <rect class="node node--custom" x="406" y="200" width="130" height="44" rx="3" />
+              <text class="node-label node-label--custom" x="471" y="227" text-anchor="middle">&lt;chapter&gt;</text>
+              <text class="node-caption" x="471" y="262" text-anchor="middle">governed</text>
+            </g>
+
+            <!-- Horizontal connectors raw → engineering → governed -->
+            <path class="conn" d="M154 222 L190 222" />
+            <path class="conn" d="M185 217 L190 222 L185 227" />
+            <path class="conn" d="M370 222 L406 222" />
+            <path class="conn" d="M401 217 L406 222 L401 227" />
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">engineering.layers</text>
             <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">RAW &rarr; GOVERNED</text>
           </svg>
         </div>
