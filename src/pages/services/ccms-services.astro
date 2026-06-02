@@ -225,6 +225,7 @@ const related: Related[] = [
     variant="universal"
     title="CCMS Managed Services & Administration"
     subdeck="DBA-level administration, ongoing optimization, and Tier 2/3 support for your Component Content Management System &mdash; so your writers focus on writing."
+    subdeckMaxWidth="580px"
   >
     <div class="ccms-hero-visual">
       <svg
@@ -391,7 +392,7 @@ const related: Related[] = [
       <div class="ccms-heading-block">
         <h2 id="platforms-heading" class="ccms-heading">Platforms We Support</h2>
         <p class="ccms-intro">
-          We provide managed services across the major CCMS platforms &mdash; not just one vendor. If your team uses it, we administer it.
+          We provide managed services across the major CCMS platforms &mdash; not just one vendor.<br />If your team uses it, we administer it.
         </p>
       </div>
       <ul class="ccms-grid-6">
@@ -410,7 +411,7 @@ const related: Related[] = [
     <div class="container-page ccms-section__inner">
       <div class="ccms-heading-block">
         <h2 id="workflow-heading" class="ccms-heading">Workflow & Configuration Services</h2>
-        <p class="ccms-intro">
+        <p class="ccms-intro ccms-intro--narrow">
           A CCMS is only as effective as its workflows. We design and implement the operational logic that governs how content moves from draft to published.
         </p>
       </div>
@@ -479,7 +480,7 @@ const related: Related[] = [
     <div class="container-page ccms-section__inner">
       <div class="ccms-heading-block">
         <h2 id="kt-heading" class="ccms-heading">Knowledge Transfer & Handoff</h2>
-        <p class="ccms-intro">
+        <p class="ccms-intro ccms-intro--narrow">
           We don&rsquo;t create dependencies. Every engagement includes documentation and training so your internal team grows more capable, not more reliant on us.
         </p>
       </div>
@@ -566,6 +567,9 @@ const related: Related[] = [
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
     text-wrap: pretty;
+  }
+  .ccms-intro--narrow {
+    max-width: 60ch;
   }
 
   /* ─── Card grids ─── */
