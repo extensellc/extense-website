@@ -143,10 +143,10 @@ const hasSideContent = Astro.slots.has('default');
     color: var(--color-gravitas-navy);
   }
 
-  /* ─── Optional side-content slot (used by /industries hero) ───
-     When the hero has slot content (e.g., a ComplianceReferenceCard),
-     the inner becomes a horizontal flex layout at desktop widths.
-     The side content renders to the right of the hero text. */
+  /* ─── Optional side-content slot ───
+     When the hero has slot content, the inner becomes a horizontal flex
+     layout at desktop widths. The side content renders to the right of
+     the hero text. */
   @media (min-width: 1024px) {
     .hero--has-side .hero__inner {
       display: flex;

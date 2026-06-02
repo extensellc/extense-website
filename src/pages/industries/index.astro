@@ -24,7 +24,6 @@ import Hero from "../../components/site/Hero.astro";
 import AudiencePivotCard from "../../components/site/AudiencePivotCard.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
-import ComplianceReferenceCard from "../../components/site/ComplianceReferenceCard.astro";
 
 interface IndustryRow {
   industry: string;
@@ -145,58 +144,88 @@ const industryCards: IndustryCard[] = [
     subdeck="Documentation in regulated industries isn't writing — it's compliance engineering. Domain depth, not generic skill, bridges the named standards."
     subdeckMaxWidth="520px"
   >
-    <ComplianceReferenceCard
-      cards={[
-        {
-          vertical: "Government & Defense",
-          standard: "S1000D Issue 5.0",
-          artifact: "IETM data module",
-          auditor: "DoD",
-          cadence: "PDR · CDR · FCA · PCA",
-          note: "S1000D conformance to procurement-graded depth.",
-        },
-        {
-          vertical: "Financial Services",
-          standard: "SOX 404",
-          artifact: "Policy library",
-          auditor: "SEC · external auditor",
-          cadence: "Annual + continuous",
-          note: "Policy libraries engineered as SOX 404 control artifacts.",
-        },
-        {
-          vertical: "Insurance",
-          standard: "NAIC ORSA",
-          artifact: "Annual filing",
-          auditor: "State DOI",
-          cadence: "Annual + per rate change",
-          note: "State-DOI variant management at 50-jurisdiction scale.",
-        },
-        {
-          vertical: "Life Sciences",
-          standard: "21 CFR Part 11",
-          artifact: "IFU",
-          auditor: "FDA",
-          cadence: "Per submission · annual",
-          note: "GxP-defensible authoring through FDA submission.",
-        },
-        {
-          vertical: "Transportation",
-          standard: "ATA Spec 2200",
-          artifact: "AMM (aviation)",
-          auditor: "FAA · NTSB",
-          cadence: "Per modification · annual",
-          note: "Service-information operations across modes.",
-        },
-        {
-          vertical: "Technology",
-          standard: "SOC 2 Type II",
-          artifact: "Control narrative",
-          auditor: "External CPA firm",
-          cadence: "Annual",
-          note: "Three product surfaces, one engineering discipline.",
-        },
-      ]}
-    />
+    <svg
+      class="ind-hero-flow"
+      id="ind-hero-flow"
+      viewBox="0 0 560 320"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Compliance pipeline: six standards, one engineering discipline, audit-passed artifact"
+      role="img"
+    >
+      <g class="corner--accent fx" style="--d: 0ms">
+        <path d="M 12 24 L 12 12 L 24 12" />
+        <path d="M 536 12 L 548 12 L 548 24" />
+        <path d="M 12 296 L 12 308 L 24 308" />
+        <path d="M 536 308 L 548 308 L 548 296" />
+      </g>
+
+      <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: compliance.pipeline</text>
+
+      <text class="stage-caption fx" x="90" y="62" text-anchor="middle" style="--d: 160ms">STANDARDS</text>
+      <text class="stage-caption fx" x="280" y="62" text-anchor="middle" style="--d: 200ms">DISCIPLINE</text>
+      <text class="stage-caption fx" x="470" y="62" text-anchor="middle" style="--d: 240ms">AUDIT</text>
+
+      {/* Standards stack (left) */}
+      <g class="fx" style="--d: 320ms">
+        <rect class="node node--soft" x="20" y="72" width="140" height="194" rx="3" />
+        <text class="standard-row" x="34" y="92">S1000D</text>
+        <text class="standard-row" x="34" y="120">21 CFR Part 11</text>
+        <text class="standard-row" x="34" y="148">SOX 404</text>
+        <text class="standard-row" x="34" y="176">ATA 2200</text>
+        <text class="standard-row" x="34" y="204">NAIC ORSA</text>
+        <text class="standard-row" x="34" y="232">SOC 2 Type II</text>
+        <line class="row-rule" x1="34" y1="100" x2="146" y2="100" />
+        <line class="row-rule" x1="34" y1="128" x2="146" y2="128" />
+        <line class="row-rule" x1="34" y1="156" x2="146" y2="156" />
+        <line class="row-rule" x1="34" y1="184" x2="146" y2="184" />
+        <line class="row-rule" x1="34" y1="212" x2="146" y2="212" />
+        <text class="row-count" x="146" y="256" text-anchor="end">6 / 6</text>
+      </g>
+
+      {/* Connector: standards → discipline */}
+      <path class="flow-conn" style="--d: 440ms" d="M 160 170 L 205 170 M 200 165 L 205 170 L 200 175" />
+
+      {/* Discipline (center, custom amber) */}
+      <g class="fx" style="--d: 520ms">
+        <rect class="node node--custom" x="210" y="100" width="140" height="140" rx="3" />
+        <rect class="artifact-strip" x="210" y="100" width="140" height="6" />
+        <text class="node-label node-label--custom" x="280" y="134" text-anchor="middle">extense.compliance</text>
+        <line class="artifact-rule" x1="226" y1="146" x2="334" y2="146" />
+        <text class="discipline-line" x="280" y="166" text-anchor="middle">author · structure</text>
+        <text class="discipline-line" x="280" y="184" text-anchor="middle">validate · publish</text>
+        <text class="discipline-line" x="280" y="202" text-anchor="middle">audit-trace</text>
+        <line class="artifact-rule" x1="226" y1="214" x2="334" y2="214" />
+        <text class="node-caption" x="280" y="228" text-anchor="middle">ONE PRACTICE</text>
+      </g>
+
+      {/* Connector: discipline → audit */}
+      <path class="flow-conn" style="--d: 640ms" d="M 350 170 L 395 170 M 390 165 L 395 170 L 390 175" />
+
+      {/* Audit gate (right) */}
+      <g class="fx" style="--d: 720ms">
+        <rect class="node node--soft" x="400" y="72" width="140" height="194" rx="3" />
+        <path class="check" d="M 416 96 L 421 101 L 430 91" />
+        <text class="audit-line" x="436" y="100">conformance</text>
+        <path class="check" d="M 416 124 L 421 129 L 430 119" />
+        <text class="audit-line" x="436" y="128">traceability</text>
+        <path class="check" d="M 416 152 L 421 157 L 430 147" />
+        <text class="audit-line" x="436" y="156">defensibility</text>
+        <line class="row-rule" x1="416" y1="174" x2="524" y2="174" />
+        <rect class="pass-stamp" x="418" y="200" width="104" height="40" rx="2" />
+        <text class="pass-text" x="470" y="218" text-anchor="middle">PASS</text>
+        <text class="pass-meta" x="470" y="232" text-anchor="middle">2025-Q2</text>
+      </g>
+
+      {/* Bottom chrome */}
+      <g class="fx" style="--d: 900ms">
+        <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+        <rect class="build-dot" x="32" y="296" width="6" height="6" />
+        <text class="chrome chrome--strong" x="46" y="302">FIG. 01</text>
+        <text class="chrome" x="92" y="302">/</text>
+        <text class="chrome chrome--strong" x="100" y="302">compliance.pipeline</text>
+        <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">INPUT &rarr; DISCIPLINE &rarr; AUDIT</text>
+      </g>
+    </svg>
   </Hero>
 
   <AnimatedDivider />
@@ -529,6 +558,177 @@ const industryCards: IndustryCard[] = [
     }
   }
 
+  /* ─── Hero pipeline visual (replaces ComplianceReferenceCard) ─── */
+  .ind-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .ind-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .ind-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .ind-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .ind-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .ind-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .ind-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .ind-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .ind-hero-flow .node--soft {
+    fill: var(--color-page-bg);
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .ind-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .ind-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .ind-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .ind-hero-flow .artifact-strip {
+    fill: var(--color-accent-primary);
+    stroke: none;
+  }
+  .ind-hero-flow .artifact-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .ind-hero-flow .stage-caption {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.12em;
+  }
+  .ind-hero-flow .standard-row {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+  .ind-hero-flow .row-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 2 3;
+  }
+  .ind-hero-flow .row-count {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+  }
+  .ind-hero-flow .discipline-line {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+  .ind-hero-flow .check {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ind-hero-flow .audit-line {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+  .ind-hero-flow .pass-stamp {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+    stroke-width: 1.5;
+  }
+  .ind-hero-flow .pass-text {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.16em;
+  }
+  .ind-hero-flow .pass-meta {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.08em;
+  }
+  .ind-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .ind-hero-flow .fx {
+    opacity: 0;
+  }
+  .ind-hero-flow.drawn .fx {
+    animation: ind-hero-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .ind-hero-flow.drawn .flow-conn {
+    animation: ind-hero-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes ind-hero-fade {
+    to { opacity: 1; }
+  }
+  @keyframes ind-hero-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ind-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .ind-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
   .ind-section__prose-single {
     font-family: var(--font-body);
     font-size: var(--text-body);
@@ -686,6 +886,21 @@ const industryCards: IndustryCard[] = [
 </style>
 
 <script>
+(function () {
+  const svg = document.getElementById('ind-hero-flow');
+  if (svg) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          (entry.target as HTMLElement).classList.add('drawn');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    observer.observe(svg);
+  }
+})();
+
 (function () {
   const matrix = document.getElementById('ind-matrix');
   if (!matrix) return;
