@@ -25,6 +25,16 @@ const candidates = [
     name: "Ecosystem mesh",
     note: "Five nodes (CCMS + JIRA / Git / TMS / PLM) in a pentagonal arrangement with both spokes to CCMS and perimeter connections between systems. Conveys 'interconnected ecosystem, not just CCMS at the center'.",
   },
+  {
+    id: "D",
+    name: "Before / after -- manual handoff eliminated",
+    note: "Top row (BEFORE / MANUAL, soft dashed): JIRA -> swivel-chair human -> CCMS. Amber 'extense.connectors' rule across the middle. Bottom row (AFTER / AUTOMATED): JIRA -> direct amber arrow -> CCMS (amber). Literally renders the page's headline value: eliminated swivel-chair handoffs.",
+  },
+  {
+    id: "J",
+    name: "Hub-and-spoke with flow arrows (A++)",
+    note: "Same hub-and-spoke as A, but each spoke ends in a small amber arrowhead pointing INTO the CCMS hub, so the connectors read as content flowing in, not just static lines. Adds the 'content flows' dimension A is missing.",
+  },
 ];
 ---
 
@@ -33,7 +43,7 @@ const candidates = [
     <div class="mock__inner">
       <p class="mock__kicker">TEMP MOCK &middot; delete after selection</p>
       <h1 class="mock__title">System Integration &mdash; hero visual candidates</h1>
-      <p class="mock__lead">Three concepts in the established hero idiom. Pick A, B, or C (or ask for a tweak); I'll build the real page with it and remove this page.</p>
+      <p class="mock__lead">Five concepts in the established hero idiom. Pick A, B, C, D, or J (or ask for a tweak); I'll build the real page with it and remove this page.</p>
 
       <!-- A — Hub-and-spoke -->
       <div class="mock__block">
@@ -205,6 +215,129 @@ const candidates = [
           </svg>
         </div>
       </div>
+
+      <!-- D — Before / after (manual handoff eliminated) -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">D</span> {candidates[3].name}</p>
+        <p class="mock__desc">{candidates[3].note}</p>
+        <div class="si-hero-visual">
+          <svg class="si-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: handoff.eliminated</text>
+
+            <!-- BEFORE row label -->
+            <text class="chrome label--muted" x="30" y="48">BEFORE &middot; MANUAL</text>
+
+            <!-- BEFORE: JIRA -> swivel-chair -> CCMS, all soft/dashed -->
+            <g>
+              <rect class="node" x="24" y="60" width="110" height="34" rx="3" />
+              <text class="node-label" x="79" y="82" text-anchor="middle">JIRA</text>
+            </g>
+            <g>
+              <rect class="node node--soft" x="210" y="60" width="140" height="34" rx="3" />
+              <text class="node-label label--muted" x="280" y="82" text-anchor="middle">swivel-chair</text>
+            </g>
+            <g>
+              <rect class="node" x="420" y="60" width="110" height="34" rx="3" />
+              <text class="node-label" x="475" y="82" text-anchor="middle">&lt;ccms&gt;</text>
+            </g>
+
+            <!-- BEFORE: dashed connectors -->
+            <path class="conn--soft" d="M134 77 L210 77" />
+            <path class="conn--soft" d="M350 77 L420 77" />
+
+            <!-- Amber demarcation rule (transformation moment) -->
+            <line class="conn" x1="30" y1="160" x2="530" y2="160" />
+
+            <!-- extense.connectors chip on the rule -->
+            <g>
+              <rect class="node node--custom" x="210" y="148" width="140" height="24" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="165" text-anchor="middle">extense.connectors</text>
+            </g>
+
+            <!-- AFTER row label -->
+            <text class="chrome label--accent" x="30" y="208">AFTER &middot; AUTOMATED</text>
+
+            <!-- AFTER: JIRA -> direct amber arrow -> CCMS (amber) -->
+            <g>
+              <rect class="node" x="24" y="222" width="110" height="34" rx="3" />
+              <text class="node-label" x="79" y="244" text-anchor="middle">JIRA</text>
+            </g>
+            <g>
+              <rect class="node node--custom" x="420" y="222" width="110" height="34" rx="3" />
+              <text class="node-label node-label--custom" x="475" y="244" text-anchor="middle">&lt;ccms&gt;</text>
+            </g>
+            <path class="conn" d="M134 239 L420 239" />
+            <path class="conn" d="M415 234 L420 239 L415 244" />
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">handoff.eliminated</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">MANUAL &rarr; AUTOMATED</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- J — Hub-and-spoke with flow arrows (A++) -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">J</span> {candidates[4].name}</p>
+        <p class="mock__desc">{candidates[4].note}</p>
+        <div class="si-hero-visual">
+          <svg class="si-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: connector.hub</text>
+
+            <!-- Top: JIRA -->
+            <g>
+              <rect class="node" x="215" y="54" width="130" height="34" rx="3" />
+              <text class="node-label" x="280" y="76" text-anchor="middle">JIRA</text>
+            </g>
+
+            <!-- Left: Git -->
+            <g>
+              <rect class="node" x="24" y="148" width="120" height="34" rx="3" />
+              <text class="node-label" x="84" y="170" text-anchor="middle">Git</text>
+            </g>
+
+            <!-- Center: CCMS hub (custom amber) -->
+            <g>
+              <rect class="node node--custom" x="225" y="140" width="110" height="44" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="167" text-anchor="middle">&lt;ccms&gt;</text>
+            </g>
+
+            <!-- Right: Salesforce -->
+            <g>
+              <rect class="node" x="416" y="148" width="120" height="34" rx="3" />
+              <text class="node-label" x="476" y="170" text-anchor="middle">Salesforce</text>
+            </g>
+
+            <!-- Bottom: TMS -->
+            <g>
+              <rect class="node" x="215" y="232" width="130" height="34" rx="3" />
+              <text class="node-label" x="280" y="254" text-anchor="middle">TMS</text>
+            </g>
+
+            <!-- Spokes with arrowheads pointing INTO the hub -->
+            <path class="conn" d="M280 88 L280 140" />
+            <path class="conn" d="M275 135 L280 140 L285 135" />
+            <path class="conn" d="M280 232 L280 184" />
+            <path class="conn" d="M275 189 L280 184 L285 189" />
+            <path class="conn" d="M144 165 L225 162" />
+            <path class="conn" d="M220 157 L225 162 L220 167" />
+            <path class="conn" d="M416 165 L335 162" />
+            <path class="conn" d="M340 157 L335 162 L340 167" />
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">connector.hub</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">SYSTEMS &rarr; CCMS</text>
+          </svg>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -327,6 +460,23 @@ const candidates = [
   .si-hero-flow .node--custom {
     fill: #fef3c7;
     stroke: var(--color-accent-primary);
+  }
+  .si-hero-flow .node--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .si-hero-flow .conn--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    fill: none;
+  }
+  .si-hero-flow .label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .si-hero-flow .label--accent {
+    fill: var(--color-accent-primary-pressed);
   }
   .si-hero-flow .node-label {
     font-family: var(--font-mono);
