@@ -1,150 +1,834 @@
 ---
-import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+/*
+  /industries/government-and-defense
+
+  Faithful reframe of the old ex-tense.co page (Defense & Aerospace
+  Documentation), expanded to equal-weight civilian + defense per the
+  Industries Govt & Defense wireframe.
+  See docs/reframe-2026/government-and-defense.md.
+
+  Section order:
+    1. Hero (universal) — H1 + paired subdeck + Option-D side visual
+       (two-register convergence: 3 defense pillars + 3 civilian standards
+       converging into extense.gov-docs)
+    2. SiblingsBreadcrumb (industries)
+    3. S1000D Implementation [OLD] · 3-card grid — DEFENSE
+    4. Agency Publishing & Section 508 [DRAFT-approved] · 3-card grid — CIVILIAN (banded)
+    5. Security & Compliance [OLD] · 3-card grid — joint
+    6. The S1000D Lifecycle [OLD] · 5-step 01-05 strip — DEFENSE (banded)
+    7. The Agency Publishing Lifecycle [DRAFT-approved] · 5-step 01-05 strip — CIVILIAN
+    8. Explore Related Industries · 2-card cross-link (banded)
+    9. CTA — Free S1000D Readiness Assessment [OLD]
+
+  Page-local CSS prefix: gd-. Hero SVG inline, scroll-revealed via
+  IntersectionObserver (.drawn), with reduced-motion fallback.
+
+  Replaces the prior IndustryPageLayout-based version; the layout's stale
+  /capabilities/* links go away with it.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import SiblingsBreadcrumb from "../../components/nav/SiblingsBreadcrumb.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon: string;
+}
+
+const implCards: Card[] = [
+  {
+    title: "Data Modules (DMs)",
+    icon: "doc",
+    body: "Granular content chunks authored as XML data modules and managed in a Common Source Data Base (CSDB). We design DM coding schemes, implement SNS structures, and enforce naming conventions across multi-vendor programs.",
+  },
+  {
+    title: "Applicability & Filtering",
+    icon: "check-circle",
+    body: "ACT/CCT/PCT configuration management — filtering content by tail number, block number, or variant. We implement applicability cross-reference tables that ensure technicians see only the procedures relevant to their specific aircraft configuration.",
+  },
+  {
+    title: "BREX Rules & Validation",
+    icon: "shield",
+    body: "Business Rule Exchange implementation that enforces project-specific constraints — required metadata, allowed illustration formats, and mandatory cross-references. Our BREX validation runs in CI pipelines, catching violations before data despatch.",
+  },
+];
+
+const civilianCards: Card[] = [
+  {
+    title: "Section 508 Conformance",
+    icon: "a11y",
+    body: "Accessible content engineered at the source — semantic structure, alt-text discipline, screen-reader-conformant PDF generation, and authoring-tool integration. We implement accessibility constraints in the content model so violations are caught at authoring time, not at the OIG review.",
+  },
+  {
+    title: "Agency Publishing Standards",
+    icon: "seal",
+    body: "Each federal agency has its own content and publishing conventions — IRS publication guides, FAA directive formats, GSA documentation standards. We adapt the authoring environment, the schema layer, and the publishing pipeline to the agency's actual conventions rather than a generic federal template.",
+  },
+  {
+    title: "Records Management & FOIA",
+    icon: "archive",
+    body: "Title 5 USC and Title 44 records-management compliance built into the content lifecycle — retention metadata at the data module level, FOIA-readiness for every published artifact, and audit trails that satisfy NARA and OIG retention reviews.",
+  },
+];
+
+const complianceCards: Card[] = [
+  {
+    title: "ITAR & Classified Handling",
+    icon: "lock",
+    body: "Release sanitization workflows that redact controlled data for foreign national distribution. We implement marking automation, paragraph-level classification, and derivative classification guides integrated into the authoring environment.",
+  },
+  {
+    title: "Air-Gapped Publishing",
+    icon: "server",
+    body: "Isolated build environments with no network connectivity for SECRET and above content. We configure offline DITA-OT toolchains, local schema catalogs, and removable-media delivery workflows for SCIF environments.",
+  },
+  {
+    title: "Audit & Traceability",
+    icon: "audit",
+    body: "Complete audit logs for every view, edit, export, and distribution event. We build traceability matrices linking requirements → procedures → test results to satisfy DCMA and DCAA audit requirements.",
+  },
+];
+
+interface LifecycleStep {
+  num: string;
+  title: string;
+  desc: string;
+}
+
+const defenseLifecycle: LifecycleStep[] = [
+  { num: "01", title: "DM Authoring",   desc: "Create data modules in XML" },
+  { num: "02", title: "CSDB Check-in",  desc: "Validate against BREX & Schema" },
+  { num: "03", title: "QA & Review",    desc: "SME sign-off & release marking" },
+  { num: "04", title: "Despatch",       desc: "DMRL distribution to partners" },
+  { num: "05", title: "IETP Build",     desc: "Interactive Electronic Technical Pubs" },
+];
+
+const civilianLifecycle: LifecycleStep[] = [
+  { num: "01", title: "Authoring",          desc: "Draft against agency publishing standards" },
+  { num: "02", title: "Section 508 Review", desc: "Accessibility conformance" },
+  { num: "03", title: "Approval & Sign-off",desc: "Internal & inter-agency review" },
+  { num: "04", title: "Publication",        desc: "Release via agency channel or Federal Register" },
+  { num: "05", title: "Records Retention",  desc: "NARA archival & FOIA-readiness" },
+];
+
+interface RelatedCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+  href: string;
+}
+
+const related: RelatedCard[] = [
+  {
+    eyebrow: "Industry",
+    title: "Transportation",
+    body: "Service information operations across modes — automotive VIN-specific guides, aviation ATA Spec 2200 maintenance manuals, and rail AAR M-1003 procedures.",
+    href: "/industries/transportation",
+  },
+  {
+    eyebrow: "Solution",
+    title: "XML Data Interoperability",
+    body: "S1000D-to-DITA bridges, XSLT transformation pipelines, and API-driven content delivery.",
+    href: "/solutions/xml-data-interoperability",
+  },
+];
 ---
 
-<IndustryPageLayout
-  pageTitle="Government & Defense — Industries"
-  pageDescription="Federal documentation engineering for civilian agencies and defense — S1000D conformance, IETM development, Section 508 accessibility, MIL-STD compliance. Past performance with the IRS, the U.S. House of Representatives, and the U.S. District Courts."
-  heroTitle="Government & Defense"
-  heroSubdeck="Federal documentation as a category where being wrong has procurement consequences. Two registers under one roof: civilian agency content modernization and defense maintenance documentation."
-  industryHref="/industries/government-and-defense"
-  documentTypes={[
-    {
-      label: "Civilian: agency policies and regulations",
-      description: "Statutory implementations, agency-specific publishing standards, FOIA-readiness, public-facing content modernization.",
-    },
-    {
-      label: "Civilian: training and operational guidance",
-      description: "Internal training materials, operational handbooks, agency knowledge bases for distributed staff.",
-    },
-    {
-      label: "Defense: maintenance documentation",
-      description: "Technical manuals for fielded systems, maintenance and operator guidance, weapons-system documentation.",
-    },
-    {
-      label: "Defense: Interactive Electronic Technical Manuals (IETMs / IETPs)",
-      description: "S1000D-conformant data modules, interactive technical publications, configuration-managed content.",
-    },
-    {
-      label: "Defense: training documentation",
-      description: "Training manuals, course materials, simulation-supporting documentation tied to operational systems.",
-    },
-  ]}
-  standards={[
-    {
-      label: "Title 5 USC / Title 44 records management",
-      description: "Records-management compliance for civilian agency documentation programs.",
-    },
-    {
-      label: "Section 508 accessibility",
-      description: "Required for federal public-facing and internal content — accessibility compliance built in, not bolted on.",
-    },
-    {
-      label: "S1000D Issue 5.0 / 6.0",
-      description: "International specification for technical publications. Defense and aerospace data module conformance.",
-    },
-    {
-      label: "MIL-STD-40051",
-      description: "Military standard for technical manuals — content development, data architecture, validation.",
-    },
-    {
-      label: "MIL-PRF-32070",
-      description: "Performance specification for digital data — applicable where digital deliverables pair with MIL-STD-40051 content.",
-    },
-    {
-      label: "Agency-specific publishing standards",
-      description: "Each federal agency has its own content and publishing conventions; engagements adapt to the agency's actual requirements.",
-    },
-  ]}
-  federalProgramLifecycle={{
-    eyebrow: "PROGRAM LIFECYCLE — GOVERNMENT & DEFENSE",
-    heading: "Two registers, one federal procurement consequence.",
-    lead: "Defense and civilian federal documentation run on different operational lifecycles. Defense documentation gates align to program milestones — PDR, CDR, FCA, PCA — with conformance audits at each. Civilian agency content runs through rulemaking, accessibility review, and publication cycles. Both face procurement consequences when the documentation is wrong, but the testing happens at different gates.",
-    tracks: [
-      {
-        label: "Defense program",
-        variant: "solid",
-        milestones: [
-          { position: 6,  name: "PDR",            deliverable: "Draft technical manual outline · early IETM concept" },
-          { position: 28, name: "CDR",            deliverable: "IETP data module structure · S1000D specialization decisions" },
-          { position: 50, name: "IETM Delivery",  deliverable: "S1000D-conformant data modules · CSDB integration" },
-          { position: 72, name: "FCA / PCA",      deliverable: "Documentation conformance audit · configuration baseline" },
-          { position: 94, name: "Sustainment",    deliverable: "Ongoing data module updates per fielded engineering changes" },
-        ],
+<BaseLayout
+  title="Government Agencies & Defense — Industries"
+  description="Defense and federal civilian agency documentation engineering: S1000D, MIL-STD, ITAR, IETMs for the armed forces; Section 508, Title 44 records-management, and agency publishing standards for civilian agencies."
+>
+  <Hero
+    variant="universal"
+    title="Government Agencies & Defense"
+    subdeck="Mission-critical S1000D, MIL-STD, and ITAR-compliant technical documentation — engineered for interoperability between OEMs, suppliers, and the armed forces. Federal civilian agency content modernization — Section 508-conformant, records-management compliant, and engineered to agency publishing standards."
+  >
+    <svg
+      class="gd-hero-flow"
+      id="gd-hero-flow"
+      viewBox="0 0 560 320"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Government and defense compliance: three defense engineering primitives and three civilian standards converging into one engineering practice."
+      role="img"
+    >
+      <g class="corner--accent fx" style="--d: 0ms">
+        <path d="M 12 24 L 12 12 L 24 12" />
+        <path d="M 536 12 L 548 12 L 548 24" />
+        <path d="M 12 296 L 12 308 L 24 308" />
+        <path d="M 536 308 L 548 308 L 548 296" />
+      </g>
+
+      <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: gov.compliance</text>
+
+      {/* Register captions */}
+      <text class="stage-caption fx" x="90"  y="58" text-anchor="middle" style="--d: 160ms">DEFENSE</text>
+      <text class="stage-caption fx" x="470" y="58" text-anchor="middle" style="--d: 200ms">CIVILIAN</text>
+
+      {/* Defense pillars (left, custom amber) */}
+      <g class="fx" style="--d: 280ms">
+        <rect class="node node--custom" x="20" y="72" width="140" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="90" y="93" text-anchor="middle">&lt;dmodule&gt;</text>
+      </g>
+      <g class="fx" style="--d: 340ms">
+        <rect class="node node--custom" x="20" y="112" width="140" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="90" y="133" text-anchor="middle">&lt;applic&gt;</text>
+      </g>
+      <g class="fx" style="--d: 400ms">
+        <rect class="node node--custom" x="20" y="152" width="140" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="90" y="173" text-anchor="middle">&lt;brex&gt;</text>
+      </g>
+
+      {/* Civilian pillars (right, custom amber) */}
+      <g class="fx" style="--d: 320ms">
+        <rect class="node node--custom" x="400" y="72" width="140" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="470" y="93" text-anchor="middle">SECTION 508</text>
+      </g>
+      <g class="fx" style="--d: 380ms">
+        <rect class="node node--custom" x="400" y="112" width="140" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="470" y="133" text-anchor="middle">TITLE 44</text>
+      </g>
+      <g class="fx" style="--d: 440ms">
+        <rect class="node node--custom" x="400" y="152" width="140" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="470" y="173" text-anchor="middle">AGENCY STD</text>
+      </g>
+
+      {/* 6 convergent connectors → central chip */}
+      <path class="flow-conn" style="--d: 540ms" d="M 160 88  L 220 212" />
+      <path class="flow-conn" style="--d: 580ms" d="M 160 128 L 240 212" />
+      <path class="flow-conn" style="--d: 620ms" d="M 160 168 L 260 212" />
+      <path class="flow-conn" style="--d: 540ms" d="M 400 88  L 340 212" />
+      <path class="flow-conn" style="--d: 580ms" d="M 400 128 L 320 212" />
+      <path class="flow-conn" style="--d: 620ms" d="M 400 168 L 300 212" />
+
+      {/* Central chip */}
+      <g class="fx" style="--d: 720ms">
+        <rect class="node node--custom" x="190" y="210" width="180" height="46" rx="3" />
+        <rect class="artifact-strip" x="190" y="210" width="180" height="6" />
+        <text class="node-label node-label--custom" x="280" y="240" text-anchor="middle">extense.gov-docs</text>
+      </g>
+
+      <text class="node-caption fx" x="280" y="274" text-anchor="middle" style="--d: 840ms">ONE PRACTICE</text>
+
+      {/* Bottom chrome */}
+      <g class="fx" style="--d: 980ms">
+        <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+        <rect class="build-dot" x="32" y="296" width="6" height="6" />
+        <text class="chrome chrome--strong" x="46"  y="302">FIG. 01</text>
+        <text class="chrome"               x="92"  y="302">/</text>
+        <text class="chrome chrome--strong" x="100" y="302">gov.compliance</text>
+        <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">2 REGISTERS &rarr; 1 PRACTICE</text>
+      </g>
+    </svg>
+  </Hero>
+
+  <SiblingsBreadcrumb variant="industries" current="/industries/government-and-defense" />
+
+  {/* ───────── S3 — S1000D Implementation (defense) ───────── */}
+  <section class="gd-section" aria-labelledby="gd-impl-heading">
+    <div class="container-page gd-section__inner">
+      <div class="gd-heading-block">
+        <p class="gd-eyebrow">DEFENSE REGISTER</p>
+        <h2 id="gd-impl-heading" class="gd-heading">S1000D Implementation</h2>
+        <p class="gd-intro">
+          S1000D is not just a schema — it is a complex business logic engine governing data module creation, applicability filtering, and cross-organizational data exchange. We implement every layer.
+        </p>
+      </div>
+      <ul class="gd-grid-3">
+        {implCards.map((c) => (
+          <li class="gd-card">
+            <span class="gd-card__icon" aria-hidden="true">
+              {c.icon === "doc" && (
+                <svg viewBox="0 0 20 20"><path d="M5 3 H12 L15 6 V17 H5 Z" /><polyline points="12,3 12,6 15,6" /><line x1="7" y1="9" x2="13" y2="9" /><line x1="7" y1="12" x2="13" y2="12" /></svg>
+              )}
+              {c.icon === "check-circle" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><polyline points="6.5,10 9,12.5 13.5,8" /></svg>
+              )}
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /></svg>
+              )}
+              {c.icon === "a11y" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5" /><line x1="10" y1="5.5" x2="10" y2="13" /><line x1="5" y1="8" x2="15" y2="8" /><line x1="10" y1="11" x2="7" y2="17" /><line x1="10" y1="11" x2="13" y2="17" /></svg>
+              )}
+              {c.icon === "seal" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="8" r="5" /><polyline points="6,12 5,17 10,15 15,17 14,12" /></svg>
+              )}
+              {c.icon === "archive" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="6" width="14" height="11" rx="0.5" /><path d="M3 6 L4.5 4 H9.5 L11 6" /><line x1="6" y1="10" x2="14" y2="10" /><line x1="6" y1="13" x2="14" y2="13" /></svg>
+              )}
+              {c.icon === "lock" && (
+                <svg viewBox="0 0 20 20"><rect x="5" y="9" width="10" height="9" rx="1" /><path d="M7 9 V6 c0-1.5 1.5-3 3-3 c1.5 0 3 1.5 3 3 V9" /></svg>
+              )}
+              {c.icon === "server" && (
+                <svg viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="4" rx="0.5" /><rect x="4" y="10" width="12" height="4" rx="0.5" /><circle cx="6.5" cy="6" r="0.5" /><circle cx="6.5" cy="12" r="0.5" /></svg>
+              )}
+              {c.icon === "audit" && (
+                <svg viewBox="0 0 20 20"><rect x="4" y="3" width="12" height="14" rx="0.5" /><line x1="6" y1="6" x2="14" y2="6" /><line x1="6" y1="9" x2="14" y2="9" /><polyline points="6,12 8,14 12,10" /></svg>
+              )}
+            </span>
+            <h3 class="gd-card__title">{c.title}</h3>
+            <p class="gd-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S4 — Agency Publishing & Section 508 (civilian) — banded ───────── */}
+  <section class="gd-section gd-section--band" aria-labelledby="gd-civilian-heading">
+    <div class="container-page gd-section__inner">
+      <div class="gd-heading-block">
+        <p class="gd-eyebrow">CIVILIAN REGISTER</p>
+        <h2 id="gd-civilian-heading" class="gd-heading">Agency Publishing &amp; Section 508</h2>
+        <p class="gd-intro">
+          Federal civilian agency content isn't just published — it's authored to standards that govern accessibility, retention, and public consumption. Section 508 conformance, agency-specific publishing conventions, and records-management compliance are built into the content architecture, not bolted on at review time.
+        </p>
+      </div>
+      <ul class="gd-grid-3">
+        {civilianCards.map((c) => (
+          <li class="gd-card">
+            <span class="gd-card__icon" aria-hidden="true">
+              {c.icon === "doc" && (
+                <svg viewBox="0 0 20 20"><path d="M5 3 H12 L15 6 V17 H5 Z" /><polyline points="12,3 12,6 15,6" /><line x1="7" y1="9" x2="13" y2="9" /><line x1="7" y1="12" x2="13" y2="12" /></svg>
+              )}
+              {c.icon === "check-circle" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><polyline points="6.5,10 9,12.5 13.5,8" /></svg>
+              )}
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /></svg>
+              )}
+              {c.icon === "a11y" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5" /><line x1="10" y1="5.5" x2="10" y2="13" /><line x1="5" y1="8" x2="15" y2="8" /><line x1="10" y1="11" x2="7" y2="17" /><line x1="10" y1="11" x2="13" y2="17" /></svg>
+              )}
+              {c.icon === "seal" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="8" r="5" /><polyline points="6,12 5,17 10,15 15,17 14,12" /></svg>
+              )}
+              {c.icon === "archive" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="6" width="14" height="11" rx="0.5" /><path d="M3 6 L4.5 4 H9.5 L11 6" /><line x1="6" y1="10" x2="14" y2="10" /><line x1="6" y1="13" x2="14" y2="13" /></svg>
+              )}
+              {c.icon === "lock" && (
+                <svg viewBox="0 0 20 20"><rect x="5" y="9" width="10" height="9" rx="1" /><path d="M7 9 V6 c0-1.5 1.5-3 3-3 c1.5 0 3 1.5 3 3 V9" /></svg>
+              )}
+              {c.icon === "server" && (
+                <svg viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="4" rx="0.5" /><rect x="4" y="10" width="12" height="4" rx="0.5" /><circle cx="6.5" cy="6" r="0.5" /><circle cx="6.5" cy="12" r="0.5" /></svg>
+              )}
+              {c.icon === "audit" && (
+                <svg viewBox="0 0 20 20"><rect x="4" y="3" width="12" height="14" rx="0.5" /><line x1="6" y1="6" x2="14" y2="6" /><line x1="6" y1="9" x2="14" y2="9" /><polyline points="6,12 8,14 12,10" /></svg>
+              )}
+            </span>
+            <h3 class="gd-card__title">{c.title}</h3>
+            <p class="gd-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S5 — Security & Compliance (joint) ───────── */}
+  <section class="gd-section" aria-labelledby="gd-compliance-heading">
+    <div class="container-page gd-section__inner">
+      <div class="gd-heading-block">
+        <h2 id="gd-compliance-heading" class="gd-heading">Security &amp; Compliance</h2>
+        <p class="gd-intro">
+          We build documentation workflows for classified, ITAR-controlled, and CUI environments — with the access controls and audit trails that defense programs and federal civilian agencies require.
+        </p>
+      </div>
+      <ul class="gd-grid-3">
+        {complianceCards.map((c) => (
+          <li class="gd-card">
+            <span class="gd-card__icon" aria-hidden="true">
+              {c.icon === "doc" && (
+                <svg viewBox="0 0 20 20"><path d="M5 3 H12 L15 6 V17 H5 Z" /><polyline points="12,3 12,6 15,6" /><line x1="7" y1="9" x2="13" y2="9" /><line x1="7" y1="12" x2="13" y2="12" /></svg>
+              )}
+              {c.icon === "check-circle" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><polyline points="6.5,10 9,12.5 13.5,8" /></svg>
+              )}
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /></svg>
+              )}
+              {c.icon === "a11y" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5" /><line x1="10" y1="5.5" x2="10" y2="13" /><line x1="5" y1="8" x2="15" y2="8" /><line x1="10" y1="11" x2="7" y2="17" /><line x1="10" y1="11" x2="13" y2="17" /></svg>
+              )}
+              {c.icon === "seal" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="8" r="5" /><polyline points="6,12 5,17 10,15 15,17 14,12" /></svg>
+              )}
+              {c.icon === "archive" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="6" width="14" height="11" rx="0.5" /><path d="M3 6 L4.5 4 H9.5 L11 6" /><line x1="6" y1="10" x2="14" y2="10" /><line x1="6" y1="13" x2="14" y2="13" /></svg>
+              )}
+              {c.icon === "lock" && (
+                <svg viewBox="0 0 20 20"><rect x="5" y="9" width="10" height="9" rx="1" /><path d="M7 9 V6 c0-1.5 1.5-3 3-3 c1.5 0 3 1.5 3 3 V9" /></svg>
+              )}
+              {c.icon === "server" && (
+                <svg viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="4" rx="0.5" /><rect x="4" y="10" width="12" height="4" rx="0.5" /><circle cx="6.5" cy="6" r="0.5" /><circle cx="6.5" cy="12" r="0.5" /></svg>
+              )}
+              {c.icon === "audit" && (
+                <svg viewBox="0 0 20 20"><rect x="4" y="3" width="12" height="14" rx="0.5" /><line x1="6" y1="6" x2="14" y2="6" /><line x1="6" y1="9" x2="14" y2="9" /><polyline points="6,12 8,14 12,10" /></svg>
+              )}
+            </span>
+            <h3 class="gd-card__title">{c.title}</h3>
+            <p class="gd-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S6 — The S1000D Lifecycle (defense) — banded ───────── */}
+  <section class="gd-section gd-section--band" aria-labelledby="gd-def-lifecycle-heading">
+    <div class="container-page gd-section__inner">
+      <div class="gd-heading-block">
+        <p class="gd-eyebrow">DEFENSE REGISTER</p>
+        <h2 id="gd-def-lifecycle-heading" class="gd-heading">The S1000D Lifecycle</h2>
+      </div>
+      <ol class="gd-roadmap">
+        {defenseLifecycle.map((s, i) => (
+          <>
+            <li class="gd-step">
+              <span class="gd-step__num">{s.num}</span>
+              <h3 class="gd-step__title">{s.title}</h3>
+              <p class="gd-step__desc">{s.desc}</p>
+            </li>
+            {i < defenseLifecycle.length - 1 && (
+              <li class="gd-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ───────── S7 — The Agency Publishing Lifecycle (civilian) ───────── */}
+  <section class="gd-section" aria-labelledby="gd-civ-lifecycle-heading">
+    <div class="container-page gd-section__inner">
+      <div class="gd-heading-block">
+        <p class="gd-eyebrow">CIVILIAN REGISTER</p>
+        <h2 id="gd-civ-lifecycle-heading" class="gd-heading">The Agency Publishing Lifecycle</h2>
+      </div>
+      <ol class="gd-roadmap">
+        {civilianLifecycle.map((s, i) => (
+          <>
+            <li class="gd-step">
+              <span class="gd-step__num">{s.num}</span>
+              <h3 class="gd-step__title">{s.title}</h3>
+              <p class="gd-step__desc">{s.desc}</p>
+            </li>
+            {i < civilianLifecycle.length - 1 && (
+              <li class="gd-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ───────── S8 — Explore Related Industries — banded ───────── */}
+  <section class="gd-section gd-section--band" aria-labelledby="gd-related-heading">
+    <div class="container-page gd-section__inner">
+      <div class="gd-heading-block">
+        <h2 id="gd-related-heading" class="gd-heading">Explore Related Industries</h2>
+      </div>
+      <ul class="gd-related-grid">
+        {related.map((r) => (
+          <li class="gd-related-card-item">
+            <a href={r.href} class="gd-related-card">
+              <span class="gd-related-card__eyebrow">{r.eyebrow}</span>
+              <h3 class="gd-related-card__title">{r.title}</h3>
+              <p class="gd-related-card__body">{r.body}</p>
+              <span class="gd-related-card__cta">
+                Explore <span class="gd-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="public-sector"
+    compact
+    accentLine
+    heading="Free S1000D Readiness Assessment"
+    body="Share your current TDP structure and we'll evaluate S1000D migration feasibility, estimate CSDB architecture, and identify BREX rule requirements — at no cost."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Hero side visual (Option D — two-register convergence) ─── */
+  .gd-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .gd-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .gd-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .gd-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .gd-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .gd-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .gd-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .gd-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .gd-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .gd-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .gd-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .gd-hero-flow .stage-caption {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.12em;
+  }
+  .gd-hero-flow .artifact-strip {
+    fill: var(--color-accent-primary);
+    stroke: none;
+  }
+  .gd-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .gd-hero-flow .fx {
+    opacity: 0;
+  }
+  .gd-hero-flow.drawn .fx {
+    animation: gd-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .gd-hero-flow.drawn .flow-conn {
+    animation: gd-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes gd-fade {
+    to { opacity: 1; }
+  }
+  @keyframes gd-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gd-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .gd-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
+  /* ─── Section shell ─── */
+  .gd-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .gd-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .gd-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+  .gd-section__inner {
+    /* container-page provides max-width + padding */
+  }
+
+  /* ─── Section heading block ─── */
+  .gd-heading-block {
+    margin-bottom: var(--space-12);
+    max-width: 80ch;
+  }
+  .gd-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .gd-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .gd-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 3-card grid ─── */
+  .gd-grid-3 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .gd-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .gd-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .gd-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .gd-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .gd-card__icon svg circle,
+  .gd-card__icon svg ellipse,
+  .gd-card__icon svg line,
+  .gd-card__icon svg polyline,
+  .gd-card__icon svg polygon,
+  .gd-card__icon svg rect,
+  .gd-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .gd-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .gd-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 5-step numbered roadmap strip ─── */
+  .gd-roadmap {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .gd-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    background-color: var(--color-page-bg);
+  }
+  .gd-step__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary);
+  }
+  .gd-step__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .gd-step__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .gd-step__arrow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    color: var(--color-accent-primary);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+  @media (max-width: 767px) {
+    .gd-roadmap {
+      flex-direction: column;
+    }
+    .gd-step__arrow {
+      align-self: center;
+      transform: rotate(90deg);
+      padding: var(--space-1) 0;
+    }
+  }
+
+  /* ─── Related grid (2-card cross-link) ─── */
+  .gd-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .gd-related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .gd-related-card-item {
+    display: flex;
+  }
+  .gd-related-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-7);
+    background-color: var(--color-page-bg);
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+  .gd-related-card:hover,
+  .gd-related-card:focus-visible {
+    border-color: var(--color-accent-primary);
+  }
+  .gd-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .gd-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .gd-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .gd-related-card__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+  }
+  .gd-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .gd-related-card:hover .gd-related-card__arrow,
+  .gd-related-card:focus-visible .gd-related-card__arrow {
+    transform: translateX(2px);
+  }
+</style>
+
+<script>
+  function setupGdHero() {
+    const svg = document.getElementById("gd-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
       },
-      {
-        label: "Civilian agency",
-        variant: "outlined",
-        milestones: [
-          { position: 6,  name: "Statutory authority", deliverable: "Agency rulemaking authority established · scope of regulated content defined" },
-          { position: 28, name: "Rulemaking",          deliverable: "Draft regulation · public-comment period · revision cycles" },
-          { position: 50, name: "Section 508 review",  deliverable: "Accessibility conformance · screen-reader compatibility · semantic structure" },
-          { position: 72, name: "Publication",         deliverable: "Federal Register · agency website · controlled distribution" },
-          { position: 94, name: "Modernization cycle", deliverable: "Ongoing content updates · system migration · FOIA-readiness" },
-        ],
-      },
-    ],
-    footnote: "Representative milestones. Defense program lifecycles vary by acquisition pathway (Major Capability Acquisition, Middle Tier, Software Acquisition); civilian agency lifecycles vary by rulemaking authority and publishing convention.",
-  }}
-  failureMode={{
-    eyebrow: "DEFENSE / S1000D",
-    heading: "An S1000D conformance failure triggers a stop-work order.",
-    body: "Payment halts. The contract goes to risk. Cure-notice procedures begin. Data modules have to be reauthored before delivery resumes — and the program slips on a dependency the prime didn't engineer in. The documentation control deliverable becomes the program's critical path.",
-  }}
-  signals={[
-    {
-      line: "Our S1000D conformance audit failed and we're facing a stop-work order.",
-      body: "Defense, tactical. A failed FCA usually means data module schema violations, missing required metadata, or CSDB integration gaps that surface only at audit time. The fix is in the data architecture and the configuration management — not in re-authoring the content. Recovery requires a parallel-track conformance program while the existing engagement runs.",
-    },
-    {
-      line: "We're 18 months into an S1000D conversion that's stalled.",
-      body: "Defense, operational. Stalled conversions in defense usually fail at the same point: the source content doesn't decompose into S1000D's required data module types without a structural redesign. Migration tooling alone doesn't bridge the gap; the IA work has to come first.",
-    },
-    {
-      line: "Our public-facing content has Section 508 accessibility findings from an OIG review.",
-      body: "Civilian, tactical. 508 findings tied to documentation usually mean the content was authored without accessibility constraints baked in — PDFs that aren't screen-reader-conformant, HTML without semantic structure, content models without accessibility metadata. The remediation runs through architecture before it runs through individual fixes.",
-    },
-    {
-      line: "Our agency content estate is fragmented across program offices and there's no single source of truth.",
-      body: "Cross-register, strategic. Common in large civilian agencies and defense system commands. Multiple program offices each maintain parallel publishing chains; consolidation requires both target architecture and migration program design before any conversion runs.",
-    },
-  ]}
-  capabilityRelevance={[
-    {
-      pillarLabel: "Information Architecture",
-      pillarHref: "/capabilities/information-architecture",
-      context: "Schema design and taxonomy for compliance documentation: agency-specific publishing standards, S1000D data module specifications, Section 508-aware content models.",
-      engagementShape: "Project-Based — schema and taxonomy work with named acceptance criteria, often gated to a federal program milestone.",
-    },
-    {
-      pillarLabel: "Content Migration",
-      pillarHref: "/capabilities/content-migration",
-      context: "Recovery of legacy estates — agency content from FrameMaker, Word, and unstructured XML into clean DITA or S1000D. Where Migration carries the heaviest load in this vertical.",
-      engagementShape: "Project-Based — fixed scope, conversion-fidelity acceptance criteria. Often multi-year for large agency or program-of-record estates.",
-    },
-    {
-      pillarLabel: "CCMS & Publishing",
-      pillarHref: "/capabilities/ccms-and-publishing",
-      context: "Implementation on procurement-friendly CCMS platforms with CI/CD publishing pipelines for civilian and defense documentation programs.",
-      engagementShape: "Project-Based for implementation; Managed Services for ongoing administration once stable. Procurement-vehicle-aware engagement structure.",
-    },
-    {
-      pillarLabel: "AI-Ready Content",
-      pillarHref: "/capabilities/ai-ready-content",
-      context: "Records-management modernization — chunking, metadata, and retrieval architecture for agency RAG initiatives over policy and regulation libraries.",
-      engagementShape: "Often starts as Staff Augmentation during agency exploratory pilots; converts to Project-Based once retrieval architecture firms up.",
-    },
-  ]}
-  caseStudies={[
-    {
-      framing: "A federal civilian agency consolidating taxpayer-facing documentation across program areas.",
-      body: "Multi-format publishing engineered from a single DITA source — Section 508-conformant HTML and accessible PDF for distribution channels with different requirements. CCMS-driven workflows replaced parallel publishing chains across program offices.",
-    },
-    {
-      framing: "A defense documentation program migrating from legacy FrameMaker into S1000D.",
-      body: "Conversion architecture surfaced systemic content-quality issues that had been masked by the legacy format. Issue 5.0 conformance achieved alongside the migration rather than as a separate program; CSDB integration handled in the same engagement.",
-    },
-  ]}
-  ctaAudience="public-sector"
-  ctaBody="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any future RFP response or sole-source justification, with no obligation to proceed."
-/>
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+  document.addEventListener("DOMContentLoaded", setupGdHero);
+</script>
