@@ -1,0 +1,347 @@
+---
+/*
+  TEMP MOCK -- hero-visual candidates for /services/xml-engineering.
+  Not linked in nav. DELETE once the visual is chosen.
+  Three concepts rendered in the established hero node-graph idiom
+  (corner marks, mono FIG. chrome, amber connectors). Shown statically
+  (no scroll-reveal) for side-by-side comparison.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const candidates = [
+  {
+    id: "A",
+    name: "Schematron rule overlay (signature)",
+    note: "A raw <chapter> on the left, an amber sch:assert rule chip in the middle showing the page's own example, a validated <chapter> on the right. Directly carries the page's differentiator: rules that catch semantic violations before humans look.",
+  },
+  {
+    id: "B",
+    name: "Multi-tool hub",
+    note: "Central amber <xml> with XSLT 3.0 / Schematron / XSD / XQuery around it. Captures the page's tool-breadth theme ('We build with the full spectrum of modern technologies for XML transformation and delivery').",
+  },
+  {
+    id: "C",
+    name: "Beyond well-formedness (raw -> governed)",
+    note: "Soft-dashed 'well-formed only' element on top, amber extense.rules band across the middle, governed amber element below. Renders the page's opening thesis ('XML is just text until you enforce the rules'). Same idiom as SI's D, applied to XML governance.",
+  },
+];
+---
+
+<BaseLayout title="[MOCK] XML Engineering hero visuals -- Extense LLC" description="Temporary mockup page.">
+  <section class="mock">
+    <div class="mock__inner">
+      <p class="mock__kicker">TEMP MOCK &middot; delete after selection</p>
+      <h1 class="mock__title">XML Engineering &mdash; hero visual candidates</h1>
+      <p class="mock__lead">Three concepts in the established hero idiom. Pick A, B, or C (or ask for a tweak); I'll build the real page with it and remove this page.</p>
+
+      <!-- A — Schematron rule overlay -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">A</span> {candidates[0].name}</p>
+        <p class="mock__desc">{candidates[0].note}</p>
+        <div class="xe-hero-visual">
+          <svg class="xe-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: rules.engine</text>
+
+            <!-- Left: raw element -->
+            <g>
+              <rect class="node" x="20" y="140" width="130" height="44" rx="3" />
+              <text class="node-label" x="85" y="167" text-anchor="middle">&lt;chapter&gt;</text>
+              <text class="node-caption" x="85" y="204" text-anchor="middle">raw</text>
+            </g>
+
+            <!-- Center: Schematron rule chip (custom amber) -->
+            <g>
+              <rect class="node node--custom" x="165" y="120" width="230" height="80" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="138" text-anchor="middle">sch:assert</text>
+              <text class="rule-line" x="280" y="162" text-anchor="middle">@classification = &lsquo;Internal&rsquo;</text>
+              <text class="rule-line" x="280" y="180" text-anchor="middle">&rarr; @distribution = &lsquo;Restricted&rsquo;</text>
+            </g>
+
+            <!-- Right: validated element -->
+            <g>
+              <rect class="node node--custom" x="410" y="140" width="130" height="44" rx="3" />
+              <text class="node-label node-label--custom" x="475" y="167" text-anchor="middle">&lt;chapter&gt;</text>
+              <text class="node-caption" x="475" y="204" text-anchor="middle">validated</text>
+            </g>
+
+            <!-- Connectors with arrows -->
+            <path class="conn" d="M150 162 L165 162" />
+            <path class="conn" d="M160 158 L165 162 L160 166" />
+            <path class="conn" d="M395 162 L410 162" />
+            <path class="conn" d="M405 158 L410 162 L405 166" />
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">rules.engine</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">RAW &rarr; VALIDATED</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- B — Multi-tool hub -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">B</span> {candidates[1].name}</p>
+        <p class="mock__desc">{candidates[1].note}</p>
+        <div class="xe-hero-visual">
+          <svg class="xe-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: tooling.spectrum</text>
+
+            <!-- Top: XSLT 3.0 -->
+            <g>
+              <rect class="node" x="215" y="54" width="130" height="34" rx="3" />
+              <text class="node-label" x="280" y="76" text-anchor="middle">XSLT 3.0</text>
+            </g>
+
+            <!-- Left: Schematron -->
+            <g>
+              <rect class="node" x="24" y="148" width="120" height="34" rx="3" />
+              <text class="node-label" x="84" y="170" text-anchor="middle">Schematron</text>
+            </g>
+
+            <!-- Center: <xml> hub (custom amber) -->
+            <g>
+              <rect class="node node--custom" x="225" y="140" width="110" height="44" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="167" text-anchor="middle">&lt;xml&gt;</text>
+            </g>
+
+            <!-- Right: XQuery -->
+            <g>
+              <rect class="node" x="416" y="148" width="120" height="34" rx="3" />
+              <text class="node-label" x="476" y="170" text-anchor="middle">XQuery</text>
+            </g>
+
+            <!-- Bottom: XSD -->
+            <g>
+              <rect class="node" x="215" y="232" width="130" height="34" rx="3" />
+              <text class="node-label" x="280" y="254" text-anchor="middle">XSD / RelaxNG</text>
+            </g>
+
+            <!-- Connectors: hub edges to each surrounding tool -->
+            <path class="conn" d="M280 140 L280 88" />
+            <path class="conn" d="M280 184 L280 232" />
+            <path class="conn" d="M225 162 L144 165" />
+            <path class="conn" d="M335 162 L416 165" />
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">tooling.spectrum</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">FULL STACK</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- C — Beyond well-formedness -->
+      <div class="mock__block">
+        <p class="mock__label"><span class="mock__id">C</span> {candidates[2].name}</p>
+        <p class="mock__desc">{candidates[2].note}</p>
+        <div class="xe-hero-visual">
+          <svg class="xe-hero-flow" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="presentation">
+            <g class="corner--accent"><path d="M 12 24 L 12 12 L 24 12" /><path d="M 536 12 L 548 12 L 548 24" /><path d="M 12 296 L 12 308 L 24 308" /><path d="M 536 308 L 548 308 L 548 296" /></g>
+            <text class="chrome" x="30" y="32">in :: beyond.well-formedness</text>
+
+            <!-- BEFORE label -->
+            <text class="chrome label--muted" x="30" y="56">WELL-FORMED ONLY</text>
+
+            <!-- Top: well-formed XML element (soft) -->
+            <g>
+              <rect class="node node--soft" x="200" y="68" width="160" height="40" rx="3" />
+              <text class="node-label label--muted" x="280" y="92" text-anchor="middle">&lt;chapter&gt;</text>
+            </g>
+
+            <!-- Amber demarcation rule -->
+            <line class="conn" x1="30" y1="160" x2="530" y2="160" />
+
+            <!-- extense.rules chip on the rule -->
+            <g>
+              <rect class="node node--custom" x="200" y="148" width="160" height="24" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="165" text-anchor="middle">extense.rules</text>
+            </g>
+
+            <!-- AFTER label -->
+            <text class="chrome label--accent" x="30" y="200">GOVERNED CONTENT</text>
+
+            <!-- Bottom: governed element (custom amber) -->
+            <g>
+              <rect class="node node--custom" x="200" y="212" width="160" height="44" rx="3" />
+              <text class="node-label node-label--custom" x="280" y="239" text-anchor="middle">&lt;chapter&gt;</text>
+            </g>
+
+            <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+            <rect class="build-dot" x="232" y="296" width="6" height="6" />
+            <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+            <text class="chrome" x="296" y="302">/</text>
+            <text class="chrome chrome--strong" x="304" y="302">beyond.well-formedness</text>
+            <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">RAW &rarr; GOVERNED</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .mock {
+    padding: var(--space-16) 0 var(--space-24);
+  }
+  .mock__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+  .mock__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3);
+  }
+  .mock__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3);
+  }
+  .mock__lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-16);
+  }
+  .mock__block {
+    margin-bottom: var(--space-16);
+    padding-top: var(--space-8);
+    border-top: var(--border-hairline);
+  }
+  .mock__label {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .mock__id {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #fef3c7;
+    color: var(--color-accent-primary-pressed);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+  }
+  .mock__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-6);
+    max-width: 60ch;
+  }
+
+  /* ─── Hero visual idiom ─── */
+  .xe-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: var(--space-6);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-page-bg);
+  }
+  .xe-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .xe-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .xe-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .xe-hero-flow .label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .xe-hero-flow .label--accent {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .xe-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .xe-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .xe-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .xe-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .xe-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .xe-hero-flow .node--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .xe-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .xe-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .xe-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .xe-hero-flow .rule-line {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .xe-hero-flow .conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+</style>
