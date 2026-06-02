@@ -84,14 +84,15 @@ interface Step {
   num?: string;
   title: string;
   desc: string;
+  body?: string;
 }
 
 const architectureSteps: Step[] = [
-  { title: "Event Source", desc: "JIRA · Git · PLM · TMS" },
-  { title: "Middleware", desc: "Webhook / REST · Mapping Logic" },
-  { title: "CCMS API", desc: "Create · Update · Link Topics" },
-  { title: "Validate", desc: "Schema Check · Business Rules" },
-  { title: "Notify", desc: "Email · Slack · Dashboard" },
+  { title: "Event Source", desc: "JIRA · Git · PLM · TMS", body: "Any system that emits an event when content needs to move — ticket transitions, branch merges, part revisions." },
+  { title: "Middleware", desc: "Webhook / REST · Mapping Logic", body: "Receives the event, maps source fields to your CCMS schema, and handles retries and dead-letter queues." },
+  { title: "CCMS API", desc: "Create · Update · Link Topics", body: "Calls your CCMS to create or update the right topic, set metadata, and link back to the originating record." },
+  { title: "Validate", desc: "Schema Check · Business Rules", body: "Confirms the resulting content conforms to your DITA schema and editorial governance before it's released." },
+  { title: "Notify", desc: "Email · Slack · Dashboard", body: "Tells the right person — writer, reviewer, or dashboard — that work is ready to pick up." },
 ];
 
 const techStack: Card[] = [
@@ -376,9 +377,10 @@ const related: Related[] = [
       <ol class="si-roadmap">
         {architectureSteps.map((s, i) => (
           <>
-            <li class="si-step">
+            <li class:list={["si-step", s.body && "si-step--meta"]}>
               <h3 class="si-step__title">{s.title}</h3>
               <p class="si-step__desc">{s.desc}</p>
+              {s.body && <p class="si-step__body">{s.body}</p>}
             </li>
             {i < architectureSteps.length - 1 && (
               <li class="si-step__arrow" aria-hidden="true">&rarr;</li>
@@ -712,6 +714,20 @@ const related: Related[] = [
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
     margin: 0;
+    text-wrap: pretty;
+  }
+  .si-step--meta .si-step__desc {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+  }
+  .si-step__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: var(--space-3) 0 0 0;
     text-wrap: pretty;
   }
   .si-step__arrow {
