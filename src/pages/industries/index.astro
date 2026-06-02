@@ -202,18 +202,19 @@ const industryCards: IndustryCard[] = [
   <AnimatedDivider />
 
   <section class="ind-section ind-section--narrative" aria-labelledby="narrative-heading">
-    <div class="container-prose ind-section__inner">
-      <h2 id="narrative-heading" class="ind-section__heading">Documentation in regulated industries is compliance engineering.</h2>
-      <div class="ind-section__prose">
-        <p>
-          Documentation in regulated industries isn't writing — it's compliance engineering. The artifacts produced are tested against named standards by auditors, regulators, attorneys, and ops teams. Stylistic prose is downstream of conformance; the artifact either meets the standard or it doesn't.
-        </p>
-        <p>
-          What gets shipped is what gets audited. The cost of a miss isn't a stylistic edit; it's a regulatory finding, a delayed approval, a recall, a fine, a claims dispute, a contract default. Documentation engineering is risk engineering through a particular surface — the page, the topic, the data module.
-        </p>
+    <div class="container-page ind-section__narrative-layout">
+      <div class="ind-section__narrative-left">
+        <h2 id="narrative-heading" class="ind-section__heading">Documentation in regulated industries is compliance engineering.</h2>
+        <div class="ind-section__prose">
+          <p>
+            Documentation in regulated industries isn't writing — it's compliance engineering. The artifacts produced are tested against named standards by auditors, regulators, attorneys, and ops teams. Stylistic prose is downstream of conformance; the artifact either meets the standard or it doesn't.
+          </p>
+          <p>
+            What gets shipped is what gets audited. The cost of a miss isn't a stylistic edit; it's a regulatory finding, a delayed approval, a recall, a fine, a claims dispute, a contract default. Documentation engineering is risk engineering through a particular surface — the page, the topic, the data module.
+          </p>
+        </div>
       </div>
-    </div>
-    <div class="container-page ind-section__cards-wrap">
+      <div class="ind-section__narrative-right">
       <ul class="ind-industry-cards">
         {industryCards.map((c) => (
           <li class="ind-industry-card">
@@ -251,6 +252,7 @@ const industryCards: IndustryCard[] = [
           Six named verticals are where Extense holds deepest standards depth. Adjacent industries &mdash; Telecom (3GPP standards), Energy (NERC CIP, API specs), Manufacturing (ISO 9001, machinery directive) &mdash; share enough technical-documentation surface that we serve them under bounded-scope engagements. Talk to us if your vertical isn&rsquo;t named here.
         </p>
       </aside>
+      </div>
     </div>
   </section>
 
@@ -388,10 +390,27 @@ const industryCards: IndustryCard[] = [
     text-wrap: pretty;
   }
 
-  /* ─── Narrative-section industry cards (the 6 reframed cards) ─── */
-  .ind-section__cards-wrap {
-    margin-top: var(--space-12);
+  /* ─── Narrative-section 2-column layout (text left, cards right) ─── */
+  .ind-section__narrative-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
   }
+  @media (min-width: 1024px) {
+    .ind-section__narrative-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+      gap: var(--space-12);
+      align-items: start;
+    }
+    .ind-section__narrative-left {
+      position: sticky;
+      top: var(--space-16);
+      align-self: start;
+    }
+  }
+
+  /* ─── Industry cards: 1 col mobile, 2 cols tablet+ (so 2x3 on desktop) ─── */
   .ind-industry-cards {
     list-style: none;
     margin: 0;
@@ -403,11 +422,6 @@ const industryCards: IndustryCard[] = [
   @media (min-width: 600px) {
     .ind-industry-cards {
       grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (min-width: 1024px) {
-    .ind-industry-cards {
-      grid-template-columns: repeat(3, 1fr);
     }
   }
   .ind-industry-card {
