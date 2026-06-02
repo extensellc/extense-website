@@ -28,6 +28,7 @@ interface Card {
   title: string;
   body: string;
   icon?: string;
+  category?: string;
 }
 
 const expertAdmin: Card[] = [
@@ -85,26 +86,32 @@ const platforms: Card[] = [
   {
     title: "IXIASOFT CCMS",
     body: "Full administration for IXIASOFT 4.x and 5.x — including TEXTML Server tuning, collaborative review configuration, output generator management, and custom dashboard development.",
+    category: "Enterprise",
   },
   {
     title: "Tridion Docs (SDL)",
     body: "Publication Manager configuration, condition metadata management, translation integration, and performance optimization for Tridion Docs on-premise and cloud deployments.",
+    category: "Enterprise",
   },
   {
     title: "Heretto (easyDITA)",
     body: "Cloud-native administration — API integrations, webhook pipelines, custom publishing configurations, and SSO/SCIM user provisioning for Heretto’s SaaS platform.",
+    category: "Cloud-native",
   },
   {
     title: "Paligo",
     body: "Taxonomy and variable management, publishing portal configuration, Salesforce Knowledge integration, and multi-language workflow setup for Paligo’s structured authoring environment.",
+    category: "Cloud-native",
   },
   {
     title: "Vasont / Astoria",
     body: "Legacy platform support, migration planning, repository maintenance, and publishing pipeline management for Vasont and Astoria CMS installations.",
+    category: "Legacy",
   },
   {
     title: "Git-Based & Open Source",
     body: "For teams running DITA on Git (GitHub, GitLab, Bitbucket) with DITA-OT CI/CD pipelines — we provide the same managed service discipline: access control, branch strategy, build monitoring, and publishing automation.",
+    category: "Open Source",
   },
 ];
 
@@ -398,6 +405,9 @@ const related: Related[] = [
       <ul class="ccms-grid-6">
         {platforms.map((c) => (
           <li class="ccms-card">
+            {c.category && (
+              <span class="ccms-card__eyebrow">{c.category}</span>
+            )}
             <h3 class="ccms-card__title">{c.title}</h3>
             <p class="ccms-card__body">{c.body}</p>
           </li>
@@ -607,6 +617,15 @@ const related: Related[] = [
   }
   .ccms-card--accent {
     border-top: 2px solid var(--color-accent-primary);
+  }
+  .ccms-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
   }
   .ccms-card__icon {
     display: inline-flex;
