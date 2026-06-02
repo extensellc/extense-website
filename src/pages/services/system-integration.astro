@@ -1,0 +1,998 @@
+---
+/*
+  /services/system-integration -- service detail page (6th of 7).
+
+  Built bespoke (page-local CSS, prefix `si-`), reusing the shared atoms
+  (Hero, SectionSiblings, CTAModule) and the patterns proven on DITA /
+  Publishing / CCMS (icon-card grids, 3-card row, 01-0N strip, #fef3c7
+  callout, related cards, hero node-graph visual). Faithful rebuild of the
+  old ex-tense.co page (10 sections); the old mid-page "Free Integration
+  Assessment" banner is folded into the end CTA (single conversion zone).
+
+  Shape: Hero (visual D -- handoff.eliminated) -> switcher -> Cost of
+  Disconnected Systems (3 problem cards, accent line) -> Connected Content
+  Ecosystem (6 icon cards, band) -> Integration Architecture (5-step
+  unnumbered strip + No Vendor Lock-In #fef3c7 callout) -> Technology Stack
+  (6 icon cards, band) -> Security & Compliance (3 cards, accent line) ->
+  Ongoing Support & Monitoring (3 cards, accent line, band) -> How We
+  Deliver (5-step numbered strip + 3 eyebrow cards) -> Related (3 cards,
+  band) -> CTA "Free Integration Assessment".
+
+  Doc: docs/reframe-2026/system-integration.md
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon?: string;
+}
+
+const costCards: Card[] = [
+  {
+    title: "Manual Handoffs",
+    body: "Writers check JIRA for updates, copy ticket details into the CCMS, email translators with file packages, and manually upload finished content to the portal. Every handoff is a delay — and a place where information gets lost or garbled.",
+  },
+  {
+    title: "Version Drift",
+    body: "Engineering ships v2.4 but the knowledge base still reflects v2.3. Support agents answer tickets with outdated procedures. Customers find contradictions between the help portal and the PDF they downloaded last month. Disconnected systems make version mismatch inevitable.",
+  },
+  {
+    title: "Compliance Exposure",
+    body: "In regulated industries, you must prove that the published document matches the approved source, that translations are current, and that every change is auditable. Manual processes leave gaps that auditors find — and that cost you.",
+  },
+];
+
+const ecosystemCards: Card[] = [
+  {
+    title: "JIRA / Azure DevOps → CCMS",
+    body: "When an engineering story moves to “Done,” our connector automatically creates a content task in the CCMS, pre-populates metadata (product, version, component), and assigns it to the mapped writer. Zero lag between code-complete and doc-start.",
+    icon: "clipboard",
+  },
+  {
+    title: "Git → DITA Sync",
+    body: "Developer-authored Markdown or MDITA in Git repositories is bidirectionally synced with the official DITA CCMS. Our pipelines convert, validate, and merge — preserving authoring freedom without sacrificing structural governance.",
+    icon: "branch",
+  },
+  {
+    title: "Salesforce / Zendesk / ServiceNow",
+    body: "Push troubleshooting guides and knowledge articles directly to the support agent’s console. When a ticket is filed for a known issue, the connector surfaces the exact DITA topic — significantly reducing average handle time.",
+    icon: "bubble",
+  },
+  {
+    title: "Translation Management (TMS)",
+    body: "XLIFF round-trip integration with Trados, memoQ, Memsource, and XTM. We export only changed segments, route to the right TMS workflow, and auto-import translated content back into the CCMS — fully validated.",
+    icon: "globe",
+  },
+  {
+    title: "PLM / ERP Systems",
+    body: "Link DITA content to part numbers, BOMs, and engineering change orders in Windchill, Teamcenter, or SAP. When a part revision changes, the content link flags affected documentation for review automatically.",
+    icon: "gear",
+  },
+  {
+    title: "CI/CD Publishing Pipelines",
+    body: "GitHub Actions, Jenkins, and Azure DevOps pipelines that build, validate, and deploy documentation on every commit. We treat docs as code — with the same rigor as your software release process.",
+    icon: "cycle",
+  },
+];
+
+interface Step {
+  num?: string;
+  title: string;
+  desc: string;
+}
+
+const architectureSteps: Step[] = [
+  { title: "Event Source", desc: "JIRA · Git · PLM · TMS" },
+  { title: "Middleware", desc: "Webhook / REST · Mapping Logic" },
+  { title: "CCMS API", desc: "Create · Update · Link Topics" },
+  { title: "Validate", desc: "Schema Check · Business Rules" },
+  { title: "Notify", desc: "Email · Slack · Dashboard" },
+];
+
+const techStack: Card[] = [
+  {
+    title: "Node.js & Python",
+    body: "Lightweight middleware services for webhook handlers, API connectors, and data transformation scripts. Fast to develop, easy to deploy, and well-supported by cloud platforms.",
+    icon: "code",
+  },
+  {
+    title: "Java & .NET",
+    body: "Enterprise-grade integration services for high-throughput pipelines, complex business logic, and environments where Java or C# is the organizational standard. Spring Boot, Quarkus, or ASP.NET Core.",
+    icon: "layers",
+  },
+  {
+    title: "Apache Kafka & MQ",
+    body: "Event streaming and message queues for asynchronous, decoupled integrations. Content change events flow through Kafka, RabbitMQ, or AWS SQS — ensuring no message is lost even if a downstream system is temporarily offline.",
+    icon: "queue",
+  },
+  {
+    title: "REST & GraphQL APIs",
+    body: "RESTful connectors for standard CRUD operations. GraphQL endpoints where consumers need flexible, field-level content queries. We conform to your API governance standards — OpenAPI specs, versioning, and rate limiting.",
+    icon: "graph",
+  },
+  {
+    title: "iPaaS & Low-Code",
+    body: "When the toolchain warrants it, we use integration platforms — Workato, MuleSoft, or Azure Logic Apps — for rapid connector development with built-in monitoring, retry logic, and visual workflow design.",
+    icon: "plug",
+  },
+  {
+    title: "Docker & Kubernetes",
+    body: "Containerized deployment for every integration service. Reproducible builds, horizontal scaling, and platform-agnostic hosting — on AWS, Azure, GCP, or your on-premise infrastructure.",
+    icon: "cube",
+  },
+];
+
+const securityCards: Card[] = [
+  {
+    title: "Authentication & Authorization",
+    body: "OAuth 2.0, SAML, API keys with rotation policies, and service-account management. Every connector authenticates with the minimum privileges required — no shared admin credentials, no hardcoded secrets.",
+  },
+  {
+    title: "Data in Transit & at Rest",
+    body: "TLS 1.3 for all API traffic. Sensitive content payloads encrypted at rest in message queues and staging stores. We map data flows and classify content sensitivity so encryption policies match your governance framework.",
+  },
+  {
+    title: "Audit Trails & Compliance",
+    body: "Every integration event is logged — who triggered it, what changed, when, and where. Logs feed into your SIEM or compliance reporting platform. We design for SOC 2, HIPAA, FedRAMP, and ISO 27001 requirements from day one.",
+  },
+];
+
+const supportCards: Card[] = [
+  {
+    title: "Proactive Monitoring",
+    body: "Dashboards tracking message throughput, error rates, latency, and queue depth for every connector. We set up alerts in your monitoring stack (Datadog, Grafana, CloudWatch) so issues surface before they impact writers.",
+  },
+  {
+    title: "API Change Management",
+    body: "When a vendor updates their API (JIRA Cloud, Salesforce seasonal releases, CCMS version upgrades), we regression-test your connectors against the new version, update the integration code, and redeploy — before the breaking change goes live.",
+  },
+  {
+    title: "Incident Response",
+    body: "When a connector fails, our runbook-driven response identifies the root cause, replays failed messages from the dead-letter queue, and restores the pipeline. Post-incident reviews produce permanent fixes, not recurring workarounds.",
+  },
+];
+
+const deliveryPhases: Step[] = [
+  { num: "01", title: "Discovery", desc: "Map your toolchain, data flows, and automation goals." },
+  { num: "02", title: "Design", desc: "Architecture blueprint with API contracts and error handling." },
+  { num: "03", title: "Build", desc: "Iterative development with staging environment testing." },
+  { num: "04", title: "Deploy", desc: "Production rollout with rollback procedures." },
+  { num: "05", title: "Operate", desc: "Monitoring, maintenance, and continuous improvement." },
+];
+
+interface EngagementCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+}
+
+const engagementCards: EngagementCard[] = [
+  {
+    eyebrow: "Templated",
+    title: "Pre-Built Accelerators",
+    body: "For common integrations (JIRA → CCMS, CCMS → TMS, Git → DITA), we start from proven connector templates — not a blank slate. This cuts implementation time significantly and reduces risk with battle-tested patterns.",
+  },
+  {
+    eyebrow: "Bespoke",
+    title: "Custom Connectors",
+    body: "For unique workflows (PLM → DITA, proprietary ERP, legacy systems), we design and build bespoke connectors. Every custom integration comes with API documentation, admin runbooks, and automated tests.",
+  },
+  {
+    eyebrow: "Handoff",
+    title: "Knowledge Transfer",
+    body: "We document every connector, train your team to troubleshoot common issues, and provide the source code. You’re never locked into our services — your team can maintain and extend the integrations independently.",
+  },
+];
+
+interface Related {
+  name: string;
+  href: string;
+  desc: string;
+}
+const related: Related[] = [
+  {
+    name: "CCMS Services",
+    href: "/services/ccms-services",
+    desc: "Platform selection, configuration, and ongoing support for enterprise content management.",
+  },
+  {
+    name: "XML Engineering",
+    href: "/services/xml-engineering",
+    desc: "Custom schema design, XSLT transformation, and validation pipelines.",
+  },
+  {
+    name: "Publishing Engineering",
+    href: "/services/publishing-engineering",
+    desc: "Custom multi-channel publishing pipelines for PDF, HTML5, EPUB, and API documentation.",
+  },
+];
+---
+
+<BaseLayout
+  title="System Integration & API Connectors — Extense LLC"
+  description="Connecting your CCMS to engineering, support, PLM, and translation systems — so content flows without manual handoffs. Extense designs, builds, secures, and operates the event-driven connectors that eliminate the swivel-chair between content systems."
+>
+  <Hero
+    variant="universal"
+    title="System Integration & API Connectors"
+    subdeck="Connecting your CCMS to engineering, support, PLM, and translation systems &mdash; so content flows without manual handoffs."
+  >
+    <div class="si-hero-visual">
+      <svg
+        class="si-hero-flow"
+        id="si-hero-flow"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: handoff.eliminated</text>
+
+        <!-- BEFORE label -->
+        <text class="chrome label--muted fx" x="30" y="48" style="--d: 200ms">BEFORE &middot; MANUAL</text>
+
+        <!-- BEFORE row: JIRA -> swivel-chair -> CCMS -->
+        <g class="fx" style="--d: 280ms">
+          <rect class="node" x="24" y="60" width="110" height="34" rx="3" />
+          <text class="node-label" x="79" y="82" text-anchor="middle">JIRA</text>
+        </g>
+        <g class="fx" style="--d: 360ms">
+          <rect class="node node--soft" x="210" y="60" width="140" height="34" rx="3" />
+          <text class="node-label label--muted" x="280" y="82" text-anchor="middle">swivel-chair</text>
+        </g>
+        <g class="fx" style="--d: 440ms">
+          <rect class="node" x="420" y="60" width="110" height="34" rx="3" />
+          <text class="node-label" x="475" y="82" text-anchor="middle">&lt;ccms&gt;</text>
+        </g>
+
+        <!-- BEFORE dashed connectors -->
+        <g class="fx" style="--d: 520ms">
+          <path class="conn--soft" d="M134 77 L210 77" />
+          <path class="conn--soft" d="M350 77 L420 77" />
+        </g>
+
+        <!-- Amber demarcation rule (draws) -->
+        <path class="flow-conn" style="--d: 640ms" d="M30 160 L530 160" />
+
+        <!-- extense.connectors chip on the rule -->
+        <g class="fx" style="--d: 820ms">
+          <rect class="node node--custom" x="210" y="148" width="140" height="24" rx="3" />
+          <text class="node-label node-label--custom" x="280" y="165" text-anchor="middle">extense.connectors</text>
+        </g>
+
+        <!-- AFTER label -->
+        <text class="chrome label--accent fx" x="30" y="208" style="--d: 940ms">AFTER &middot; AUTOMATED</text>
+
+        <!-- AFTER row: JIRA -> direct amber arrow -> CCMS (amber) -->
+        <g class="fx" style="--d: 1020ms">
+          <rect class="node" x="24" y="222" width="110" height="34" rx="3" />
+          <text class="node-label" x="79" y="244" text-anchor="middle">JIRA</text>
+        </g>
+        <g class="fx" style="--d: 1100ms">
+          <rect class="node node--custom" x="420" y="222" width="110" height="34" rx="3" />
+          <text class="node-label node-label--custom" x="475" y="244" text-anchor="middle">&lt;ccms&gt;</text>
+        </g>
+
+        <!-- AFTER arrow (line + arrowhead, draws) -->
+        <path class="flow-conn" style="--d: 1180ms" d="M134 239 L420 239 M415 234 L420 239 L415 244" />
+
+        <!-- Bottom chrome -->
+        <g class="fx" style="--d: 1320ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="232" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+          <text class="chrome" x="296" y="302">/</text>
+          <text class="chrome chrome--strong" x="304" y="302">handoff.eliminated</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">MANUAL &rarr; AUTOMATED</text>
+        </g>
+      </svg>
+    </div>
+  </Hero>
+
+  <SectionSiblings variant="services" current="system-integration" />
+
+  <!-- S3 The Cost of Disconnected Systems -->
+  <section class="si-section" aria-labelledby="cost-heading">
+    <div class="container-page si-section__inner">
+      <div class="si-heading-block">
+        <h2 id="cost-heading" class="si-heading">The Cost of Disconnected Systems</h2>
+        <p class="si-intro">
+          When your content systems don&rsquo;t talk to each other, your team pays the price every day.
+        </p>
+      </div>
+      <ul class="si-grid-3">
+        {costCards.map((c) => (
+          <li class="si-card si-card--accent">
+            <h3 class="si-card__title">{c.title}</h3>
+            <p class="si-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S4 The Connected Content Ecosystem (band) -->
+  <section class="si-section si-section--band" aria-labelledby="ecosystem-heading">
+    <div class="container-page si-section__inner">
+      <div class="si-heading-block">
+        <h2 id="ecosystem-heading" class="si-heading">The Connected Content Ecosystem</h2>
+        <p class="si-intro">
+          Documentation lives between Engineering and the end user. We build the middleware, webhooks, and API connectors that eliminate the &ldquo;swivel-chair&rdquo; copy-paste between systems.
+        </p>
+      </div>
+      <ul class="si-grid-6">
+        {ecosystemCards.map((c) => (
+          <li class="si-card">
+            <span class="si-card__icon" aria-hidden="true">
+              {c.icon === "clipboard" && (
+                <svg viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="14" rx="1.5" /><rect x="7" y="2" width="6" height="3" rx="0.5" /><line x1="7" y1="9" x2="13" y2="9" /><line x1="7" y1="12" x2="13" y2="12" /><line x1="7" y1="15" x2="11" y2="15" /></svg>
+              )}
+              {c.icon === "branch" && (
+                <svg viewBox="0 0 20 20"><circle cx="6" cy="5" r="1.8" /><circle cx="6" cy="15" r="1.8" /><circle cx="14" cy="9" r="1.8" /><path d="M6 6.8 V13.2 M6 9.5 a5 5 0 0 0 6.2 -1.2" /></svg>
+              )}
+              {c.icon === "bubble" && (
+                <svg viewBox="0 0 20 20"><path d="M3.5 4.5 H16.5 V13 H9 L5.5 16 V13 H3.5 Z" /></svg>
+              )}
+              {c.icon === "globe" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><line x1="3" y1="10" x2="17" y2="10" /><path d="M10 3 C13 6 13 14 10 17 C7 14 7 6 10 3 Z" /></svg>
+              )}
+              {c.icon === "gear" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.5" /><path d="M10 2.5 V4 M10 16 V17.5 M2.5 10 H4 M16 10 H17.5 M4.7 4.7 L5.8 5.8 M14.2 14.2 L15.3 15.3 M4.7 15.3 L5.8 14.2 M14.2 5.8 L15.3 4.7" /></svg>
+              )}
+              {c.icon === "cycle" && (
+                <svg viewBox="0 0 20 20"><path d="M15.5 6.5 A6 6 0 1 0 16.5 10" /><polyline points="15.5,3 15.5,6.5 12,6.5" /></svg>
+              )}
+            </span>
+            <h3 class="si-card__title">{c.title}</h3>
+            <p class="si-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S5 Integration Architecture (5-step unnumbered + No Vendor Lock-In sub-block) -->
+  <section class="si-section" aria-labelledby="arch-heading">
+    <div class="container-page si-section__inner">
+      <div class="si-heading-block">
+        <h2 id="arch-heading" class="si-heading">Integration Architecture</h2>
+        <p class="si-intro">
+          Every connector follows our event-driven architecture pattern &mdash; loosely coupled, fault-tolerant, and auditable.
+        </p>
+      </div>
+      <ol class="si-roadmap">
+        {architectureSteps.map((s, i) => (
+          <>
+            <li class="si-step">
+              <h3 class="si-step__title">{s.title}</h3>
+              <p class="si-step__desc">{s.desc}</p>
+            </li>
+            {i < architectureSteps.length - 1 && (
+              <li class="si-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+      <div class="si-callout">
+        <h3 class="si-callout__heading">No Vendor Lock-In</h3>
+        <p class="si-callout__body">
+          We build to open standards &mdash; REST APIs, XLIFF 2.1, CMIS, and OAuth 2.0. If you switch your CCMS, TMS, or issue tracker, the integration layer adapts &mdash; not your entire workflow.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6 Technology Stack (band) -->
+  <section class="si-section si-section--band" aria-labelledby="tech-heading">
+    <div class="container-page si-section__inner">
+      <div class="si-heading-block">
+        <h2 id="tech-heading" class="si-heading">Technology Stack</h2>
+        <p class="si-intro">
+          What we build with &mdash; open, maintainable, and chosen to fit your existing infrastructure.
+        </p>
+      </div>
+      <ul class="si-grid-6">
+        {techStack.map((c) => (
+          <li class="si-card">
+            <span class="si-card__icon" aria-hidden="true">
+              {c.icon === "code" && (
+                <svg viewBox="0 0 20 20"><polyline points="7,6 3,10 7,14" /><polyline points="13,6 17,10 13,14" /><line x1="11.5" y1="4.5" x2="8.5" y2="15.5" /></svg>
+              )}
+              {c.icon === "layers" && (
+                <svg viewBox="0 0 20 20"><path d="M10 3 L17 6.5 L10 10 L3 6.5 Z" /><polyline points="3,10.5 10,14 17,10.5" /><polyline points="3,14 10,17.5 17,14" /></svg>
+              )}
+              {c.icon === "queue" && (
+                <svg viewBox="0 0 20 20"><rect x="2.5" y="8" width="3" height="4" rx="0.5" /><rect x="7" y="8" width="3" height="4" rx="0.5" /><rect x="11.5" y="8" width="3" height="4" rx="0.5" /><polyline points="16,8 17.5,10 16,12" /></svg>
+              )}
+              {c.icon === "graph" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="5" r="1.8" /><circle cx="5" cy="14" r="1.8" /><circle cx="15" cy="14" r="1.8" /><path d="M9 6.4 L6 12.6 M11 6.4 L14 12.6 M6.8 14 H13.2" /></svg>
+              )}
+              {c.icon === "plug" && (
+                <svg viewBox="0 0 20 20"><line x1="8" y1="2.5" x2="8" y2="5.5" /><line x1="12" y1="2.5" x2="12" y2="5.5" /><path d="M5.5 5.5 H14.5 V9 a4.5 4.5 0 0 1 -9 0 Z" /><line x1="10" y1="13.5" x2="10" y2="17.5" /></svg>
+              )}
+              {c.icon === "cube" && (
+                <svg viewBox="0 0 20 20"><path d="M10 3 L17 6.5 V13.5 L10 17 L3 13.5 V6.5 Z" /><polyline points="3,6.5 10,10 17,6.5" /><line x1="10" y1="10" x2="10" y2="17" /></svg>
+              )}
+            </span>
+            <h3 class="si-card__title">{c.title}</h3>
+            <p class="si-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S7 Security & Compliance -->
+  <section class="si-section" aria-labelledby="security-heading">
+    <div class="container-page si-section__inner">
+      <div class="si-heading-block">
+        <h2 id="security-heading" class="si-heading">Security & Compliance</h2>
+        <p class="si-intro">
+          Integrations move data between systems. We ensure every connection is secure, auditable, and compliant with your regulatory requirements.
+        </p>
+      </div>
+      <ul class="si-grid-3">
+        {securityCards.map((c) => (
+          <li class="si-card si-card--accent">
+            <h3 class="si-card__title">{c.title}</h3>
+            <p class="si-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S8 Ongoing Support & Monitoring (band) -->
+  <section class="si-section si-section--band" aria-labelledby="support-heading">
+    <div class="container-page si-section__inner">
+      <div class="si-heading-block">
+        <h2 id="support-heading" class="si-heading">Ongoing Support & Monitoring</h2>
+        <p class="si-intro">
+          Integrations aren&rsquo;t &ldquo;set and forget.&rdquo; APIs change, tokens expire, schemas evolve. We keep your connectors healthy after deployment.
+        </p>
+      </div>
+      <ul class="si-grid-3">
+        {supportCards.map((c) => (
+          <li class="si-card si-card--accent">
+            <h3 class="si-card__title">{c.title}</h3>
+            <p class="si-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S9 How We Deliver (5-step numbered strip + 3 eyebrow cards) -->
+  <section class="si-section" aria-labelledby="deliver-heading">
+    <div class="container-page si-section__inner">
+      <div class="si-heading-block">
+        <h2 id="deliver-heading" class="si-heading">How We Deliver</h2>
+        <p class="si-intro">
+          Every integration engagement follows a structured process &mdash; from discovery to production, with your team involved at every stage.
+        </p>
+      </div>
+      <ol class="si-roadmap">
+        {deliveryPhases.map((s, i) => (
+          <>
+            <li class="si-step">
+              {s.num && <span class="si-step__num">{s.num}</span>}
+              <h3 class="si-step__title">{s.title}</h3>
+              <p class="si-step__desc">{s.desc}</p>
+            </li>
+            {i < deliveryPhases.length - 1 && (
+              <li class="si-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+      <ul class="si-grid-3 si-engagement-grid">
+        {engagementCards.map((e) => (
+          <li class="si-card si-card--accent">
+            <span class="si-card__eyebrow">{e.eyebrow}</span>
+            <h3 class="si-card__title">{e.title}</h3>
+            <p class="si-card__body">{e.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S10 Related (band) -->
+  <section class="si-section si-section--band" aria-labelledby="related-heading">
+    <div class="container-page si-section__inner">
+      <div class="si-heading-block">
+        <h2 id="related-heading" class="si-heading">Related Services</h2>
+      </div>
+      <ul class="si-related-grid">
+        {related.map((r) => (
+          <li class="si-related-card-item">
+            <a href={r.href} class="si-related-card">
+              <span class="si-related-card__eyebrow">Service</span>
+              <h3 class="si-related-card__title">{r.name}</h3>
+              <p class="si-related-card__body">{r.desc}</p>
+              <span class="si-related-card__cta">
+                Explore <span class="si-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Free Integration Assessment"
+    body="Tell us your current toolchain — CCMS, issue tracker, TMS, PLM — and we'll map the integration architecture, identify automation opportunities, and estimate implementation effort. No strings attached."
+  />
+</BaseLayout>
+
+<style>
+  .si-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .si-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .si-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Heading block ─── */
+  .si-heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
+  }
+  .si-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .si-intro {
+    margin: var(--space-4) auto 0 auto;
+    max-width: 80ch;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+
+  /* ─── Card grids ─── */
+  .si-grid-3,
+  .si-grid-6 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 600px) {
+    .si-grid-6 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 768px) {
+    .si-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .si-grid-6 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .si-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .si-card--accent {
+    border-top: 2px solid var(--color-accent-primary);
+  }
+  .si-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .si-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .si-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .si-card__icon svg circle,
+  .si-card__icon svg ellipse,
+  .si-card__icon svg line,
+  .si-card__icon svg polyline,
+  .si-card__icon svg rect,
+  .si-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .si-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .si-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Roadmap strip ─── */
+  .si-roadmap {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .si-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    background-color: var(--color-page-bg);
+  }
+  .si-step__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary);
+  }
+  .si-step__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .si-step__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .si-step__arrow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    color: var(--color-accent-primary);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+  @media (max-width: 767px) {
+    .si-roadmap {
+      flex-direction: column;
+    }
+    .si-step__arrow {
+      align-self: center;
+      transform: rotate(90deg);
+      padding: var(--space-1) 0;
+    }
+  }
+
+  /* ─── Engagement grid (sits below the roadmap in How We Deliver) ─── */
+  .si-engagement-grid {
+    margin-top: var(--space-12);
+  }
+
+  /* ─── Callout (No Vendor Lock-In) ─── */
+  .si-callout {
+    background-color: #fef3c7;
+    border-left: 3px solid var(--color-accent-primary);
+    border-radius: var(--radius-sm);
+    padding: var(--space-8) var(--space-12);
+    max-width: 80ch;
+    margin: var(--space-12) auto 0;
+  }
+  @media (max-width: 767px) {
+    .si-callout {
+      padding: var(--space-6) var(--space-8);
+    }
+  }
+  .si-callout__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .si-callout__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Related ─── */
+  .si-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .si-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .si-related-card-item {
+    display: flex;
+  }
+  .si-related-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    background-color: var(--color-page-bg);
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .si-related-card:hover,
+  .si-related-card:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+  .si-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .si-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .si-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .si-related-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .si-related-card:hover .si-related-card__cta,
+  .si-related-card:focus-visible .si-related-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .si-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .si-related-card:hover .si-related-card__arrow {
+    transform: translateX(2px);
+  }
+
+  /* ─── Hero visual: before / after (manual handoff eliminated) ─── */
+  .si-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .si-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+  .si-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .si-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .si-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .si-hero-flow .label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .si-hero-flow .label--accent {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .si-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .si-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .si-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .si-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .si-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .si-hero-flow .node--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .si-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .si-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .si-hero-flow .conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+  .si-hero-flow .conn--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    fill: none;
+  }
+  .si-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 540;
+    stroke-dashoffset: 540;
+  }
+
+  .si-hero-flow .fx {
+    opacity: 0;
+  }
+  .si-hero-flow.drawn .fx {
+    animation: si-flow-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .si-hero-flow.drawn .flow-conn {
+    animation: si-flow-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes si-flow-fade {
+    to { opacity: 1; }
+  }
+  @keyframes si-flow-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .si-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .si-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupSiHero() {
+    const svg = document.getElementById("si-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupSiHero);
+  document.addEventListener("astro:page-load", setupSiHero);
+</script>
