@@ -1,0 +1,895 @@
+---
+/*
+  /services/xml-engineering -- service detail page (7th and LAST of 7).
+
+  Built bespoke (page-local CSS, prefix `xe-`), reusing the shared atoms
+  (Hero, SectionSiblings, CTAModule) and the patterns proven on DITA /
+  Publishing / CCMS / SI (icon-card grids, 3-card row, un-numbered roadmap
+  strip with --meta sub-labels, related cards, hero node-graph visual).
+  Faithful rebuild of the old ex-tense.co page; the old mid-page "Free
+  Schema Health Check" banner is folded into the end CTA.
+
+  Shape: Hero (visual D -- three pillars feeding governed XML) -> switcher
+  -> Beyond Well-Formedness (3 icon cards, accent line) -> The Validation
+  Stack (5-step un-numbered --meta strip + 3 icon cards, band) -> Modern
+  XML Processing (6 icon cards, band) -> AI-Ready Content Engineering
+  (6 icon cards + sub-block) -> Related (3 cards, band) -> CTA "Free
+  Schema Health Check".
+
+  Doc: docs/reframe-2026/xml-engineering.md
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon?: string;
+}
+
+const beyondCards: Card[] = [
+  {
+    title: "XSLT 3.0 Development",
+    body: "Complex multi-source transformations — merging XML streams, generating JSON, SQL, or EPUB output, and handling million-node datasets with XSLT 3.0 streaming. We write production-grade stylesheets with full unit test coverage using Saxon.",
+    icon: "code",
+  },
+  {
+    title: "Schematron Business Rules",
+    body: "DTD and XSD check structure. Schematron checks business logic: “If classification is ‘Internal’, then distribution must be ‘Restricted’.” We author ISO Schematron rule sets that catch semantic violations before they reach production.",
+    icon: "shield",
+  },
+  {
+    title: "Schema Design & Specialization",
+    body: "Custom XSD, RelaxNG, and DITA specializations that model your product data without breaking standards compliance. We extend element models, add domain-specific attributes, and maintain backward compatibility with existing toolchains.",
+    icon: "layers",
+  },
+];
+
+interface Step {
+  num?: string;
+  title: string;
+  desc: string;
+  body?: string;
+}
+
+const validationSteps: Step[] = [
+  { title: "Structure", desc: "DTD / XSD / RelaxNG", body: "Parent-child rules — every element has its place in the tree." },
+  { title: "Business Logic", desc: "Schematron", body: "Semantic constraints that DTD and XSD can’t express." },
+  { title: "Style & Naming", desc: "Checkstyles", body: "Conventions and terminology kept consistent across writers." },
+  { title: "Link Integrity", desc: "Cross-reference & conref", body: "Every reference resolves; no dangling links survive." },
+  { title: "Clean Output", desc: "Build-ready XML", body: "Validated content, ready for the publishing pipeline." },
+];
+
+const validationTools: Card[] = [
+  {
+    title: "XQuery & XPath",
+    body: "Full-text queries, content audits, and cross-collection analytics in BaseX, MarkLogic, or eXist-db. We build reporting dashboards that surface reuse metrics, orphaned topics, and metadata gaps.",
+    icon: "search",
+  },
+  {
+    title: "CI-Integrated Validation",
+    body: "We embed validation into Jenkins, GitHub Actions, and Azure DevOps pipelines. Every commit triggers schema validation, Schematron checks, and broken-link detection — blocking bad content before it merges.",
+    icon: "terminal",
+  },
+  {
+    title: "Migration Schema Mapping",
+    body: "Mapping legacy schemas (DocBook, custom DTDs, FrameMaker EDD) to DITA or S1000D. We document every mapping decision and produce automated XSLT converters for repeatable batch migration.",
+    icon: "pagefold",
+  },
+];
+
+const modernProcessing: Card[] = [
+  {
+    title: "Programmatic Transforms (Java & C#)",
+    body: "Saxon API, JAXB, StAX, and LINQ to XML for transformations that require database lookups, API calls, or complex business logic mid-transform. Testable, debuggable, and CI/CD-native — unlike monolithic XSLT stylesheets.",
+    icon: "cube",
+  },
+  {
+    title: "Python & Node.js Pipelines",
+    body: "lxml, Beautiful Soup, and fast-xml-parser for rapid automation — content migration scripts, metadata enrichment, batch validation, and glue code between XML systems and modern APIs. Ideal when speed of development matters more than raw throughput.",
+    icon: "pipeline",
+  },
+  {
+    title: "JSON & YAML Interoperability",
+    body: "Modern systems speak JSON, not XML. We build bidirectional bridges that preserve semantic structure across formats — XML ↔ JSON for REST APIs, XML ↔ YAML for configuration pipelines, and XML → GraphQL schemas for flexible content queries.",
+    icon: "braces",
+  },
+  {
+    title: "GraphQL Content Layers",
+    body: "Expose XML repositories through GraphQL endpoints where consumers request exactly the elements, attributes, and metadata they need. We build the schema, resolvers, and caching layer — turning your XML store into a queryable content API.",
+    icon: "graph",
+  },
+  {
+    title: "CSS Paged Media → PDF",
+    body: "Replace XSL-FO with CSS Paged Media for print-quality PDF generation from XML. Using Prince XML, Antenna House, or WeasyPrint — your web team’s CSS skills now produce regulated-grade PDFs. One styling language for web and print.",
+    icon: "pagefold",
+  },
+  {
+    title: "XML Databases & Search",
+    body: "Native XML storage in MarkLogic, BaseX, or eXist-db combined with Elasticsearch or Algolia for full-text search. We architect the storage and retrieval layer for content repositories that need fine-grained access, versioning, and faceted navigation.",
+    icon: "database",
+  },
+];
+
+const aiReadyCards: Card[] = [
+  {
+    title: "RAG Chunking & Embedding Prep",
+    body: "We transform XML content into right-sized chunks for vector embedding — respecting topic boundaries, semantic context, and token limits. Each chunk carries its metadata lineage so the retrieval system knows what it’s returning and why.",
+    icon: "grid",
+  },
+  {
+    title: "Semantic Labeling for LLMs",
+    body: "Every XML element can carry machine-readable context — content type, product version, audience, domain. When an LLM retrieves a chunk, it understands whether it’s citing a procedure, a concept, a warning, or a specification. We engineer those labels into your schema.",
+    icon: "tag",
+  },
+  {
+    title: "JSON-LD & Schema.org Mapping",
+    body: "Transform XML metadata into Schema.org structured data and JSON-LD — for rich search results, knowledge panel eligibility, and semantic web interoperability. Your content becomes discoverable by Google, AI assistants, and enterprise search platforms.",
+    icon: "linked",
+  },
+  {
+    title: "Knowledge Graph Generation",
+    body: "Map XML taxonomies, cross-references, and relationship tables to RDF triples and OWL ontologies. Your documentation becomes a queryable knowledge graph — answering complex cross-system questions that flat search cannot.",
+    icon: "network",
+  },
+  {
+    title: "Embedding-Friendly Transforms",
+    body: "Custom XSLT/Python pipelines that output clean plain text or Markdown from XML — stripped of markup noise but preserving structural context as metadata. Optimized for OpenAI, Cohere, or open-source embedding models.",
+    icon: "vector",
+  },
+  {
+    title: "Content API for AI Pipelines",
+    body: "REST and GraphQL endpoints that serve XML-sourced content to LangChain, LlamaIndex, or custom RAG frameworks. We build the retrieval layer — with filtering by metadata, version, audience, and content type — so your AI gets the right content, not just any content.",
+    icon: "plug",
+  },
+];
+
+interface Related {
+  name: string;
+  href: string;
+  desc: string;
+}
+const related: Related[] = [
+  {
+    name: "DITA Engineering",
+    href: "/services/dita-engineering",
+    desc: "Topic modeling, specialization, and constraint modules for scalable content architectures.",
+  },
+  {
+    name: "System Integration",
+    href: "/services/system-integration",
+    desc: "Connecting CCMS, CMS, and enterprise platforms via APIs and middleware.",
+  },
+  {
+    name: "Publishing Engineering",
+    href: "/services/publishing-engineering",
+    desc: "Custom multi-channel publishing pipelines for PDF, HTML5, EPUB, and API documentation.",
+  },
+];
+---
+
+<BaseLayout
+  title="XML & Schematron Engineering — Extense LLC"
+  description="Schema design, transformation pipelines, and validation frameworks that enforce quality at the structural level — before content ever reaches a reviewer. Extense engineers XSLT 3.0, ISO Schematron, RelaxNG, the modern XML toolchain, and AI-ready content layers."
+>
+  <Hero
+    variant="universal"
+    title="XML & Schematron Engineering"
+    subdeck="Schema design, transformation pipelines, and validation frameworks that enforce quality at the structural level &mdash; before content ever reaches a reviewer."
+  >
+    <div class="xe-hero-visual">
+      <svg
+        class="xe-hero-flow"
+        id="xe-hero-flow"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: engineering.layers</text>
+
+        <!-- Three pillar chips at top (custom amber) -->
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="40" y="46" width="140" height="30" rx="3" />
+          <text class="node-label node-label--custom" x="110" y="65" text-anchor="middle">schema</text>
+        </g>
+        <g class="fx" style="--d: 280ms">
+          <rect class="node node--custom" x="210" y="46" width="140" height="30" rx="3" />
+          <text class="node-label node-label--custom" x="280" y="65" text-anchor="middle">transform</text>
+        </g>
+        <g class="fx" style="--d: 360ms">
+          <rect class="node node--custom" x="380" y="46" width="140" height="30" rx="3" />
+          <text class="node-label node-label--custom" x="450" y="65" text-anchor="middle">validate</text>
+        </g>
+
+        <!-- Convergent connectors from pillar bottoms to engineering chip top (drawn) -->
+        <path class="flow-conn" style="--d: 460ms" d="M110 76 L280 200" />
+        <path class="flow-conn" style="--d: 500ms" d="M280 76 L280 200" />
+        <path class="flow-conn" style="--d: 540ms" d="M450 76 L280 200" />
+
+        <!-- Raw <chapter> (left, soft) -->
+        <g class="fx" style="--d: 660ms">
+          <rect class="node node--soft" x="24" y="200" width="130" height="44" rx="3" />
+          <text class="node-label label--muted" x="89" y="227" text-anchor="middle">&lt;chapter&gt;</text>
+          <text class="node-caption" x="89" y="262" text-anchor="middle">well-formed</text>
+        </g>
+
+        <!-- Engineering chip (center, custom amber) -->
+        <g class="fx" style="--d: 740ms">
+          <rect class="node node--custom" x="190" y="200" width="180" height="44" rx="3" />
+          <text class="node-label node-label--custom" x="280" y="227" text-anchor="middle">extense.engineering</text>
+        </g>
+
+        <!-- Raw → engineering arrow (draws) -->
+        <path class="flow-conn" style="--d: 820ms" d="M154 222 L190 222 M185 217 L190 222 L185 227" />
+
+        <!-- Governed <chapter> (right, custom amber) -->
+        <g class="fx" style="--d: 920ms">
+          <rect class="node node--custom" x="406" y="200" width="130" height="44" rx="3" />
+          <text class="node-label node-label--custom" x="471" y="227" text-anchor="middle">&lt;chapter&gt;</text>
+          <text class="node-caption" x="471" y="262" text-anchor="middle">governed</text>
+        </g>
+
+        <!-- Engineering → governed arrow (draws) -->
+        <path class="flow-conn" style="--d: 1000ms" d="M370 222 L406 222 M401 217 L406 222 L401 227" />
+
+        <!-- Bottom chrome -->
+        <g class="fx" style="--d: 1140ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="232" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="246" y="302">FIG. 01</text>
+          <text class="chrome" x="296" y="302">/</text>
+          <text class="chrome chrome--strong" x="304" y="302">engineering.layers</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">RAW &rarr; GOVERNED</text>
+        </g>
+      </svg>
+    </div>
+  </Hero>
+
+  <SectionSiblings variant="services" current="xml-engineering" />
+
+  <!-- S3 Beyond Well-Formedness -->
+  <section class="xe-section" aria-labelledby="beyond-heading">
+    <div class="container-page xe-section__inner">
+      <div class="xe-heading-block">
+        <h2 id="beyond-heading" class="xe-heading">Beyond Well-Formedness</h2>
+        <p class="xe-intro">
+          XML is just text until you enforce the rules. We design and implement the schema layers, transformation pipelines, and business-rule validation that turn raw markup into governed, publishable content.
+        </p>
+      </div>
+      <ul class="xe-grid-3">
+        {beyondCards.map((c) => (
+          <li class="xe-card xe-card--accent">
+            <span class="xe-card__icon" aria-hidden="true">
+              {c.icon === "code" && (
+                <svg viewBox="0 0 20 20"><polyline points="7,6 3,10 7,14" /><polyline points="13,6 17,10 13,14" /><line x1="11.5" y1="4.5" x2="8.5" y2="15.5" /></svg>
+              )}
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /><polyline points="7.4,9.8 9.2,11.6 12.8,7.8" /></svg>
+              )}
+              {c.icon === "layers" && (
+                <svg viewBox="0 0 20 20"><path d="M10 3 L17 6.5 L10 10 L3 6.5 Z" /><polyline points="3,10.5 10,14 17,10.5" /><polyline points="3,14 10,17.5 17,14" /></svg>
+              )}
+            </span>
+            <h3 class="xe-card__title">{c.title}</h3>
+            <p class="xe-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S4 The Validation Stack (band) -->
+  <section class="xe-section xe-section--band" aria-labelledby="validation-heading">
+    <div class="container-page xe-section__inner">
+      <div class="xe-heading-block">
+        <h2 id="validation-heading" class="xe-heading">The Validation Stack</h2>
+        <p class="xe-intro">
+          Production-grade content governance requires multiple validation layers &mdash; each catching a different class of defect.
+        </p>
+      </div>
+      <ol class="xe-roadmap">
+        {validationSteps.map((s, i) => (
+          <>
+            <li class:list={["xe-step", s.body && "xe-step--meta"]}>
+              <h3 class="xe-step__title">{s.title}</h3>
+              <p class="xe-step__desc">{s.desc}</p>
+              {s.body && <p class="xe-step__body">{s.body}</p>}
+            </li>
+            {i < validationSteps.length - 1 && (
+              <li class="xe-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+      <ul class="xe-grid-3 xe-tools-grid">
+        {validationTools.map((c) => (
+          <li class="xe-card xe-card--accent">
+            <span class="xe-card__icon" aria-hidden="true">
+              {c.icon === "search" && (
+                <svg viewBox="0 0 20 20"><circle cx="9" cy="9" r="5.5" /><line x1="13" y1="13" x2="17" y2="17" /></svg>
+              )}
+              {c.icon === "terminal" && (
+                <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="1" /><polyline points="6,9 9,11 6,13" /><line x1="11" y1="13" x2="14" y2="13" /></svg>
+              )}
+              {c.icon === "pagefold" && (
+                <svg viewBox="0 0 20 20"><path d="M5 2.5 H12 L15.5 6 V17.5 H5 Z" /><polyline points="12,2.5 12,6 15.5,6" /></svg>
+              )}
+            </span>
+            <h3 class="xe-card__title">{c.title}</h3>
+            <p class="xe-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S5 Modern XML Processing -->
+  <section class="xe-section" aria-labelledby="modern-heading">
+    <div class="container-page xe-section__inner">
+      <div class="xe-heading-block">
+        <h2 id="modern-heading" class="xe-heading">Modern XML Processing</h2>
+        <p class="xe-intro">
+          XSLT is powerful, but it&rsquo;s not always the right tool. We build with the full spectrum of modern technologies for XML transformation and delivery.
+        </p>
+      </div>
+      <ul class="xe-grid-6">
+        {modernProcessing.map((c) => (
+          <li class="xe-card">
+            <span class="xe-card__icon" aria-hidden="true">
+              {c.icon === "cube" && (
+                <svg viewBox="0 0 20 20"><path d="M10 3 L17 6.5 V13.5 L10 17 L3 13.5 V6.5 Z" /><polyline points="3,6.5 10,10 17,6.5" /><line x1="10" y1="10" x2="10" y2="17" /></svg>
+              )}
+              {c.icon === "pipeline" && (
+                <svg viewBox="0 0 20 20"><polyline points="3,6 7,10 3,14" /><polyline points="9,6 13,10 9,14" /><polyline points="15,6 19,10 15,14" /></svg>
+              )}
+              {c.icon === "braces" && (
+                <svg viewBox="0 0 20 20"><path d="M8 3.5 C6 3.5 6.5 6.5 6.5 8 C6.5 9 5 10 5 10 C5 10 6.5 11 6.5 12 C6.5 13.5 6 16.5 8 16.5" /><path d="M12 3.5 C14 3.5 13.5 6.5 13.5 8 C13.5 9 15 10 15 10 C15 10 13.5 11 13.5 12 C13.5 13.5 14 16.5 12 16.5" /></svg>
+              )}
+              {c.icon === "graph" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="5" r="1.8" /><circle cx="5" cy="14" r="1.8" /><circle cx="15" cy="14" r="1.8" /><path d="M9 6.4 L6 12.6 M11 6.4 L14 12.6 M6.8 14 H13.2" /></svg>
+              )}
+              {c.icon === "pagefold" && (
+                <svg viewBox="0 0 20 20"><path d="M5 2.5 H12 L15.5 6 V17.5 H5 Z" /><polyline points="12,2.5 12,6 15.5,6" /></svg>
+              )}
+              {c.icon === "database" && (
+                <svg viewBox="0 0 20 20"><ellipse cx="10" cy="5" rx="6" ry="2" /><path d="M4 5 V10 a6 2 0 0 0 12 0 V5" /><path d="M4 10 V15 a6 2 0 0 0 12 0 V10" /></svg>
+              )}
+            </span>
+            <h3 class="xe-card__title">{c.title}</h3>
+            <p class="xe-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S6 AI-Ready Content Engineering -->
+  <section class="xe-section" aria-labelledby="ai-heading">
+    <div class="container-page xe-section__inner">
+      <div class="xe-heading-block">
+        <h2 id="ai-heading" class="xe-heading">AI-Ready Content Engineering</h2>
+        <p class="xe-intro">
+          Structured XML is the ideal input for AI systems. We engineer the additional layers that make your content retrievable, embeddable, and citable by machines.
+        </p>
+      </div>
+      <ul class="xe-grid-6">
+        {aiReadyCards.map((c) => (
+          <li class="xe-card">
+            <span class="xe-card__icon" aria-hidden="true">
+              {c.icon === "grid" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="3" width="5" height="5" rx="0.5" /><rect x="12" y="3" width="5" height="5" rx="0.5" /><rect x="3" y="12" width="5" height="5" rx="0.5" /><rect x="12" y="12" width="5" height="5" rx="0.5" /></svg>
+              )}
+              {c.icon === "tag" && (
+                <svg viewBox="0 0 20 20"><path d="M3 4 H10 L17 11 L11 17 L3 9 Z" /><circle cx="6.5" cy="7.5" r="0.9" /></svg>
+              )}
+              {c.icon === "linked" && (
+                <svg viewBox="0 0 20 20"><circle cx="7" cy="10" r="3.5" /><circle cx="13" cy="10" r="3.5" /></svg>
+              )}
+              {c.icon === "network" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.6" /><circle cx="4" cy="13" r="1.6" /><circle cx="16" cy="13" r="1.6" /><circle cx="10" cy="16" r="1.4" /><path d="M10 5.6 L4.5 11.6 M10 5.6 L15.5 11.6 M4 14.6 L9 15.5 M16 14.6 L11 15.5 M5.5 13 H14.5" /></svg>
+              )}
+              {c.icon === "vector" && (
+                <svg viewBox="0 0 20 20"><line x1="3" y1="17" x2="17" y2="3" /><polyline points="11,3 17,3 17,9" /><circle cx="6" cy="14" r="0.8" /><circle cx="9" cy="11" r="0.8" /><circle cx="12" cy="8" r="0.8" /></svg>
+              )}
+              {c.icon === "plug" && (
+                <svg viewBox="0 0 20 20"><line x1="8" y1="2.5" x2="8" y2="5.5" /><line x1="12" y1="2.5" x2="12" y2="5.5" /><path d="M5.5 5.5 H14.5 V9 a4.5 4.5 0 0 1 -9 0 Z" /><line x1="10" y1="13.5" x2="10" y2="17.5" /></svg>
+              )}
+            </span>
+            <h3 class="xe-card__title">{c.title}</h3>
+            <p class="xe-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="xe-subblock">
+        <h3 class="xe-subblock__title">Why Structured XML Is an AI Advantage</h3>
+        <p class="xe-subblock__body">
+          Organizations trying to feed unstructured Word and PDF content to AI systems spend most of their effort on parsing, chunking, and metadata extraction. If your content is already in structured XML, you&rsquo;ve solved the hardest part. We build the transform layer that bridges XML governance with AI consumption &mdash; so your existing content investment compounds into AI readiness.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 Related (band) -->
+  <section class="xe-section xe-section--band" aria-labelledby="related-heading">
+    <div class="container-page xe-section__inner">
+      <div class="xe-heading-block">
+        <h2 id="related-heading" class="xe-heading">Related Services</h2>
+      </div>
+      <ul class="xe-related-grid">
+        {related.map((r) => (
+          <li class="xe-related-card-item">
+            <a href={r.href} class="xe-related-card">
+              <span class="xe-related-card__eyebrow">Service</span>
+              <h3 class="xe-related-card__title">{r.name}</h3>
+              <p class="xe-related-card__body">{r.desc}</p>
+              <span class="xe-related-card__cta">
+                Explore <span class="xe-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Free Schema Health Check"
+    body="Send us your DTD, XSD, or Schematron rules. We'll audit for completeness, identify unvalidated business rules, and recommend the validation layers you're missing. No commitment required."
+  />
+</BaseLayout>
+
+<style>
+  .xe-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .xe-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .xe-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Heading block ─── */
+  .xe-heading-block {
+    max-width: none;
+    margin: 0 auto var(--space-12) auto;
+    text-align: center;
+  }
+  .xe-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .xe-intro {
+    margin: var(--space-4) auto 0 auto;
+    max-width: 80ch;
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    text-wrap: pretty;
+  }
+  .xe-intro--narrow {
+    max-width: 60ch;
+  }
+
+  /* ─── Card grids ─── */
+  .xe-grid-3,
+  .xe-grid-6 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 600px) {
+    .xe-grid-6 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 768px) {
+    .xe-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .xe-grid-6 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .xe-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .xe-card--accent {
+    border-top: 2px solid var(--color-accent-primary);
+  }
+  .xe-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .xe-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .xe-card__icon svg circle,
+  .xe-card__icon svg ellipse,
+  .xe-card__icon svg line,
+  .xe-card__icon svg polyline,
+  .xe-card__icon svg rect,
+  .xe-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .xe-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .xe-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Roadmap strip (un-numbered, --meta style) ─── */
+  .xe-roadmap {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .xe-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    background-color: var(--color-page-bg);
+  }
+  .xe-step__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .xe-step__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .xe-step--meta .xe-step__desc {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+  }
+  .xe-step__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: var(--space-3) 0 0 0;
+    text-wrap: pretty;
+  }
+  .xe-step__arrow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    color: var(--color-accent-primary);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+  @media (max-width: 767px) {
+    .xe-roadmap {
+      flex-direction: column;
+    }
+    .xe-step__arrow {
+      align-self: center;
+      transform: rotate(90deg);
+      padding: var(--space-1) 0;
+    }
+  }
+
+  /* ─── Tools grid (3 cards below the validation stack) ─── */
+  .xe-tools-grid {
+    margin-top: var(--space-12);
+  }
+
+  /* ─── Sub-block (Why Structured XML Is an AI Advantage) ─── */
+  .xe-subblock {
+    margin: var(--space-12) auto 0;
+    padding-top: var(--space-8);
+    border-top: var(--border-hairline);
+    max-width: 90ch;
+    text-align: center;
+  }
+  .xe-subblock__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .xe-subblock__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Related ─── */
+  .xe-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .xe-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .xe-related-card-item {
+    display: flex;
+  }
+  .xe-related-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--border-hairline);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    background-color: var(--color-page-bg);
+    transition: border-color var(--duration-base) var(--easing-out),
+      translate var(--duration-base) var(--easing-out);
+  }
+  .xe-related-card:hover,
+  .xe-related-card:focus-visible {
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+    translate: 0 -4px;
+  }
+  .xe-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .xe-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .xe-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .xe-related-card__cta {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .xe-related-card:hover .xe-related-card__cta,
+  .xe-related-card:focus-visible .xe-related-card__cta {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .xe-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .xe-related-card:hover .xe-related-card__arrow {
+    transform: translateX(2px);
+  }
+
+  /* ─── Hero visual: three pillars feeding governed XML ─── */
+  .xe-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .xe-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+  .xe-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .xe-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .xe-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .xe-hero-flow .label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .xe-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .xe-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .xe-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .xe-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .xe-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .xe-hero-flow .node--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .xe-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .xe-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .xe-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .xe-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+
+  .xe-hero-flow .fx {
+    opacity: 0;
+  }
+  .xe-hero-flow.drawn .fx {
+    animation: xe-flow-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .xe-hero-flow.drawn .flow-conn {
+    animation: xe-flow-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes xe-flow-fade {
+    to { opacity: 1; }
+  }
+  @keyframes xe-flow-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .xe-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .xe-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupXeHero() {
+    const svg = document.getElementById("xe-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupXeHero);
+  document.addEventListener("astro:page-load", setupXeHero);
+</script>
