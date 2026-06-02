@@ -221,6 +221,7 @@ const related: Related[] = [
     variant="universal"
     title="System Integration & API Connectors"
     subdeck="Connecting your CCMS to engineering, support, PLM, and translation systems &mdash; so content flows without manual handoffs."
+    subdeckMaxWidth="580px"
   >
     <div class="si-hero-visual">
       <svg
@@ -368,7 +369,7 @@ const related: Related[] = [
     <div class="container-page si-section__inner">
       <div class="si-heading-block">
         <h2 id="arch-heading" class="si-heading">Integration Architecture</h2>
-        <p class="si-intro">
+        <p class="si-intro si-intro--narrow">
           Every connector follows our event-driven architecture pattern &mdash; loosely coupled, fault-tolerant, and auditable.
         </p>
       </div>
@@ -459,7 +460,7 @@ const related: Related[] = [
     <div class="container-page si-section__inner">
       <div class="si-heading-block">
         <h2 id="support-heading" class="si-heading">Ongoing Support & Monitoring</h2>
-        <p class="si-intro">
+        <p class="si-intro si-intro--narrow">
           Integrations aren&rsquo;t &ldquo;set and forget.&rdquo; APIs change, tokens expire, schemas evolve. We keep your connectors healthy after deployment.
         </p>
       </div>
@@ -479,7 +480,7 @@ const related: Related[] = [
     <div class="container-page si-section__inner">
       <div class="si-heading-block">
         <h2 id="deliver-heading" class="si-heading">How We Deliver</h2>
-        <p class="si-intro">
+        <p class="si-intro si-intro--narrow">
           Every integration engagement follows a structured process &mdash; from discovery to production, with your team involved at every stage.
         </p>
       </div>
@@ -581,6 +582,9 @@ const related: Related[] = [
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
     text-wrap: pretty;
+  }
+  .si-intro--narrow {
+    max-width: 60ch;
   }
 
   /* ─── Card grids ─── */
