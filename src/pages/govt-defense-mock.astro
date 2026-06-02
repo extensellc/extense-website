@@ -1,0 +1,502 @@
+---
+/*
+  TEMP / govt-defense-mock — three hero-visual candidates for
+  /industries/government-and-defense.
+
+  Each option renders the live Hero component with the planned [DRAFT] H1 +
+  paired civilian/defense subdeck so the side visuals can be judged in their
+  final context. Pick one in-browser; build the real page with the chosen
+  visual and `git rm` this file. Unlinked from nav.
+
+  A — Architecture pipeline: DM types → CSDB → IETP.
+  B — Three-pillar convergence: <dmodule> / <applic> / <brex> → extense.s1000d → <ietp>.
+  C — One source, many outputs: <dmodule> → PDF / IETM / training / XML.
+*/
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/site/Hero.astro";
+
+const HERO_TITLE = "Government Agencies & Defense";
+const HERO_SUBDECK = "Mission-critical S1000D, MIL-STD, and ITAR-compliant technical documentation — engineered for interoperability between OEMs, suppliers, and the armed forces. Federal civilian agency content modernization — Section 508-conformant, records-management compliant, and engineered to agency publishing standards.";
+---
+
+<BaseLayout
+  title="G&D hero mockups — Extense LLC"
+  description="Internal mockup page. Three hero-visual candidates for /industries/government-and-defense."
+>
+  <section class="gdm-banner">
+    <div class="container-page">
+      <p class="gdm-banner__label">GOVT &amp; DEFENSE HERO MOCK · PICK ONE</p>
+      <nav class="gdm-banner__nav" aria-label="Mock options">
+        <a href="#opt-a">A · Architecture pipeline</a>
+        <a href="#opt-b">B · Three-pillar convergence</a>
+        <a href="#opt-c">C · One source, many outputs</a>
+      </nav>
+    </div>
+  </section>
+
+  {/* ────────────── OPTION A ────────────── */}
+  <section class="gdm-option" id="opt-a">
+    <div class="container-page">
+      <h2 class="gdm-option__heading">Option A — Architecture pipeline</h2>
+      <p class="gdm-option__note">
+        Four DM types feeding through the CSDB into the IETP build. Argues the
+        S1000D <em>system</em> — source-of-truth modules → managed library →
+        published interactive technical publication.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK}>
+      <svg
+        class="mock-svg mock-a"
+        id="mock-a"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: s1000d.architecture</text>
+
+        {/* Stage captions */}
+        <text class="stage-caption fx" x="90"  y="62" text-anchor="middle" style="--d: 160ms">DATA MODULES</text>
+        <text class="stage-caption fx" x="280" y="62" text-anchor="middle" style="--d: 200ms">CSDB</text>
+        <text class="stage-caption fx" x="470" y="62" text-anchor="middle" style="--d: 240ms">IETP</text>
+
+        {/* Left column: 4 DM type chips (soft-dashed) */}
+        <g class="fx" style="--d: 320ms">
+          <rect class="node node--soft" x="20" y="84" width="140" height="32" rx="3" />
+          <text class="dm-label" x="34" y="105">&lt;procedure&gt;</text>
+        </g>
+        <g class="fx" style="--d: 380ms">
+          <rect class="node node--soft" x="20" y="124" width="140" height="32" rx="3" />
+          <text class="dm-label" x="34" y="145">&lt;description&gt;</text>
+        </g>
+        <g class="fx" style="--d: 440ms">
+          <rect class="node node--soft" x="20" y="164" width="140" height="32" rx="3" />
+          <text class="dm-label" x="34" y="185">&lt;illustration&gt;</text>
+        </g>
+        <g class="fx" style="--d: 500ms">
+          <rect class="node node--soft" x="20" y="204" width="140" height="32" rx="3" />
+          <text class="dm-label" x="34" y="225">&lt;faultIsolation&gt;</text>
+        </g>
+
+        {/* Convergent connectors: 4 DM chips → CSDB chip */}
+        <path class="flow-conn" style="--d: 580ms" d="M 160 100 L 210 170" />
+        <path class="flow-conn" style="--d: 580ms" d="M 160 140 L 210 170" />
+        <path class="flow-conn" style="--d: 580ms" d="M 160 180 L 210 170" />
+        <path class="flow-conn" style="--d: 580ms" d="M 160 220 L 210 170" />
+
+        {/* CSDB chip (center, custom amber) */}
+        <g class="fx" style="--d: 700ms">
+          <rect class="node node--custom" x="210" y="138" width="140" height="64" rx="3" />
+          <rect class="artifact-strip" x="210" y="138" width="140" height="6" />
+          <text class="node-label node-label--custom" x="280" y="174" text-anchor="middle">&lt;csdb&gt;</text>
+          <text class="node-caption" x="280" y="192" text-anchor="middle">extense.s1000d</text>
+        </g>
+
+        {/* Connector CSDB → IETP */}
+        <path class="flow-conn" style="--d: 820ms" d="M 350 170 L 395 170 M 390 165 L 395 170 L 390 175" />
+
+        {/* IETP chip (right, custom amber) */}
+        <g class="fx" style="--d: 900ms">
+          <rect class="node node--custom" x="400" y="138" width="140" height="64" rx="3" />
+          <rect class="artifact-strip" x="400" y="138" width="140" height="6" />
+          <text class="node-label node-label--custom" x="470" y="174" text-anchor="middle">&lt;ietp&gt;</text>
+          <text class="node-caption" x="470" y="192" text-anchor="middle">interactive tech pub</text>
+        </g>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 1040ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. A</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">s1000d.architecture</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">DM &rarr; CSDB &rarr; IETP</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
+
+  {/* ────────────── OPTION B ────────────── */}
+  <section class="gdm-option" id="opt-b">
+    <div class="container-page">
+      <h2 class="gdm-option__heading">Option B — Three-pillar convergence</h2>
+      <p class="gdm-option__note">
+        Three S1000D engineering layers (modules, applicability, business
+        rules) converging into one practice, with the IETP as the governed
+        output. Same idiom as the XML-engineering hero, specialized for S1000D.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK}>
+      <svg
+        class="mock-svg mock-b"
+        id="mock-b"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: s1000d.engineering</text>
+
+        {/* Three pillar chips at top */}
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="40" y="56" width="140" height="34" rx="3" />
+          <text class="node-label node-label--custom" x="110" y="78" text-anchor="middle">&lt;dmodule&gt;</text>
+        </g>
+        <g class="fx" style="--d: 280ms">
+          <rect class="node node--custom" x="210" y="56" width="140" height="34" rx="3" />
+          <text class="node-label node-label--custom" x="280" y="78" text-anchor="middle">&lt;applic&gt;</text>
+        </g>
+        <g class="fx" style="--d: 360ms">
+          <rect class="node node--custom" x="380" y="56" width="140" height="34" rx="3" />
+          <text class="node-label node-label--custom" x="450" y="78" text-anchor="middle">&lt;brex&gt;</text>
+        </g>
+
+        {/* Convergent connectors → center S1000D chip */}
+        <path class="flow-conn" style="--d: 460ms" d="M 110 90 L 280 178" />
+        <path class="flow-conn" style="--d: 500ms" d="M 280 90 L 280 178" />
+        <path class="flow-conn" style="--d: 540ms" d="M 450 90 L 280 178" />
+
+        {/* Raw <ietp> (left, soft-dashed) */}
+        <g class="fx" style="--d: 660ms">
+          <rect class="node node--soft" x="24" y="178" width="130" height="44" rx="3" />
+          <text class="node-label label--muted" x="89" y="205" text-anchor="middle">&lt;ietp&gt;</text>
+          <text class="node-caption" x="89" y="240" text-anchor="middle">raw / ungoverned</text>
+        </g>
+
+        {/* Center S1000D chip */}
+        <g class="fx" style="--d: 740ms">
+          <rect class="node node--custom" x="190" y="178" width="180" height="44" rx="3" />
+          <rect class="artifact-strip" x="190" y="178" width="180" height="6" />
+          <text class="node-label node-label--custom" x="280" y="208" text-anchor="middle">extense.s1000d</text>
+        </g>
+
+        {/* Connector raw → center */}
+        <path class="flow-conn" style="--d: 820ms" d="M 154 200 L 190 200 M 185 195 L 190 200 L 185 205" />
+
+        {/* Governed <ietp> (right, custom amber) */}
+        <g class="fx" style="--d: 920ms">
+          <rect class="node node--custom" x="406" y="178" width="130" height="44" rx="3" />
+          <text class="node-label node-label--custom" x="471" y="205" text-anchor="middle">&lt;ietp&gt;</text>
+          <text class="node-caption" x="471" y="240" text-anchor="middle">governed</text>
+        </g>
+
+        {/* Connector center → governed */}
+        <path class="flow-conn" style="--d: 1000ms" d="M 370 200 L 406 200 M 401 195 L 406 200 L 401 205" />
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 1140ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. B</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">s1000d.engineering</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">3 LAYERS &rarr; 1 PRACTICE</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
+
+  {/* ────────────── OPTION C ────────────── */}
+  <section class="gdm-option" id="opt-c">
+    <div class="container-page">
+      <h2 class="gdm-option__heading">Option C — One source, many outputs</h2>
+      <p class="gdm-option__note">
+        Central <code>&lt;dmodule&gt;</code> with radial fan to four defense
+        output formats (PDF tech manual, IETM, training, XML data exchange).
+        Emphasizes single-source reuse — the publishing-engineering idiom,
+        specialized for defense outputs.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK}>
+      <svg
+        class="mock-svg mock-c"
+        id="mock-c"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: s1000d.reuse</text>
+
+        {/* Center <dmodule> chip */}
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="210" y="125" width="140" height="90" rx="3" />
+          <rect class="artifact-strip" x="210" y="125" width="140" height="6" />
+          <text class="node-label node-label--custom" x="280" y="158" text-anchor="middle">&lt;dmodule&gt;</text>
+          <line class="artifact-rule" x1="226" y1="170" x2="334" y2="170" />
+          <text class="node-caption" x="280" y="186" text-anchor="middle">single source</text>
+          <text class="node-caption" x="280" y="202" text-anchor="middle">extense.s1000d</text>
+        </g>
+
+        {/* Radial connectors: from <dmodule> to 4 outputs */}
+        <path class="flow-conn" style="--d: 380ms" d="M 210 145 L 110 80" />
+        <path class="flow-conn" style="--d: 440ms" d="M 210 195 L 110 270" />
+        <path class="flow-conn" style="--d: 380ms" d="M 350 145 L 450 80" />
+        <path class="flow-conn" style="--d: 440ms" d="M 350 195 L 450 270" />
+
+        {/* Four output labels (custom amber chips) */}
+        <g class="fx" style="--d: 580ms">
+          <rect class="node node--custom" x="20" y="62" width="100" height="34" rx="3" />
+          <text class="node-label node-label--custom" x="70" y="84" text-anchor="middle">PDF · TM</text>
+        </g>
+        <g class="fx" style="--d: 640ms">
+          <rect class="node node--custom" x="440" y="62" width="100" height="34" rx="3" />
+          <text class="node-label node-label--custom" x="490" y="84" text-anchor="middle">IETM</text>
+        </g>
+        <g class="fx" style="--d: 700ms">
+          <rect class="node node--custom" x="20" y="252" width="100" height="34" rx="3" />
+          <text class="node-label node-label--custom" x="70" y="274" text-anchor="middle">TRAINING</text>
+        </g>
+        <g class="fx" style="--d: 760ms">
+          <rect class="node node--custom" x="440" y="252" width="100" height="34" rx="3" />
+          <text class="node-label node-label--custom" x="490" y="274" text-anchor="middle">XML EXCH.</text>
+        </g>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 920ms">
+          <line class="chrome-rule" x1="30" y1="318" x2="530" y2="318" opacity="0" />
+        </g>
+        <g class="fx" style="--d: 920ms">
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. C</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">s1000d.reuse</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">ONE SOURCE &rarr; MANY OUTPUTS</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ─── Banner ─── */
+  .gdm-banner {
+    background: #fef3c7;
+    border-bottom: var(--border-hairline);
+    padding: var(--space-3) 0;
+  }
+  .gdm-banner__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-2) 0;
+  }
+  .gdm-banner__nav {
+    display: flex;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+  .gdm-banner__nav a {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-accent-primary);
+    padding-bottom: 1px;
+  }
+  .gdm-banner__nav a:hover {
+    color: var(--color-link-hover);
+  }
+
+  /* ─── Option section ─── */
+  .gdm-option {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-8);
+  }
+  .gdm-option__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    letter-spacing: var(--tracking-tight);
+  }
+  .gdm-option__note {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    max-width: 70ch;
+    text-wrap: pretty;
+  }
+  .gdm-option__note code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: #fef3c7;
+    padding: 0 4px;
+    border-radius: 2px;
+  }
+
+  /* ─── Shared SVG idiom ─── */
+  .mock-svg {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .mock-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .mock-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .mock-svg .label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .mock-svg .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .mock-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .mock-svg .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .mock-svg .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .mock-svg .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .mock-svg .node--soft {
+    fill: var(--color-page-bg);
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .mock-svg .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .mock-svg .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .mock-svg .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .mock-svg .stage-caption {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.12em;
+  }
+  .mock-svg .dm-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .mock-svg .artifact-strip {
+    fill: var(--color-accent-primary);
+    stroke: none;
+  }
+  .mock-svg .artifact-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .mock-svg .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+
+  /* ─── Animation (shared) ─── */
+  .mock-svg .fx {
+    opacity: 0;
+  }
+  .mock-svg.drawn .fx {
+    animation: gdm-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .mock-svg.drawn .flow-conn {
+    animation: gdm-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes gdm-fade {
+    to { opacity: 1; }
+  }
+  @keyframes gdm-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mock-svg .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .mock-svg .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupMocks() {
+    const svgs = document.querySelectorAll(".mock-svg");
+    if (svgs.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    svgs.forEach((svg) => observer.observe(svg));
+  }
+  document.addEventListener("DOMContentLoaded", setupMocks);
+</script>
