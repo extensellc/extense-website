@@ -31,6 +31,8 @@ const HERO_SUBDECK = "Mission-critical S1000D, MIL-STD, and ITAR-compliant techn
         <a href="#opt-a">A · Architecture pipeline</a>
         <a href="#opt-b">B · Three-pillar convergence</a>
         <a href="#opt-c">C · One source, many outputs</a>
+        <a href="#opt-d">D · Two-register convergence</a>
+        <a href="#opt-e">E · Two parallel pipelines</a>
       </nav>
     </div>
   </section>
@@ -284,6 +286,177 @@ const HERO_SUBDECK = "Mission-critical S1000D, MIL-STD, and ITAR-compliant techn
           <text class="chrome"               x="92"  y="302">/</text>
           <text class="chrome chrome--strong" x="100" y="302">s1000d.reuse</text>
           <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">ONE SOURCE &rarr; MANY OUTPUTS</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
+
+  {/* ────────────── OPTION D ────────────── */}
+  <section class="gdm-option" id="opt-d">
+    <div class="container-page">
+      <h2 class="gdm-option__heading">Option D — Two-register convergence</h2>
+      <p class="gdm-option__note">
+        Three defense pillars (<code>&lt;dmodule&gt;</code> / <code>&lt;applic&gt;</code> /
+        <code>&lt;brex&gt;</code>) and three civilian standards (SECTION 508 /
+        TITLE 44 / AGENCY STD) converging into one engineering practice.
+        Literal rendering of the page thesis — both registers on screen,
+        equal weight.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK}>
+      <svg
+        class="mock-svg mock-d"
+        id="mock-d"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: gov.compliance</text>
+
+        {/* Register captions */}
+        <text class="stage-caption fx" x="90"  y="58" text-anchor="middle" style="--d: 160ms">DEFENSE</text>
+        <text class="stage-caption fx" x="470" y="58" text-anchor="middle" style="--d: 200ms">CIVILIAN</text>
+
+        {/* Defense pillars (left, custom amber) */}
+        <g class="fx" style="--d: 280ms">
+          <rect class="node node--custom" x="20" y="72" width="140" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="90" y="93" text-anchor="middle">&lt;dmodule&gt;</text>
+        </g>
+        <g class="fx" style="--d: 340ms">
+          <rect class="node node--custom" x="20" y="112" width="140" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="90" y="133" text-anchor="middle">&lt;applic&gt;</text>
+        </g>
+        <g class="fx" style="--d: 400ms">
+          <rect class="node node--custom" x="20" y="152" width="140" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="90" y="173" text-anchor="middle">&lt;brex&gt;</text>
+        </g>
+
+        {/* Civilian pillars (right, custom amber) */}
+        <g class="fx" style="--d: 320ms">
+          <rect class="node node--custom" x="400" y="72" width="140" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="470" y="93" text-anchor="middle">SECTION 508</text>
+        </g>
+        <g class="fx" style="--d: 380ms">
+          <rect class="node node--custom" x="400" y="112" width="140" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="470" y="133" text-anchor="middle">TITLE 44</text>
+        </g>
+        <g class="fx" style="--d: 440ms">
+          <rect class="node node--custom" x="400" y="152" width="140" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="470" y="173" text-anchor="middle">AGENCY STD</text>
+        </g>
+
+        {/* 6 convergent connectors -> central chip top edge */}
+        <path class="flow-conn" style="--d: 540ms" d="M 160 88  L 220 212" />
+        <path class="flow-conn" style="--d: 580ms" d="M 160 128 L 240 212" />
+        <path class="flow-conn" style="--d: 620ms" d="M 160 168 L 260 212" />
+        <path class="flow-conn" style="--d: 540ms" d="M 400 88  L 340 212" />
+        <path class="flow-conn" style="--d: 580ms" d="M 400 128 L 320 212" />
+        <path class="flow-conn" style="--d: 620ms" d="M 400 168 L 300 212" />
+
+        {/* Central chip */}
+        <g class="fx" style="--d: 720ms">
+          <rect class="node node--custom" x="190" y="210" width="180" height="46" rx="3" />
+          <rect class="artifact-strip" x="190" y="210" width="180" height="6" />
+          <text class="node-label node-label--custom" x="280" y="240" text-anchor="middle">extense.gov-docs</text>
+        </g>
+
+        {/* ONE PRACTICE caption below chip */}
+        <text class="node-caption fx" x="280" y="274" text-anchor="middle" style="--d: 840ms">ONE PRACTICE</text>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 980ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. D</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">gov.compliance</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">2 REGISTERS &rarr; 1 PRACTICE</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
+
+  {/* ────────────── OPTION E ────────────── */}
+  <section class="gdm-option" id="opt-e">
+    <div class="container-page">
+      <h2 class="gdm-option__heading">Option E — Two parallel pipelines</h2>
+      <p class="gdm-option__note">
+        Two parallel horizontal pipelines under one practice. Defense rail:
+        <code>&lt;dmodule&gt;</code> → <code>&lt;csdb&gt;</code> →
+        <code>&lt;ietp&gt;</code>. Civilian rail: SECTION 508 → AGENCY PUB →
+        FED. REGISTER. Argues the flow rather than the discipline.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK}>
+      <svg
+        class="mock-svg mock-e"
+        id="mock-e"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: gov.pipelines</text>
+
+        {/* Row labels */}
+        <text class="stage-caption fx" x="70" y="135" text-anchor="middle" style="--d: 160ms">DEFENSE</text>
+        <text class="stage-caption fx" x="70" y="215" text-anchor="middle" style="--d: 200ms">CIVILIAN</text>
+
+        {/* Defense rail */}
+        <g class="fx" style="--d: 240ms">
+          <rect class="node node--custom" x="130" y="110" width="110" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="185" y="135" text-anchor="middle">&lt;dmodule&gt;</text>
+        </g>
+        <path class="flow-conn" style="--d: 320ms" d="M 240 130 L 270 130 M 265 125 L 270 130 L 265 135" />
+        <g class="fx" style="--d: 360ms">
+          <rect class="node node--custom" x="270" y="110" width="110" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="325" y="135" text-anchor="middle">&lt;csdb&gt;</text>
+        </g>
+        <path class="flow-conn" style="--d: 440ms" d="M 380 130 L 410 130 M 405 125 L 410 130 L 405 135" />
+        <g class="fx" style="--d: 480ms">
+          <rect class="node node--custom" x="410" y="110" width="110" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="465" y="135" text-anchor="middle">&lt;ietp&gt;</text>
+        </g>
+
+        {/* Civilian rail */}
+        <g class="fx" style="--d: 280ms">
+          <rect class="node node--custom" x="130" y="190" width="110" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="185" y="215" text-anchor="middle">SECTION 508</text>
+        </g>
+        <path class="flow-conn" style="--d: 360ms" d="M 240 210 L 270 210 M 265 205 L 270 210 L 265 215" />
+        <g class="fx" style="--d: 400ms">
+          <rect class="node node--custom" x="270" y="190" width="110" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="325" y="215" text-anchor="middle">AGENCY PUB</text>
+        </g>
+        <path class="flow-conn" style="--d: 480ms" d="M 380 210 L 410 210 M 405 205 L 410 210 L 405 215" />
+        <g class="fx" style="--d: 520ms">
+          <rect class="node node--custom" x="410" y="190" width="110" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="465" y="215" text-anchor="middle">FED. REGISTER</text>
+        </g>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 700ms">
+          <line class="chrome-rule" x1="30" y1="266" x2="530" y2="266" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. E</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">gov.pipelines</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">TWO REGISTERS, ONE PRACTICE</text>
         </g>
       </svg>
     </Hero>
