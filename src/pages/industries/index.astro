@@ -142,7 +142,7 @@ const industryCards: IndustryCard[] = [
   <Hero
     variant="universal"
     title="Six regulated verticals."
-    subdeck="Documentation in regulated industries isn't writing — it's compliance engineering. Each vertical names different standards. Domain depth, not generic technical writing skill, is what bridges them."
+    subdeck="Documentation in regulated industries isn't writing — it's compliance engineering. Domain depth, not generic skill, bridges the named standards."
   >
     <ComplianceReferenceCard
       cards={[
@@ -244,6 +244,12 @@ const industryCards: IndustryCard[] = [
           </li>
         ))}
       </ul>
+      <aside class="ind-adjacent-callout" aria-label="Industries we serve outside our deepest six">
+        <p class="ind-adjacent-callout__label">Industries we serve outside our deepest six</p>
+        <p class="ind-adjacent-callout__body">
+          Six named verticals are where Extense holds deepest standards depth. Adjacent industries &mdash; Telecom (3GPP standards), Energy (NERC CIP, API specs), Manufacturing (ISO 9001, machinery directive) &mdash; share enough technical-documentation surface that we serve them under bounded-scope engagements. Talk to us if your vertical isn&rsquo;t named here.
+        </p>
+      </aside>
     </div>
   </section>
 
@@ -308,15 +314,6 @@ const industryCards: IndustryCard[] = [
           ]}
         />
       </div>
-    </div>
-  </section>
-
-  <section class="ind-section ind-section--adjacent" aria-labelledby="adjacent-heading">
-    <div class="container-prose ind-section__inner">
-      <h2 id="adjacent-heading" class="ind-section__heading">Industries we serve outside our deepest six.</h2>
-      <p class="ind-section__prose-single">
-        Six named verticals are where Extense holds deepest standards depth. Adjacent industries &mdash; Telecom (3GPP standards), Energy (NERC CIP, API specs), Manufacturing (ISO 9001, machinery directive) &mdash; share enough technical-documentation surface that we serve them under bounded-scope engagements. Talk to us if your vertical isn't named here.
-      </p>
     </div>
   </section>
 
@@ -482,6 +479,39 @@ const industryCards: IndustryCard[] = [
   .ind-industry-card__link:hover .ind-industry-card__arrow,
   .ind-industry-card__link:focus-visible .ind-industry-card__arrow {
     transform: translateX(2px);
+  }
+
+  /* ─── Adjacent industries callout (moved into narrative section) ─── */
+  .ind-adjacent-callout {
+    margin-top: var(--space-12);
+    padding: var(--space-6) var(--space-8);
+    background-color: #fef3c7;
+    border-left: 3px solid var(--color-accent-primary);
+    border-radius: var(--radius-sm);
+  }
+  .ind-adjacent-callout__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .ind-adjacent-callout__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Pull the hero H1 up by ~48px (page-local override; desktop only) ─── */
+  @media (min-width: 768px) {
+    :global(.hero.hero--has-side) {
+      padding-top: var(--space-20);
+    }
   }
 
   .ind-section__prose-single {

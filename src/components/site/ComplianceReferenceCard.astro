@@ -2,15 +2,20 @@
 /*
   ComplianceReferenceCard — animated visual for the /industries hero.
 
-  A small bordered document-fragment card (same brand language as the
-  SOW/Order Form/SLA panels) that cycles through the six regulated
-  verticals every 3 seconds with a smooth crossfade. Each card view shows
-  one vertical's compliance reference: Vertical · Standard · Artifact ·
-  Auditor · Cadence.
+  Two bordered document-fragment cards side by side (same brand language
+  as the SOW/Order Form/SLA panels) that cycle through the six regulated
+  verticals every 3 seconds with a smooth crossfade. The two panels are
+  offset by half the cycle length so they always display different
+  verticals — at any moment two distinct cards are visible, all six rotate
+  through over time.
 
-  Counter (01/06 → 06/06) updates with each cycle. Pause-on-hover lets
-  visitors freeze on a vertical they care about. Prefers-reduced-motion:
-  no auto-cycle, first vertical shown statically.
+  Each card view shows one vertical's compliance reference:
+  Vertical · Standard · Artifact · Auditor · Cadence.
+
+  Counter (01/06 → 06/06) on each panel updates with each cycle.
+  Pause-on-hover lets visitors freeze on a vertical they care about.
+  Prefers-reduced-motion: no auto-cycle, both panels show their starting
+  views statically.
 
   Hidden on viewports below 1024px (desktop-only enhancement).
 */
@@ -32,57 +37,63 @@ interface Props {
 }
 
 const { cards, intervalMs = 3000 } = Astro.props;
+const offset = Math.floor(cards.length / 2);
+const panelStarts = [0, offset];
 ---
 
-<aside class="cref" id="cref" data-interval={intervalMs} aria-label="Compliance reference, cycling through six regulated verticals">
-  <div class="cref__panel">
-    <header class="cref__header">
-      <p class="cref__doc-ref">Compliance Reference</p>
-      <p class="cref__counter" id="cref-counter" aria-live="polite">
-        <span class="cref__counter-current">01</span>
-        <span class="cref__counter-sep">/</span>
-        <span class="cref__counter-total">{String(cards.length).padStart(2, '0')}</span>
-      </p>
-    </header>
-    <hr class="cref__rule" />
-    <div class="cref__stack">
-      {cards.map((card, i) => (
-        <article
-          class:list={["cref__view", i === 0 && "is-active"]}
-          data-view-index={i}
-          aria-hidden={i !== 0 ? "true" : undefined}
-        >
-          <ul class="cref__fields">
-            <li class="cref__field">
-              <span class="cref__label">Vertical</span>
-              <span class="cref__value cref__value--vertical">{card.vertical}</span>
-            </li>
-            <li class="cref__field">
-              <span class="cref__label">Standard</span>
-              <span class="cref__value">{card.standard}</span>
-            </li>
-            <li class="cref__field">
-              <span class="cref__label">Artifact</span>
-              <span class="cref__value">{card.artifact}</span>
-            </li>
-            <li class="cref__field">
-              <span class="cref__label">Auditor</span>
-              <span class="cref__value">{card.auditor}</span>
-            </li>
-            <li class="cref__field">
-              <span class="cref__label">Cadence</span>
-              <span class="cref__value">{card.cadence}</span>
-            </li>
-          </ul>
-          <p class="cref__note">{card.note}</p>
-        </article>
-      ))}
-    </div>
-    <hr class="cref__rule" />
-    <footer class="cref__footer">
-      <span>Form: REF v1.0</span>
-      <span class="cref__hover-hint">Hover to pause</span>
-    </footer>
+<aside class="cref" id="cref" data-interval={intervalMs} aria-label="Compliance reference, two views cycling through six regulated verticals">
+  <div class="cref__row">
+    {panelStarts.map((startIdx, panelIdx) => (
+      <div class="cref__panel" data-panel-start={startIdx}>
+        <header class="cref__header">
+          <p class="cref__doc-ref">Compliance Reference</p>
+          <p class="cref__counter" aria-live="polite">
+            <span class="cref__counter-current">{String(startIdx + 1).padStart(2, '0')}</span>
+            <span class="cref__counter-sep">/</span>
+            <span class="cref__counter-total">{String(cards.length).padStart(2, '0')}</span>
+          </p>
+        </header>
+        <hr class="cref__rule" />
+        <div class="cref__stack">
+          {cards.map((card, i) => (
+            <article
+              class:list={["cref__view", i === startIdx && "is-active"]}
+              data-view-index={i}
+              aria-hidden={i !== startIdx ? "true" : "false"}
+            >
+              <ul class="cref__fields">
+                <li class="cref__field">
+                  <span class="cref__label">Vertical</span>
+                  <span class="cref__value cref__value--vertical">{card.vertical}</span>
+                </li>
+                <li class="cref__field">
+                  <span class="cref__label">Standard</span>
+                  <span class="cref__value">{card.standard}</span>
+                </li>
+                <li class="cref__field">
+                  <span class="cref__label">Artifact</span>
+                  <span class="cref__value">{card.artifact}</span>
+                </li>
+                <li class="cref__field">
+                  <span class="cref__label">Auditor</span>
+                  <span class="cref__value">{card.auditor}</span>
+                </li>
+                <li class="cref__field">
+                  <span class="cref__label">Cadence</span>
+                  <span class="cref__value">{card.cadence}</span>
+                </li>
+              </ul>
+              <p class="cref__note">{card.note}</p>
+            </article>
+          ))}
+        </div>
+        <hr class="cref__rule" />
+        <footer class="cref__footer">
+          <span>Form: REF v1.0</span>
+          {panelIdx === 1 && <span class="cref__hover-hint">Hover to pause</span>}
+        </footer>
+      </div>
+    ))}
   </div>
 </aside>
 
@@ -95,16 +106,22 @@ const { cards, intervalMs = 3000 } = Astro.props;
   @media (min-width: 1024px) {
     .cref {
       display: block;
-      width: 320px;
       flex-shrink: 0;
     }
   }
 
+  .cref__row {
+    display: flex;
+    gap: var(--space-4);
+  }
+
   .cref__panel {
     position: relative;
+    width: 280px;
+    flex: 0 0 280px;
     border: var(--border-hairline);
     background-color: var(--color-page-bg);
-    padding: var(--space-4) var(--space-6) var(--space-3);
+    padding: var(--space-4) var(--space-5) var(--space-3);
   }
 
   .cref__panel::before {
@@ -165,7 +182,6 @@ const { cards, intervalMs = 3000 } = Astro.props;
   /* ─── Stack (all views overlap; only is-active is visible) ─── */
   .cref__stack {
     position: relative;
-    /* min-height set on the wrapper itself so the stack reserves space */
     min-height: 220px;
   }
 
@@ -195,8 +211,8 @@ const { cards, intervalMs = 3000 } = Astro.props;
 
   .cref__field {
     display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: var(--space-3);
+    grid-template-columns: 72px 1fr;
+    gap: var(--space-2);
     align-items: baseline;
   }
 
@@ -267,32 +283,44 @@ const { cards, intervalMs = 3000 } = Astro.props;
   if (!cref) return;
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) return; // keep first view static
+  if (reduced) return; // keep starting views static
 
   const intervalMs = parseInt(cref.getAttribute('data-interval') || '3000', 10);
-  const views = cref.querySelectorAll('.cref__view');
-  if (views.length <= 1) return;
+  const panels = cref.querySelectorAll('.cref__panel');
+  if (panels.length === 0) return;
 
-  const counterCurrent = cref.querySelector('.cref__counter-current') as HTMLElement | null;
-  let current = 0;
+  // Per-panel state: current view index
+  const state = Array.from(panels).map((panel) => {
+    const start = parseInt(panel.getAttribute('data-panel-start') || '0', 10);
+    return { current: start };
+  });
+
   let timer: number | null = null;
   let paused = false;
 
-  function show(idx: number) {
+  function show(panelIdx: number, viewIdx: number) {
+    const panel = panels[panelIdx];
+    const views = panel.querySelectorAll('.cref__view');
+    if (views.length === 0) return;
+    const total = views.length;
+    const idx = ((viewIdx % total) + total) % total;
     views.forEach((v, i) => {
       const active = i === idx;
       v.classList.toggle('is-active', active);
       v.setAttribute('aria-hidden', active ? 'false' : 'true');
     });
-    if (counterCurrent) {
-      counterCurrent.textContent = String(idx + 1).padStart(2, '0');
+    const counter = panel.querySelector('.cref__counter-current') as HTMLElement | null;
+    if (counter) {
+      counter.textContent = String(idx + 1).padStart(2, '0');
     }
   }
 
   function tick() {
     if (paused) return;
-    current = (current + 1) % views.length;
-    show(current);
+    state.forEach((s, idx) => {
+      s.current = s.current + 1;
+      show(idx, s.current);
+    });
   }
 
   function start() {
@@ -312,7 +340,6 @@ const { cards, intervalMs = 3000 } = Astro.props;
   cref.addEventListener('focusin', () => { paused = true; });
   cref.addEventListener('focusout', () => { paused = false; });
 
-  // Pause when tab not visible (saves CPU)
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stop();
     else start();
