@@ -503,11 +503,17 @@ const related: RelatedCard[] = [
   /* ─── "Regulatory Agility in Practice" callout ─── */
   .ls-callout {
     margin-top: var(--space-12);
-    padding: var(--space-6) var(--space-8);
+    padding: var(--space-8) var(--space-12);
     background-color: #fef3c7;
     border-left: 3px solid var(--color-accent-primary);
     border-radius: var(--radius-sm);
-    max-width: 80ch;
+    /* spans the full container width (matches the 3-card row above);
+       inner text lines capped via __body max-width below. */
+  }
+  @media (max-width: 767px) {
+    .ls-callout {
+      padding: var(--space-6) var(--space-8);
+    }
   }
   .ls-callout__eyebrow {
     font-family: var(--font-mono);
@@ -523,15 +529,16 @@ const related: RelatedCard[] = [
     font-size: var(--text-display-sm);
     font-weight: var(--weight-medium);
     color: var(--color-text-primary);
-    margin: 0 0 var(--space-3) 0;
+    margin: 0 0 var(--space-4) 0;
     line-height: var(--leading-snug);
   }
   .ls-callout__body {
     font-family: var(--font-body);
-    font-size: var(--text-body);
+    font-size: var(--text-body-lg);
     color: var(--color-text-primary);
     line-height: var(--leading-normal);
     margin: 0;
+    max-width: 80ch;
     text-wrap: pretty;
   }
 
