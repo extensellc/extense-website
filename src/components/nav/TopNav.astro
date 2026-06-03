@@ -71,10 +71,10 @@ const navItems: NavItem[] = [
     href: "/resources",
     matchPaths: [/^\/resources/],
     children: [
-      { label: "Case Studies",       href: "/resources/case-studies" },
       { label: "AI Readiness",       href: "/resources/ai-readiness" },
       { label: "Migration Playbook", href: "/resources/migration-playbook" },
       { label: "Automation Guide",   href: "/resources/automation-guide" },
+      { label: "FAQ",                href: "/resources/faq" },
     ],
   },
   {
@@ -82,8 +82,10 @@ const navItems: NavItem[] = [
     href: "/company",
     matchPaths: [/^\/company/],
     children: [
-      { label: "FAQs",     href: "/company/faqs" },
-      { label: "Careers",  href: "/company/careers" },
+      { label: "About Us",                 href: "/company/about-us" },
+      { label: "Our Process",              href: "/company/our-process" },
+      { label: "Our Work & Case Studies",  href: "/company/our-work-and-case-studies" },
+      { label: "Careers",                  href: "/company/careers" },
     ],
   },
   { label: "Contact", href: "/contact", emphasis: true },
