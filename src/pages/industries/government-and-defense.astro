@@ -280,7 +280,7 @@ const related: RelatedCard[] = [
   {/* ───────── S4 — Agency Publishing & Section 508 (civilian) — banded ───────── */}
   <section class="gd-section gd-section--band" aria-labelledby="gd-civilian-heading">
     <div class="container-page gd-section__inner">
-      <div class="gd-heading-block">
+      <div class="gd-heading-block gd-heading-block--wide">
         <p class="gd-eyebrow">CIVILIAN REGISTER</p>
         <h2 id="gd-civilian-heading" class="gd-heading">Agency Publishing &amp; Section 508</h2>
         <p class="gd-intro">
@@ -587,6 +587,9 @@ const related: RelatedCard[] = [
   .gd-heading-block {
     margin-bottom: var(--space-12);
     max-width: 80ch;
+  }
+  .gd-heading-block--wide {
+    max-width: 90ch;
   }
   .gd-eyebrow {
     font-family: var(--font-mono);
