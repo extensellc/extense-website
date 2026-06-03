@@ -1,246 +1,718 @@
 ---
-import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+/*
+  /industries/technology
+
+  Bespoke build — Technology & Semiconductors. NO OLD page existed on the
+  legacy site; this page is wholly [DRAFT-approved] (see
+  docs/reframe-2026/technology.md for sign-off trail).
+
+  Section order:
+    1. Hero (universal) — H1 [DRAFT] "Technology & Semiconductors" +
+       [DRAFT] compressed subdeck + Option-D side visual (three artifacts
+       under one engineering practice)
+    2. SectionSiblings (industries)
+    3. Three Product Surfaces [DRAFT] - 3-card grid
+    4. Continuous Publishing Cadence [DRAFT] - 01-05 strip with body
+       paragraphs (banded)
+    5. Explore Related [DRAFT] - 3-card cross-link (banded)
+    6. CTA - "Free Technical Content Assessment" [DRAFT]
+
+  Page-local CSS prefix: tech-. Hero SVG inline, scroll-revealed via
+  IntersectionObserver (.drawn), with reduced-motion fallback.
+
+  Replaces the prior IndustryPageLayout-based version (which had a rich
+  productSurfacePanels render — content compressed into the S3 card grid
+  + the hero side visual). With this port, all 6 industry sub-pages are
+  bespoke; IndustryPageLayout becomes a candidate for deletion in a
+  follow-up cleanup commit.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon: string;
+}
+
+const surfaceCards: Card[] = [
+  {
+    title: "Hardware & Silicon Documentation",
+    icon: "chip",
+    body: "Datasheets, application notes, and reference designs for semiconductor vendors — JEDEC-conformant, EDA-toolchain-integrated, version-aligned with silicon respins. PCB design files, IPC-conformant assembly docs, and FCC certification packages for consumer electronics, networking equipment, and IoT devices.",
+  },
+  {
+    title: "Software & API Documentation",
+    icon: "code",
+    body: "Developer-facing reference docs, integration guides, and code samples. Auto-generated from OpenAPI specs where possible; hand-authored where developer experience requires editorial care. Versioned release notes and changelogs tied to semantic-version tags; aggregated views for buyers tracking platform adoption.",
+  },
+  {
+    title: "Security & Compliance Documentation",
+    icon: "shield",
+    body: "SOC 2 reports, ISO 27001 statement of applicability and control narratives, penetration test reports, NIST 800-series mappings. The documentation buyer security teams review before signing — and the audit-trail evidence the next year's auditor walks through. ITAR/EAR handling where defense-tech and dual-use export controls apply.",
+  },
+];
+
+interface WorkflowStep {
+  num: string;
+  title: string;
+  desc: string;
+  body: string;
+}
+
+const cadence: WorkflowStep[] = [
+  {
+    num: "01", title: "Source-of-Truth Authoring",
+    desc: "Author against the single content source",
+    body: "Hardware specs, API references, and control narratives written into a structured CCMS with metadata that survives the publishing pipeline. EDA toolchain integration syncs silicon revisions; source-control hooks keep API specs aligned with code.",
+  },
+  {
+    num: "02", title: "Validation Pass",
+    desc: "Validate against schemas and business rules",
+    body: "Schema validation catches structural drift; business-rule validation catches semantic violations (datasheet-vs-silicon drift, API-vs-implementation drift, control-narrative-vs-evidence drift). Failures return to the author before publishing runs.",
+  },
+  {
+    num: "03", title: "Auto-Generation",
+    desc: "Generate machine-readable docs from source",
+    body: "Where source is structured (OpenAPI specs, EDA output, IdP provisioning logs), the publishing pipeline auto-generates the relevant documentation surfaces. Hand-authored content layers on top where editorial care is required.",
+  },
+  {
+    num: "04", title: "Pre-Release Build",
+    desc: "Build outputs for every target surface",
+    body: "PDF datasheets for distribution. Web-ready API reference for developer portal. SOC 2 control narrative for the auditor. Output formats generated in parallel from one source, each in its target typographic register.",
+  },
+  {
+    num: "05", title: "Release-Tied Publication",
+    desc: "Publish on the release cadence",
+    body: "Hardware: tied to silicon respin or product launch. Software: tied to semantic-version release. Security: tied to annual audit cycle plus continuous evidence collection. The publishing cadence matches the release cadence — no doc lag.",
+  },
+];
+
+interface RelatedCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+  href: string;
+}
+
+const related: RelatedCard[] = [
+  {
+    eyebrow: "Industry",
+    title: "Government & Defense",
+    body: "S1000D data modules, IETM delivery, and MIL-STD compliance for defense-tech vendors — where ITAR-controlled silicon and dual-use export documentation overlap with technology product programs.",
+    href: "/industries/government-and-defense",
+  },
+  {
+    eyebrow: "Solution",
+    title: "AI-Ready Content",
+    body: "Retrieval over technical documentation estates — datasheets, API references, security policies — engineered so developer-facing AI assistants cite the right page, the right version, the right product line.",
+    href: "/solutions/ai-ready-content",
+  },
+  {
+    eyebrow: "Service",
+    title: "DITA Engineering",
+    body: "The engineering discipline that makes hardware, software, and security documentation live in one content system — specialization, profiling, and publishing automation across distinct typographic registers.",
+    href: "/services/dita-engineering",
+  },
+];
 ---
 
-<IndustryPageLayout
-  pageTitle="Technology — Industries"
-  pageDescription="Documentation engineering for technology companies across hardware, software, and security/compliance — datasheets and application notes for system integrators, API and SDK docs for developers, SOC 2 and ISO 27001 attestations for buyer security teams. The documentation is the product's interface for that audience."
-  heroTitle="Technology"
-  heroSubdeck="Documentation across hardware, software, and security/compliance — datasheets and application notes for system integrators, API and SDK docs for developers, SOC 2 and ISO 27001 attestations for buyer security teams. The documentation isn't the product's wrapper; it's the interface each audience uses to interact with the product."
-  industryHref="/industries/technology"
-  documentTypes={[
-    {
-      label: "Datasheets",
-      description: "Semiconductor and component specifications: electrical characteristics, timing diagrams, package and pinout information, environmental ratings. The chip's interface for the system integrator's reference design.",
-    },
-    {
-      label: "Application notes",
-      description: "Design guidance, reference circuits, performance characterization, and system-integration patterns. What turns a chip's spec sheet into a working board.",
-    },
-    {
-      label: "Reference designs and design files",
-      description: "Schematics, BOMs, layout files, and demo board documentation. Configuration-managed alongside the silicon they support so customer engineering teams can copy patterns rather than reverse-engineer them.",
-    },
-    {
-      label: "API and SDK documentation",
-      description: "Developer-facing reference docs, integration guides, code samples, and migration playbooks. Auto-generated from OpenAPI specs or source where possible; hand-authored where the developer experience requires editorial care.",
-    },
-    {
-      label: "Security attestations and compliance documentation",
-      description: "SOC 2 reports, ISO 27001 statement of applicability and control narratives, penetration test reports, security policy libraries. The documentation buyer security teams review before signing — and the audit-trail evidence the next year's auditor walks through.",
-    },
-    {
-      label: "Release notes and changelog content",
-      description: "Version-controlled product documentation tied to release cycles. Per-release deltas with semantic-version tagging; aggregated changelog views for buyers tracking adoption.",
-    },
-  ]}
-  standards={[
-    {
-      label: "IEEE specifications",
-      description: "IEEE 802.x networking, IEEE 1149 boundary scan, IEEE 754 floating-point, and adjacent standards governing electrical and computing interoperability.",
-    },
-    {
-      label: "IPC standards",
-      description: "Printed circuit board design (IPC-2221/2222), manufacturing (IPC-A-610), and assembly standards. Documentation for hardware design files and assembly instructions runs through these.",
-    },
-    {
-      label: "JEDEC",
-      description: "JEDEC Solid State Technology Association standards for semiconductor packaging, memory interfaces, and component testing.",
-    },
-    {
-      label: "SOC 2 (Trust Services Criteria)",
-      description: "Security, availability, processing integrity, confidentiality, and privacy attestation framework. Annual Type 2 audits demand control narratives and evidence collection that the documentation system has to support.",
-    },
-    {
-      label: "ISO 27001 / ISO 27002",
-      description: "Information security management system standards. Statement of applicability, control objectives, and operational policy documentation engineered for audit traceability.",
-    },
-    {
-      label: "NIST Cybersecurity Framework + NIST SP 800-series",
-      description: "Federal cybersecurity guidance — increasingly required for technology vendors selling to U.S. government, federal contractors, and defense industrial base customers.",
-    },
-    {
-      label: "ITAR and EAR (export controls)",
-      description: "International Traffic in Arms Regulations and Export Administration Regulations — relevant to defense-tech, dual-use technology, and semiconductor export. Documentation handling under these frameworks has procurement and legal consequences.",
-    },
-    {
-      label: "FCC Part 15 / FCC certification",
-      description: "Radio-frequency emissions standards for electronic devices. Compliance documentation surfaces in product certification packages and customer-facing technical documentation.",
-    },
-  ]}
-  productSurfacePanels={{
-    eyebrow: "THREE PRODUCT SURFACES — TECHNOLOGY",
-    heading: "Three documents. Three audiences. One discipline.",
-    lead: "Hardware vendors ship datasheets. SaaS companies ship API and SDK reference docs. Security and compliance teams ship SOC 2 control narratives. Each is the product's interface for that audience — and each carries its own typographic register, structural conventions, and evidence requirements. Engineering documentation discipline is what makes the three live in the same content system without losing their distinct shapes.",
-    panels: [
-      {
-        docRef: "DATASHEET · CMOS-1234A · Rev. 4.2",
-        title: "16-Bit Synchronous SRAM",
-        subtitle: "Industrial temperature grade",
-        treatment: "datasheet",
-        sections: [
-          {
-            label: "Electrical",
-            entries: [
-              { key: "VDD",          value: "3.3V ±5%" },
-              { key: "ICC (active)", value: "145 mA" },
-              { key: "Op. temp",     value: "−40°C to +85°C" },
-            ],
-          },
-          {
-            label: "Timing",
-            entries: [
-              { key: "tACS",  value: "2.5 ns max" },
-              { key: "tCYC",  value: "4.0 ns min" },
-              { key: "tWP",   value: "1.5 ns min" },
-            ],
-          },
-          {
-            label: "Package",
-            entries: [
-              { key: "Type",  value: "100-pin TQFP" },
-              { key: "Size",  value: "14×14×1.4 mm" },
-              { key: "RoHS",  value: "Pb-free" },
-            ],
-          },
-          {
-            label: "Compliance",
-            entries: [
-              { key: "Standards", value: "RoHS · REACH · IPC-A-610 · JEDEC JESD22-A104" },
-            ],
-          },
-        ],
+<BaseLayout
+  title="Technology & Semiconductors — Industries"
+  description="Documentation engineering across hardware/silicon, software/API, and security/compliance — three product surfaces, three audiences, one engineering discipline. Datasheets, API references, SOC 2 attestations, CI/CD-driven publishing."
+>
+  <Hero
+    variant="universal"
+    title="Technology & Semiconductors"
+    subdeck="Datasheets for system integrators, API docs for developers, security attestations for buyer security teams — three product surfaces, three audiences, one engineering discipline."
+    subdeckMaxWidth="520px"
+  >
+    <svg
+      class="tech-hero-flow"
+      id="tech-hero-flow"
+      viewBox="0 0 560 320"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Three technology documentation artifacts — datasheet, API reference, SOC 2 narrative — sitting on one engineering practice (extense.tech-docs) with CI/CD-driven publishing."
+      role="img"
+    >
+      <g class="corner--accent fx" style="--d: 0ms">
+        <path d="M 12 24 L 12 12 L 24 12" />
+        <path d="M 536 12 L 548 12 L 548 24" />
+        <path d="M 12 296 L 12 308 L 24 308" />
+        <path d="M 536 308 L 548 308 L 548 296" />
+      </g>
+
+      <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: tech.unified</text>
+
+      {/* Compact Card 1 — DATASHEET */}
+      <g class="fx" style="--d: 200ms">
+        <rect class="node node--custom" x="20" y="50" width="160" height="116" rx="3" />
+        <rect class="artifact-strip" x="20" y="50" width="160" height="6" />
+        <text class="doc-ref" x="100" y="72" text-anchor="middle">DATASHEET</text>
+        <text class="card-title" x="100" y="92" text-anchor="middle">16-Bit SRAM</text>
+        <line class="artifact-rule" x1="36" y1="104" x2="164" y2="104" />
+        <text class="field-key" x="36" y="124">VDD</text>
+        <text class="field-val" x="164" y="124" text-anchor="end">3.3V ±5%</text>
+        <text class="field-key" x="36" y="144">tACS</text>
+        <text class="field-val" x="164" y="144" text-anchor="end">2.5 ns max</text>
+      </g>
+
+      {/* Compact Card 2 — API REFERENCE */}
+      <g class="fx" style="--d: 260ms">
+        <rect class="node node--custom" x="200" y="50" width="160" height="116" rx="3" />
+        <rect class="artifact-strip" x="200" y="50" width="160" height="6" />
+        <text class="doc-ref" x="280" y="72" text-anchor="middle">API REFERENCE</text>
+        <text class="card-title" x="280" y="92" text-anchor="middle">Payments API</text>
+        <line class="artifact-rule" x1="216" y1="104" x2="344" y2="104" />
+        <text class="field-mono" x="280" y="122" text-anchor="middle">POST /v3/payments</text>
+        <text class="field-key" x="216" y="144">Auth</text>
+        <text class="field-val" x="344" y="144" text-anchor="end">Bearer + idem</text>
+      </g>
+
+      {/* Compact Card 3 — SOC 2 NARRATIVE */}
+      <g class="fx" style="--d: 320ms">
+        <rect class="node node--custom" x="380" y="50" width="160" height="116" rx="3" />
+        <rect class="artifact-strip" x="380" y="50" width="160" height="6" />
+        <text class="doc-ref" x="460" y="72" text-anchor="middle">SOC 2 · CC6.1</text>
+        <text class="card-title" x="460" y="92" text-anchor="middle">Access Controls</text>
+        <line class="artifact-rule" x1="396" y1="104" x2="524" y2="104" />
+        <text class="field-key" x="396" y="124">Control</text>
+        <text class="field-val" x="524" y="124" text-anchor="end">SAML + MFA</text>
+        <text class="field-key" x="396" y="144">Evidence</text>
+        <text class="field-val" x="524" y="144" text-anchor="end">IdP logs</text>
+      </g>
+
+      {/* Connectors from each card → unifying bar */}
+      <path class="flow-conn" style="--d: 460ms" d="M 100 166 L 100 196 M 95 191 L 100 196 L 105 191" />
+      <path class="flow-conn" style="--d: 480ms" d="M 280 166 L 280 196 M 275 191 L 280 196 L 285 191" />
+      <path class="flow-conn" style="--d: 500ms" d="M 460 166 L 460 196 M 455 191 L 460 196 L 465 191" />
+
+      {/* Unifying bar */}
+      <g class="fx" style="--d: 580ms">
+        <rect class="node node--custom" x="20" y="196" width="520" height="50" rx="3" />
+        <rect class="artifact-strip" x="20" y="196" width="520" height="6" />
+        <text class="node-label node-label--custom" x="280" y="224" text-anchor="middle">extense.tech-docs</text>
+        <text class="node-caption" x="280" y="240" text-anchor="middle">one engineering discipline · CI/CD-driven publishing</text>
+      </g>
+
+      {/* Footer multiplier annotation */}
+      <text class="multiplier-label fx" x="280" y="268" text-anchor="middle" style="--d: 700ms">three registers &middot; one engineering practice &middot; release-tied cadence</text>
+
+      {/* Bottom chrome */}
+      <g class="fx" style="--d: 820ms">
+        <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+        <rect class="build-dot" x="32" y="296" width="6" height="6" />
+        <text class="chrome chrome--strong" x="46"  y="302">FIG. 01</text>
+        <text class="chrome"               x="92"  y="302">/</text>
+        <text class="chrome chrome--strong" x="100" y="302">tech.unified</text>
+        <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">3 SURFACES &middot; 1 PRACTICE &middot; CI/CD</text>
+      </g>
+    </svg>
+  </Hero>
+
+  <SectionSiblings variant="industries" current="technology" />
+
+  {/* ───────── S3 — Three Product Surfaces ───────── */}
+  <section class="tech-section" aria-labelledby="tech-surfaces-heading">
+    <div class="container-page tech-section__inner">
+      <div class="tech-heading-block">
+        <h2 id="tech-surfaces-heading" class="tech-heading">Three Product Surfaces</h2>
+        <p class="tech-intro">
+          Technology and semiconductor companies ship three distinct documentation surfaces — one for system integrators reading datasheets, one for developers reading API reference, one for buyer security teams reading SOC 2 narratives. Each carries its own typographic register, structural conventions, and audit-trail obligations. Engineering documentation discipline is what makes the three live in the same content system without losing their distinct shapes.
+        </p>
+      </div>
+      <ul class="tech-grid-3">
+        {surfaceCards.map((c) => (
+          <li class="tech-card">
+            <span class="tech-card__icon" aria-hidden="true">
+              {c.icon === "chip" && (
+                <svg viewBox="0 0 20 20"><rect x="6" y="6" width="8" height="8" rx="1" /><line x1="8" y1="3" x2="8" y2="6" /><line x1="12" y1="3" x2="12" y2="6" /><line x1="8" y1="14" x2="8" y2="17" /><line x1="12" y1="14" x2="12" y2="17" /><line x1="3" y1="8" x2="6" y2="8" /><line x1="3" y1="12" x2="6" y2="12" /><line x1="14" y1="8" x2="17" y2="8" /><line x1="14" y1="12" x2="17" y2="12" /></svg>
+              )}
+              {c.icon === "code" && (
+                <svg viewBox="0 0 20 20"><polyline points="6,6 2,10 6,14" /><polyline points="14,6 18,10 14,14" /></svg>
+              )}
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /></svg>
+              )}
+            </span>
+            <h3 class="tech-card__title">{c.title}</h3>
+            <p class="tech-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S4 — Continuous Publishing Cadence (banded) ───────── */}
+  <section class="tech-section tech-section--band" aria-labelledby="tech-cadence-heading">
+    <div class="container-page tech-section__inner">
+      <div class="tech-heading-block">
+        <h2 id="tech-cadence-heading" class="tech-heading">Continuous Publishing Cadence</h2>
+        <p class="tech-intro">
+          The operational arc from source to released documentation — five gated stages tying the publishing cadence to each surface's release cycle (silicon respin, semantic-version release, audit cycle).
+        </p>
+      </div>
+      <ol class="tech-roadmap">
+        {cadence.map((s, i) => (
+          <>
+            <li class="tech-step">
+              <span class="tech-step__num">{s.num}</span>
+              <h3 class="tech-step__title">{s.title}</h3>
+              <p class="tech-step__desc">{s.desc}</p>
+              <p class="tech-step__body">{s.body}</p>
+            </li>
+            {i < cadence.length - 1 && (
+              <li class="tech-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ───────── S5 — Explore Related (3-card, banded) ───────── */}
+  <section class="tech-section tech-section--band" aria-labelledby="tech-related-heading">
+    <div class="container-page tech-section__inner">
+      <div class="tech-heading-block">
+        <h2 id="tech-related-heading" class="tech-heading">Explore Related</h2>
+      </div>
+      <ul class="tech-related-grid">
+        {related.map((r) => (
+          <li class="tech-related-card-item">
+            <a href={r.href} class="tech-related-card">
+              <span class="tech-related-card__eyebrow">{r.eyebrow}</span>
+              <h3 class="tech-related-card__title">{r.title}</h3>
+              <p class="tech-related-card__body">{r.body}</p>
+              <span class="tech-related-card__cta">
+                Explore <span class="tech-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Free Technical Content Assessment"
+    body="Share a 20-page sample — datasheet, API reference, or security attestation. We'll return a content-readiness assessment focused on the publishing-cadence and retrieval-readiness questions specific to technology and semiconductor documentation. No commitment required."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Hero side visual (Option D — three artifacts under one practice) ─── */
+  .tech-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .tech-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .tech-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .tech-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .tech-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .tech-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .tech-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .tech-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .tech-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .tech-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .tech-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .tech-hero-flow .artifact-strip {
+    fill: var(--color-accent-primary);
+    stroke: none;
+  }
+  .tech-hero-flow .artifact-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .tech-hero-flow .doc-ref {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.12em;
+  }
+  .tech-hero-flow .card-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .tech-hero-flow .field-key {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .tech-hero-flow .field-val {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .tech-hero-flow .field-mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.02em;
+  }
+  .tech-hero-flow .multiplier-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+  }
+  .tech-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .tech-hero-flow .fx {
+    opacity: 0;
+  }
+  .tech-hero-flow.drawn .fx {
+    animation: tech-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .tech-hero-flow.drawn .flow-conn {
+    animation: tech-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes tech-fade {
+    to { opacity: 1; }
+  }
+  @keyframes tech-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tech-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .tech-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
+  /* ─── Section shell ─── */
+  .tech-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .tech-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .tech-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Section heading block ─── */
+  .tech-heading-block {
+    margin-bottom: var(--space-12);
+    max-width: 80ch;
+  }
+  .tech-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .tech-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 3-card grid ─── */
+  .tech-grid-3 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .tech-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .tech-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .tech-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .tech-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .tech-card__icon svg circle,
+  .tech-card__icon svg ellipse,
+  .tech-card__icon svg line,
+  .tech-card__icon svg polyline,
+  .tech-card__icon svg polygon,
+  .tech-card__icon svg rect,
+  .tech-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .tech-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .tech-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 5-step numbered roadmap strip ─── */
+  .tech-roadmap {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .tech-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    background-color: var(--color-page-bg);
+  }
+  .tech-step__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary);
+  }
+  .tech-step__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .tech-step__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .tech-step__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: var(--space-3) 0 0 0;
+    text-wrap: pretty;
+  }
+  .tech-step__arrow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    color: var(--color-accent-primary);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+  @media (max-width: 767px) {
+    .tech-roadmap {
+      flex-direction: column;
+    }
+    .tech-step__arrow {
+      align-self: center;
+      transform: rotate(90deg);
+      padding: var(--space-1) 0;
+    }
+  }
+
+  /* ─── Related grid (3-card cross-link) ─── */
+  .tech-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .tech-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .tech-related-card-item {
+    display: flex;
+  }
+  .tech-related-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+  .tech-related-card:hover,
+  .tech-related-card:focus-visible {
+    border-color: var(--color-accent-primary);
+  }
+  .tech-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .tech-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .tech-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .tech-related-card__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+  }
+  .tech-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .tech-related-card:hover .tech-related-card__arrow,
+  .tech-related-card:focus-visible .tech-related-card__arrow {
+    transform: translateX(2px);
+  }
+</style>
+
+<script>
+  function setupTechHero() {
+    const svg = document.getElementById("tech-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
       },
-      {
-        docRef: "API REFERENCE · v3.2.0 · OpenAPI 3.1",
-        title: "Payments API",
-        subtitle: "REST · JSON over HTTPS",
-        treatment: "api",
-        sections: [
-          {
-            label: "Endpoint",
-            entries: [
-              { value: "POST /v3/payments" },
-            ],
-          },
-          {
-            label: "Authentication",
-            entries: [
-              { value: "Bearer token + idempotency-key (required)" },
-            ],
-          },
-          {
-            label: "Parameters",
-            entries: [
-              { key: "amount",      value: "integer, required" },
-              { key: "currency",    value: "string, ISO 4217" },
-              { key: "description", value: "string, max 500" },
-            ],
-          },
-          {
-            label: "Responses",
-            entries: [
-              { value: "201 Created" },
-              { value: "400 Bad Request" },
-              { value: "401 Unauthorized" },
-              { value: "422 Unprocessable Entity" },
-            ],
-          },
-        ],
-      },
-      {
-        docRef: "SOC 2 TYPE II · 2026 · CC6.1",
-        title: "Logical Access Controls",
-        subtitle: "Trust Services Criteria — Common Criteria",
-        treatment: "narrative",
-        sections: [
-          {
-            label: "Control Objective",
-            entries: [
-              { value: "The system restricts logical access to information assets through authentication, authorization, and identification mechanisms." },
-            ],
-          },
-          {
-            label: "Control Description",
-            entries: [
-              { value: "Identity provider integration enforces SAML/OIDC; role-based access controls reviewed quarterly; privileged access requires MFA plus ticket approval." },
-            ],
-          },
-          {
-            label: "Testing Methodology",
-            entries: [
-              { value: "Auditor sampled 25 user provisionings, 25 deprovisionings, and reviewed quarterly access review evidence for 4 quarters." },
-            ],
-          },
-          {
-            label: "Evidence",
-            entries: [
-              { value: "IdP provisioning logs · access review records · MFA enforcement reports" },
-            ],
-          },
-        ],
-      },
-    ],
-    footnote: "Sample artifacts. Real datasheets, API references, and SOC 2 control narratives carry deeper structure (datasheets often run 20–40 pages; API specs auto-generated from source typically span hundreds of endpoints; SOC 2 reports cover 50+ Trust Services Criteria) — but the typographic registers shown above are the genuine shapes of these three documentation surfaces.",
-  }}
-  failureMode={{
-    eyebrow: "TECHNOLOGY / PRODUCT SURFACE",
-    heading: "When the documentation is wrong, the product is functionally wrong — for that audience.",
-    body: "Hardware: a datasheet spec error propagates to every system integrator's reference design; field failures cluster across customers months after launch, and the traceability trail leads back to the source document. Software: an API contract that doesn't match the documented behavior breaks integrations across every customer who shipped against it — silent breakage at scale, surfaced as outages on someone else's incident timeline. Security: a SOC 2 control narrative that misrepresents the actual control surfaces during the auditor's walkthrough — and the audit opinion changes. The documentation isn't the product's wrapper. It's the interface buyers use, and a wrong interface makes the product wrong.",
-  }}
-  signals={[
-    {
-      line: "Our datasheet revisions are out of sync with the silicon in the field.",
-      body: "Hardware, tactical. Datasheet-vs-silicon revision drift signals lack of integration between the EDA toolchain and the documentation pipeline. When a respin happens, the datasheet should auto-revise from the same source that drove the layout — manual sync is where drift starts.",
-    },
-    {
-      line: "Our API docs lag behind code releases by two or three sprints.",
-      body: "Software, operational. Doc-lag in fast-moving SaaS usually means the API documentation is hand-authored separately from the code. Auto-generation from OpenAPI specs cuts the lag to the build pipeline; the editorial layer becomes about what auto-gen can't capture.",
-    },
-    {
-      line: "Our SOC 2 control narratives don't match what our security tools actually do.",
-      body: "Security, pre-audit. Narrative-vs-reality drift is the most common cause of SOC 2 findings on documentation. The fix is reconciling the control surface, the control narrative, and the evidence collection — and binding them in a system that can't drift independently.",
-    },
-    {
-      line: "Our customer-facing AI assistant gives inconsistent answers across product lines.",
-      body: "Cross-segment, AI-readiness. Inconsistent assistant responses usually mean the source documentation is fragmented — different versions across business units, different formats across regions. RAG accuracy is bounded by documentation-architecture quality, not by model capability.",
-    },
-  ]}
-  capabilityRelevance={[
-    {
-      pillarLabel: "Information Architecture",
-      pillarHref: "/capabilities/information-architecture",
-      context: "Product-family content models across segments — chip families and product lines (hardware), API versioning and SDK platform variants (software), control objectives mapped across multiple audit frameworks (security). Conditional content for variant management across product lines, customer tiers, and audit-framework requirements.",
-      engagementShape: "Project-Based — product-family content model work with named acceptance criteria, often gated to a release-cycle milestone.",
-    },
-    {
-      pillarLabel: "Content Migration",
-      pillarHref: "/capabilities/content-migration",
-      context: "Often follows acquisition or platform consolidation — semiconductor company portfolio integration, SaaS-platform documentation reorganization after a merger, security-attestation library consolidation across business units. Conversion handled at scale across legacy authoring environments — FrameMaker, MadCap, GitBook, internal CMS systems.",
-      engagementShape: "Project-Based — fixed scope, conversion-fidelity acceptance criteria. Often post-M&A or post-platform-consolidation.",
-    },
-    {
-      pillarLabel: "CCMS & Publishing",
-      pillarHref: "/capabilities/ccms-and-publishing",
-      context: "Increasingly important across all three segments. Hardware vendors publish thousands of datasheets and application notes per product line; SaaS companies ship documentation continuously alongside code releases; security organizations maintain large attestation document libraries. CCMS configuration enables the publishing automation these scales require.",
-      engagementShape: "Project-Based for implementation; Managed Services for ongoing administration of CI/CD-driven publishing pipelines.",
-    },
-    {
-      pillarLabel: "AI-Ready Content",
-      pillarHref: "/capabilities/ai-ready-content",
-      context: "Native to this vertical. AI-assisted documentation tools and developer-facing AI assistants are a 2025 priority for technology companies. Retrieval over engineering documentation, security policy libraries, and product reference content is where structured authoring discipline pays back fastest.",
-      engagementShape: "Often starts as Staff Augmentation during developer-assistant exploratory work; converts to Project-Based once retrieval architecture firms up.",
-    },
-  ]}
-  caseStudies={[
-    {
-      framing: "A semiconductor company consolidating datasheet and application-note libraries across product families.",
-      body: "Single-source DITA across chip families with conditional content for package-variant and grade-level differences. Publishing pipeline integrated with the EDA toolchain so reference-design files and datasheets stay version-aligned. Translation handled across the global engineering markets where the chips ship; a single datasheet now produces compliant outputs for every regional market in one publishing run.",
-    },
-    {
-      framing: "A SaaS platform provider rebuilding API and SDK documentation alongside SOC 2 readiness.",
-      body: "Migration from a static-site-generator approach to a single-source DITA pipeline. Developer-facing API reference docs auto-generated from OpenAPI specs; SOC 2 control narratives engineered into the same content system with audit-trail metadata. Annual SOC 2 audit documentation gathering effort dropped by roughly 70% in the first cycle after the migration.",
-    },
-  ]}
-  ctaBody="Submit a 20-page sample — datasheet, application note, API reference set, or security attestation. We'll return a content-readiness assessment focused on the publishing-cadence and retrieval-readiness questions specific to technology documentation. Two business days, no obligation to proceed."
-/>
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+  document.addEventListener("DOMContentLoaded", setupTechHero);
+</script>
