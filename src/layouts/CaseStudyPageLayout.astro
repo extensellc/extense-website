@@ -101,22 +101,28 @@ const engagementRows: { label: string; value: string }[] = [
 
 <BaseLayout title={metaTitle} description={metaDescription}>
   <section class="cs-header" aria-labelledby="cs-title">
-    <div class="container-data cs-header__inner">
+    <div class="container-page cs-header__inner">
       <p class="cs-header__breadcrumb">
         <a href="/company/our-work-and-case-studies" class="cs-header__back">← Our Work &amp; Case Studies</a>
       </p>
 
-      <div class="cs-header__lead">
-        <p class="cs-header__meta">
-          <span class="cs-header__meta-item">CASE {caseNumber} / {caseTotal}</span>
-          <span class="cs-header__meta-sep" aria-hidden="true">·</span>
-          <span class="cs-header__meta-item">{year}</span>
-          <span class="cs-header__meta-sep" aria-hidden="true">·</span>
-          <span class="cs-header__meta-item">{sector}</span>
-        </p>
+      <div class="cs-header__top">
+        <div class="cs-header__lead">
+          <p class="cs-header__meta">
+            <span class="cs-header__meta-item">CASE {caseNumber} / {caseTotal}</span>
+            <span class="cs-header__meta-sep" aria-hidden="true">·</span>
+            <span class="cs-header__meta-item">{year}</span>
+            <span class="cs-header__meta-sep" aria-hidden="true">·</span>
+            <span class="cs-header__meta-item">{sector}</span>
+          </p>
 
-        <h1 id="cs-title" class="cs-header__title">{title}</h1>
-        <p class="cs-header__frame">{frame}</p>
+          <h1 id="cs-title" class="cs-header__title">{title}</h1>
+          <p class="cs-header__frame">{frame}</p>
+        </div>
+
+        <div class="cs-header__visual">
+          <slot name="visual" />
+        </div>
       </div>
 
       <dl class="cs-engagement" aria-label="Engagement record">
@@ -133,7 +139,7 @@ const engagementRows: { label: string; value: string }[] = [
   <AnimatedDivider />
 
   <section class="cs-section" aria-labelledby="ca-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <h2 id="ca-heading" class="cs-section__visually-hidden">Challenge and approach</h2>
       <article class="cs-rail-row cs-rail-row--ca">
         <h3 class="cs-rail-row__label">The challenge</h3>
@@ -147,7 +153,7 @@ const engagementRows: { label: string; value: string }[] = [
   </section>
 
   <section class="cs-section" aria-labelledby="ledger-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <p class="cs-rail-row__label" id="ledger-heading">Artifact ledger</p>
         <div class="cs-rail-row__content">
@@ -165,7 +171,7 @@ const engagementRows: { label: string; value: string }[] = [
   </section>
 
   <section class="cs-section" aria-labelledby="stack-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <p class="cs-rail-row__label" id="stack-heading">Stack</p>
         <div class="cs-rail-row__content">
@@ -187,7 +193,7 @@ const engagementRows: { label: string; value: string }[] = [
   <AnimatedDivider />
 
   <section class="cs-section" aria-labelledby="decisions-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row cs-rail-row--decisions-intro">
         <h2 id="decisions-heading" class="cs-rail-row__label">Decisions and trade-offs</h2>
         <p class="cs-rail-row__paragraph">
@@ -220,7 +226,7 @@ const engagementRows: { label: string; value: string }[] = [
   </section>
 
   <section class="cs-section" aria-labelledby="note-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <h2 id="note-heading" class="cs-rail-row__label">A note on these numbers</h2>
         <p class="cs-rail-row__paragraph">
@@ -237,6 +243,28 @@ const engagementRows: { label: string; value: string }[] = [
     body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
   />
 </BaseLayout>
+
+<script>
+  function setupCsHero() {
+    const svgs = document.querySelectorAll(".cs-hero-flow");
+    if (!svgs.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    svgs.forEach((svg) => observer.observe(svg));
+  }
+
+  document.addEventListener("DOMContentLoaded", setupCsHero);
+  document.addEventListener("astro:page-load", setupCsHero);
+</script>
 
 <style is:global>
   /* ─── Rail-row layout primitive (used by layout + slot content) ─── */
@@ -288,16 +316,175 @@ const engagementRows: { label: string; value: string }[] = [
     /* generic slot for grids/lists in the right column; layout is its own */
   }
 
-  /* Hairline divider between rail rows when stacked vertically */
+  /* ─── Shared hero-visual SVG idiom (used by detail pages via slot) ─── */
+  .cs-hero-flow {
+    width: 100%;
+    height: auto;
+    max-width: 520px;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .cs-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .cs-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .cs-hero-flow .label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .cs-hero-flow .label--accent {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .cs-hero-flow .corner {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .cs-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .cs-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .cs-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .cs-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .cs-hero-flow .node--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .cs-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .cs-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .cs-hero-flow .node-label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .cs-hero-flow .doc {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .cs-hero-flow .doc--custom {
+    stroke: var(--color-accent-primary);
+  }
+  .cs-hero-flow .doc-band {
+    fill: var(--color-surface-band);
+    stroke: none;
+  }
+  .cs-hero-flow .doc-band--custom {
+    fill: #fef3c7;
+  }
+  .cs-hero-flow .doc-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+  }
+  .cs-hero-flow .doc-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .cs-hero-flow .doc-line {
+    fill: var(--color-text-muted);
+    opacity: 0.45;
+  }
+  .cs-hero-flow .doc-line--soft {
+    fill: var(--color-text-muted);
+    opacity: 0.25;
+  }
+  .cs-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 540;
+    stroke-dashoffset: 540;
+  }
+  .cs-hero-flow .conn--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    fill: none;
+  }
+  .cs-hero-flow .toc-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.04em;
+  }
+  .cs-hero-flow .toc-label {
+    font-family: var(--font-body);
+    font-size: 10px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0;
+  }
+  .cs-hero-flow .fx {
+    opacity: 0;
+  }
+  .cs-hero-flow.drawn .fx {
+    animation: cs-hero-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .cs-hero-flow.drawn .flow-conn {
+    animation: cs-hero-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes cs-hero-fade {
+    to { opacity: 1; }
+  }
+  @keyframes cs-hero-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cs-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .cs-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
+  /* Hairline divider between rail rows when stacked vertically.
+     (var(--space-10) doesn't exist on the scale and silently computes to 0,
+     so use space-6 = 24px each side for a deliberate compact buffer.) */
   .cs-rail-row + .cs-rail-row {
-    margin-top: var(--space-10);
-    padding-top: var(--space-10);
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
     border-top: var(--border-hairline);
   }
   @media (max-width: 767px) {
     .cs-rail-row + .cs-rail-row {
-      margin-top: var(--space-8);
-      padding-top: var(--space-8);
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
     }
   }
 </style>
@@ -305,15 +492,53 @@ const engagementRows: { label: string; value: string }[] = [
 <style>
   /* ─── Header ─── */
   .cs-header {
-    padding-top: var(--space-16);
-    padding-bottom: var(--space-12);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-8);
   }
 
   @media (min-width: 768px) {
     .cs-header {
-      padding-top: var(--space-24);
-      padding-bottom: var(--space-16);
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-12);
     }
+  }
+
+  /* Header top: title block + optional visual side-by-side on desktop */
+  .cs-header__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .cs-header__top {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-12);
+      margin-bottom: var(--space-12);
+    }
+  }
+
+  .cs-header__lead {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .cs-header__visual {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .cs-header__visual {
+      width: 520px;
+      max-width: 50%;
+    }
+  }
+
+  .cs-header__visual:empty {
+    display: none;
   }
 
   .cs-header__breadcrumb {
@@ -336,16 +561,6 @@ const engagementRows: { label: string; value: string }[] = [
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
-  }
-
-  .cs-header__lead {
-    margin-bottom: var(--space-12);
-  }
-
-  @media (min-width: 768px) {
-    .cs-header__lead {
-      margin-bottom: var(--space-16);
-    }
   }
 
   .cs-header__meta {
@@ -414,14 +629,14 @@ const engagementRows: { label: string; value: string }[] = [
 
   /* ─── Section spacing ─── */
   .cs-section {
-    padding-top: var(--space-16);
-    padding-bottom: var(--space-16);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
   }
 
   @media (min-width: 768px) {
     .cs-section {
-      padding-top: var(--space-20);
-      padding-bottom: var(--space-20);
+      padding-top: var(--space-12);
+      padding-bottom: var(--space-12);
     }
   }
 

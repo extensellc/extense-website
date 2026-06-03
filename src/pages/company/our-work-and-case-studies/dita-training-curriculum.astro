@@ -88,8 +88,52 @@ const curriculumParts = [
   metaTitle="Case Study — Enterprise DITA Training Curriculum"
   metaDescription="Engagement record: a 76-topic, 10-part DITA training program with 12 hands-on labs and 218-page branded PDF output, authored and published from a single DITA source."
 >
+  <svg
+    slot="visual"
+    class="cs-hero-flow"
+    viewBox="0 0 520 300"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    role="presentation"
+  >
+    <g class="corner fx" style="--d: 0ms">
+      <path d="M 12 22 L 12 12 L 22 12" />
+      <path d="M 498 12 L 508 12 L 508 22" />
+      <path d="M 12 278 L 12 288 L 22 288" />
+      <path d="M 498 288 L 508 288 L 508 278" />
+    </g>
+
+    <text class="chrome fx" x="24" y="30" style="--d: 80ms">in :: curriculum.10-parts</text>
+
+    <g class="fx" style="--d: 200ms">
+      <rect class="doc doc--custom" x="140" y="42" width="240" height="220" rx="3" />
+      <rect class="doc-band doc-band--custom" x="140" y="42" width="240" height="22" />
+      <text class="doc-label doc-label--custom" x="152" y="57">bookmap.ditamap</text>
+    </g>
+
+    {curriculumParts.map((part, i) => {
+      const y = 82 + i * 16;
+      const delay = 320 + i * 60;
+      return (
+        <g class="fx" style={`--d: ${delay}ms`}>
+          <text class="toc-num" x="152" y={y}>{String(i + 1).padStart(2, "0")}</text>
+          <text class="toc-label" x="180" y={y}>{part}</text>
+        </g>
+      );
+    })}
+
+    <g class="fx" style="--d: 1020ms">
+      <line class="chrome-rule" x1="24" y1="274" x2="496" y2="274" />
+      <rect class="build-dot" x="208" y="282" width="6" height="6" />
+      <text class="chrome chrome--strong" x="222" y="288">FIG. 01</text>
+      <text class="chrome" x="272" y="288">/</text>
+      <text class="chrome chrome--strong" x="280" y="288">curriculum.10-parts</text>
+      <text class="chrome chrome--strong" x="496" y="288" text-anchor="end">76 TOPICS &middot; 218 PAGES</text>
+    </g>
+  </svg>
+
   <section class="cs-section" aria-labelledby="delivered-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <h2 id="delivered-heading" class="cs-rail-row__label">What we delivered</h2>
         <div class="cs-rail-row__content">
@@ -102,7 +146,7 @@ const curriculumParts = [
   </section>
 
   <section class="cs-section" aria-labelledby="coverage-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <p id="coverage-heading" class="cs-rail-row__label">Curriculum coverage</p>
         <div class="cs-rail-row__content">
@@ -124,14 +168,14 @@ const curriculumParts = [
 
 <style>
   .cs-section {
-    padding-top: var(--space-16);
-    padding-bottom: var(--space-16);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
   }
 
   @media (min-width: 768px) {
     .cs-section {
-      padding-top: var(--space-20);
-      padding-bottom: var(--space-20);
+      padding-top: var(--space-12);
+      padding-bottom: var(--space-12);
     }
   }
 

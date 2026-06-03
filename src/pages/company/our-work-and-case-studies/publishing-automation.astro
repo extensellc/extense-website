@@ -101,8 +101,94 @@ const buildSteps = [
   metaTitle="Case Study — Custom DITA-OT Publishing Automation"
   metaDescription="Engagement record: two custom DITA-OT plugins and a build pipeline producing HTML5, branded PDF, JSON, and PWA-installable output from a single DITA bookmap, with zero manual post-processing."
 >
+  <svg
+    slot="visual"
+    class="cs-hero-flow"
+    viewBox="0 0 520 300"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    role="presentation"
+  >
+    <g class="corner fx" style="--d: 0ms">
+      <path d="M 12 22 L 12 12 L 22 12" />
+      <path d="M 498 12 L 508 12 L 508 22" />
+      <path d="M 12 278 L 12 288 L 22 288" />
+      <path d="M 498 288 L 508 288 L 508 278" />
+    </g>
+
+    <text class="chrome fx" x="24" y="30" style="--d: 80ms">in :: build.fan-out</text>
+
+    <text class="chrome label--muted fx" x="80" y="68" text-anchor="middle" style="--d: 160ms">SOURCE</text>
+    <text class="chrome label--accent fx" x="420" y="68" text-anchor="middle" style="--d: 220ms">OUTPUTS</text>
+
+    {/* Single source on left */}
+    <g class="fx" style="--d: 320ms">
+      <rect class="doc doc--custom" x="20" y="80" width="120" height="140" rx="3" />
+      <rect class="doc-band doc-band--custom" x="20" y="80" width="120" height="22" />
+      <text class="doc-label doc-label--custom" x="28" y="95">bookmap.ditamap</text>
+
+      {/* Stylized source content lines */}
+      <rect class="doc-line" x="32" y="118" width="14" height="4" />
+      <rect class="doc-line" x="50" y="118" width="76" height="3" />
+
+      <rect class="doc-line" x="32" y="134" width="14" height="4" />
+      <rect class="doc-line" x="50" y="134" width="68" height="3" />
+
+      <rect class="doc-line" x="32" y="150" width="14" height="4" />
+      <rect class="doc-line" x="50" y="150" width="72" height="3" />
+
+      <rect class="doc-line" x="32" y="166" width="14" height="4" />
+      <rect class="doc-line" x="50" y="166" width="60" height="3" />
+
+      <rect class="doc-line" x="32" y="182" width="14" height="4" />
+      <rect class="doc-line" x="50" y="182" width="76" height="3" />
+
+      <rect class="doc-line" x="32" y="198" width="14" height="4" />
+      <rect class="doc-line" x="50" y="198" width="64" height="3" />
+    </g>
+
+    {/* Fan-out connectors from source right-edge (140, 150) to 4 outputs */}
+    <path class="flow-conn" style="--d: 460ms" d="M140 150 C 220 150, 260 92, 340 92 M335 87 L340 92 L335 97" />
+    <path class="flow-conn" style="--d: 540ms" d="M140 150 C 220 150, 260 130, 340 130 M335 125 L340 130 L335 135" />
+    <path class="flow-conn" style="--d: 620ms" d="M140 150 C 220 150, 260 170, 340 170 M335 165 L340 170 L335 175" />
+    <path class="flow-conn" style="--d: 700ms" d="M140 150 C 220 150, 260 208, 340 208 M335 203 L340 208 L335 213" />
+
+    {/* 4 output chips */}
+    <g class="fx" style="--d: 780ms">
+      <rect class="node node--custom" x="340" y="76" width="160" height="32" rx="3" />
+      <text class="node-label node-label--custom" x="420" y="96" text-anchor="middle">HTML5 &middot; interactive</text>
+    </g>
+    <g class="fx" style="--d: 860ms">
+      <rect class="node node--custom" x="340" y="114" width="160" height="32" rx="3" />
+      <text class="node-label node-label--custom" x="420" y="134" text-anchor="middle">PDF &middot; print-ready</text>
+    </g>
+    <g class="fx" style="--d: 940ms">
+      <rect class="node node--custom" x="340" y="154" width="160" height="32" rx="3" />
+      <text class="node-label node-label--custom" x="420" y="174" text-anchor="middle">PWA &middot; installable</text>
+    </g>
+    <g class="fx" style="--d: 1020ms">
+      <rect class="node node--custom" x="340" y="192" width="160" height="32" rx="3" />
+      <text class="node-label node-label--custom" x="420" y="212" text-anchor="middle">JSON &middot; chatbot</text>
+    </g>
+
+    {/* Source descriptor below */}
+    <g class="fx" style="--d: 1120ms">
+      <text class="chrome label--muted" x="80" y="240" text-anchor="middle">ONE DITA SOURCE</text>
+    </g>
+
+    {/* Bottom chrome */}
+    <g class="fx" style="--d: 1240ms">
+      <line class="chrome-rule" x1="24" y1="274" x2="496" y2="274" />
+      <rect class="build-dot" x="208" y="282" width="6" height="6" />
+      <text class="chrome chrome--strong" x="222" y="288">FIG. 03</text>
+      <text class="chrome" x="272" y="288">/</text>
+      <text class="chrome chrome--strong" x="280" y="288">build.fan-out</text>
+      <text class="chrome chrome--strong" x="496" y="288" text-anchor="end">1 SOURCE &rarr; 4 FORMATS</text>
+    </g>
+  </svg>
+
   <section class="cs-section" aria-labelledby="plugins-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <h2 id="plugins-heading" class="cs-rail-row__label">Plugin architecture</h2>
         <div class="cs-rail-row__content">
@@ -124,7 +210,7 @@ const buildSteps = [
   </section>
 
   <section class="cs-section" aria-labelledby="build-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <h2 id="build-heading" class="cs-rail-row__label">Build pipeline</h2>
         <div class="cs-rail-row__content">
@@ -139,14 +225,14 @@ const buildSteps = [
 
 <style>
   .cs-section {
-    padding-top: var(--space-16);
-    padding-bottom: var(--space-16);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
   }
 
   @media (min-width: 768px) {
     .cs-section {
-      padding-top: var(--space-20);
-      padding-bottom: var(--space-20);
+      padding-top: var(--space-12);
+      padding-bottom: var(--space-12);
     }
   }
 

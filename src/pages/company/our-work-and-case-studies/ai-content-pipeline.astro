@@ -104,8 +104,108 @@ const vocabularyFacets = [
   metaTitle="Case Study — AI-Ready Content Pipeline"
   metaDescription="Engagement record: unstructured legacy XML transformed into AI-ready DITA with 100% metadata coverage, 150+ addressable section IDs, and a 5-facet controlled vocabulary that lifts retrieval precision from ~25% to production-grade."
 >
+  <svg
+    slot="visual"
+    class="cs-hero-flow"
+    viewBox="0 0 520 300"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    role="presentation"
+  >
+    <g class="corner fx" style="--d: 0ms">
+      <path d="M 12 22 L 12 12 L 22 12" />
+      <path d="M 498 12 L 508 12 L 508 22" />
+      <path d="M 12 278 L 12 288 L 22 288" />
+      <path d="M 498 288 L 508 288 L 508 278" />
+    </g>
+
+    <text class="chrome fx" x="24" y="30" style="--d: 80ms">in :: corpus.enriched</text>
+
+    {/* Section labels above each side */}
+    <text class="chrome label--muted fx" x="76" y="68" text-anchor="middle" style="--d: 160ms">BEFORE &middot; RAW</text>
+    <text class="chrome label--accent fx" x="444" y="68" text-anchor="middle" style="--d: 220ms">AFTER &middot; ENRICHED</text>
+
+    {/* Left — unstructured XML (muted, soft-dashed) */}
+    <g class="fx" style="--d: 320ms">
+      <rect class="doc" x="20" y="80" width="112" height="148" rx="3" stroke-dasharray="4 4" />
+      <rect class="doc-band" x="20" y="80" width="112" height="20" />
+      <text class="doc-label" x="28" y="94">xml.raw</text>
+
+      {/* Random soft lines — no structure */}
+      <rect class="doc-line--soft" x="32" y="116" width="80" height="3" />
+      <rect class="doc-line--soft" x="32" y="128" width="68" height="3" />
+      <rect class="doc-line--soft" x="32" y="140" width="84" height="3" />
+      <rect class="doc-line--soft" x="32" y="152" width="56" height="3" />
+      <rect class="doc-line--soft" x="32" y="164" width="76" height="3" />
+      <rect class="doc-line--soft" x="32" y="176" width="60" height="3" />
+      <rect class="doc-line--soft" x="32" y="188" width="80" height="3" />
+      <rect class="doc-line--soft" x="32" y="200" width="48" height="3" />
+      <rect class="doc-line--soft" x="32" y="212" width="72" height="3" />
+    </g>
+
+    {/* Center transformation: arrow + amber enrich chip */}
+    <path class="flow-conn" style="--d: 480ms" d="M138 154 L388 154 M383 149 L388 154 L383 159" />
+
+    <g class="fx" style="--d: 640ms">
+      <rect class="node node--custom" x="208" y="142" width="100" height="24" rx="3" />
+      <text class="node-label node-label--custom" x="258" y="159" text-anchor="middle">enrich</text>
+    </g>
+
+    {/* Right — AI-ready DITA (amber, structured) */}
+    <g class="fx" style="--d: 800ms">
+      <rect class="doc doc--custom" x="388" y="80" width="112" height="148" rx="3" />
+      <rect class="doc-band doc-band--custom" x="388" y="80" width="112" height="20" />
+      <text class="doc-label doc-label--custom" x="396" y="94">dita.enriched</text>
+
+      {/* Structured lines with clear bands */}
+      <rect class="doc-line" x="400" y="114" width="14" height="4" />
+      <rect class="doc-line" x="418" y="114" width="68" height="3" />
+
+      <rect class="doc-line" x="400" y="128" width="14" height="4" />
+      <rect class="doc-line" x="418" y="128" width="60" height="3" />
+
+      <rect class="doc-line" x="400" y="142" width="14" height="4" />
+      <rect class="doc-line" x="418" y="142" width="72" height="3" />
+
+      <rect class="doc-line" x="400" y="156" width="14" height="4" />
+      <rect class="doc-line" x="418" y="156" width="56" height="3" />
+
+      <rect class="doc-line" x="400" y="170" width="14" height="4" />
+      <rect class="doc-line" x="418" y="170" width="64" height="3" />
+
+      <rect class="doc-line" x="400" y="184" width="14" height="4" />
+      <rect class="doc-line" x="418" y="184" width="68" height="3" />
+
+      <rect class="doc-line" x="400" y="198" width="14" height="4" />
+      <rect class="doc-line" x="418" y="198" width="52" height="3" />
+
+      <rect class="doc-line" x="400" y="212" width="14" height="4" />
+      <rect class="doc-line" x="418" y="212" width="60" height="3" />
+    </g>
+
+    {/* Score callouts below docs */}
+    <g class="fx" style="--d: 920ms">
+      <text class="chrome label--muted" x="76" y="248" text-anchor="middle">AI-READINESS</text>
+      <text class="chrome label--muted" x="76" y="260" text-anchor="middle" style="font-size: 14px; font-weight: 600;">~2/10</text>
+    </g>
+    <g class="fx" style="--d: 1000ms">
+      <text class="chrome label--accent" x="444" y="248" text-anchor="middle">AI-READINESS</text>
+      <text class="chrome label--accent" x="444" y="260" text-anchor="middle" style="font-size: 14px; font-weight: 600;">~9/10</text>
+    </g>
+
+    {/* Bottom chrome */}
+    <g class="fx" style="--d: 1120ms">
+      <line class="chrome-rule" x1="24" y1="274" x2="496" y2="274" />
+      <rect class="build-dot" x="208" y="282" width="6" height="6" />
+      <text class="chrome chrome--strong" x="222" y="288">FIG. 02</text>
+      <text class="chrome" x="272" y="288">/</text>
+      <text class="chrome chrome--strong" x="280" y="288">corpus.enriched</text>
+      <text class="chrome chrome--strong" x="496" y="288" text-anchor="end">100% METADATA &middot; 5 FACETS</text>
+    </g>
+  </svg>
+
   <section class="cs-section" aria-labelledby="ba-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <h2 id="ba-heading" class="cs-rail-row__label">Before / after</h2>
         <div class="cs-rail-row__content">
@@ -133,7 +233,7 @@ const vocabularyFacets = [
   </section>
 
   <section class="cs-section" aria-labelledby="tools-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <h2 id="tools-heading" class="cs-rail-row__label">Tools built</h2>
         <div class="cs-rail-row__content">
@@ -146,7 +246,7 @@ const vocabularyFacets = [
   </section>
 
   <section class="cs-section" aria-labelledby="vocab-heading">
-    <div class="container-data cs-section__inner">
+    <div class="container-page cs-section__inner">
       <div class="cs-rail-row">
         <p id="vocab-heading" class="cs-rail-row__label">Controlled vocabulary</p>
         <div class="cs-rail-row__content">
@@ -168,14 +268,14 @@ const vocabularyFacets = [
 
 <style>
   .cs-section {
-    padding-top: var(--space-16);
-    padding-bottom: var(--space-16);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
   }
 
   @media (min-width: 768px) {
     .cs-section {
-      padding-top: var(--space-20);
-      padding-bottom: var(--space-20);
+      padding-top: var(--space-12);
+      padding-bottom: var(--space-12);
     }
   }
 
