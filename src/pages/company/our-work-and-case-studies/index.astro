@@ -132,11 +132,33 @@ const downstreamCards: ExplanatoryCard[] = [
   },
 ];
 
-const projectionStats: ImpactStat[] = [
-  { value: "40-60%", label: "Translation Savings" },
-  { value: "3-5x",   label: "Faster Release Cycles" },
-  { value: "85%+",   label: "Chatbot Precision" },
-  { value: "~70%",   label: "Less Update Rework" },
+interface ProjectionStat {
+  value: string;
+  label: string;
+  body: string;
+}
+
+const projectionStats: ProjectionStat[] = [
+  {
+    value: "40-60%",
+    label: "Translation Savings",
+    body: "Content reuse at scale eliminates re-translation of unchanged segments across language variants.",
+  },
+  {
+    value: "3-5x",
+    label: "Faster Release Cycles",
+    body: "Single-source automation cuts multi-format publishing from weeks to days or hours.",
+  },
+  {
+    value: "85%+",
+    label: "Chatbot Precision",
+    body: "Metadata-filtered retrieval with intent routing replaces keyword guessing with precise answer delivery.",
+  },
+  {
+    value: "~70%",
+    label: "Less Update Rework",
+    body: "Fix once, propagate everywhere. No more hunting through copies across documents and formats.",
+  },
 ];
 
 interface ContinueCard {
@@ -286,11 +308,12 @@ const continueExploring: ContinueCard[] = [
           Conservative estimates based on industry benchmarks for organizations managing 500+ topics across multiple languages and channels.
         </p>
       </div>
-      <ul class="owcs-stat-band">
+      <ul class="owcs-stat-band owcs-stat-band--with-body">
         {projectionStats.map((s) => (
           <li class="owcs-stat">
             <span class="owcs-stat__value owcs-stat__value--projection">{s.value}</span>
             <span class="owcs-stat__label">{s.label}</span>
+            <p class="owcs-stat__body">{s.body}</p>
           </li>
         ))}
       </ul>
@@ -578,6 +601,18 @@ const continueExploring: ContinueCard[] = [
     text-transform: uppercase;
     max-width: 22ch;
     text-wrap: balance;
+  }
+  .owcs-stat__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: var(--space-3) 0 0 0;
+    max-width: 28ch;
+    text-wrap: pretty;
+  }
+  .owcs-stat-band--with-body {
+    align-items: start;
   }
 
   /* ─── S5 — "What These Numbers Mean Downstream" sub-section ─── */

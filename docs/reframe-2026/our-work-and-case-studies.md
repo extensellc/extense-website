@@ -209,11 +209,19 @@
   languages and channels."
 - **4-stat band** `[OLD]` (themed differently — these are
   forward-looking projections, not measured results — render with a
-  visual marker like a blue/orange split or "PROJECTION" caption):
-  - `40-60%` — Translation Savings
-  - `3-5x` — Faster Release Cycles
-  - `85%+` — Chatbot Precision
-  - `~70%` — Less Update Rework
+  visual marker like a blue/orange split or "PROJECTION" caption).
+  Each stat has a short body line beneath the value+label (also `[OLD]`
+  — pulled forward from old page, originally missed in the port and
+  added 2026-06-03):
+  - `40-60%` — Translation Savings — "Content reuse at scale eliminates
+    re-translation of unchanged segments across language variants."
+  - `3-5x` — Faster Release Cycles — "Single-source automation cuts
+    multi-format publishing from weeks to days or hours."
+  - `85%+` — Chatbot Precision — "Metadata-filtered retrieval with
+    intent routing replaces keyword guessing with precise answer
+    delivery."
+  - `~70%` — Less Update Rework — "Fix once, propagate everywhere. No
+    more hunting through copies across documents and formats."
 - **"A Note on These Numbers" caveat** `[OLD]` — methodology
   disclosure paragraph (industry benchmarks from OASIS / Gartner /
   CIDM; measurement-before-projection framing).
