@@ -35,6 +35,7 @@ const HERO_SUBDECK = "Datasheets for system integrators, API docs for developers
         <a href="#opt-a">A · Three surfaces in parallel</a>
         <a href="#opt-b">B · Source → 3 outputs fan</a>
         <a href="#opt-c">C · 3 sources → 1 practice</a>
+        <a href="#opt-d">D · Three artifacts under one practice</a>
       </nav>
     </div>
   </section>
@@ -279,6 +280,104 @@ const HERO_SUBDECK = "Datasheets for system integrators, API docs for developers
       </svg>
     </Hero>
   </section>
+
+  {/* ────────────── OPTION D ────────────── */}
+  <section class="techm-option" id="opt-d">
+    <div class="container-page">
+      <h2 class="techm-option__heading">Option D — Three artifacts under one engineering practice</h2>
+      <p class="techm-option__note">
+        Compact versions of A's three artifact cards across the top, sitting
+        on a unifying <code>extense.tech-docs</code> bar at the bottom with
+        a CI/CD-cadence indicator inside. Captures all three load-bearing
+        moves: three surfaces (the artifacts), one discipline (the unifying
+        bar), and continuous publishing cadence (the CI/CD indicator). Same
+        hybrid pattern LS / Transportation / Insurance used.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK} subdeckMaxWidth="520px">
+      <svg
+        class="mock-svg mock-d"
+        id="mock-d"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: tech.unified</text>
+
+        {/* Compact Card 1 — DATASHEET */}
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="20" y="50" width="160" height="116" rx="3" />
+          <rect class="artifact-strip" x="20" y="50" width="160" height="6" />
+          <text class="doc-ref" x="100" y="72" text-anchor="middle">DATASHEET</text>
+          <text class="card-title" x="100" y="92" text-anchor="middle">16-Bit SRAM</text>
+          <line class="artifact-rule" x1="36" y1="104" x2="164" y2="104" />
+          <text class="field-key" x="36" y="124">VDD</text>
+          <text class="field-val" x="164" y="124" text-anchor="end">3.3V ±5%</text>
+          <text class="field-key" x="36" y="144">tACS</text>
+          <text class="field-val" x="164" y="144" text-anchor="end">2.5 ns max</text>
+        </g>
+
+        {/* Compact Card 2 — API REFERENCE */}
+        <g class="fx" style="--d: 260ms">
+          <rect class="node node--custom" x="200" y="50" width="160" height="116" rx="3" />
+          <rect class="artifact-strip" x="200" y="50" width="160" height="6" />
+          <text class="doc-ref" x="280" y="72" text-anchor="middle">API REFERENCE</text>
+          <text class="card-title" x="280" y="92" text-anchor="middle">Payments API</text>
+          <line class="artifact-rule" x1="216" y1="104" x2="344" y2="104" />
+          <text class="field-mono" x="280" y="122" text-anchor="middle">POST /v3/payments</text>
+          <text class="field-key" x="216" y="144">Auth</text>
+          <text class="field-val" x="344" y="144" text-anchor="end">Bearer + idem</text>
+        </g>
+
+        {/* Compact Card 3 — SOC 2 NARRATIVE */}
+        <g class="fx" style="--d: 320ms">
+          <rect class="node node--custom" x="380" y="50" width="160" height="116" rx="3" />
+          <rect class="artifact-strip" x="380" y="50" width="160" height="6" />
+          <text class="doc-ref" x="460" y="72" text-anchor="middle">SOC 2 · CC6.1</text>
+          <text class="card-title" x="460" y="92" text-anchor="middle">Access Controls</text>
+          <line class="artifact-rule" x1="396" y1="104" x2="524" y2="104" />
+          <text class="field-key" x="396" y="124">Control</text>
+          <text class="field-val" x="524" y="124" text-anchor="end">SAML + MFA</text>
+          <text class="field-key" x="396" y="144">Evidence</text>
+          <text class="field-val" x="524" y="144" text-anchor="end">IdP logs</text>
+        </g>
+
+        {/* Connectors from each card → unifying bar */}
+        <path class="flow-conn" style="--d: 460ms" d="M 100 166 L 100 196 M 95 191 L 100 196 L 105 191" />
+        <path class="flow-conn" style="--d: 480ms" d="M 280 166 L 280 196 M 275 191 L 280 196 L 285 191" />
+        <path class="flow-conn" style="--d: 500ms" d="M 460 166 L 460 196 M 455 191 L 460 196 L 465 191" />
+
+        {/* Unifying bar */}
+        <g class="fx" style="--d: 580ms">
+          <rect class="node node--custom" x="20" y="196" width="520" height="50" rx="3" />
+          <rect class="artifact-strip" x="20" y="196" width="520" height="6" />
+          <text class="node-label node-label--custom" x="280" y="224" text-anchor="middle">extense.tech-docs</text>
+          <text class="node-caption" x="280" y="240" text-anchor="middle">one engineering discipline · CI/CD-driven publishing</text>
+        </g>
+
+        {/* Footer multiplier annotation */}
+        <text class="multiplier-label fx" x="280" y="268" text-anchor="middle" style="--d: 700ms">three registers &middot; one engineering practice &middot; release-tied cadence</text>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 820ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. D</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">tech.unified</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">3 SURFACES &middot; 1 PRACTICE &middot; CI/CD</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
 </BaseLayout>
 
 <style>
@@ -420,22 +519,33 @@ const HERO_SUBDECK = "Datasheets for system integrators, API docs for developers
     stroke-dashoffset: 240;
   }
 
-  /* ─── Option A specifics (artifact cards) ─── */
-  .mock-a .doc-ref {
+  /* ─── Shared multiplier label (Option D) ─── */
+  .mock-svg .multiplier-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── Option A & D specifics (artifact cards — D reuses A's classes) ─── */
+  .mock-a .doc-ref,
+  .mock-d .doc-ref {
     font-family: var(--font-mono);
     font-size: 9px;
     font-weight: var(--weight-semibold);
     fill: var(--color-accent-primary-pressed);
     letter-spacing: 0.12em;
   }
-  .mock-a .card-title {
+  .mock-a .card-title,
+  .mock-d .card-title {
     font-family: var(--font-mono);
     font-size: 12px;
     font-weight: var(--weight-medium);
     fill: var(--color-text-primary);
     letter-spacing: 0.02em;
   }
-  .mock-a .field-key {
+  .mock-a .field-key,
+  .mock-d .field-key {
     font-family: var(--font-mono);
     font-size: 9px;
     font-weight: var(--weight-medium);
@@ -443,20 +553,23 @@ const HERO_SUBDECK = "Datasheets for system integrators, API docs for developers
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
-  .mock-a .field-val {
+  .mock-a .field-val,
+  .mock-d .field-val {
     font-family: var(--font-mono);
     font-size: 10px;
     fill: var(--color-text-primary);
     letter-spacing: 0.02em;
   }
-  .mock-a .field-mono {
+  .mock-a .field-mono,
+  .mock-d .field-mono {
     font-family: var(--font-mono);
     font-size: 10px;
     font-weight: var(--weight-medium);
     fill: var(--color-accent-primary-pressed);
     letter-spacing: 0.02em;
   }
-  .mock-a .card-footer {
+  .mock-a .card-footer,
+  .mock-d .card-footer {
     font-family: var(--font-mono);
     font-size: 9px;
     fill: var(--color-text-muted);
