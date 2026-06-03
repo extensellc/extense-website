@@ -7,7 +7,7 @@
   Section order (shared across all five):
     1. TopNav (BaseLayout)
     2. Hero (Hero.universal, vertical-specific framing)
-    3. SiblingsBreadcrumb (.industries) — only on /private-sector industries
+    3. SectionSiblings (industries variant) — only when industryHref is provided
     4. Document types — compact structured list
     5. Standards and frameworks — compact structured list
     6. Cost-of-being-wrong (DocumentRow.failureMode × 1)
@@ -17,13 +17,13 @@
     10. CTAModule (vertical-specific body)
     11. Footer (BaseLayout)
 
-  G&D omits SiblingsBreadcrumb (only one industry under /public-sector — a
+  G&D was historically omitted from siblings (only one industry under /public-sector — a
   one-item siblings breadcrumb would be silly).
 */
 
 import BaseLayout from "./BaseLayout.astro";
 import Hero from "../components/site/Hero.astro";
-import SiblingsBreadcrumb from "../components/nav/SiblingsBreadcrumb.astro";
+import SectionSiblings from "../components/site/SectionSiblings.astro";
 import CompactList from "../components/site/CompactList.astro";
 import DocumentRow from "../components/site/DocumentRow.astro";
 import CTAModule from "../components/site/CTAModule.astro";
@@ -168,7 +168,7 @@ interface Props {
   pageDescription: string;
   heroTitle: string;
   heroSubdeck: string;
-  industryHref?: string; // for SiblingsBreadcrumb; omit for G&D
+  industryHref?: string; // full path; used to derive the slug for SectionSiblings
   showBreadcrumb?: boolean;
   documentTypes: CompactItem[];
   standards: CompactItem[];
@@ -225,7 +225,7 @@ const {
   <Hero variant="universal" title={heroTitle} subdeck={heroSubdeck} />
 
   {showBreadcrumb && industryHref && (
-    <SiblingsBreadcrumb variant="industries" current={industryHref} />
+    <SectionSiblings variant="industries" current={industryHref.replace("/industries/", "")} />
   )}
 
   <section class="ind-section ind-section--documents" aria-labelledby="documents-heading">

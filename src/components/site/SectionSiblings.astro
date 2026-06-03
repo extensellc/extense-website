@@ -1,16 +1,14 @@
 ---
 /*
-  SectionSiblings — sibling navigation for the /solutions/* and /services/*
-  sub-pages. Sits directly below the hero.
+  SectionSiblings — sibling navigation for /solutions/*, /services/*, and
+  /industries/* sub-pages. Sits directly below the hero.
 
   Layout: a mono "← {Section}" back-link to the section index, then the sibling
   pages inline, separated by middle dots (·). The current page renders amber +
   bold (not a link); the others are muted links. Hairline rules above and below.
 
-  (Industries / pillars use the separate nav/SiblingsBreadcrumb component.)
-
   Props
-    variant — "solutions" | "services"
+    variant — "solutions" | "services" | "industries"
     current — the current page's slug within that section
 */
 
@@ -24,7 +22,7 @@ interface Section {
   items: Sibling[];
 }
 
-const sections: Record<"solutions" | "services", Section> = {
+const sections: Record<"solutions" | "services" | "industries", Section> = {
   solutions: {
     label: "Solutions",
     href: "/solutions",
@@ -48,19 +46,31 @@ const sections: Record<"solutions" | "services", Section> = {
       { slug: "xml-engineering",                       label: "XML Engineering" },
     ],
   },
+  industries: {
+    label: "Industries",
+    href: "/industries",
+    items: [
+      { slug: "government-and-defense", label: "Government & Defense" },
+      { slug: "financial-services",     label: "Financial Services" },
+      { slug: "life-sciences",          label: "Life Sciences" },
+      { slug: "transportation",         label: "Transportation" },
+      { slug: "insurance",              label: "Insurance" },
+      { slug: "technology",             label: "Technology" },
+    ],
+  },
 };
 
 interface Props {
-  variant: "solutions" | "services";
+  variant: "solutions" | "services" | "industries";
   current: string;
 }
 
 const { variant, current } = Astro.props;
 const section = sections[variant];
 
-// Services has 7 siblings — needs the wider page container to stay one line;
-// Solutions has 4 and sits comfortably in container-data.
-const containerClass = variant === "services" ? "container-page" : "container-data";
+// Services has 7 siblings + Industries has 6 — both need the wider page
+// container to stay on one line. Solutions has 4 and fits container-data.
+const containerClass = variant === "solutions" ? "container-data" : "container-page";
 ---
 
 <nav class="section-siblings" aria-label={`${section.label} sub-pages`}>

@@ -11,7 +11,7 @@
     1. Hero (universal) — H1 + paired subdeck + Option-D side visual
        (two-register convergence: 3 defense pillars + 3 civilian standards
        converging into extense.gov-docs)
-    2. SiblingsBreadcrumb (industries)
+    2. SectionSiblings (industries variant)
     3. S1000D Implementation [OLD] · 3-card grid — DEFENSE
     4. Agency Publishing & Section 508 [DRAFT-approved] · 3-card grid — CIVILIAN (banded)
     5. Security & Compliance [OLD] · 3-card grid — joint
@@ -29,7 +29,7 @@
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/site/Hero.astro";
-import SiblingsBreadcrumb from "../../components/nav/SiblingsBreadcrumb.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 
 interface Card {
@@ -225,7 +225,7 @@ const related: RelatedCard[] = [
     </svg>
   </Hero>
 
-  <SiblingsBreadcrumb variant="industries" current="/industries/government-and-defense" />
+  <SectionSiblings variant="industries" current="government-and-defense" />
 
   {/* ───────── S3 — S1000D Implementation (defense) ───────── */}
   <section class="gd-section" aria-labelledby="gd-impl-heading">
