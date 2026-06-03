@@ -12,7 +12,10 @@
   in the same commit. Redirects added to vercel.json for the old URLs.
 
   Section order:
-    1. Hero (universal, no side visual) — [OLD-merge] H1 + [DRAFT] subdeck
+    1. Hero (universal, with side visual) — [OLD-merge] H1 + [DRAFT] subdeck
+       + document-grade side visual (case-study.pdf with 3 measurement
+       callouts: 25K+ PAGES MIGRATED · 100% AUDIT PASS RATE · 0 DOC LAG
+       DAYS — one per anonymized industry from S3)
     2. Measurable Results for Global Enterprises [OLD] — 3 anonymized
        outcome cards
     3. Detailed Case Studies [DRAFT-summarized] — 3 summary cards linking
@@ -199,7 +202,84 @@ const continueExploring: ContinueCard[] = [
     title="Measurable Results, Real Deliverables"
     subdeck="Proven results for global enterprises — real projects, real deliverables, every metric backed by artifacts you can inspect."
     subdeckMaxWidth="520px"
-  />
+  >
+    <div class="owcs-hero-visual">
+      <svg
+        class="owcs-hero-flow"
+        id="owcs-hero-flow"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        {/* corner reg marks */}
+        <g class="corner fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: deliverable.inspected</text>
+
+        {/* Case-study document outline */}
+        <g class="fx" style="--d: 200ms">
+          <rect class="doc" x="40" y="56" width="200" height="220" rx="3" />
+          <rect class="doc-band" x="40" y="56" width="200" height="20" />
+          <text class="doc-label" x="50" y="71">case-study.pdf</text>
+
+          <rect class="doc-title" x="56" y="92" width="100" height="6" />
+          <rect class="doc-line" x="56" y="110" width="168" height="3" />
+          <rect class="doc-line" x="56" y="120" width="168" height="3" />
+          <rect class="doc-line" x="56" y="130" width="140" height="3" />
+
+          <rect class="doc-rule" x="56" y="148" width="168" height="1" />
+
+          <rect class="doc-title" x="56" y="160" width="80" height="6" />
+          <rect class="doc-line" x="56" y="178" width="168" height="3" />
+          <rect class="doc-line" x="56" y="188" width="168" height="3" />
+          <rect class="doc-line" x="56" y="198" width="120" height="3" />
+
+          <rect class="doc-rule" x="56" y="216" width="168" height="1" />
+
+          <rect class="doc-title" x="56" y="228" width="90" height="6" />
+          <rect class="doc-line" x="56" y="246" width="168" height="3" />
+          <rect class="doc-line" x="56" y="256" width="168" height="3" />
+        </g>
+
+        {/* Callout 1 — 25K+ PAGES MIGRATED */}
+        <path class="flow-conn" style="--d: 480ms" d="M240 95 L300 95 L300 84 L330 84" />
+        <g class="fx" style="--d: 640ms">
+          <rect class="node node--custom" x="330" y="66" width="200" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="430" y="89" text-anchor="middle">25K+ PAGES MIGRATED</text>
+        </g>
+
+        {/* Callout 2 — 100% AUDIT PASS RATE */}
+        <path class="flow-conn" style="--d: 720ms" d="M240 165 L300 165 L300 165 L330 165" />
+        <g class="fx" style="--d: 880ms">
+          <rect class="node node--custom" x="330" y="147" width="200" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="430" y="170" text-anchor="middle">100% AUDIT PASS RATE</text>
+        </g>
+
+        {/* Callout 3 — 0 DOC LAG DAYS */}
+        <path class="flow-conn" style="--d: 960ms" d="M240 235 L300 235 L300 246 L330 246" />
+        <g class="fx" style="--d: 1120ms">
+          <rect class="node node--custom" x="330" y="228" width="200" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="430" y="251" text-anchor="middle">0 DOC LAG DAYS</text>
+        </g>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 1280ms">
+          <line class="chrome-rule" x1="30" y1="282" x2="530" y2="282" />
+          <rect class="build-dot" x="232" y="292" width="6" height="6" />
+          <text class="chrome chrome--strong" x="246" y="298">FIG. 01</text>
+          <text class="chrome" x="296" y="298">/</text>
+          <text class="chrome chrome--strong" x="304" y="298">deliverable.inspected</text>
+          <text class="chrome chrome--strong" x="530" y="298" text-anchor="end">1 ARTIFACT &middot; 3 MEASUREMENTS</text>
+        </g>
+      </svg>
+    </div>
+  </Hero>
 
   {/* ───────── S3 — Measurable Results for Global Enterprises ───────── */}
   <section class="owcs-section" aria-labelledby="owcs-results-heading">
@@ -788,4 +868,154 @@ const continueExploring: ContinueCard[] = [
   .owcs-related-card:focus-visible .owcs-related-card__arrow {
     transform: translateX(2px);
   }
+
+  /* ─── Hero side visual: case-study deliverable + measurement callouts ─── */
+  .owcs-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .owcs-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+  .owcs-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .owcs-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .owcs-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .owcs-hero-flow .corner {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .owcs-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .owcs-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .owcs-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .owcs-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .owcs-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .owcs-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .owcs-hero-flow .doc {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .owcs-hero-flow .doc-band {
+    fill: var(--color-surface-band);
+    stroke: none;
+  }
+  .owcs-hero-flow .doc-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+  }
+  .owcs-hero-flow .doc-title {
+    fill: var(--color-text-primary);
+  }
+  .owcs-hero-flow .doc-line {
+    fill: var(--color-text-muted);
+    opacity: 0.55;
+  }
+  .owcs-hero-flow .doc-rule {
+    fill: var(--color-border-subtle);
+  }
+  .owcs-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 540;
+    stroke-dashoffset: 540;
+  }
+  .owcs-hero-flow .fx {
+    opacity: 0;
+  }
+  .owcs-hero-flow.drawn .fx {
+    animation: owcs-flow-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .owcs-hero-flow.drawn .flow-conn {
+    animation: owcs-flow-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes owcs-flow-fade {
+    to { opacity: 1; }
+  }
+  @keyframes owcs-flow-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .owcs-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .owcs-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
 </style>
+
+<script>
+  function setupOwcsHero() {
+    const svg = document.getElementById("owcs-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupOwcsHero);
+  document.addEventListener("astro:page-load", setupOwcsHero);
+</script>

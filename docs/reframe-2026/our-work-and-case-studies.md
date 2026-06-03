@@ -133,14 +133,35 @@
 
 ## 5. Wireframe
 
-### S1 — Hero · `Hero` (universal, no side visual)
+### S1 — Hero · `Hero` (universal, with side visual)
 - **H1** `[OLD-merge-locked]`: "Measurable Results, Real Deliverables"
 - **Subdeck** `[DRAFT-merge]`: "Proven results for global enterprises
   — real projects, real deliverables, every metric backed by artifacts
   you can inspect."
 - `subdeckMaxWidth="520px"`.
-- No side visual — text-only hero (matches /company/faqs and other
-  evidence-heavy Company pages).
+- **Side visual (locked 2026-06-03):** document-grade SVG rendering a
+  representative case-study deliverable with three measurement callouts.
+  Concept D from the mockups (`our-work-and-case-studies-mock.astro`,
+  deleted after selection) — genericized so the metrics span the page
+  rather than leaning on any single case study.
+  - Document: stylized `case-study.pdf` cover (200×220 outlined rect,
+    surface-band header strip + filename label, body content rendered
+    as muted line rectangles in 3 stylized sections divided by hairlines).
+  - 3 callout chips (amber `node--custom`, lines from doc edge):
+    - `25K+ PAGES MIGRATED` (scale — sourced from the Manufacturing
+      OEM outcome card in S3)
+    - `100% AUDIT PASS RATE` (quality — Medical Device card in S3)
+    - `0 DOC LAG DAYS` (velocity — FinTech card in S3)
+  - Chrome: top `in :: deliverable.inspected`, bottom
+    `FIG. 01 / deliverable.inspected · 1 ARTIFACT · 3 MEASUREMENTS`.
+  - Standard idiom: corner reg-marks, mono FIG. chrome, amber flow
+    connectors, `IntersectionObserver` `.drawn` scroll-reveal +
+    reduced-motion fallback.
+  - Concept chosen because it renders the page's load-bearing thesis
+    (every metric backed by an inspectable artifact) as a single
+    thesis-statement image rather than previewing the page's inventory
+    (concept C was the alternative; rejected because the cards below
+    the hero already do the inventory work).
 
 ### S2 — (No `SectionSiblings` on the index) — Company sub-pages don't currently use a unified sibling nav. Detail pages get their own.
 
