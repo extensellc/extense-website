@@ -35,6 +35,7 @@ const HERO_SUBDECK = "Precision, compliance, and auditability for banking, finte
         <a href="#opt-a">A · Single-source reuse fan</a>
         <a href="#opt-b">B · SOX control chain pipeline</a>
         <a href="#opt-c">C · Multi-jurisdiction profiling fan</a>
+        <a href="#opt-d">D · Reuse fan + audit trace on the source</a>
       </nav>
     </div>
   </section>
@@ -271,6 +272,86 @@ const HERO_SUBDECK = "Precision, compliance, and auditability for banking, finte
       </svg>
     </Hero>
   </section>
+
+  {/* ────────────── OPTION D ────────────── */}
+  <section class="fsm-option" id="opt-d">
+    <div class="container-page">
+      <h2 class="fsm-option__heading">Option D — Reuse fan + audit trace on the source</h2>
+      <p class="fsm-option__note">
+        Same layout as A (central <code>&lt;policy&gt;</code> + 4 deliverables
+        fanning to the corners), with audit metadata baked into the source
+        chip itself — version, approval, SOX-404 binding, git-style diff hash.
+        Captures both load-bearing themes from the page: single-source reuse
+        (the fan) and audit traceability (the metadata).
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK} subdeckMaxWidth="520px">
+      <svg
+        class="mock-svg mock-d"
+        id="mock-d"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: financial.reuse-traced</text>
+
+        {/* Four corner deliverable chips */}
+        <g class="fx" style="--d: 280ms">
+          <rect class="node node--custom" x="20" y="58" width="160" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="100" y="81" text-anchor="middle">EMPLOYEE HANDBOOK</text>
+        </g>
+        <g class="fx" style="--d: 320ms">
+          <rect class="node node--custom" x="380" y="58" width="160" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="460" y="81" text-anchor="middle">COMPLIANCE MANUAL</text>
+        </g>
+        <g class="fx" style="--d: 360ms">
+          <rect class="node node--custom" x="20" y="226" width="160" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="100" y="249" text-anchor="middle">TRAINING DECK</text>
+        </g>
+        <g class="fx" style="--d: 400ms">
+          <rect class="node node--custom" x="380" y="226" width="160" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="460" y="249" text-anchor="middle">CLIENT DISCLOSURE</text>
+        </g>
+
+        {/* 4 radial connectors */}
+        <path class="flow-conn" style="--d: 540ms" d="M 210 140 L 180 94" />
+        <path class="flow-conn" style="--d: 560ms" d="M 350 140 L 380 94" />
+        <path class="flow-conn" style="--d: 580ms" d="M 210 190 L 180 226" />
+        <path class="flow-conn" style="--d: 600ms" d="M 350 190 L 380 226" />
+
+        {/* Central <policy> chip with audit metadata baked in */}
+        <g class="fx" style="--d: 700ms">
+          <rect class="node node--custom" x="210" y="110" width="140" height="110" rx="3" />
+          <rect class="artifact-strip" x="210" y="110" width="140" height="6" />
+          <text class="node-label node-label--custom" x="280" y="138" text-anchor="middle">&lt;policy&gt;</text>
+          <line class="artifact-rule" x1="226" y1="148" x2="334" y2="148" />
+          <text class="meta-line" x="280" y="163" text-anchor="middle">v3.2 · 2025-Q2</text>
+          <text class="meta-line" x="280" y="178" text-anchor="middle">SOX 404 · linked</text>
+          <text class="meta-line meta-line--diff" x="280" y="193" text-anchor="middle">a1b2c3 → d4e5f6</text>
+          <line class="artifact-rule" x1="226" y1="203" x2="334" y2="203" />
+          <text class="node-caption" x="280" y="216" text-anchor="middle">extense.compliance</text>
+        </g>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 880ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. D</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">financial.reuse-traced</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">ONE SOURCE &rarr; MANY · AUDIT-TRACEABLE</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
 </BaseLayout>
 
 <style>
@@ -410,6 +491,18 @@ const HERO_SUBDECK = "Precision, compliance, and auditability for banking, finte
     vector-effect: non-scaling-stroke;
     stroke-dasharray: 240;
     stroke-dashoffset: 240;
+  }
+
+  /* Option D meta lines (in the central policy chip) */
+  .mock-d .meta-line {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+  .mock-d .meta-line--diff {
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.06em;
   }
 
   /* Option B stage chips */
