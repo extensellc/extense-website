@@ -11,6 +11,16 @@
       "has": [{ "type": "host", "value": "www.extense.co" }],
       "destination": "https://ex-tense.co/$1",
       "permanent": false
+    },
+    {
+      "source": "/resources/case-studies",
+      "destination": "/company/our-work-and-case-studies",
+      "permanent": true
+    },
+    {
+      "source": "/resources/case-studies/:slug",
+      "destination": "/company/our-work-and-case-studies/:slug",
+      "permanent": true
     }
   ]
 }

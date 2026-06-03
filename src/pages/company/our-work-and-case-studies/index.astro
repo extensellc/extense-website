@@ -1,0 +1,756 @@
+---
+/*
+  /company/our-work-and-case-studies
+
+  Combined Company sub-page merging two old ex-tense.co pages: "Our Work"
+  (3 anonymized outcome cards) and "Case Studies" (impact metrics + 3
+  detailed case studies + methodology + cross-links + CTA).
+  See docs/reframe-2026/our-work-and-case-studies.md.
+
+  Detail-page move (D-3): the 3 case-study detail pages were relocated
+  from /resources/case-studies/<slug> to this directory's <slug> sub-pages
+  in the same commit. Redirects added to vercel.json for the old URLs.
+
+  Section order:
+    1. Hero (universal, no side visual) — [OLD-merge] H1 + [DRAFT] subdeck
+    2. Measurable Results for Global Enterprises [OLD] — 3 anonymized
+       outcome cards
+    3. Detailed Case Studies [DRAFT-summarized] — 3 summary cards linking
+       to detail pages (banded)
+    4. Measured Impact [OLD] — 4-stat band + 3 explanatory cards +
+       "How We Calculate AI-Readiness" sub-block
+    5. Downstream Savings Projection [OLD] — 4-stat band + "A Note on
+       These Numbers" caveat (banded)
+    6. Continue Exploring [OLD] — 3-card cross-link
+    7. CTA — "Have a Similar Challenge?" [OLD]
+
+  Page-local CSS prefix: owcs-.
+*/
+
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Hero from "../../../components/site/Hero.astro";
+import CTAModule from "../../../components/site/CTAModule.astro";
+
+interface OutcomeCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+  stats: { value: string; label: string }[];
+}
+
+const outcomeCards: OutcomeCard[] = [
+  {
+    eyebrow: "MANUFACTURING",
+    title: "Global Heavy Equipment OEM",
+    body: "Migrated 25,000+ pages from FrameMaker to DITA. Implemented content reuse strategy that reduced translation costs by 60% and cut time-to-publish from 6 weeks to 3 days.",
+    stats: [
+      { value: "60%",  label: "Cost Reduction" },
+      { value: "25K+", label: "Pages Migrated" },
+    ],
+  },
+  {
+    eyebrow: "MEDICAL DEVICE",
+    title: "Class III Medical Device Manufacturer",
+    body: "Built a 21 CFR Part 11 validated DITA workflow for Instructions for Use (IFU) across 30+ markets. Achieved 100% audit compliance in the first FDA inspection post-deployment.",
+    stats: [
+      { value: "100%", label: "Audit Pass Rate" },
+      { value: "30+",  label: "Markets" },
+    ],
+  },
+  {
+    eyebrow: "FINTECH",
+    title: "FinTech Startup — API Documentation",
+    body: "Implemented a docs-as-code pipeline using OpenAPI, Markdown, and GitHub Actions. API reference pages auto-generate on every merge to main, reducing developer documentation lag from 2 weeks to zero.",
+    stats: [
+      { value: "0",     label: "Doc Lag Days" },
+      { value: "CI/CD", label: "Fully Automated" },
+    ],
+  },
+];
+
+interface CaseSummary {
+  title: string;
+  subtitle: string;
+  body: string;
+  stats: string[];
+  href: string;
+}
+
+const caseSummaries: CaseSummary[] = [
+  {
+    title: "Enterprise DITA Training Curriculum",
+    subtitle: "76 topics across a 10-part learning program — authored, enriched, and published entirely in DITA.",
+    body: "A growing consulting practice needed a hands-on DITA training program serving three audiences — technical writers, software engineers, content strategists — with role-based learning paths and different time commitments. We designed a 10-part bookmap covering the full content lifecycle and validated every topic against a controlled vocabulary subject scheme.",
+    stats: ["76 DITA topics", "218 PDF pages", "12 hands-on labs"],
+    href: "/company/our-work-and-case-studies/dita-training-curriculum",
+  },
+  {
+    title: "AI-Ready Content Pipeline",
+    subtitle: "Unstructured legacy XML transformed into chunk-safe, metadata-enriched DITA — with measurable AI-readiness scoring.",
+    body: "Legacy documentation existed as generic XML and Markdown with no semantic typing, no metadata, and no section identifiers — AI systems treated it as undifferentiated plain text. We built a Python metadata enrichment pipeline that batch-applies a 5-facet controlled vocabulary to every topic, with a DITA subject scheme enforcing normalized values.",
+    stats: ["100% metadata coverage", "5 classification facets", "150+ section IDs"],
+    href: "/company/our-work-and-case-studies/ai-content-pipeline",
+  },
+  {
+    title: "Custom DITA-OT Publishing Automation",
+    subtitle: "Two branded DITA-OT plugins and a multi-format build pipeline producing HTML5, print-ready PDF, and PWA-installable output from one DITA source.",
+    body: "Default DITA-OT output is functional but generic — no branding, no interactive navigation, no PWA support. We developed two custom plugins with XSLT overrides, branded CSS, custom JavaScript, and XSL-FO page layouts, plus shell scripts that automate the full build cycle: install, generate, copy assets, verify.",
+    stats: ["4 output formats", "2 custom plugins", "0 manual build steps"],
+    href: "/company/our-work-and-case-studies/publishing-automation",
+  },
+];
+
+interface ImpactStat {
+  value: string;
+  label: string;
+}
+
+const measuredImpact: ImpactStat[] = [
+  { value: "2 → 9",    label: "AI-Readiness Score (out of 10)" },
+  { value: "0 → 100%", label: "Metadata Coverage" },
+  { value: "350%",     label: "More Reusable Content" },
+  { value: "−70%",     label: "Less Rework on Updates" },
+];
+
+interface ExplanatoryCard {
+  title: string;
+  body: string;
+}
+
+const downstreamCards: ExplanatoryCard[] = [
+  {
+    title: "Translation & Localization",
+    body: "Typed, modular topics with conref/keyref reuse mean translation vendors process only changed segments — not entire documents. Industry benchmarks suggest a 40–60% reduction in per-language translation cost once translation memory matures after midyear.",
+  },
+  {
+    title: "Chatbot & AI Retrieval",
+    body: "Moving from keyword-only search to metadata-filtered vector retrieval with intent classification. Structured content with section IDs, question-phrased titles, and controlled vocabulary typically improves chatbot answer precision from ~25% to 80%+ — reducing escalations to human agents.",
+  },
+  {
+    title: "Publishing & Maintenance",
+    body: "Single-source publishing in 4 formats eliminates manual reformatting. Fixing a safety warning or procedure once propagates everywhere automatically. Teams with comparable set-ups report release cycles 3–5x faster and zero version drift across formats.",
+  },
+];
+
+const projectionStats: ImpactStat[] = [
+  { value: "40-60%", label: "Translation Savings" },
+  { value: "3-5x",   label: "Faster Release Cycles" },
+  { value: "85%+",   label: "Chatbot Precision" },
+  { value: "~70%",   label: "Less Update Rework" },
+];
+
+interface ContinueCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+  href: string;
+}
+
+const continueExploring: ContinueCard[] = [
+  {
+    eyebrow: "Service",
+    title: "DITA Engineering",
+    body: "Topic modeling, specialization, information architecture, and AI-ready content engineering.",
+    href: "/services/dita-engineering",
+  },
+  {
+    eyebrow: "Service",
+    title: "Publishing Engineering",
+    body: "Custom DITA-OT plugins, CSS-to-PDF, GraphQL APIs, and multi-channel automation.",
+    href: "/services/publishing-engineering",
+  },
+  {
+    eyebrow: "Solution",
+    title: "Content Migration",
+    body: "Proven methodology for converting unstructured content to DITA XML with metadata enrichment.",
+    href: "/solutions/content-migration",
+  },
+];
+---
+
+<BaseLayout
+  title="Measurable Results, Real Deliverables — Our Work & Case Studies"
+  description="Measurable results from Extense engagements: anonymized outcomes from global enterprise work (Manufacturing OEM, Medical Device, FinTech) plus three detailed case studies (DITA Training Curriculum, AI-Ready Content Pipeline, Custom DITA-OT Publishing Automation) with inspectable artifacts."
+>
+  <Hero
+    variant="universal"
+    title="Measurable Results, Real Deliverables"
+    subdeck="Proven results for global enterprises — real projects, real deliverables, every metric backed by artifacts you can inspect."
+    subdeckMaxWidth="520px"
+  />
+
+  {/* ───────── S3 — Measurable Results for Global Enterprises ───────── */}
+  <section class="owcs-section" aria-labelledby="owcs-results-heading">
+    <div class="container-page owcs-section__inner">
+      <div class="owcs-heading-block">
+        <h2 id="owcs-results-heading" class="owcs-heading">Measurable Results for Global Enterprises</h2>
+        <p class="owcs-intro">
+          We measure success in dollars saved, hours recovered, and compliance risks eliminated. Here's a sample of recent engagements.
+        </p>
+      </div>
+      <ul class="owcs-outcome-grid">
+        {outcomeCards.map((c) => (
+          <li class="owcs-outcome-card">
+            <p class="owcs-outcome-card__eyebrow">{c.eyebrow}</p>
+            <h3 class="owcs-outcome-card__title">{c.title}</h3>
+            <p class="owcs-outcome-card__body">{c.body}</p>
+            <ul class="owcs-outcome-card__stats">
+              {c.stats.map((s) => (
+                <li class="owcs-outcome-card__stat">
+                  <span class="owcs-outcome-card__stat-value">{s.value}</span>
+                  <span class="owcs-outcome-card__stat-label">{s.label}</span>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S4 — Detailed Case Studies (banded) ───────── */}
+  <section class="owcs-section owcs-section--band" aria-labelledby="owcs-cases-heading">
+    <div class="container-page owcs-section__inner">
+      <div class="owcs-heading-block">
+        <h2 id="owcs-cases-heading" class="owcs-heading">Detailed Case Studies</h2>
+        <p class="owcs-intro">
+          Three Extense-internal projects, each with inspectable artifacts and measured outcomes. The summaries below are the headline; each links to a dedicated page with the full Challenge / Approach / Deliverables breakdown.
+        </p>
+      </div>
+      <ul class="owcs-case-grid">
+        {caseSummaries.map((c) => (
+          <li class="owcs-case-card">
+            <h3 class="owcs-case-card__title">{c.title}</h3>
+            <p class="owcs-case-card__subtitle">{c.subtitle}</p>
+            <p class="owcs-case-card__body">{c.body}</p>
+            <ul class="owcs-case-card__stats">
+              {c.stats.map((s, i) => (
+                <>
+                  <li class="owcs-case-card__stat">{s}</li>
+                  {i < c.stats.length - 1 && <li class="owcs-case-card__stat-sep" aria-hidden="true">·</li>}
+                </>
+              ))}
+            </ul>
+            <a href={c.href} class="owcs-case-card__cta">
+              Read full case study <span aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S5 — Measured Impact ───────── */}
+  <section class="owcs-section" aria-labelledby="owcs-impact-heading">
+    <div class="container-page owcs-section__inner">
+      <div class="owcs-heading-block">
+        <h2 id="owcs-impact-heading" class="owcs-heading">Measured Impact</h2>
+        <p class="owcs-intro">
+          Aggregate improvements across the content transformation — from raw source to AI-ready, multi-format output.
+        </p>
+      </div>
+      <ul class="owcs-stat-band">
+        {measuredImpact.map((s) => (
+          <li class="owcs-stat">
+            <span class="owcs-stat__value owcs-stat__value--measured">{s.value}</span>
+            <span class="owcs-stat__label">{s.label}</span>
+          </li>
+        ))}
+      </ul>
+
+      <h3 class="owcs-subheading">What These Numbers Mean Downstream</h3>
+      <ul class="owcs-downstream-grid">
+        {downstreamCards.map((c) => (
+          <li class="owcs-downstream-card">
+            <h4 class="owcs-downstream-card__title">{c.title}</h4>
+            <p class="owcs-downstream-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+
+      <div class="owcs-methodology">
+        <h3 class="owcs-methodology__heading">How We Calculate AI-Readiness</h3>
+        <p class="owcs-methodology__body">
+          Our 10-point scoring considers: <strong>topic typing</strong> (concept/task/reference vs. generic) · <strong>metadata completeness</strong> (fields per topic) · <strong>section addressability</strong> (stable IDs for chunking) · <strong>vocabulary control</strong> (normalized vs. free-text) · <strong>semantic markup richness</strong> (shortdesc, prereqs, steps, tables) · <strong>reuse architecture</strong> (conref/keyref vs. copy-paste) · <strong>output pipeline maturity</strong> (automated multi-format vs. manual). A score of 2 means AI treats content as plain text. A score of 9 means AI can filter, route, chunk, and cite content precisely.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── S6 — Downstream Savings Projection (banded) ───────── */}
+  <section class="owcs-section owcs-section--band" aria-labelledby="owcs-projection-heading">
+    <div class="container-page owcs-section__inner">
+      <div class="owcs-heading-block">
+        <h2 id="owcs-projection-heading" class="owcs-heading">Downstream Savings Projection</h2>
+        <p class="owcs-intro">
+          Conservative estimates based on industry benchmarks for organizations managing 500+ topics across multiple languages and channels.
+        </p>
+      </div>
+      <ul class="owcs-stat-band">
+        {projectionStats.map((s) => (
+          <li class="owcs-stat">
+            <span class="owcs-stat__value owcs-stat__value--projection">{s.value}</span>
+            <span class="owcs-stat__label">{s.label}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="owcs-caveat">
+        <h3 class="owcs-caveat__heading">A Note on These Numbers</h3>
+        <p class="owcs-caveat__body">
+          We don't fabricate ROI projections. The percentages above reflect <strong>industry benchmarks</strong> published by OASIS, Gartner, and CIDM for organizations that achieve 40%+ content reuse with structured metadata. Your actual savings depend on content volume, language count, update frequency, and current toolchain maturity. We help you <strong>measure your baseline</strong> before projecting improvements — so every number on your business case is defensible.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── S7 — Continue Exploring ───────── */}
+  <section class="owcs-section" aria-labelledby="owcs-continue-heading">
+    <div class="container-page owcs-section__inner">
+      <div class="owcs-heading-block">
+        <h2 id="owcs-continue-heading" class="owcs-heading">Continue Exploring</h2>
+      </div>
+      <ul class="owcs-related-grid">
+        {continueExploring.map((r) => (
+          <li class="owcs-related-card-item">
+            <a href={r.href} class="owcs-related-card">
+              <span class="owcs-related-card__eyebrow">{r.eyebrow}</span>
+              <h3 class="owcs-related-card__title">{r.title}</h3>
+              <p class="owcs-related-card__body">{r.body}</p>
+              <span class="owcs-related-card__cta">
+                Explore <span class="owcs-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Have a Similar Challenge?"
+    body="Whether you're building a training program, preparing content for AI, or automating multi-format publishing — we've done it and can show you the artifacts."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Section shell ─── */
+  .owcs-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .owcs-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .owcs-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Section heading block ─── */
+  .owcs-heading-block {
+    margin-bottom: var(--space-12);
+    max-width: 80ch;
+  }
+  .owcs-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .owcs-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── S3 — Outcome cards grid (3-col) ─── */
+  .owcs-outcome-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .owcs-outcome-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .owcs-outcome-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .owcs-outcome-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .owcs-outcome-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .owcs-outcome-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .owcs-outcome-card__stats {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-4) 0 0 0;
+    border-top: var(--border-hairline);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+  .owcs-outcome-card__stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .owcs-outcome-card__stat-value {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-accent-primary-pressed);
+    line-height: 1;
+  }
+  .owcs-outcome-card__stat-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── S4 — Case summary cards (3-col) ─── */
+  .owcs-case-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .owcs-case-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .owcs-case-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .owcs-case-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .owcs-case-card__subtitle {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: pretty;
+  }
+  .owcs-case-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .owcs-case-card__stats {
+    list-style: none;
+    margin: 0 0 var(--space-5) 0;
+    padding: var(--space-3) 0;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-secondary);
+  }
+  .owcs-case-card__stat-sep {
+    color: var(--color-text-muted);
+  }
+  .owcs-case-card__cta {
+    margin-top: auto;
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--easing-out);
+  }
+  .owcs-case-card__cta:hover,
+  .owcs-case-card__cta:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* ─── S5 + S6 — Stat band (4-col) ─── */
+  .owcs-stat-band {
+    list-style: none;
+    margin: 0 0 var(--space-12) 0;
+    padding: var(--space-8) 0;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8) var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .owcs-stat-band {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .owcs-stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: center;
+    text-align: center;
+  }
+  .owcs-stat__value {
+    font-family: var(--font-display);
+    font-size: var(--text-display-xl);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    font-feature-settings: "tnum";
+  }
+  .owcs-stat__value--measured {
+    color: #16a34a; /* measured green */
+  }
+  .owcs-stat__value--projection {
+    color: var(--color-accent-primary-pressed); /* projection amber */
+  }
+  .owcs-stat__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+
+  /* ─── S5 — "What These Numbers Mean Downstream" sub-section ─── */
+  .owcs-subheading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+  }
+  .owcs-downstream-grid {
+    list-style: none;
+    margin: 0 0 var(--space-12) 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .owcs-downstream-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .owcs-downstream-card {
+    border-left: 2px solid var(--color-accent-primary);
+    padding: var(--space-2) var(--space-6);
+  }
+  .owcs-downstream-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    line-height: var(--leading-snug);
+  }
+  .owcs-downstream-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── S5 — Methodology sub-block ─── */
+  .owcs-methodology {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-8);
+  }
+  .owcs-methodology__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+  }
+  .owcs-methodology__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .owcs-methodology__body strong {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* ─── S6 — "A Note on These Numbers" caveat ─── */
+  .owcs-caveat {
+    background-color: #fef3c7;
+    border-left: 3px solid var(--color-accent-primary);
+    border-radius: var(--radius-sm);
+    padding: var(--space-8) var(--space-12);
+  }
+  @media (max-width: 767px) {
+    .owcs-caveat {
+      padding: var(--space-6) var(--space-8);
+    }
+  }
+  .owcs-caveat__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+  }
+  .owcs-caveat__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .owcs-caveat__body strong {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* ─── S7 — Continue Exploring (3-card cross-link) ─── */
+  .owcs-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .owcs-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .owcs-related-card-item {
+    display: flex;
+  }
+  .owcs-related-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+  .owcs-related-card:hover,
+  .owcs-related-card:focus-visible {
+    border-color: var(--color-accent-primary);
+  }
+  .owcs-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .owcs-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .owcs-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .owcs-related-card__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+  }
+  .owcs-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .owcs-related-card:hover .owcs-related-card__arrow,
+  .owcs-related-card:focus-visible .owcs-related-card__arrow {
+    transform: translateX(2px);
+  }
+</style>
