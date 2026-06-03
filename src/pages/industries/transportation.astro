@@ -1,190 +1,730 @@
 ---
-import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+/*
+  /industries/transportation
+
+  Faithful reframe of the old ex-tense.co/industries/automotive page,
+  expanded to honor the Automotive -> Transportation rename via one [DRAFT]
+  cross-mode acknowledgment callout in S5.
+  See docs/reframe-2026/transportation.md.
+
+  Section order:
+    1. Hero (universal) — H1 [DRAFT] "Automotive & Transportation Information
+       Systems" + [DRAFT-augmented] subdeck + Option-D side visual
+       (VIN-driven assembly + multi-channel publishing)
+    2. SectionSiblings (industries)
+    3. The Software-Defined Vehicle [OLD] - 3-card grid
+    4. Multi-Channel Automotive Publishing [OLD] - 3-card grid (banded)
+    5. VIN-Specific Publishing Workflow [OLD] - 01-05 strip + [DRAFT]
+       Cross-Mode Patterns callout
+    6. Explore Related [OLD] - 2-card cross-link (banded)
+    7. CTA - "Free Automotive Content Assessment" [OLD]
+
+  Page-local CSS prefix: tr-. Hero SVG inline, scroll-revealed via
+  IntersectionObserver (.drawn), with reduced-motion fallback.
+
+  Replaces the prior IndustryPageLayout-based version (which had been
+  expanded post-rename to cover all 4 modes via a cross-mode comparison
+  table); the stale /capabilities/* links go away with it. Cross-mode
+  scope preserved at light weight via the S5 callout.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon: string;
+}
+
+const vehicleCards: Card[] = [
+  {
+    title: "Service Information (SI)",
+    icon: "monitor",
+    body: "We link Diagnostic Trouble Codes (DTCs) to specific repair procedures at the metadata level. A technician scans the OBD-II port, the diagnostic tool reads the fault code, and the system retrieves the exact DITA topic — complete with torque specs, wiring diagrams, and part numbers — for that specific fault on that specific model year.",
+  },
+  {
+    title: "VIN-Specific Owner's Literature",
+    icon: "doc",
+    body: "Each vehicle's build configuration (VIN data) determines its documentation. If the build sheet includes \"Panoramic Sunroof,\" the owner's manual includes the sunroof chapter. If not, it is excluded. This produces tailored, accurate documentation for every individual vehicle — not a generic manual padded with irrelevant content.",
+  },
+  {
+    title: "Augmented Reality (AR) Delivery",
+    icon: "play",
+    body: "Semantic tagging of repair procedures enables AR overlays. Structured metadata (bolt location, torque sequence, component ID) allows AR glasses or tablet cameras to project step-by-step instructions onto the physical engine bay, guiding the technician's hands to the exact component.",
+  },
+];
+
+const channelCards: Card[] = [
+  {
+    title: "Safety Recall Management",
+    icon: "shield",
+    body: "When a safety recall is issued, the affected repair procedure must be published to every dealer within hours — not weeks. Our publishing pipeline pushes recall-specific content to dealer portals, generates NHTSA-compliant notification letters, and updates the in-vehicle system simultaneously.",
+  },
+  {
+    title: "API-Driven Content Delivery",
+    icon: "code",
+    body: "Headless content APIs serve structured topics to dealer diagnostic tools, mobile service apps, and in-vehicle infotainment systems. Content is delivered as JSON-LD with semantic metadata — not as rendered pages — enabling each client application to present information in its native format.",
+  },
+  {
+    title: "Multi-Language & Market Variants",
+    icon: "globe",
+    body: "A single vehicle platform may be sold in 40+ markets with different regulatory requirements, measurement systems, and languages. DITA profiling manages market-specific variations (EU safety standards vs. US FMVSS), while component-level translation ensures consistency across all 40 localized publications.",
+  },
+];
+
+interface WorkflowStep {
+  num: string;
+  title: string;
+  desc: string;
+}
+
+const workflow: WorkflowStep[] = [
+  { num: "01", title: "Build Data",      desc: "Receive VIN configuration as XML from manufacturing" },
+  { num: "02", title: "Map Resolution",  desc: "Match VIN options to DITA map filter conditions" },
+  { num: "03", title: "Topic Selection", desc: "Resolve applicable topics and exclude non-matching content" },
+  { num: "04", title: "Assembly",        desc: "Merge selected topics with shared boilerplate and legal text" },
+  { num: "05", title: "Publish",         desc: "Generate in-car HTML5, print PDF, and dealer portal output" },
+];
+
+interface RelatedCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+  href: string;
+}
+
+const related: RelatedCard[] = [
+  {
+    eyebrow: "Industry",
+    title: "Government & Defense",
+    body: "S1000D data modules, IETM delivery, and MIL-STD compliance for defense vehicle platforms.",
+    href: "/industries/government-and-defense",
+  },
+  {
+    eyebrow: "Solution",
+    title: "Technical Documentation & Publishing",
+    body: "Multi-channel publishing pipelines for HTML5, PDF, API, AR, and in-vehicle delivery.",
+    href: "/solutions/technical-docs-and-publishing",
+  },
+];
 ---
 
-<IndustryPageLayout
-  pageTitle="Transportation — Industries"
-  pageDescription="Service and maintenance documentation engineering across transportation modes — automotive (OEMs and Tier-1 suppliers), commercial aviation, rail, and maritime. Translation cost as the largest ROI lever; warranty and safety exposure as the cost-of-being-wrong."
-  heroTitle="Transportation"
-  heroSubdeck="Documentation across automotive, rail, commercial aviation, and maritime — modes that share a service-network spine. Field assets, technician-facing maintenance content, warranty and safety exposure when procedures are wrong, regulator scrutiny across DOT/NHTSA, FAA, FRA, USCG, and IMO. The chain of evidence in audits and incident investigations runs through the maintenance documentation."
-  industryHref="/industries/transportation"
-  documentTypes={[
-    {
-      label: "Maintenance manuals",
-      description: "Procedure-level technical content for technicians across modes — automotive service repair manuals, aviation Aircraft Maintenance Manuals (AMMs) and Component Maintenance Manuals (CMMs), rail equipment maintenance instructions and locomotive shop manuals, marine machinery and structural maintenance documentation.",
-    },
-    {
-      label: "Service bulletins",
-      description: "Field-issued guidance for service procedures, modifications, and safety actions. Auto: Technical Service Bulletins (TSBs); aviation: Service Bulletins (SBs) and Airworthiness Directives (ADs); rail: equipment service notices; marine: classification-society safety circulars.",
-    },
-    {
-      label: "Parts catalogs",
-      description: "Identification, ordering, and supersession data integrated with PIM, parts-database, and ERP systems. Aviation IPCs (Illustrated Parts Catalogs), automotive parts catalogs, rail spare-parts manuals, marine spare-parts reference documents — patterns repeat, format conventions vary.",
-    },
-    {
-      label: "Operator and crew manuals",
-      description: "Customer- or operator-facing documentation. Automotive owner's manuals, aviation Aircraft Flight Manuals (AFMs) and crew operating manuals, rail locomotive operating manuals, marine bridge and engine-room operating procedures.",
-    },
-    {
-      label: "Technician and crew training materials",
-      description: "Procedure-driven training across modes — dealer-network certification curricula, A&P/IA certification support content, rail qualification programs, marine STCW-aligned training documentation.",
-    },
-    {
-      label: "Compliance and warranty documentation",
-      description: "Warranty content tied to service-procedure accuracy; safety case documentation; configuration-management records that satisfy regulator audit. The connection between procedure accuracy and claim approval — or accident-investigation defense — runs through these documents.",
-    },
-  ]}
-  standards={[
-    {
-      label: "S1000D (Issues 4.x – 6.0)",
-      description: "International specification for technical publications. Originated in defense-aerospace; now load-bearing in commercial aviation, defense vehicles, and increasingly heavy commercial automotive and rail.",
-    },
-    {
-      label: "ATA Spec 2200 / iSpec 2200",
-      description: "Air Transport Association specification for commercial aviation technical documentation — the spec aviation MROs and airframers run on for non-defense aircraft programs.",
-    },
-    {
-      label: "SAE J2008",
-      description: "Society of Automotive Engineers digital service-information specification. Used across passenger and commercial vehicle programs.",
-    },
-    {
-      label: "AAR M-1003 and FRA Title 49 CFR (rail)",
-      description: "Association of American Railroads quality-system standard plus federal regulations governing rail equipment documentation. Compliance documentation surfaces as M-1003 audit responses and FRA-required configuration records.",
-    },
-    {
-      label: "FAA AC 43.13 and Part 43/145 (aviation maintenance)",
-      description: "FAA standards for aircraft maintenance documentation and for the certificated repair stations that perform it. EASA Part-145 carries the equivalent in European jurisdictions.",
-    },
-    {
-      label: "IMO MSC and IACS Common Structural Rules (maritime)",
-      description: "International Maritime Organization Maritime Safety Committee circulars and IACS Common Structural Rules — govern shipbuilding and operating documentation across classification societies.",
-    },
-    {
-      label: "USCG NVIC and ISM Code (maritime operations)",
-      description: "U.S. Coast Guard Navigation and Vessel Inspection Circulars; International Safety Management Code requirements for shipboard operating documentation.",
-    },
-    {
-      label: "OEM, classification-society, and agency-specific standards",
-      description: "Each vehicle program, airframer, classification society, and rail authority carries its own conventions on top of the named standards. Engagements adapt to the program's actual requirements.",
-    },
-  ]}
-  crossModeComparison={{
-    eyebrow: "CROSS-MODE PATTERNS — TRANSPORTATION",
-    heading: "The same artifact, named differently.",
-    lead: "Across automotive, commercial aviation, rail, and maritime, the documentation patterns repeat — service manuals, service bulletins, parts catalogs, operator manuals, compliance evidence. The artifact is structurally the same; the name and the governing regulator change. Engineering knowledge transfers across modes; the language and the audit body have to translate.",
-    modes: [
-      { label: "Automotive" },
-      { label: "Aviation" },
-      { label: "Rail" },
-      { label: "Maritime" },
-    ],
-    rows: [
-      {
-        category: "Maintenance manuals",
-        cells: [
-          "Service repair manuals · ASE-aligned procedures",
-          "Aircraft Maintenance Manual (AMM) · Component Maintenance Manual (CMM)",
-          "Locomotive shop manuals · equipment maintenance instructions",
-          "Machinery and structural maintenance documentation",
-        ],
+<BaseLayout
+  title="Automotive & Transportation Information Systems — Industries"
+  description="Service information, diagnostics, and in-vehicle content delivery for OEMs and Tier-1 suppliers. VIN-driven publishing, multi-channel delivery, safety recall management, AR-ready topics. Plus aviation, rail, and maritime service documentation under bounded-scope engagements."
+>
+  <Hero
+    variant="universal"
+    title="Automotive & Transportation Information Systems"
+    subdeck="Service information, diagnostics, and in-vehicle content delivery for OEMs and Tier-1 suppliers — where documentation accuracy directly affects repair quality and recall compliance. Plus aviation, rail, and maritime service documentation under bounded-scope engagements where the same engineering discipline applies."
+    subdeckMaxWidth="520px"
+  >
+    <svg
+      class="tr-hero-flow"
+      id="tr-hero-flow"
+      viewBox="0 0 560 320"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="VIN-driven assembly and multi-channel publishing: one vehicle's build configuration filters to a tailored manual, then fans to dealer DMS, in-vehicle, AR overlay, and print outputs."
+      role="img"
+    >
+      <g class="corner--accent fx" style="--d: 0ms">
+        <path d="M 12 24 L 12 12 L 24 12" />
+        <path d="M 536 12 L 548 12 L 548 24" />
+        <path d="M 12 296 L 12 308 L 24 308" />
+        <path d="M 536 308 L 548 308 L 548 296" />
+      </g>
+
+      <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: auto.publishing</text>
+
+      {/* <vin> at top */}
+      <g class="fx" style="--d: 200ms">
+        <rect class="node node--custom" x="220" y="56" width="120" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="280" y="77" text-anchor="middle">&lt;vin&gt;</text>
+      </g>
+
+      {/* Arrow down: vin → profiler */}
+      <path class="flow-conn" style="--d: 280ms" d="M 280 88 L 280 104 M 275 99 L 280 104 L 285 99" />
+
+      {/* profiler in middle */}
+      <g class="fx" style="--d: 360ms">
+        <rect class="node node--custom" x="200" y="104" width="160" height="46" rx="3" />
+        <rect class="artifact-strip" x="200" y="104" width="160" height="6" />
+        <text class="node-label node-label--custom" x="280" y="128" text-anchor="middle">&lt;profile&gt;</text>
+        <text class="node-caption" x="280" y="142" text-anchor="middle">filter applicable topics</text>
+      </g>
+
+      {/* Arrow down: profiler → manual */}
+      <path class="flow-conn" style="--d: 440ms" d="M 280 150 L 280 166 M 275 161 L 280 166 L 285 161" />
+
+      {/* <manual> below */}
+      <g class="fx" style="--d: 500ms">
+        <rect class="node node--custom" x="220" y="166" width="120" height="42" rx="3" />
+        <text class="node-label node-label--custom" x="280" y="186" text-anchor="middle">&lt;manual&gt;</text>
+        <text class="node-caption" x="280" y="200" text-anchor="middle">vehicle-specific</text>
+      </g>
+
+      {/* Fan: <manual> → 4 channels */}
+      <path class="flow-conn" style="--d: 580ms" d="M 280 208 L 80 232" />
+      <path class="flow-conn" style="--d: 600ms" d="M 280 208 L 215 232" />
+      <path class="flow-conn" style="--d: 620ms" d="M 280 208 L 350 232" />
+      <path class="flow-conn" style="--d: 640ms" d="M 280 208 L 485 232" />
+
+      {/* 4 channel chips */}
+      <g class="fx" style="--d: 700ms">
+        <rect class="node node--custom" x="20" y="232" width="120" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="80" y="253" text-anchor="middle">DEALER DMS</text>
+      </g>
+      <g class="fx" style="--d: 720ms">
+        <rect class="node node--custom" x="155" y="232" width="120" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="215" y="253" text-anchor="middle">IN-VEHICLE</text>
+      </g>
+      <g class="fx" style="--d: 740ms">
+        <rect class="node node--custom" x="290" y="232" width="120" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="350" y="253" text-anchor="middle">AR OVERLAY</text>
+      </g>
+      <g class="fx" style="--d: 760ms">
+        <rect class="node node--custom" x="425" y="232" width="120" height="32" rx="3" />
+        <text class="node-label node-label--custom" x="485" y="253" text-anchor="middle">PRINT PDF</text>
+      </g>
+
+      {/* Bottom chrome */}
+      <g class="fx" style="--d: 880ms">
+        <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+        <rect class="build-dot" x="32" y="296" width="6" height="6" />
+        <text class="chrome chrome--strong" x="46"  y="302">FIG. 01</text>
+        <text class="chrome"               x="92"  y="302">/</text>
+        <text class="chrome chrome--strong" x="100" y="302">auto.publishing</text>
+        <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">VIN &rarr; MANUAL &rarr; 4 CHANNELS</text>
+      </g>
+    </svg>
+  </Hero>
+
+  <SectionSiblings variant="industries" current="transportation" />
+
+  {/* ───────── S3 — The Software-Defined Vehicle ───────── */}
+  <section class="tr-section" aria-labelledby="tr-vehicle-heading">
+    <div class="container-page tr-section__inner">
+      <div class="tr-heading-block">
+        <h2 id="tr-vehicle-heading" class="tr-heading">The Software-Defined Vehicle</h2>
+        <p class="tr-intro">
+          Modern vehicles are software platforms. The Owner's Manual is no longer a printed booklet — it is an in-car app, a voice assistant response, an AR overlay for technicians, and a responsive web portal, all generated from the same structured source.
+        </p>
+      </div>
+      <ul class="tr-grid-3">
+        {vehicleCards.map((c) => (
+          <li class="tr-card">
+            <span class="tr-card__icon" aria-hidden="true">
+              {c.icon === "monitor" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="10" rx="0.5" /><line x1="7" y1="17" x2="13" y2="17" /><line x1="10" y1="14" x2="10" y2="17" /><polyline points="5,11 8,8 11,10 15,6" /></svg>
+              )}
+              {c.icon === "doc" && (
+                <svg viewBox="0 0 20 20"><path d="M5 3 H12 L15 6 V17 H5 Z" /><polyline points="12,3 12,6 15,6" /><line x1="7" y1="9" x2="13" y2="9" /><line x1="7" y1="12" x2="13" y2="12" /></svg>
+              )}
+              {c.icon === "play" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><polygon points="8,7 14,10 8,13" /></svg>
+              )}
+            </span>
+            <h3 class="tr-card__title">{c.title}</h3>
+            <p class="tr-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S4 — Multi-Channel Automotive Publishing (banded) ───────── */}
+  <section class="tr-section tr-section--band" aria-labelledby="tr-channels-heading">
+    <div class="container-page tr-section__inner">
+      <div class="tr-heading-block">
+        <h2 id="tr-channels-heading" class="tr-heading">Multi-Channel Automotive Publishing</h2>
+        <p class="tr-intro">
+          Automotive content must reach dealers, technicians, owners, and regulatory bodies through different channels — from dealer management systems to in-vehicle infotainment screens.
+        </p>
+      </div>
+      <ul class="tr-grid-3">
+        {channelCards.map((c) => (
+          <li class="tr-card">
+            <span class="tr-card__icon" aria-hidden="true">
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /></svg>
+              )}
+              {c.icon === "code" && (
+                <svg viewBox="0 0 20 20"><polyline points="6,6 2,10 6,14" /><polyline points="14,6 18,10 14,14" /></svg>
+              )}
+              {c.icon === "globe" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><ellipse cx="10" cy="10" rx="3" ry="7" /><line x1="3" y1="10" x2="17" y2="10" /></svg>
+              )}
+            </span>
+            <h3 class="tr-card__title">{c.title}</h3>
+            <p class="tr-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S5 — VIN-Specific Publishing Workflow + Cross-Mode Callout ───────── */}
+  <section class="tr-section" aria-labelledby="tr-workflow-heading">
+    <div class="container-page tr-section__inner">
+      <div class="tr-heading-block">
+        <h2 id="tr-workflow-heading" class="tr-heading">VIN-Specific Publishing Workflow</h2>
+      </div>
+      <ol class="tr-roadmap">
+        {workflow.map((s, i) => (
+          <>
+            <li class="tr-step">
+              <span class="tr-step__num">{s.num}</span>
+              <h3 class="tr-step__title">{s.title}</h3>
+              <p class="tr-step__desc">{s.desc}</p>
+            </li>
+            {i < workflow.length - 1 && (
+              <li class="tr-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+
+      {/* Cross-Mode Patterns callout */}
+      <aside class="tr-callout" aria-labelledby="tr-callout-heading">
+        <p class="tr-callout__eyebrow">CROSS-MODE PATTERNS</p>
+        <h3 id="tr-callout-heading" class="tr-callout__heading">Beyond automotive.</h3>
+        <p class="tr-callout__body">
+          The VIN-driven workflow above is automotive-specific, but the engineering discipline carries across modes. We serve commercial aviation (ATA Spec 2200, S1000D), rail (AAR M-1003, FRA Title 49 CFR), and maritime (IMO MSC, USCG NVIC) under bounded-scope engagements when the program's documentation surface fits our core capabilities.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  {/* ───────── S6 — Explore Related (2-card, banded) ───────── */}
+  <section class="tr-section tr-section--band" aria-labelledby="tr-related-heading">
+    <div class="container-page tr-section__inner">
+      <div class="tr-heading-block">
+        <h2 id="tr-related-heading" class="tr-heading">Explore Related</h2>
+      </div>
+      <ul class="tr-related-grid">
+        {related.map((r) => (
+          <li class="tr-related-card-item">
+            <a href={r.href} class="tr-related-card">
+              <span class="tr-related-card__eyebrow">{r.eyebrow}</span>
+              <h3 class="tr-related-card__title">{r.title}</h3>
+              <p class="tr-related-card__body">{r.body}</p>
+              <span class="tr-related-card__cta">
+                Explore <span class="tr-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Free Automotive Content Assessment"
+    body="Share a sample service manual chapter or owner's guide section. We'll analyze VIN-filtering potential, identify reuse opportunities across model lines, and map the path from static PDFs to a structured, multi-channel content architecture. No commitment required."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Hero side visual (Option D — VIN-driven assembly + multi-channel) ─── */
+  .tr-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .tr-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .tr-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .tr-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .tr-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .tr-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .tr-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .tr-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .tr-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .tr-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .tr-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .tr-hero-flow .artifact-strip {
+    fill: var(--color-accent-primary);
+    stroke: none;
+  }
+  .tr-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .tr-hero-flow .fx {
+    opacity: 0;
+  }
+  .tr-hero-flow.drawn .fx {
+    animation: tr-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .tr-hero-flow.drawn .flow-conn {
+    animation: tr-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes tr-fade {
+    to { opacity: 1; }
+  }
+  @keyframes tr-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tr-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .tr-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
+  /* ─── Section shell ─── */
+  .tr-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .tr-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .tr-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Section heading block ─── */
+  .tr-heading-block {
+    margin-bottom: var(--space-12);
+    max-width: 80ch;
+  }
+  .tr-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .tr-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 3-card grid ─── */
+  .tr-grid-3 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .tr-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .tr-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .tr-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .tr-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .tr-card__icon svg circle,
+  .tr-card__icon svg ellipse,
+  .tr-card__icon svg line,
+  .tr-card__icon svg polyline,
+  .tr-card__icon svg polygon,
+  .tr-card__icon svg rect,
+  .tr-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .tr-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .tr-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 5-step numbered roadmap strip ─── */
+  .tr-roadmap {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .tr-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    background-color: var(--color-page-bg);
+  }
+  .tr-step__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary);
+  }
+  .tr-step__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .tr-step__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .tr-step__arrow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    color: var(--color-accent-primary);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+  @media (max-width: 767px) {
+    .tr-roadmap {
+      flex-direction: column;
+    }
+    .tr-step__arrow {
+      align-self: center;
+      transform: rotate(90deg);
+      padding: var(--space-1) 0;
+    }
+  }
+
+  /* ─── Cross-Mode Patterns callout ─── */
+  .tr-callout {
+    margin-top: var(--space-12);
+    padding: var(--space-8) var(--space-12);
+    background-color: #fef3c7;
+    border-left: 3px solid var(--color-accent-primary);
+    border-radius: var(--radius-sm);
+    /* spans the section width; body fills the box. */
+  }
+  @media (max-width: 767px) {
+    .tr-callout {
+      padding: var(--space-6) var(--space-8);
+    }
+  }
+  .tr-callout__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .tr-callout__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    line-height: var(--leading-snug);
+  }
+  .tr-callout__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-primary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Related grid (2-card cross-link) ─── */
+  .tr-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .tr-related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .tr-related-card-item {
+    display: flex;
+  }
+  .tr-related-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+  .tr-related-card:hover,
+  .tr-related-card:focus-visible {
+    border-color: var(--color-accent-primary);
+  }
+  .tr-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .tr-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .tr-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .tr-related-card__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+  }
+  .tr-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .tr-related-card:hover .tr-related-card__arrow,
+  .tr-related-card:focus-visible .tr-related-card__arrow {
+    transform: translateX(2px);
+  }
+</style>
+
+<script>
+  function setupTrHero() {
+    const svg = document.getElementById("tr-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
       },
-      {
-        category: "Service bulletins",
-        cells: [
-          "Technical Service Bulletin (TSB)",
-          "Service Bulletin (SB) · Airworthiness Directive (AD)",
-          "Equipment service notice · field bulletin",
-          "Classification-society safety circular",
-        ],
-      },
-      {
-        category: "Parts catalogs",
-        cells: [
-          "Parts catalog · IPL",
-          "Illustrated Parts Catalog (IPC)",
-          "Spare-parts manual",
-          "Spare-parts reference document",
-        ],
-      },
-      {
-        category: "Operator / crew manuals",
-        cells: [
-          "Owner's manual",
-          "Aircraft Flight Manual (AFM) · crew operating manual",
-          "Locomotive operating manual",
-          "Bridge and engine-room operating procedures",
-        ],
-      },
-      {
-        category: "Compliance / regulator",
-        cells: [
-          "NHTSA defect reports · warranty docs",
-          "FAA Part 145 audit response · NTSB inputs",
-          "FRA inspection records · AAR M-1003 audit response",
-          "USCG inspection records · IMO MSC compliance docs",
-        ],
-      },
-    ],
-    footnote: "Common terms shown. Each mode carries deeper subdivisions — aviation alone splits AMM/CMM/SRM/IPC/SB/AD by ATA chapter; automotive splits TSBs by NHTSA campaign vs internal; rail and maritime each carry classification-society and regulator-specific format conventions on top of the patterns shown.",
-  }}
-  failureMode={{
-    eyebrow: "TRANSPORTATION / SAFETY & WARRANTY",
-    heading: "A service-procedure error becomes a warranty event or an accident-investigation finding.",
-    body: "Automotive: a single TSB error replicated across a dealer network becomes a multi-million-dollar warranty claim event and, in safety-relevant cases, a NHTSA-reportable defect. Aviation: a Maintenance Manual procedure error surfaces in an FAA Part 145 audit or, worse, in an NTSB accident report. Rail: an FRA inspection finding tied to maintenance documentation triggers a service-bulletin recall and AAR M-1003 review. Marine: a maintenance-record gap surfaces during port state control or in classification-society withdrawal of cover. The procedure-document chain is the chain of evidence in every one of these.",
-  }}
-  signals={[
-    {
-      line: "Translation costs across our dealer network are climbing faster than vehicle volume.",
-      body: "Automotive, tactical. Translation cost growth out of proportion to fleet or volume growth signals a lack of single-source authoring; every market variant is being translated independently. The fix is in the reuse architecture, not in translation procurement.",
-    },
-    {
-      line: "Our MRO's S1000D conversion has stalled at the data-module structure phase.",
-      body: "Aviation, operational. Stalled S1000D conversions in MRO contexts usually fail when the source content doesn't decompose into S1000D's required data module types (procedural vs descriptive vs wiring). The IA work has to come before the migration toolchain runs.",
-    },
-    {
-      line: "An FRA inspection found maintenance-documentation gaps tied to AAR M-1003 quality-system requirements.",
-      body: "Rail, tactical. M-1003 quality-system gaps tied to documentation usually mean configuration-management metadata is missing or inconsistent across maintenance work orders. The audit response runs through metadata architecture and CCMS workflow design.",
-    },
-    {
-      line: "Our classification society flagged inconsistent operating documentation across vessel classes after a port state control inspection.",
-      body: "Maritime, tactical. Class-society findings on documentation usually mean variant management is broken — different vessel classes carry different operating procedures and the variant control hasn't kept up with fleet additions. Conditional-content profiling under DITA is the structural fix.",
-    },
-  ]}
-  capabilityRelevance={[
-    {
-      pillarLabel: "Information Architecture",
-      pillarHref: "/capabilities/information-architecture",
-      context: "Asset-family and program-level content models across modes — vehicle families and platforms (auto), aircraft type-certificate variants (aviation), rolling-stock platforms (rail), vessel classes and shipyard programs (marine). Conditional content for variant management; integration architecture with parts catalogs and configuration-management systems.",
-      engagementShape: "Project-Based — asset-family content model work with named acceptance criteria, often the prerequisite for any cross-mode migration.",
-    },
-    {
-      pillarLabel: "Content Migration",
-      pillarHref: "/capabilities/content-migration",
-      context: "Often follows M&A, platform consolidation, or regulatory mandate to modernize. Legacy estates converged onto a single CCMS — automotive OEM platform consolidations, MRO toolchain migrations, rail OEM legacy estates from acquired product lines, shipyard documentation systems. Conversion handled at scale.",
-      engagementShape: "Project-Based — fixed scope, conversion-fidelity acceptance criteria. Often follows M&A or platform consolidation across modes.",
-    },
-    {
-      pillarLabel: "CCMS & Publishing",
-      pillarHref: "/capabilities/ccms-and-publishing",
-      context: "Heavy in this vertical across all four modes. Service-information libraries are large, frequently updated, and operationally critical; CCMS configuration and publishing automation are the operational backbone for every transportation OEM, MRO, and operator that ships maintenance documentation.",
-      engagementShape: "Project-Based for implementation; Managed Services for ongoing administration of the publishing pipeline once stable.",
-    },
-    {
-      pillarLabel: "AI-Ready Content",
-      pillarHref: "/capabilities/ai-ready-content",
-      context: "Service-technician-facing and crew-facing AI assistants are emerging use cases — automotive dealer-network technician tools, aviation MRO troubleshooting assistants, rail maintenance support, marine shipboard reference systems. Retrieval over service-information estates requires the same engineering discipline as regulated-industry RAG; provenance metadata matters more than recency.",
-      engagementShape: "Often starts as Staff Augmentation during technician-assistant exploratory work; converts to Project-Based once retrieval architecture firms up.",
-    },
-  ]}
-  caseStudies={[
-    {
-      framing: "A global automotive OEM consolidating dealer service information across 30+ markets.",
-      body: "Single-source DITA across vehicle programs with conditional content for market and trim variants. CCMS-driven workflows replaced parallel publishing chains; translation savings drove the business case across the global dealer network.",
-    },
-    {
-      framing: "A commercial aviation MRO modernizing maintenance documentation onto S1000D.",
-      body: "Migration from legacy FrameMaker manuals to an S1000D-conformant data module repository. Configuration management aligned to airframe type-certificate variants; publishing pipeline integrated with the MRO's work-card system. FAA Part 145 audit trail preserved through the migration.",
-    },
-  ]}
-  ctaBody="Submit a 20-page service or maintenance documentation sample — automotive, aviation, rail, or marine. We'll return a translation-savings assessment, conversion feasibility, and the architecture decisions that would shape a production migration. Two business days, no obligation to proceed."
-/>
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+  document.addEventListener("DOMContentLoaded", setupTrHero);
+</script>
