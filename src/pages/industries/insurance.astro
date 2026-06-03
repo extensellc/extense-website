@@ -1,162 +1,703 @@
 ---
-import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+/*
+  /industries/insurance
+
+  Faithful reframe of the old ex-tense.co page (Insurance Policy Construction).
+  All 6 old sections pulled forward [OLD] verbatim; single-register page.
+  See docs/reframe-2026/insurance.md.
+
+  Section order:
+    1. Hero (universal) — H1 [OLD] + [OLD] subdeck + Option-D side visual
+       (component × jurisdiction assembly: 5 clause components -> profiler
+       (state filter) -> assembled <policy-form>, with M×N multiplier footer)
+    2. SectionSiblings (industries)
+    3. Modular Policy Architectures [OLD] - 3-card grid
+    4. Regulatory Filing & Compliance [OLD] - 3-card grid (banded)
+    5. Policy Assembly Pipeline [OLD] - 01-05 strip
+    6. Explore Related [OLD] - 3-card cross-link (banded)
+    7. CTA - "Free Policy Content Assessment" [OLD]
+
+  Page-local CSS prefix: ins-. Hero SVG inline, scroll-revealed via
+  IntersectionObserver (.drawn), with reduced-motion fallback.
+
+  Replaces the prior IndustryPageLayout-based version; the layout's stale
+  /capabilities/* links go away with it.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon: string;
+}
+
+const architectureCards: Card[] = [
+  {
+    title: "Component Content Management",
+    icon: "grid",
+    body: "Every clause, endorsement, and declaration page is stored as an independent, reusable content component. A \"Flood Exclusion\" clause exists once and is assembled into every policy that requires it — Personal Auto, Commercial Property, Umbrella. Update the source, and every policy form that references it inherits the change.",
+  },
+  {
+    title: "50-State Conditional Filtering",
+    icon: "globe",
+    body: "A single Auto Policy master contains every state-specific variation. DITA profiling attributes (state=\"CA NY TX\", product=\"auto\") control which paragraphs appear in which output. One source, 50 compliant publications — no manual copy-paste, no version drift.",
+  },
+  {
+    title: "Endorsement Assembly",
+    icon: "doc",
+    body: "Endorsements modify base policy language. We build endorsement libraries where each endorsement is a standalone module with metadata linking it to applicable base forms, effective dates, and jurisdiction. The publishing engine assembles the correct endorsement stack per policy issuance.",
+  },
+];
+
+const complianceCards: Card[] = [
+  {
+    title: "SERFF-Ready Output",
+    icon: "shield",
+    body: "Generate filing-ready PDF/A packages that meet SERFF submission requirements. Each filing includes the base form, applicable endorsements, rate pages, and a machine-readable change log showing exactly what differs from the previously approved version.",
+  },
+  {
+    title: "Redline & Comparison",
+    icon: "pulse",
+    body: "Automated redline generation between policy versions. When an underwriter modifies terms, the system produces a word-level diff showing additions, deletions, and moved content — the exact artifact regulators and legal teams require for approval workflows.",
+  },
+  {
+    title: "Multi-Stakeholder Review",
+    icon: "users",
+    body: "Actuarial, Legal, Compliance, and Product teams review the same structured source — not disconnected Word copies. Role-based review workflows ensure each stakeholder approves only their domain (rates, legal language, regulatory compliance) before the form advances to filing.",
+  },
+];
+
+interface WorkflowStep {
+  num: string;
+  title: string;
+  desc: string;
+}
+
+const pipeline: WorkflowStep[] = [
+  { num: "01", title: "Base Form",         desc: "Base policy with all clauses and state variants" },
+  { num: "02", title: "Profiling",         desc: "Apply state, product, and coverage filters" },
+  { num: "03", title: "Endorsement Stack", desc: "Attach applicable endorsements by metadata" },
+  { num: "04", title: "Review & Approve",  desc: "Multi-stakeholder sign-off workflow" },
+  { num: "05", title: "Publish & File",    desc: "Generate customer PDF + SERFF filing package" },
+];
+
+interface RelatedCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+  href: string;
+}
+
+const related: RelatedCard[] = [
+  {
+    eyebrow: "Industry",
+    title: "Financial Services",
+    body: "Policy management, regulatory filing, and audit trail solutions for banking and capital markets.",
+    href: "/industries/financial-services",
+  },
+  {
+    eyebrow: "Solution",
+    title: "Content Migration",
+    body: "Migrate legacy Word-based policy forms to structured XML with automated conversion pipelines.",
+    href: "/solutions/content-migration",
+  },
+  {
+    eyebrow: "Service",
+    title: "DITA Engineering",
+    body: "Specialization, profiling, and conditional publishing architectures for complex document assembly.",
+    href: "/services/dita-engineering",
+  },
+];
 ---
 
-<IndustryPageLayout
-  pageTitle="Insurance — Industries"
-  pageDescription="Insurance documentation engineering for carriers and platform providers. Policy form management, state DOI variation, claims-handling SOPs, RAG over claims-handling guidelines for adjuster assistants."
-  heroTitle="Insurance"
-  heroSubdeck="Where the policy form is the product. Direct revenue exposure on filing rejection; direct litigation exposure on claims-handling divergence. State-by-state DOI variation managed with discipline, not exception logic."
-  industryHref="/industries/insurance"
-  documentTypes={[
-    {
-      label: "Policy forms and endorsements",
-      description: "Filed policy forms across states and product lines. The document is the product; revisions and variants tracked with audit-grade discipline.",
-    },
-    {
-      label: "Claims handling guidelines",
-      description: "Adjuster-facing procedures, claims-decision documentation, bad-faith-litigation-defensible procedural records.",
-    },
-    {
-      label: "Underwriting manuals",
-      description: "Underwriter-facing risk evaluation guidance, exception handling, referral procedures.",
-    },
-    {
-      label: "Agent and broker training",
-      description: "Producer-facing product training, regulatory compliance training, continuing-education materials.",
-    },
-    {
-      label: "Regulatory filings",
-      description: "State DOI filings, rate filings, form filings — submission-format compliance and tracking.",
-    },
-  ]}
-  standards={[
-    {
-      label: "ACORD",
-      description: "Insurance industry data exchange standard — content interoperability with carrier and broker systems.",
-    },
-    {
-      label: "State DOI requirements",
-      description: "State-by-state filing and disclosure requirements. Variation managed through DITA profiling and conditional content rather than parallel document maintenance.",
-    },
-    {
-      label: "NAIC model regulations",
-      description: "Where state regulations align to NAIC models, content patterns can carry across — a constraint and an opportunity for shared architecture.",
-    },
-    {
-      label: "NAIC ORSA (Own Risk and Solvency Assessment)",
-      description: "Annual filing required of insurers above the NAIC threshold. Risk-management documentation that has to satisfy state regulator review; most carriers run a multi-month internal documentation program around it.",
-    },
-  ]}
-  variantPolicyForm={{
-    eyebrow: "VARIANT MANAGEMENT — INSURANCE",
-    heading: "One source. Fifty state variants.",
-    lead: "Without DITA profiling, a multi-state policy form means parallel maintenance — fifty separately-edited documents, each at risk of drift. With profiling, a single source carries jurisdiction-specific variants assembled at publish time. The form below shows the variant cardinality per section.",
-    documentRef: "POLICY FORM PF-2026-XXXX",
-    formLabel: "Form: ISO HO-3 v4.2",
-    documentTitle: "Homeowners policy form",
-    documentSubtitle: "A multi-state base form profiled per state DOI requirements.",
-    sections: [
-      {
-        label: "§1. Insuring Agreement",
-        profileTag: "ALL 50 STATES",
-        description: "Base coverage language. Universal across all jurisdictions.",
+<BaseLayout
+  title="Insurance Policy Construction — Industries"
+  description="Modular content architectures for multi-state, multi-product policy assembly. Component content management, 50-state conditional filtering, endorsement assembly, SERFF-ready output, multi-stakeholder review."
+>
+  <Hero
+    variant="universal"
+    title="Insurance Policy Construction"
+    subdeck="Modular content architectures for multi-state, multi-product policy assembly — where a single misplaced clause can void coverage or trigger regulatory penalties."
+    subdeckMaxWidth="520px"
+  >
+    <svg
+      class="ins-hero-flow"
+      id="ins-hero-flow"
+      viewBox="0 0 560 320"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Insurance policy assembly: five clause components filtered by state profile into one state-specific filing-ready policy form. Five components by fifty jurisdictions equals 250 unique policies."
+      role="img"
+    >
+      <g class="corner--accent fx" style="--d: 0ms">
+        <path d="M 12 24 L 12 12 L 24 12" />
+        <path d="M 536 12 L 548 12 L 548 24" />
+        <path d="M 12 296 L 12 308 L 24 308" />
+        <path d="M 536 308 L 548 308 L 548 296" />
+      </g>
+
+      <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: ins.assembly</text>
+
+      {/* 5 component chips stacked on the left */}
+      <g class="fx" style="--d: 200ms">
+        <rect class="node node--custom" x="20" y="60" width="140" height="26" rx="3" />
+        <text class="node-label node-label--custom" x="90" y="78" text-anchor="middle">&lt;declarations&gt;</text>
+      </g>
+      <g class="fx" style="--d: 240ms">
+        <rect class="node node--custom" x="20" y="94" width="140" height="26" rx="3" />
+        <text class="node-label node-label--custom" x="90" y="112" text-anchor="middle">&lt;agreements&gt;</text>
+      </g>
+      <g class="fx" style="--d: 280ms">
+        <rect class="node node--custom" x="20" y="128" width="140" height="26" rx="3" />
+        <text class="node-label node-label--custom" x="90" y="146" text-anchor="middle">&lt;conditions&gt;</text>
+      </g>
+      <g class="fx" style="--d: 320ms">
+        <rect class="node node--custom" x="20" y="162" width="140" height="26" rx="3" />
+        <text class="node-label node-label--custom" x="90" y="180" text-anchor="middle">&lt;exclusions&gt;</text>
+      </g>
+      <g class="fx" style="--d: 360ms">
+        <rect class="node node--custom" x="20" y="196" width="140" height="26" rx="3" />
+        <text class="node-label node-label--custom" x="90" y="214" text-anchor="middle">&lt;endorsements&gt;</text>
+      </g>
+
+      {/* 5 convergent connectors → profiler */}
+      <path class="flow-conn" style="--d: 480ms" d="M 160 73  L 220 145" />
+      <path class="flow-conn" style="--d: 500ms" d="M 160 107 L 220 145" />
+      <path class="flow-conn" style="--d: 520ms" d="M 160 141 L 220 145" />
+      <path class="flow-conn" style="--d: 540ms" d="M 160 175 L 220 145" />
+      <path class="flow-conn" style="--d: 560ms" d="M 160 209 L 220 145" />
+
+      {/* Profiler chip (middle) */}
+      <g class="fx" style="--d: 640ms">
+        <rect class="node node--custom" x="220" y="115" width="140" height="80" rx="3" />
+        <rect class="artifact-strip" x="220" y="115" width="140" height="6" />
+        <text class="node-label node-label--custom" x="290" y="143" text-anchor="middle">&lt;profile&gt;</text>
+        <line class="artifact-rule" x1="236" y1="155" x2="344" y2="155" />
+        <text class="meta-value" x="290" y="173" text-anchor="middle">state="CA"</text>
+        <text class="node-caption" x="290" y="188" text-anchor="middle">applicable filter</text>
+      </g>
+
+      {/* Connector profiler → output */}
+      <path class="flow-conn" style="--d: 740ms" d="M 360 155 L 395 155 M 390 150 L 395 155 L 390 160" />
+
+      {/* Output: assembled <policy-form> chip */}
+      <g class="fx" style="--d: 820ms">
+        <rect class="node node--custom" x="400" y="115" width="140" height="80" rx="3" />
+        <rect class="artifact-strip" x="400" y="115" width="140" height="6" />
+        <text class="node-label node-label--custom" x="470" y="143" text-anchor="middle">&lt;policy-form&gt;</text>
+        <line class="artifact-rule" x1="416" y1="155" x2="524" y2="155" />
+        <text class="node-caption" x="470" y="173" text-anchor="middle">state-specific</text>
+        <text class="node-caption" x="470" y="188" text-anchor="middle">filing-ready</text>
+      </g>
+
+      {/* Footer multiplier annotation */}
+      <text class="multiplier-label fx" x="280" y="252" text-anchor="middle" style="--d: 920ms">5 components &times; 50 jurisdictions = 250 unique policies</text>
+
+      {/* Bottom chrome */}
+      <g class="fx" style="--d: 1020ms">
+        <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+        <rect class="build-dot" x="32" y="296" width="6" height="6" />
+        <text class="chrome chrome--strong" x="46"  y="302">FIG. 01</text>
+        <text class="chrome"               x="92"  y="302">/</text>
+        <text class="chrome chrome--strong" x="100" y="302">ins.assembly</text>
+        <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">COMPONENTS &times; JURISDICTIONS &rarr; POLICIES</text>
+      </g>
+    </svg>
+  </Hero>
+
+  <SectionSiblings variant="industries" current="insurance" />
+
+  {/* ───────── S3 — Modular Policy Architectures ───────── */}
+  <section class="ins-section" aria-labelledby="ins-architecture-heading">
+    <div class="container-page ins-section__inner">
+      <div class="ins-heading-block">
+        <h2 id="ins-architecture-heading" class="ins-heading">Modular Policy Architectures</h2>
+        <p class="ins-intro">
+          An insurance policy is not a document — it is a modular assembly of declarations, insuring agreements, conditions, exclusions, and endorsements. Each component must be independently versioned, jurisdictionally filtered, and audit-trailed.
+        </p>
+      </div>
+      <ul class="ins-grid-3">
+        {architectureCards.map((c) => (
+          <li class="ins-card">
+            <span class="ins-card__icon" aria-hidden="true">
+              {c.icon === "grid" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="0.5" /><rect x="11" y="3" width="6" height="6" rx="0.5" /><rect x="3" y="11" width="6" height="6" rx="0.5" /><rect x="11" y="11" width="6" height="6" rx="0.5" /></svg>
+              )}
+              {c.icon === "globe" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><ellipse cx="10" cy="10" rx="3" ry="7" /><line x1="3" y1="10" x2="17" y2="10" /></svg>
+              )}
+              {c.icon === "doc" && (
+                <svg viewBox="0 0 20 20"><path d="M5 3 H12 L15 6 V17 H5 Z" /><polyline points="12,3 12,6 15,6" /><line x1="7" y1="9" x2="13" y2="9" /><line x1="7" y1="12" x2="13" y2="12" /></svg>
+              )}
+            </span>
+            <h3 class="ins-card__title">{c.title}</h3>
+            <p class="ins-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S4 — Regulatory Filing & Compliance (banded) ───────── */}
+  <section class="ins-section ins-section--band" aria-labelledby="ins-compliance-heading">
+    <div class="container-page ins-section__inner">
+      <div class="ins-heading-block">
+        <h2 id="ins-compliance-heading" class="ins-heading">Regulatory Filing &amp; Compliance</h2>
+        <p class="ins-intro">
+          Insurance content must satisfy state Departments of Insurance (DOI), SERFF filing requirements, and internal actuarial review — simultaneously.
+        </p>
+      </div>
+      <ul class="ins-grid-3">
+        {complianceCards.map((c) => (
+          <li class="ins-card">
+            <span class="ins-card__icon" aria-hidden="true">
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /></svg>
+              )}
+              {c.icon === "pulse" && (
+                <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="0.5" /><polyline points="4,10 7,10 9,6 11,14 13,10 16,10" /></svg>
+              )}
+              {c.icon === "users" && (
+                <svg viewBox="0 0 20 20"><circle cx="7" cy="6" r="2" /><path d="M3 14 c0-3 2-5 4-5 c2 0 4 2 4 5" /><circle cx="13" cy="7" r="1.7" /><path d="M11 14 c0-2 1.5-4 3-4 c1.5 0 3 2 3 4" /></svg>
+              )}
+            </span>
+            <h3 class="ins-card__title">{c.title}</h3>
+            <p class="ins-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S5 — Policy Assembly Pipeline ───────── */}
+  <section class="ins-section" aria-labelledby="ins-pipeline-heading">
+    <div class="container-page ins-section__inner">
+      <div class="ins-heading-block">
+        <h2 id="ins-pipeline-heading" class="ins-heading">Policy Assembly Pipeline</h2>
+      </div>
+      <ol class="ins-roadmap">
+        {pipeline.map((s, i) => (
+          <>
+            <li class="ins-step">
+              <span class="ins-step__num">{s.num}</span>
+              <h3 class="ins-step__title">{s.title}</h3>
+              <p class="ins-step__desc">{s.desc}</p>
+            </li>
+            {i < pipeline.length - 1 && (
+              <li class="ins-step__arrow" aria-hidden="true">&rarr;</li>
+            )}
+          </>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ───────── S6 — Explore Related (3-card, banded) ───────── */}
+  <section class="ins-section ins-section--band" aria-labelledby="ins-related-heading">
+    <div class="container-page ins-section__inner">
+      <div class="ins-heading-block">
+        <h2 id="ins-related-heading" class="ins-heading">Explore Related</h2>
+      </div>
+      <ul class="ins-related-grid">
+        {related.map((r) => (
+          <li class="ins-related-card-item">
+            <a href={r.href} class="ins-related-card">
+              <span class="ins-related-card__eyebrow">{r.eyebrow}</span>
+              <h3 class="ins-related-card__title">{r.title}</h3>
+              <p class="ins-related-card__body">{r.body}</p>
+              <span class="ins-related-card__cta">
+                Explore <span class="ins-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Free Policy Content Assessment"
+    body="Share a sample policy form or endorsement library. We'll analyze your clause reuse potential, identify state-variation gaps, and map the path from Word-based forms to a modular content architecture. No commitment required."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Hero side visual (Option D — component × jurisdiction assembly) ─── */
+  .ins-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .ins-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .ins-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .ins-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .ins-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .ins-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .ins-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .ins-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .ins-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .ins-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .ins-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .ins-hero-flow .artifact-strip {
+    fill: var(--color-accent-primary);
+    stroke: none;
+  }
+  .ins-hero-flow .artifact-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .ins-hero-flow .meta-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+  .ins-hero-flow .multiplier-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+  }
+  .ins-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .ins-hero-flow .fx {
+    opacity: 0;
+  }
+  .ins-hero-flow.drawn .fx {
+    animation: ins-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .ins-hero-flow.drawn .flow-conn {
+    animation: ins-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes ins-fade {
+    to { opacity: 1; }
+  }
+  @keyframes ins-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ins-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .ins-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
+  /* ─── Section shell ─── */
+  .ins-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .ins-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .ins-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Section heading block ─── */
+  .ins-heading-block {
+    margin-bottom: var(--space-12);
+    max-width: 80ch;
+  }
+  .ins-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .ins-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 3-card grid ─── */
+  .ins-grid-3 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .ins-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ins-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .ins-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .ins-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .ins-card__icon svg circle,
+  .ins-card__icon svg ellipse,
+  .ins-card__icon svg line,
+  .ins-card__icon svg polyline,
+  .ins-card__icon svg polygon,
+  .ins-card__icon svg rect,
+  .ins-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ins-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .ins-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 5-step numbered roadmap strip ─── */
+  .ins-roadmap {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .ins-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    background-color: var(--color-page-bg);
+  }
+  .ins-step__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary);
+  }
+  .ins-step__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .ins-step__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .ins-step__arrow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    color: var(--color-accent-primary);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+  @media (max-width: 767px) {
+    .ins-roadmap {
+      flex-direction: column;
+    }
+    .ins-step__arrow {
+      align-self: center;
+      transform: rotate(90deg);
+      padding: var(--space-1) 0;
+    }
+  }
+
+  /* ─── Related grid (3-card cross-link) ─── */
+  .ins-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .ins-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ins-related-card-item {
+    display: flex;
+  }
+  .ins-related-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+  .ins-related-card:hover,
+  .ins-related-card:focus-visible {
+    border-color: var(--color-accent-primary);
+  }
+  .ins-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .ins-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .ins-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .ins-related-card__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+  }
+  .ins-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .ins-related-card:hover .ins-related-card__arrow,
+  .ins-related-card:focus-visible .ins-related-card__arrow {
+    transform: translateX(2px);
+  }
+</style>
+
+<script>
+  function setupInsHero() {
+    const svg = document.getElementById("ins-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
       },
-      {
-        label: "§2. Definitions",
-        profileTag: "+ 4 state profiles",
-        description: "Universal definitions plus profile blocks for jurisdiction-specific terminology (e.g., NY: actual cash value definition; FL: hurricane).",
-        statePills: ["NY", "FL", "CA", "TX"],
-        overflow: 1,
-      },
-      {
-        label: "§3. Coverage Limits",
-        profileTag: "50 state profiles",
-        description: "State-mandated minimums and maximums. Profiled per state DOI filings; variant assembly handled at publish time.",
-        statePills: ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA"],
-        overflow: 40,
-      },
-      {
-        label: "§4. Exclusions",
-        profileTag: "+ 12 state profiles",
-        description: "Base exclusions plus state-mandated exclusion language — CA earthquake; FL flood/sinkhole; LA hurricane deductible.",
-        statePills: ["CA", "FL", "LA", "TX", "NC", "SC", "AL", "MS", "GA", "TN"],
-        overflow: 2,
-      },
-      {
-        label: "§5. Conditions",
-        profileTag: "+ 8 state profiles",
-        description: "Universal conditions plus state-specific notice and cancellation provisions.",
-        statePills: ["NY", "NJ", "CA", "TX", "FL", "IL"],
-        overflow: 2,
-      },
-      {
-        label: "§6. Endorsements",
-        profileTag: "filed per state",
-        description: "Endorsement library managed per state filing approval status.",
-      },
-    ],
-    bottomNote: "Variants assembled at publish time. Single source maintained in a CCMS with DITA conditional-content profiling.",
-    footnote: "Section count and variant counts illustrative; exact variant cardinality depends on product line, state filings, and filing-status currency.",
-  }}
-  failureMode={{
-    eyebrow: "INSURANCE / DOI FILING",
-    heading: "A policy form filing rejection delays product launch and revenue.",
-    body: "The document is the product. Filing rejection blocks product launch in the affected state — direct revenue impact and roadmap slippage. Refiling cycles add weeks-to-months of regulatory review per round. The cost is measured in delayed premium revenue plus the operational drag of a stalled product launch in distribution channels that already announced it.",
-  }}
-  signals={[
-    {
-      line: "A state DOI just rejected our policy form filing.",
-      body: "Tactical, immediate. A rejection usually means the variant content didn't match the state's most current rate filing requirements, the form references a stale endorsement library, or the version submitted was a parallel-maintained file that drifted from the approved baseline. The fix is in the variant-management architecture, not in the rewrite.",
-    },
-    {
-      line: "We acquired another carrier and now have two parallel policy form libraries.",
-      body: "Strategic, post-M&A. Two carriers usually means two CCMS platforms (or two sets of Word documents), two filing-tracking systems, and two sets of state variants. Consolidation requires a target architecture before any conversion runs.",
-    },
-    {
-      line: "Our claims-handling AI assistant is giving adjusters inconsistent guidance.",
-      body: "Operational, AI-readiness. RAG over claims-handling guidelines fails when the source content has implicit policy-procedure linkage that the chunking strategy breaks. Provenance metadata has to survive the pipeline; otherwise the assistant cites the wrong jurisdiction's guideline.",
-    },
-    {
-      line: "Our underwriting manuals are 200+ pages and underwriters can't find what they need.",
-      body: "Operational, retrieval. Long-form underwriting content with weak structural hierarchy creates retrieval problems for both humans and AI assistants. Restructuring into topic-based content with controlled vocabulary makes both findable.",
-    },
-  ]}
-  capabilityRelevance={[
-    {
-      pillarLabel: "Information Architecture",
-      pillarHref: "/capabilities/information-architecture",
-      context: "Profiling and conditional-content architecture for state-by-state policy form variation; controlled vocabulary aligned to ACORD where applicable.",
-      engagementShape: "Typically Project-Based — IA design with explicit acceptance criteria against the variant-management requirements.",
-    },
-    {
-      pillarLabel: "Content Migration",
-      pillarHref: "/capabilities/content-migration",
-      context: "Consolidation of policy form libraries — often the carrier's most fragmented content estate. Migration to a single source with audit-grade variant control.",
-      engagementShape: "Project-Based — fixed scope, conversion-fidelity acceptance criteria, often post-M&A.",
-    },
-    {
-      pillarLabel: "CCMS & Publishing",
-      pillarHref: "/capabilities/ccms-and-publishing",
-      context: "Strong in this vertical. Carriers run policy form libraries across states and product lines; CCMS configuration handles the variant assembly.",
-      engagementShape: "Project-Based for the implementation; Managed Services for ongoing administration of state-filing-driven content updates.",
-    },
-    {
-      pillarLabel: "AI-Ready Content",
-      pillarHref: "/capabilities/ai-ready-content",
-      context: "Growing fast. RAG over claims-handling guidelines for adjuster assistants is one of the most active 2025 use cases in the vertical — and a place where content-engineering discipline determines whether the assistant is auditable.",
-      engagementShape: "Often starts as Staff Augmentation during exploratory work; converts to Project-Based once the architecture firms up.",
-    },
-  ]}
-  caseStudies={[
-    {
-      framing: "A multi-state carrier consolidating policy form libraries across product lines.",
-      body: "Single-source authoring with state-variant profiling replaced parallel document maintenance across 30+ jurisdictions. Filing-readiness cycles compressed; variant tracking moved from spreadsheets to audit-grade content metadata.",
-    },
-    {
-      framing: "An insurance platform provider engineering claims-handling content for adjuster-assistant deployment.",
-      body: "Claims-handling guidelines architected for retrieval — chunking strategy preserved policy-procedure linkage, metadata supported provenance tracking through the AI pipeline. Evaluation harness caught retrieval drift before adjuster-facing rollout.",
-    },
-  ]}
-  ctaBody="Submit a 20-page sample (policy form, claims-handling guideline, or underwriting manual). We'll return a content-readiness assessment focused on the variant management and retrieval-readiness questions specific to this vertical. Two business days, no obligation to proceed."
-/>
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+  document.addEventListener("DOMContentLoaded", setupInsHero);
+</script>
