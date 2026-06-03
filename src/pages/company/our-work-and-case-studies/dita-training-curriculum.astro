@@ -88,66 +88,51 @@ const curriculumParts = [
   metaTitle="Case Study — Enterprise DITA Training Curriculum"
   metaDescription="Engagement record: a 76-topic, 10-part DITA training program with 12 hands-on labs and 218-page branded PDF output, authored and published from a single DITA source."
 >
-  <section class="cs-body" aria-labelledby="delivered-heading">
-    <div class="container-prose cs-body__inner">
-      <h2 id="delivered-heading" class="cs-body__heading">What we delivered.</h2>
-      <div class="cs-body__rows">
-        {deliverables.map((d) => (
-          <DocumentRow variant="entry" heading={d.heading} body={d.body} headingLevel={3} />
-        ))}
+  <section class="cs-section" aria-labelledby="delivered-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <h2 id="delivered-heading" class="cs-rail-row__label">What we delivered</h2>
+        <div class="cs-rail-row__content">
+          {deliverables.map((d) => (
+            <DocumentRow variant="entry" heading={d.heading} body={d.body} headingLevel={3} />
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="cs-body cs-body--coverage" aria-labelledby="coverage-heading">
-    <div class="container-prose cs-body__inner">
-      <p class="cs-body__eyebrow" id="coverage-heading">Curriculum coverage</p>
-      <hr class="cs-body__rule" />
-      <ol class="cs-coverage">
-        {curriculumParts.map((part, i) => (
-          <li class="cs-coverage__item">
-            <span class="cs-coverage__num">{String(i + 1).padStart(2, "0")}</span>
-            <span class="cs-coverage__label">{part}</span>
-          </li>
-        ))}
-      </ol>
-      <hr class="cs-body__rule" />
+  <section class="cs-section" aria-labelledby="coverage-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <p id="coverage-heading" class="cs-rail-row__label">Curriculum coverage</p>
+        <div class="cs-rail-row__content">
+          <hr class="cs-body__rule" />
+          <ol class="cs-coverage">
+            {curriculumParts.map((part, i) => (
+              <li class="cs-coverage__item">
+                <span class="cs-coverage__num">{String(i + 1).padStart(2, "0")}</span>
+                <span class="cs-coverage__label">{part}</span>
+              </li>
+            ))}
+          </ol>
+          <hr class="cs-body__rule" />
+        </div>
+      </div>
     </div>
   </section>
 </CaseStudyPageLayout>
 
 <style>
-  .cs-body {
+  .cs-section {
     padding-top: var(--space-16);
     padding-bottom: var(--space-16);
   }
 
   @media (min-width: 768px) {
-    .cs-body {
+    .cs-section {
       padding-top: var(--space-20);
       padding-bottom: var(--space-20);
     }
-  }
-
-  .cs-body__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-8) 0;
-    text-wrap: balance;
-  }
-
-  .cs-body__eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0 0 var(--space-4) 0;
   }
 
   .cs-body__rule {
@@ -156,7 +141,7 @@ const curriculumParts = [
     margin: 0;
   }
 
-  /* Curriculum coverage — numbered list of parts, hairline-divided */
+  /* Curriculum coverage — 10-item numbered list, 2-col on desktop */
   .cs-coverage {
     list-style: none;
     margin: 0;

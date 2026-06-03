@@ -101,58 +101,53 @@ const buildSteps = [
   metaTitle="Case Study — Custom DITA-OT Publishing Automation"
   metaDescription="Engagement record: two custom DITA-OT plugins and a build pipeline producing HTML5, branded PDF, JSON, and PWA-installable output from a single DITA bookmap, with zero manual post-processing."
 >
-  <section class="cs-body cs-body--plugins" aria-labelledby="plugins-heading">
-    <div class="container-prose cs-body__inner">
-      <h2 id="plugins-heading" class="cs-body__heading">Plugin architecture.</h2>
-      <div class="cs-plugins-grid">
-        {plugins.map((p) => (
-          <article class="cs-plugin">
-            <p class="cs-plugin__name">{p.heading}</p>
-            <ul class="cs-plugin__list">
-              {p.items.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </article>
-        ))}
+  <section class="cs-section" aria-labelledby="plugins-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <h2 id="plugins-heading" class="cs-rail-row__label">Plugin architecture</h2>
+        <div class="cs-rail-row__content">
+          <div class="cs-plugins-grid">
+            {plugins.map((p) => (
+              <article class="cs-plugin">
+                <p class="cs-plugin__name">{p.heading}</p>
+                <ul class="cs-plugin__list">
+                  {p.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="cs-body cs-body--build" aria-labelledby="build-heading">
-    <div class="container-prose cs-body__inner">
-      <h2 id="build-heading" class="cs-body__heading">Build pipeline.</h2>
-      <div class="cs-body__rows">
-        {buildSteps.map((s) => (
-          <DocumentRow variant="entry" heading={s.heading} body={s.body} headingLevel={3} />
-        ))}
+  <section class="cs-section" aria-labelledby="build-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <h2 id="build-heading" class="cs-rail-row__label">Build pipeline</h2>
+        <div class="cs-rail-row__content">
+          {buildSteps.map((s) => (
+            <DocumentRow variant="entry" heading={s.heading} body={s.body} headingLevel={3} />
+          ))}
+        </div>
       </div>
     </div>
   </section>
 </CaseStudyPageLayout>
 
 <style>
-  .cs-body {
+  .cs-section {
     padding-top: var(--space-16);
     padding-bottom: var(--space-16);
   }
 
   @media (min-width: 768px) {
-    .cs-body {
+    .cs-section {
       padding-top: var(--space-20);
       padding-bottom: var(--space-20);
     }
-  }
-
-  .cs-body__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-8) 0;
-    text-wrap: balance;
   }
 
   /* Plugin architecture cards (low-chrome — hairline border, mono code-style name) */

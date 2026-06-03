@@ -1,22 +1,31 @@
 ---
 /*
-  CaseStudyPageLayout — distinct Resources sub-page layout for case studies.
+  CaseStudyPageLayout — technical-brief layout for case study detail pages.
 
-  Reads as a technical brief / engagement record rather than a marketing
-  page. Typographically denser than Service/Solution/Industry layouts,
-  more hairlines, more mono labels.
+  Reads as an engineering record, not a marketing page. Two-column document
+  grid throughout: a left mono-label rail + a content column. The rail
+  carries section labels and decision numbers; the content column carries
+  the actual data and prose.
 
-  Structure:
-    1. Topbar breadcrumb ("← Case studies")
-    2. Header — case number · year · sector, title, frame, engagement record table
-    3. AnimatedDivider
-    4. Challenge / Approach — two-column document treatment
-    5. Artifact ledger — stripped-down stat row, amber numbers + mono labels
-    6. Standards & tooling stack — typographic dl
-    7. <slot /> — case-specific body content (each case has different shape)
-    8. Decisions & trade-offs — numbered judgment record
-    9. "A Note on These Numbers" — honesty callout, consistent across all cases
-   10. CTAModule (general)
+  Structure (every section follows the rail / content pattern):
+    1. Breadcrumb (full width above the title block)
+    2. Header — case meta + title + frame (full width)
+    3. Engagement record (rail: Duration / Team / Engagement / Status)
+    4. AnimatedDivider
+    5. Rail: "The challenge" / "The approach" — stacked, paragraph each
+    6. Rail: "Artifact ledger" — 4-stat strip in content column
+    7. Rail: "Stack" — key/value dl in content column
+    8. <slot /> — case-specific sections (each follows the rail pattern,
+       see the three detail pages for examples)
+    9. AnimatedDivider
+   10. Rail: "Decisions & trade-offs" intro, then numbered rail-rows where
+       the rail is the decision number ("01" / "02" / ...)
+   11. Rail: "A note on these numbers" — methodology disclosure
+   12. AnimatedDivider
+   13. CTAModule
+
+  The .cs-rail-row* classes are defined globally so slot content in the
+  detail pages can use the same pattern without duplicating the rules.
 */
 
 import BaseLayout from "./BaseLayout.astro";
@@ -92,27 +101,29 @@ const engagementRows: { label: string; value: string }[] = [
 
 <BaseLayout title={metaTitle} description={metaDescription}>
   <section class="cs-header" aria-labelledby="cs-title">
-    <div class="container-prose cs-header__inner">
+    <div class="container-data cs-header__inner">
       <p class="cs-header__breadcrumb">
         <a href="/company/our-work-and-case-studies" class="cs-header__back">← Our Work &amp; Case Studies</a>
       </p>
 
-      <p class="cs-header__meta">
-        <span class="cs-header__meta-item">CASE {caseNumber} / {caseTotal}</span>
-        <span class="cs-header__meta-sep" aria-hidden="true">·</span>
-        <span class="cs-header__meta-item">{year}</span>
-        <span class="cs-header__meta-sep" aria-hidden="true">·</span>
-        <span class="cs-header__meta-item">{sector}</span>
-      </p>
+      <div class="cs-header__lead">
+        <p class="cs-header__meta">
+          <span class="cs-header__meta-item">CASE {caseNumber} / {caseTotal}</span>
+          <span class="cs-header__meta-sep" aria-hidden="true">·</span>
+          <span class="cs-header__meta-item">{year}</span>
+          <span class="cs-header__meta-sep" aria-hidden="true">·</span>
+          <span class="cs-header__meta-item">{sector}</span>
+        </p>
 
-      <h1 id="cs-title" class="cs-header__title">{title}</h1>
-      <p class="cs-header__frame">{frame}</p>
+        <h1 id="cs-title" class="cs-header__title">{title}</h1>
+        <p class="cs-header__frame">{frame}</p>
+      </div>
 
       <dl class="cs-engagement" aria-label="Engagement record">
         {engagementRows.map((row) => (
-          <div class="cs-engagement__row">
-            <dt class="cs-engagement__label">{row.label}</dt>
-            <dd class="cs-engagement__value">{row.value}</dd>
+          <div class="cs-rail-row cs-rail-row--engagement">
+            <dt class="cs-rail-row__label">{row.label}</dt>
+            <dd class="cs-rail-row__value">{row.value}</dd>
           </div>
         ))}
       </dl>
@@ -121,51 +132,53 @@ const engagementRows: { label: string; value: string }[] = [
 
   <AnimatedDivider />
 
-  <section class="cs-section cs-section--ca" aria-labelledby="ca-heading">
-    <div class="container-prose cs-section__inner">
+  <section class="cs-section" aria-labelledby="ca-heading">
+    <div class="container-data cs-section__inner">
       <h2 id="ca-heading" class="cs-section__visually-hidden">Challenge and approach</h2>
-      <div class="cs-ca-grid">
-        <article class="cs-ca">
-          <h3 class="cs-ca__label">The challenge</h3>
-          <p class="cs-ca__body">{challenge}</p>
-        </article>
-        <article class="cs-ca">
-          <h3 class="cs-ca__label">The approach</h3>
-          <p class="cs-ca__body">{approach}</p>
-        </article>
+      <article class="cs-rail-row cs-rail-row--ca">
+        <h3 class="cs-rail-row__label">The challenge</h3>
+        <p class="cs-rail-row__paragraph">{challenge}</p>
+      </article>
+      <article class="cs-rail-row cs-rail-row--ca">
+        <h3 class="cs-rail-row__label">The approach</h3>
+        <p class="cs-rail-row__paragraph">{approach}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="cs-section" aria-labelledby="ledger-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <p class="cs-rail-row__label" id="ledger-heading">Artifact ledger</p>
+        <div class="cs-rail-row__content">
+          <ul class="cs-ledger">
+            {artifacts.map((a) => (
+              <li class="cs-ledger__row">
+                <span class="cs-ledger__num">{a.number}</span>
+                <span class="cs-ledger__label">{a.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="cs-section cs-section--ledger" aria-labelledby="ledger-heading">
-    <div class="container-prose cs-section__inner">
-      <p class="cs-ledger__eyebrow" id="ledger-heading">Artifact Ledger</p>
-      <hr class="cs-ledger__rule" />
-      <ul class="cs-ledger">
-        {artifacts.map((a) => (
-          <li class="cs-ledger__row">
-            <span class="cs-ledger__num">{a.number}</span>
-            <span class="cs-ledger__label">{a.label}</span>
-          </li>
-        ))}
-      </ul>
-      <hr class="cs-ledger__rule" />
-    </div>
-  </section>
-
-  <section class="cs-section cs-section--stack" aria-labelledby="stack-heading">
-    <div class="container-prose cs-section__inner">
-      <p class="cs-stack__eyebrow" id="stack-heading">Stack</p>
-      <hr class="cs-stack__rule" />
-      <dl class="cs-stack">
-        {stack.map((row) => (
-          <div class="cs-stack__row">
-            <dt class="cs-stack__label">{row.label}</dt>
-            <dd class="cs-stack__value">{row.value}</dd>
-          </div>
-        ))}
-      </dl>
-      <hr class="cs-stack__rule" />
+  <section class="cs-section" aria-labelledby="stack-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <p class="cs-rail-row__label" id="stack-heading">Stack</p>
+        <div class="cs-rail-row__content">
+          <dl class="cs-stack">
+            {stack.map((row) => (
+              <div class="cs-stack__row">
+                <dt class="cs-stack__label">{row.label}</dt>
+                <dd class="cs-stack__value">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -173,15 +186,18 @@ const engagementRows: { label: string; value: string }[] = [
 
   <AnimatedDivider />
 
-  <section class="cs-section cs-section--decisions" aria-labelledby="decisions-heading">
-    <div class="container-prose cs-section__inner">
-      <h2 id="decisions-heading" class="cs-decisions__heading">Decisions and trade-offs.</h2>
-      <p class="cs-decisions__intro">
-        The choices that shaped the engagement, recorded with the option taken and what was rejected. The reasoning matters more than the outcome.
-      </p>
+  <section class="cs-section" aria-labelledby="decisions-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row cs-rail-row--decisions-intro">
+        <h2 id="decisions-heading" class="cs-rail-row__label">Decisions and trade-offs</h2>
+        <p class="cs-rail-row__paragraph">
+          The choices that shaped the engagement, recorded with the option taken and what was rejected. The reasoning matters more than the outcome.
+        </p>
+      </div>
+
       <ol class="cs-decisions">
         {decisions.map((d, i) => (
-          <li class="cs-decision">
+          <li class="cs-decision cs-rail-row">
             <span class="cs-decision__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
             <div class="cs-decision__body">
               <p class="cs-decision__title">{d.decision}</p>
@@ -203,12 +219,14 @@ const engagementRows: { label: string; value: string }[] = [
     </div>
   </section>
 
-  <section class="cs-section cs-section--note" aria-labelledby="note-heading">
-    <div class="container-prose cs-section__inner">
-      <h2 id="note-heading" class="cs-note__heading">A note on these numbers.</h2>
-      <p class="cs-note__body">
-        The figures in the artifact ledger are direct counts from the deliverables shipped on this engagement — not ROI projections or aggregated averages. Outcome percentages referenced anywhere on this site reflect industry benchmarks published by OASIS, Gartner, and CIDM for organizations that achieve 40%+ content reuse with structured metadata. Your actual results depend on content volume, language count, update frequency, and current toolchain maturity. Every engagement begins by measuring your baseline so projections are defensible.
-      </p>
+  <section class="cs-section" aria-labelledby="note-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <h2 id="note-heading" class="cs-rail-row__label">A note on these numbers</h2>
+        <p class="cs-rail-row__paragraph">
+          The figures in the artifact ledger are direct counts from the deliverables shipped on this engagement — not ROI projections or aggregated averages. Outcome percentages referenced anywhere on this site reflect industry benchmarks published by OASIS, Gartner, and CIDM for organizations that achieve 40%+ content reuse with structured metadata. Your actual results depend on content volume, language count, update frequency, and current toolchain maturity. Every engagement begins by measuring your baseline so projections are defensible.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -219,6 +237,70 @@ const engagementRows: { label: string; value: string }[] = [
     body="Submit a 20-page sample. We'll return conversion feasibility, content recovery rate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
   />
 </BaseLayout>
+
+<style is:global>
+  /* ─── Rail-row layout primitive (used by layout + slot content) ─── */
+  .cs-rail-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 768px) {
+    .cs-rail-row {
+      grid-template-columns: 220px 1fr;
+      gap: var(--space-12);
+      align-items: baseline;
+    }
+  }
+
+  .cs-rail-row__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .cs-rail-row__value {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: 1.45;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .cs-rail-row__paragraph {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+    max-width: 70ch;
+  }
+
+  .cs-rail-row__content {
+    /* generic slot for grids/lists in the right column; layout is its own */
+  }
+
+  /* Hairline divider between rail rows when stacked vertically */
+  .cs-rail-row + .cs-rail-row {
+    margin-top: var(--space-10);
+    padding-top: var(--space-10);
+    border-top: var(--border-hairline);
+  }
+  @media (max-width: 767px) {
+    .cs-rail-row + .cs-rail-row {
+      margin-top: var(--space-8);
+      padding-top: var(--space-8);
+    }
+  }
+</style>
 
 <style>
   /* ─── Header ─── */
@@ -256,6 +338,16 @@ const engagementRows: { label: string; value: string }[] = [
     text-underline-offset: 2px;
   }
 
+  .cs-header__lead {
+    margin-bottom: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .cs-header__lead {
+      margin-bottom: var(--space-16);
+    }
+  }
+
   .cs-header__meta {
     display: flex;
     flex-wrap: wrap;
@@ -288,6 +380,7 @@ const engagementRows: { label: string; value: string }[] = [
     color: var(--color-text-primary);
     margin: 0 0 var(--space-6) 0;
     text-wrap: balance;
+    max-width: 22ch;
   }
 
   .cs-header__frame {
@@ -295,15 +388,17 @@ const engagementRows: { label: string; value: string }[] = [
     font-size: var(--text-body-lg);
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
-    margin: 0 0 var(--space-8) 0;
+    margin: 0;
     text-wrap: pretty;
     max-width: 65ch;
   }
 
-  /* ─── Engagement record table (in header) ─── */
+  /* Engagement record — rail-row pattern, but tighter row spacing.
+     Reset the auto-hairline between rail-rows since we use one
+     enclosing top/bottom rule instead. */
   .cs-engagement {
-    margin: var(--space-8) 0 0 0;
-    padding: var(--space-4) 0;
+    margin: 0;
+    padding: var(--space-6) 0;
     border-top: var(--border-hairline);
     border-bottom: var(--border-hairline);
     display: flex;
@@ -311,36 +406,10 @@ const engagementRows: { label: string; value: string }[] = [
     gap: var(--space-3);
   }
 
-  .cs-engagement__row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-1);
-  }
-
-  @media (min-width: 768px) {
-    .cs-engagement__row {
-      grid-template-columns: 140px 1fr;
-      gap: var(--space-6);
-      align-items: baseline;
-    }
-  }
-
-  .cs-engagement__label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0;
-  }
-
-  .cs-engagement__value {
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    line-height: 1.45;
-    color: var(--color-text-primary);
-    margin: 0;
+  .cs-engagement .cs-rail-row + .cs-rail-row {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
   }
 
   /* ─── Section spacing ─── */
@@ -368,70 +437,22 @@ const engagementRows: { label: string; value: string }[] = [
     border: 0;
   }
 
-  /* ─── Challenge / Approach two-column ─── */
-  .cs-ca-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-12);
-  }
-
-  @media (min-width: 768px) {
-    .cs-ca-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-16);
-    }
-  }
-
-  .cs-ca__label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0 0 var(--space-4) 0;
-    padding-bottom: var(--space-3);
-    border-bottom: var(--border-hairline);
-  }
-
-  .cs-ca__body {
-    font-family: var(--font-body);
-    font-size: var(--text-body);
-    line-height: var(--leading-normal);
-    color: var(--color-text-secondary);
-    margin: 0;
-    text-wrap: pretty;
-  }
-
-  /* ─── Artifact ledger ─── */
-  .cs-ledger__eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0 0 var(--space-4) 0;
-  }
-
-  .cs-ledger__rule {
-    border: 0;
-    border-top: var(--border-hairline);
-    margin: 0;
-  }
-
+  /* ─── Artifact ledger — 4-stat strip in the content column ─── */
   .cs-ledger {
     list-style: none;
     margin: 0;
-    padding: var(--space-8) 0;
+    padding: var(--space-3) 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-6) var(--space-8);
+    gap: var(--space-8) var(--space-8);
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
   }
 
   @media (min-width: 768px) {
     .cs-ledger {
       grid-template-columns: repeat(4, 1fr);
+      padding: var(--space-5) 0;
     }
   }
 
@@ -443,7 +464,7 @@ const engagementRows: { label: string; value: string }[] = [
 
   .cs-ledger__num {
     font-family: var(--font-display);
-    font-size: 36px;
+    font-size: 40px;
     font-weight: var(--weight-regular);
     line-height: 1;
     color: #fcd34d;
@@ -459,35 +480,22 @@ const engagementRows: { label: string; value: string }[] = [
     line-height: 1.3;
   }
 
-  /* ─── Standards & tooling stack ─── */
-  .cs-stack__eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0 0 var(--space-4) 0;
-  }
-
-  .cs-stack__rule {
-    border: 0;
-    border-top: var(--border-hairline);
-    margin: 0;
-  }
-
+  /* ─── Stack key/value dl in the content column ─── */
   .cs-stack {
     margin: 0;
-    padding: var(--space-6) 0;
+    padding: var(--space-3) 0;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 
   .cs-stack__row {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-2);
+    gap: var(--space-1);
+    padding: var(--space-2) 0;
   }
 
   @media (min-width: 768px) {
@@ -517,48 +525,25 @@ const engagementRows: { label: string; value: string }[] = [
   }
 
   /* ─── Decisions & trade-offs ─── */
-  .cs-decisions__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-4) 0;
-    text-wrap: balance;
-  }
-
-  .cs-decisions__intro {
-    font-family: var(--font-body);
-    font-size: var(--text-body);
-    line-height: var(--leading-normal);
-    color: var(--color-text-secondary);
-    margin: 0 0 var(--space-12) 0;
-    text-wrap: pretty;
-    max-width: 65ch;
-  }
-
   .cs-decisions {
     list-style: none;
-    margin: 0;
+    margin: var(--space-12) 0 0 0;
     padding: 0;
     display: flex;
     flex-direction: column;
   }
 
   .cs-decision {
-    display: grid;
-    grid-template-columns: 40px 1fr;
-    gap: var(--space-4);
     padding: var(--space-8) 0;
     border-top: var(--border-hairline);
   }
 
-  @media (min-width: 768px) {
-    .cs-decision {
-      grid-template-columns: 64px 1fr;
-      gap: var(--space-6);
-    }
+  /* Override the global rail-row spacing for decisions since the list
+     itself manages padding/border per item. */
+  .cs-decision.cs-rail-row + .cs-decision.cs-rail-row {
+    margin-top: 0;
+    padding-top: var(--space-8);
+    border-top: var(--border-hairline);
   }
 
   .cs-decision:last-child {
@@ -567,24 +552,17 @@ const engagementRows: { label: string; value: string }[] = [
 
   .cs-decision__num {
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: 32px;
     font-weight: var(--weight-regular);
     line-height: 1;
     color: #fcd34d;
     font-feature-settings: "tnum";
-    padding-top: 2px;
-  }
-
-  @media (min-width: 768px) {
-    .cs-decision__num {
-      font-size: 28px;
-    }
   }
 
   .cs-decision__body {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-5);
   }
 
   .cs-decision__title {
@@ -658,24 +636,10 @@ const engagementRows: { label: string; value: string }[] = [
     margin-right: var(--space-2);
   }
 
-  /* ─── Note on numbers ─── */
-  .cs-note__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-md);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-6) 0;
-    text-wrap: balance;
-  }
-
-  .cs-note__body {
-    font-family: var(--font-body);
-    font-size: var(--text-body);
-    line-height: var(--leading-normal);
-    color: var(--color-text-secondary);
-    margin: 0;
-    text-wrap: pretty;
+  /* The decisions-intro row carries the section heading + intro
+     paragraph and should not pick up the auto-hairline that .cs-rail-row +
+     .cs-rail-row applies, because it's not stacking with a peer above. */
+  .cs-rail-row--decisions-intro {
+    margin-bottom: 0;
   }
 </style>

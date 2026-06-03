@@ -104,90 +104,79 @@ const vocabularyFacets = [
   metaTitle="Case Study — AI-Ready Content Pipeline"
   metaDescription="Engagement record: unstructured legacy XML transformed into AI-ready DITA with 100% metadata coverage, 150+ addressable section IDs, and a 5-facet controlled vocabulary that lifts retrieval precision from ~25% to production-grade."
 >
-  <section class="cs-body cs-body--ba" aria-labelledby="ba-heading">
-    <div class="container-prose cs-body__inner">
-      <h2 id="ba-heading" class="cs-body__heading">Before &amp; after.</h2>
-      <div class="cs-ba-grid">
-        <article class="cs-ba">
-          <p class="cs-ba__label">{beforeAfter.before.label}</p>
-          <ul class="cs-ba__list">
-            {beforeAfter.before.items.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-        </article>
-        <article class="cs-ba">
-          <p class="cs-ba__label">{beforeAfter.after.label}</p>
-          <ul class="cs-ba__list">
-            {beforeAfter.after.items.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="cs-body cs-body--tools" aria-labelledby="tools-heading">
-    <div class="container-prose cs-body__inner">
-      <h2 id="tools-heading" class="cs-body__heading">Tools built.</h2>
-      <div class="cs-body__rows">
-        {tools.map((t) => (
-          <DocumentRow variant="entry" heading={t.heading} body={t.body} headingLevel={3} />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="cs-body cs-body--vocab" aria-labelledby="vocab-heading">
-    <div class="container-prose cs-body__inner">
-      <p class="cs-body__eyebrow" id="vocab-heading">Controlled vocabulary (subject scheme)</p>
-      <hr class="cs-body__rule" />
-      <dl class="cs-vocab">
-        {vocabularyFacets.map((f) => (
-          <div class="cs-vocab__row">
-            <dt class="cs-vocab__facet">{f.facet}</dt>
-            <dd class="cs-vocab__values">{f.values}</dd>
+  <section class="cs-section" aria-labelledby="ba-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <h2 id="ba-heading" class="cs-rail-row__label">Before / after</h2>
+        <div class="cs-rail-row__content">
+          <div class="cs-ba-grid">
+            <article class="cs-ba">
+              <p class="cs-ba__label">{beforeAfter.before.label}</p>
+              <ul class="cs-ba__list">
+                {beforeAfter.before.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+            <article class="cs-ba">
+              <p class="cs-ba__label">{beforeAfter.after.label}</p>
+              <ul class="cs-ba__list">
+                {beforeAfter.after.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
           </div>
-        ))}
-      </dl>
-      <hr class="cs-body__rule" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section" aria-labelledby="tools-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <h2 id="tools-heading" class="cs-rail-row__label">Tools built</h2>
+        <div class="cs-rail-row__content">
+          {tools.map((t) => (
+            <DocumentRow variant="entry" heading={t.heading} body={t.body} headingLevel={3} />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section" aria-labelledby="vocab-heading">
+    <div class="container-data cs-section__inner">
+      <div class="cs-rail-row">
+        <p id="vocab-heading" class="cs-rail-row__label">Controlled vocabulary</p>
+        <div class="cs-rail-row__content">
+          <hr class="cs-body__rule" />
+          <dl class="cs-vocab">
+            {vocabularyFacets.map((f) => (
+              <div class="cs-vocab__row">
+                <dt class="cs-vocab__facet">{f.facet}</dt>
+                <dd class="cs-vocab__values">{f.values}</dd>
+              </div>
+            ))}
+          </dl>
+          <hr class="cs-body__rule" />
+        </div>
+      </div>
     </div>
   </section>
 </CaseStudyPageLayout>
 
 <style>
-  .cs-body {
+  .cs-section {
     padding-top: var(--space-16);
     padding-bottom: var(--space-16);
   }
 
   @media (min-width: 768px) {
-    .cs-body {
+    .cs-section {
       padding-top: var(--space-20);
       padding-bottom: var(--space-20);
     }
-  }
-
-  .cs-body__heading {
-    font-family: var(--font-display);
-    font-size: var(--text-display-lg);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-8) 0;
-    text-wrap: balance;
-  }
-
-  .cs-body__eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0 0 var(--space-4) 0;
   }
 
   .cs-body__rule {
