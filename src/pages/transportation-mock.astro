@@ -1,0 +1,409 @@
+---
+/*
+  TEMP / transportation-mock — two hero-visual candidates for
+  /industries/transportation.
+
+  Each option renders the live Hero component with the locked H1 + augmented
+  subdeck so the side visuals can be judged in their final context. Pick one
+  in-browser; build the real page with the chosen visual and `git rm` this
+  file. Unlinked from nav.
+
+  B — VIN-filtered content delivery: <vin> → <profile> → <manual>. Pure
+      VIN-driven publishing thesis.
+  D — VIN-driven assembly + multi-channel publishing: vertical pipeline
+      <vin> → profiler → <manual>, then fan to 4 channels (Dealer DMS,
+      In-Vehicle, AR Overlay, Print PDF). Combined thesis.
+*/
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/site/Hero.astro";
+
+const HERO_TITLE = "Automotive & Transportation Information Systems";
+const HERO_SUBDECK = "Service information, diagnostics, and in-vehicle content delivery for OEMs and Tier-1 suppliers — where documentation accuracy directly affects repair quality and recall compliance. Plus aviation, rail, and maritime service documentation under bounded-scope engagements where the same engineering discipline applies.";
+---
+
+<BaseLayout
+  title="Transportation hero mockups — Extense LLC"
+  description="Internal mockup page. Two hero-visual candidates for /industries/transportation."
+>
+  <section class="trm-banner">
+    <div class="container-page">
+      <p class="trm-banner__label">TRANSPORTATION HERO MOCK · PICK ONE</p>
+      <nav class="trm-banner__nav" aria-label="Mock options">
+        <a href="#opt-b">B · VIN-filtered content delivery</a>
+        <a href="#opt-d">D · VIN-driven assembly + multi-channel</a>
+      </nav>
+    </div>
+  </section>
+
+  {/* ────────────── OPTION B ────────────── */}
+  <section class="trm-option" id="opt-b">
+    <div class="container-page">
+      <h2 class="trm-option__heading">Option B — VIN-filtered content delivery</h2>
+      <p class="trm-option__note">
+        Three-stage horizontal pipeline: <code>&lt;vin&gt;</code> with build
+        options → DITA <code>&lt;profile&gt;</code> filter → tailored
+        <code>&lt;manual&gt;</code> output. Renders the page's signature move
+        — each vehicle's documentation derived from its actual build sheet —
+        uniquely automotive (no other industry has VIN as a literal primitive).
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK} subdeckMaxWidth="520px">
+      <svg
+        class="mock-svg mock-b"
+        id="mock-b"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: auto.vin-publishing</text>
+
+        {/* Stage 1: <vin> chip */}
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="40" y="110" width="140" height="90" rx="3" />
+          <rect class="artifact-strip" x="40" y="110" width="140" height="6" />
+          <text class="node-label node-label--custom" x="110" y="140" text-anchor="middle">&lt;vin&gt;</text>
+          <line class="artifact-rule" x1="56" y1="152" x2="164" y2="152" />
+          <text class="node-caption" x="110" y="170" text-anchor="middle">Sunroof · AWD</text>
+          <text class="node-caption" x="110" y="186" text-anchor="middle">EU-spec</text>
+        </g>
+
+        {/* Arrow 1 → 2 */}
+        <path class="flow-conn" style="--d: 320ms" d="M 180 155 L 210 155 M 205 150 L 210 155 L 205 160" />
+
+        {/* Stage 2: profiler chip */}
+        <g class="fx" style="--d: 400ms">
+          <rect class="node node--custom" x="210" y="110" width="140" height="90" rx="3" />
+          <rect class="artifact-strip" x="210" y="110" width="140" height="6" />
+          <text class="node-label node-label--custom" x="280" y="140" text-anchor="middle">&lt;profile&gt;</text>
+          <line class="artifact-rule" x1="226" y1="152" x2="334" y2="152" />
+          <text class="node-caption" x="280" y="170" text-anchor="middle">filter applicable</text>
+          <text class="node-caption" x="280" y="186" text-anchor="middle">topics</text>
+        </g>
+
+        {/* Arrow 2 → 3 */}
+        <path class="flow-conn" style="--d: 520ms" d="M 350 155 L 380 155 M 375 150 L 380 155 L 375 160" />
+
+        {/* Stage 3: <manual> chip */}
+        <g class="fx" style="--d: 600ms">
+          <rect class="node node--custom" x="380" y="110" width="140" height="90" rx="3" />
+          <rect class="artifact-strip" x="380" y="110" width="140" height="6" />
+          <text class="node-label node-label--custom" x="450" y="140" text-anchor="middle">&lt;manual&gt;</text>
+          <line class="artifact-rule" x1="396" y1="152" x2="504" y2="152" />
+          <text class="node-caption" x="450" y="170" text-anchor="middle">tailored output</text>
+          <text class="node-caption" x="450" y="186" text-anchor="middle">VIN-specific</text>
+        </g>
+
+        {/* Footer caption */}
+        <text class="footer-caption fx" x="280" y="230" text-anchor="middle" style="--d: 720ms">one VIN · one manual · every applicable topic</text>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 840ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. B</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">auto.vin-publishing</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">VIN &rarr; PROFILE &rarr; MANUAL</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
+
+  {/* ────────────── OPTION D ────────────── */}
+  <section class="trm-option" id="opt-d">
+    <div class="container-page">
+      <h2 class="trm-option__heading">Option D — VIN-driven assembly + multi-channel publishing</h2>
+      <p class="trm-option__note">
+        Vertical pipeline <code>&lt;vin&gt;</code> → DITA profiler →
+        <code>&lt;manual&gt;</code>, then fan to four delivery channels
+        (Dealer DMS, In-Vehicle, AR Overlay, Print PDF). Combines B's
+        VIN-driven assembly thesis with the page's multi-channel publishing
+        story (S4) in one composition.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK} subdeckMaxWidth="520px">
+      <svg
+        class="mock-svg mock-d"
+        id="mock-d"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: auto.publishing</text>
+
+        {/* <vin> at top */}
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="220" y="56" width="120" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="280" y="77" text-anchor="middle">&lt;vin&gt;</text>
+        </g>
+
+        {/* Arrow down: vin → profiler */}
+        <path class="flow-conn" style="--d: 280ms" d="M 280 88 L 280 104 M 275 99 L 280 104 L 285 99" />
+
+        {/* profiler in middle */}
+        <g class="fx" style="--d: 360ms">
+          <rect class="node node--custom" x="200" y="104" width="160" height="46" rx="3" />
+          <rect class="artifact-strip" x="200" y="104" width="160" height="6" />
+          <text class="node-label node-label--custom" x="280" y="128" text-anchor="middle">&lt;profile&gt;</text>
+          <text class="node-caption" x="280" y="142" text-anchor="middle">filter applicable topics</text>
+        </g>
+
+        {/* Arrow down: profiler → manual */}
+        <path class="flow-conn" style="--d: 440ms" d="M 280 150 L 280 166 M 275 161 L 280 166 L 285 161" />
+
+        {/* <manual> below */}
+        <g class="fx" style="--d: 500ms">
+          <rect class="node node--custom" x="220" y="166" width="120" height="42" rx="3" />
+          <text class="node-label node-label--custom" x="280" y="186" text-anchor="middle">&lt;manual&gt;</text>
+          <text class="node-caption" x="280" y="200" text-anchor="middle">vehicle-specific</text>
+        </g>
+
+        {/* Fan: <manual> → 4 channels */}
+        <path class="flow-conn" style="--d: 580ms" d="M 280 208 L 80 232" />
+        <path class="flow-conn" style="--d: 600ms" d="M 280 208 L 215 232" />
+        <path class="flow-conn" style="--d: 620ms" d="M 280 208 L 350 232" />
+        <path class="flow-conn" style="--d: 640ms" d="M 280 208 L 485 232" />
+
+        {/* 4 channel chips at y=232-264 */}
+        <g class="fx" style="--d: 700ms">
+          <rect class="node node--custom" x="20" y="232" width="120" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="80" y="253" text-anchor="middle">DEALER DMS</text>
+        </g>
+        <g class="fx" style="--d: 720ms">
+          <rect class="node node--custom" x="155" y="232" width="120" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="215" y="253" text-anchor="middle">IN-VEHICLE</text>
+        </g>
+        <g class="fx" style="--d: 740ms">
+          <rect class="node node--custom" x="290" y="232" width="120" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="350" y="253" text-anchor="middle">AR OVERLAY</text>
+        </g>
+        <g class="fx" style="--d: 760ms">
+          <rect class="node node--custom" x="425" y="232" width="120" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="485" y="253" text-anchor="middle">PRINT PDF</text>
+        </g>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 880ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. D</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">auto.publishing</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">VIN &rarr; MANUAL &rarr; 4 CHANNELS</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ─── Banner ─── */
+  .trm-banner {
+    background: #fef3c7;
+    border-bottom: var(--border-hairline);
+    padding: var(--space-3) 0;
+  }
+  .trm-banner__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-2) 0;
+  }
+  .trm-banner__nav {
+    display: flex;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+  .trm-banner__nav a {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-accent-primary);
+    padding-bottom: 1px;
+  }
+  .trm-banner__nav a:hover {
+    color: var(--color-link-hover);
+  }
+
+  /* ─── Option section ─── */
+  .trm-option {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-8);
+  }
+  .trm-option__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    letter-spacing: var(--tracking-tight);
+  }
+  .trm-option__note {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    max-width: 70ch;
+    text-wrap: pretty;
+  }
+  .trm-option__note code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: #fef3c7;
+    padding: 0 4px;
+    border-radius: 2px;
+  }
+
+  /* ─── Shared SVG idiom ─── */
+  .mock-svg {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .mock-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .mock-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .mock-svg .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .mock-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .mock-svg .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .mock-svg .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .mock-svg .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .mock-svg .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .mock-svg .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .mock-svg .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .mock-svg .artifact-strip {
+    fill: var(--color-accent-primary);
+    stroke: none;
+  }
+  .mock-svg .artifact-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .mock-svg .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .mock-svg .footer-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── Animation (shared) ─── */
+  .mock-svg .fx {
+    opacity: 0;
+  }
+  .mock-svg.drawn .fx {
+    animation: trm-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .mock-svg.drawn .flow-conn {
+    animation: trm-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes trm-fade {
+    to { opacity: 1; }
+  }
+  @keyframes trm-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mock-svg .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .mock-svg .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  function setupMocks() {
+    const svgs = document.querySelectorAll(".mock-svg");
+    if (svgs.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    svgs.forEach((svg) => observer.observe(svg));
+  }
+  document.addEventListener("DOMContentLoaded", setupMocks);
+</script>
