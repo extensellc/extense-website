@@ -36,6 +36,8 @@ const HERO_SUBDECK = "Precision, compliance, and auditability for banking, finte
         <a href="#opt-b">B · SOX control chain pipeline</a>
         <a href="#opt-c">C · Multi-jurisdiction profiling fan</a>
         <a href="#opt-d">D · Reuse fan + audit trace on the source</a>
+        <a href="#opt-e">E · Stacked spine (top-down)</a>
+        <a href="#opt-f">F · Single policy-record card</a>
       </nav>
     </div>
   </section>
@@ -352,6 +354,201 @@ const HERO_SUBDECK = "Precision, compliance, and auditability for banking, finte
       </svg>
     </Hero>
   </section>
+
+  {/* ────────────── OPTION E ────────────── */}
+  <section class="fsm-option" id="opt-e">
+    <div class="container-page">
+      <h2 class="fsm-option__heading">Option E — Stacked spine (top-down)</h2>
+      <p class="fsm-option__note">
+        <code>&lt;policy&gt;</code> chip at top, full-width audit-metadata band
+        in the middle, four deliverables fanning out at the bottom. Same data
+        as D, reorganized as a vertical content-architecture stack.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK} subdeckMaxWidth="520px">
+      <svg
+        class="mock-svg mock-e"
+        id="mock-e"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: financial.architecture</text>
+
+        {/* Row 1: <policy> chip at top */}
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="210" y="58" width="140" height="44" rx="3" />
+          <rect class="artifact-strip" x="210" y="58" width="140" height="6" />
+          <text class="node-label node-label--custom" x="280" y="82" text-anchor="middle">&lt;policy&gt;</text>
+          <text class="node-caption" x="280" y="95" text-anchor="middle">extense.compliance</text>
+        </g>
+
+        {/* Vertical spine: policy → audit band */}
+        <path class="flow-conn" style="--d: 320ms" d="M 280 102 L 280 124 M 275 119 L 280 124 L 285 119" />
+
+        {/* Row 2: audit metadata band — 3 cells */}
+        <g class="fx" style="--d: 400ms">
+          {/* Cell 1: VERSION */}
+          <rect class="node node--soft" x="40" y="124" width="150" height="46" rx="3" />
+          <text class="meta-label" x="115" y="142" text-anchor="middle">VERSION</text>
+          <text class="meta-value" x="115" y="159" text-anchor="middle">v3.2 · 2025-Q2</text>
+        </g>
+        <g class="fx" style="--d: 440ms">
+          {/* Cell 2: SOX 404 */}
+          <rect class="node node--soft" x="205" y="124" width="150" height="46" rx="3" />
+          <text class="meta-label" x="280" y="142" text-anchor="middle">SOX 404</text>
+          <text class="meta-value" x="280" y="159" text-anchor="middle">linked</text>
+        </g>
+        <g class="fx" style="--d: 480ms">
+          {/* Cell 3: DIFF */}
+          <rect class="node node--soft" x="370" y="124" width="150" height="46" rx="3" />
+          <text class="meta-label" x="445" y="142" text-anchor="middle">DIFF</text>
+          <text class="meta-value meta-value--diff" x="445" y="159" text-anchor="middle">a1b2c3 → d4e5f6</text>
+        </g>
+
+        {/* Vertical spine: audit → distribution */}
+        <path class="flow-conn" style="--d: 580ms" d="M 280 170 L 280 192" />
+
+        {/* Fan: spine → 4 deliverables */}
+        <path class="flow-conn" style="--d: 640ms" d="M 280 192 L 80 220" />
+        <path class="flow-conn" style="--d: 660ms" d="M 280 192 L 215 220" />
+        <path class="flow-conn" style="--d: 680ms" d="M 280 192 L 350 220" />
+        <path class="flow-conn" style="--d: 700ms" d="M 280 192 L 480 220" />
+
+        {/* Row 3: 4 deliverable chips horizontal */}
+        <g class="fx" style="--d: 760ms">
+          <rect class="node node--custom" x="20" y="220" width="120" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="80" y="243" text-anchor="middle">HANDBOOK</text>
+        </g>
+        <g class="fx" style="--d: 780ms">
+          <rect class="node node--custom" x="155" y="220" width="120" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="215" y="243" text-anchor="middle">COMPLIANCE</text>
+        </g>
+        <g class="fx" style="--d: 800ms">
+          <rect class="node node--custom" x="290" y="220" width="120" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="350" y="243" text-anchor="middle">TRAINING</text>
+        </g>
+        <g class="fx" style="--d: 820ms">
+          <rect class="node node--custom" x="425" y="220" width="120" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="485" y="243" text-anchor="middle">DISCLOSURE</text>
+        </g>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 920ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. E</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">financial.architecture</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">SOURCE &rarr; AUDIT &rarr; DISTRIBUTION</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
+
+  {/* ────────────── OPTION F ────────────── */}
+  <section class="fsm-option" id="opt-f">
+    <div class="container-page">
+      <h2 class="fsm-option__heading">Option F — Single policy-record card</h2>
+      <p class="fsm-option__note">
+        One framed document-grade asset filling the canvas: title row,
+        metadata grid (VERSION / APPROVED / SOX 404 / DIFF as labeled fields),
+        and a "DELIVERS TO" footer listing the four outputs inline. No
+        arrows, no fan — looks like the policy itself, rendered as a content
+        record.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK} subdeckMaxWidth="520px">
+      <svg
+        class="mock-svg mock-f"
+        id="mock-f"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: financial.policy-record</text>
+
+        {/* Main policy-record card frame */}
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="40" y="50" width="480" height="220" rx="3" />
+          <rect class="artifact-strip" x="40" y="50" width="480" height="6" />
+        </g>
+
+        {/* Header row */}
+        <g class="fx" style="--d: 340ms">
+          <text class="record-title" x="60" y="84">&lt;policy&gt;</text>
+          <text class="record-meta" x="500" y="84" text-anchor="end">extense.compliance</text>
+        </g>
+        <line class="artifact-rule fx" x1="60" y1="98" x2="500" y2="98" style="--d: 380ms" />
+
+        {/* Metadata grid: 4 cols (VERSION · APPROVED · SOX 404 · DIFF) */}
+        <g class="fx" style="--d: 460ms">
+          <text class="meta-label" x="60" y="124">VERSION</text>
+          <text class="meta-value" x="60" y="146">v3.2</text>
+        </g>
+        <g class="fx" style="--d: 500ms">
+          <text class="meta-label" x="180" y="124">APPROVED</text>
+          <text class="meta-value" x="180" y="146">2025-Q2</text>
+        </g>
+        <g class="fx" style="--d: 540ms">
+          <text class="meta-label" x="310" y="124">SOX 404</text>
+          <text class="meta-value" x="310" y="146">linked</text>
+        </g>
+        <g class="fx" style="--d: 580ms">
+          <text class="meta-label" x="420" y="124">DIFF</text>
+          <text class="meta-value meta-value--diff" x="420" y="146">a1b2c3 → d4e5f6</text>
+        </g>
+
+        <line class="artifact-rule fx" x1="60" y1="172" x2="500" y2="172" style="--d: 640ms" />
+
+        {/* Delivers row */}
+        <g class="fx" style="--d: 700ms">
+          <text class="meta-label" x="60" y="196">DELIVERS TO</text>
+        </g>
+        <g class="fx" style="--d: 760ms">
+          <text class="delivers-list" x="60" y="222">EMPLOYEE HANDBOOK</text>
+          <text class="delivers-sep" x="215" y="222">·</text>
+          <text class="delivers-list" x="225" y="222">COMPLIANCE MANUAL</text>
+          <text class="delivers-sep" x="385" y="222">·</text>
+          <text class="delivers-list" x="395" y="222">TRAINING DECK</text>
+          <text class="delivers-sep" x="490" y="222">·</text>
+          <text class="delivers-list" x="500" y="222" text-anchor="end">CLIENT DISCLOSURE</text>
+        </g>
+
+        <line class="artifact-rule fx" x1="60" y1="246" x2="500" y2="246" style="--d: 820ms" />
+
+        {/* Footer caption inside card */}
+        <text class="record-footer fx" x="60" y="263" style="--d: 860ms">RECORD · audit-traceable · single source</text>
+        <text class="record-footer fx" x="500" y="263" text-anchor="end" style="--d: 860ms">FORM: POLICY v1.0</text>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 940ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. F</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">financial.policy-record</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">POLICY AS CONTENT RECORD</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
 </BaseLayout>
 
 <style>
@@ -491,6 +688,57 @@ const HERO_SUBDECK = "Precision, compliance, and auditability for banking, finte
     vector-effect: non-scaling-stroke;
     stroke-dasharray: 240;
     stroke-dashoffset: 240;
+  }
+
+  /* Shared meta-label / meta-value / record-* (used by E and F) */
+  .mock-svg .meta-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.12em;
+  }
+  .mock-svg .meta-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+  .mock-svg .meta-value--diff {
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.06em;
+  }
+  .mock-svg .record-title {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.04em;
+  }
+  .mock-svg .record-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .mock-svg .delivers-list {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+  .mock-svg .delivers-sep {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-text-muted);
+  }
+  .mock-svg .record-footer {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   /* Option D meta lines (in the central policy chip) */
