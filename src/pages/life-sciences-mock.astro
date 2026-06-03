@@ -34,6 +34,7 @@ const HERO_SUBDECK = "Structured content management for FDA, EMA, and MDR compli
         <a href="#opt-a">A · Multi-market submission fan</a>
         <a href="#opt-b">B · IFU translation propagation</a>
         <a href="#opt-c">C · Component reuse + audit</a>
+        <a href="#opt-d">D · Component change propagation across artifacts</a>
       </nav>
     </div>
   </section>
@@ -295,6 +296,91 @@ const HERO_SUBDECK = "Structured content management for FDA, EMA, and MDR compli
       </svg>
     </Hero>
   </section>
+
+  {/* ────────────── OPTION D ────────────── */}
+  <section class="lsm-option" id="opt-d">
+    <div class="container-page">
+      <h2 class="lsm-option__heading">Option D — Component change propagation across artifacts</h2>
+      <p class="lsm-option__note">
+        Same change-event move as B, but the downstream broadens from
+        languages-of-one-IFU to all four artifact types. Source
+        <code>&lt;component&gt;</code> with Δ change marker, propagation
+        annotation on the spine, fan to four deliverables (IFU · SPL · CSR ·
+        Module 3), then a single footer annotation that carries the multi-
+        market / multi-language / audit-trail scale without crowding the chips.
+        Combines B's distinctive change-propagation thesis with C's multi-
+        artifact coverage and A's regulatory multiplier.
+      </p>
+    </div>
+    <Hero variant="universal" title={HERO_TITLE} subdeck={HERO_SUBDECK} subdeckMaxWidth="520px">
+      <svg
+        class="mock-svg mock-d"
+        id="mock-d"
+        viewBox="0 0 560 320"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        <g class="corner--accent fx" style="--d: 0ms">
+          <path d="M 12 24 L 12 12 L 24 12" />
+          <path d="M 536 12 L 548 12 L 548 24" />
+          <path d="M 12 296 L 12 308 L 24 308" />
+          <path d="M 536 308 L 548 308 L 548 296" />
+        </g>
+
+        <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: lifesci.propagation</text>
+
+        {/* Source <component> chip with change marker */}
+        <g class="fx" style="--d: 200ms">
+          <rect class="node node--custom" x="200" y="58" width="160" height="56" rx="3" />
+          <rect class="artifact-strip" x="200" y="58" width="160" height="6" />
+          <text class="node-label node-label--custom" x="280" y="86" text-anchor="middle">&lt;component&gt;</text>
+          <text class="node-caption" x="280" y="104" text-anchor="middle">Δ safety warning · v3.2</text>
+        </g>
+
+        {/* Vertical spine with Δ propagation annotation */}
+        <path class="flow-conn" style="--d: 340ms" d="M 280 114 L 280 180 M 275 175 L 280 180 L 285 175" />
+        <text class="propagation-label fx" x="296" y="150" style="--d: 420ms">Δ propagating</text>
+
+        {/* Fan to 4 deliverables */}
+        <path class="flow-conn" style="--d: 500ms" d="M 280 180 L 80 200" />
+        <path class="flow-conn" style="--d: 520ms" d="M 280 180 L 215 200" />
+        <path class="flow-conn" style="--d: 540ms" d="M 280 180 L 350 200" />
+        <path class="flow-conn" style="--d: 560ms" d="M 280 180 L 485 200" />
+
+        {/* 4 deliverable chips at y=200-240 (h=40), width=120 each, gap=15 */}
+        <g class="fx" style="--d: 620ms">
+          <rect class="node node--custom" x="20" y="200" width="120" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="80" y="225" text-anchor="middle">IFU</text>
+        </g>
+        <g class="fx" style="--d: 640ms">
+          <rect class="node node--custom" x="155" y="200" width="120" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="215" y="225" text-anchor="middle">SPL</text>
+        </g>
+        <g class="fx" style="--d: 660ms">
+          <rect class="node node--custom" x="290" y="200" width="120" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="350" y="225" text-anchor="middle">CSR</text>
+        </g>
+        <g class="fx" style="--d: 680ms">
+          <rect class="node node--custom" x="425" y="200" width="120" height="40" rx="3" />
+          <text class="node-label node-label--custom" x="485" y="225" text-anchor="middle">MODULE 3</text>
+        </g>
+
+        {/* Footer multiplier annotation */}
+        <text class="multiplier-label fx" x="280" y="262" text-anchor="middle" style="--d: 780ms">each &times; 30+ language variants &middot; multi-market &middot; audit-traceable</text>
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 880ms">
+          <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+          <rect class="build-dot" x="32" y="296" width="6" height="6" />
+          <text class="chrome chrome--strong" x="46"  y="302">FIG. D</text>
+          <text class="chrome"               x="92"  y="302">/</text>
+          <text class="chrome chrome--strong" x="100" y="302">lifesci.propagation</text>
+          <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">ONE CHANGE &rarr; ALL ARTIFACTS</text>
+        </g>
+      </svg>
+    </Hero>
+  </section>
 </BaseLayout>
 
 <style>
@@ -455,14 +541,24 @@ const HERO_SUBDECK = "Structured content management for FDA, EMA, and MDR compli
     letter-spacing: 0.04em;
   }
 
-  /* ─── Option B specifics ─── */
-  .mock-b .propagation-label {
+  /* ─── Shared (Option B + D share propagation-label) ─── */
+  .mock-svg .propagation-label {
     font-family: var(--font-mono);
     font-size: 10px;
     font-weight: var(--weight-semibold);
     fill: var(--color-accent-primary-pressed);
     letter-spacing: 0.08em;
   }
+
+  /* ─── Option D specifics ─── */
+  .mock-d .multiplier-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── Option B specifics ─── */
   .mock-b .layer-caption {
     font-family: var(--font-mono);
     font-size: 9.5px;
