@@ -1,154 +1,645 @@
 ---
-import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+/*
+  /industries/financial-services
+
+  Faithful reframe of the old ex-tense.co page (Financial Documentation
+  Strategy). All 5 old sections pulled forward [OLD] verbatim; single-register
+  page (no civilian/defense parallel like G&D).
+  See docs/reframe-2026/financial-services.md.
+
+  Section order:
+    1. Hero (universal) — H1 + [OLD] subdeck + Option-E side visual
+       (stacked content architecture: <policy> -> audit metadata band ->
+        4 deliverables)
+    2. SectionSiblings (industries)
+    3. Regulatory Velocity [OLD] - 3-card grid
+    4. The Single Source of Truth for Financial Institutions [OLD] -
+       intro + Unified Content Strategy sub-block + 3-card grid (banded)
+    5. Explore Related [OLD] - 3-card cross-link (Industry/Solution/Service)
+    6. CTA - "Free Compliance Content Assessment" [OLD]
+
+  Page-local CSS prefix: fs-. Hero SVG inline, scroll-revealed via
+  IntersectionObserver (.drawn), with reduced-motion fallback.
+
+  Replaces the prior IndustryPageLayout-based version; the layout's stale
+  /capabilities/* links go away with it.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon: string;
+}
+
+const velocityCards: Card[] = [
+  {
+    title: "Policy & Procedure Management",
+    icon: "doc",
+    body: "We decouple policy logic from formatting. A 'KYC Procedure' is authored once and transcluded (conref) into the Employee Handbook, the Compliance Manual, and the Online Help portal. When Compliance updates the source, all downstream deliverables update automatically.",
+  },
+  {
+    title: "Dynamic Reporting",
+    icon: "monitor",
+    body: "Generate client-specific investment reports, prospectuses, and disclosure documents by assembling XML data with pre-approved narrative blocks. Zero copy-paste errors. Full version history for every assembled output.",
+  },
+  {
+    title: "Audit Trails & Compliance",
+    icon: "shield",
+    body: "Who changed the interest rate disclosure? When? Why? We provide Git-level diffs for every word change, reviewer sign-off tracking, and timestamped baselines that satisfy SOX, SEC, OCC, and FINRA auditors.",
+  },
+];
+
+const sourceOfTruthCards: Card[] = [
+  {
+    title: "XBRL & Regulatory Filing",
+    icon: "pulse",
+    body: "Automated generation of XBRL-tagged financial data from structured content. SEC 10-K/10-Q filings, ESMA ESEF reports, and iXBRL inline tagging — generated from the same XML source as the human-readable documents.",
+  },
+  {
+    title: "Multi-Jurisdiction Delivery",
+    icon: "globe",
+    body: "DITA profiling (conditional text) manages jurisdiction-specific variations. One master disclosure document produces state-specific, country-specific, or entity-specific updates — with an automatic audit trail to each regulatory authority.",
+  },
+  {
+    title: "Client Onboarding Docs",
+    icon: "users",
+    body: "Account opening packages, terms of service, and fee schedules assembled dynamically based on product type, account tier, and jurisdiction. Reduce onboarding document preparation from days to minutes.",
+  },
+];
+
+interface RelatedCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+  href: string;
+}
+
+const related: RelatedCard[] = [
+  {
+    eyebrow: "Industry",
+    title: "Insurance",
+    body: "Modular policy architectures with 50-state conditional filtering and automated assembly.",
+    href: "/industries/insurance",
+  },
+  {
+    eyebrow: "Solution",
+    title: "XML Data Interoperability",
+    body: "XBRL integration, schema validation, and API-driven content delivery for regulatory systems.",
+    href: "/solutions/xml-data-interoperability",
+  },
+  {
+    eyebrow: "Service",
+    title: "Structured Content Strategy",
+    body: "Taxonomy design, governance frameworks, and reuse architecture for enterprise content.",
+    href: "/services/structured-content-strategy",
+  },
+];
 ---
 
-<IndustryPageLayout
-  pageTitle="Financial Services — Industries"
-  pageDescription="Policy, procedure, and regulatory documentation as control infrastructure. SOX 404 control documentation, RAG over policy libraries for compliance assistants, audit-ready content programs."
-  heroTitle="Financial Services"
-  heroSubdeck="Where policy and procedure documentation is part of the SOX 404 control environment. The document is the control; the writing is regulated speech."
-  industryHref="/industries/financial-services"
-  documentTypes={[
-    {
-      label: "Policies and procedures",
-      description: "Enterprise-wide policy libraries, business-line procedures, control documentation.",
-    },
-    {
-      label: "Regulatory disclosures and filings",
-      description: "Annual report content, regulatory filing components, customer-facing disclosures.",
-    },
-    {
-      label: "Compliance documentation",
-      description: "AML / KYC procedures, regulatory examination response materials, internal control documentation.",
-    },
-    {
-      label: "Risk and audit content",
-      description: "Risk register documentation, internal audit findings and responses, control attestations.",
-    },
-    {
-      label: "Software and platform documentation",
-      description: "API documentation, integration guides, and customer-facing technical content for fintech and platform providers.",
-    },
-  ]}
-  standards={[
-    {
-      label: "SOX (Sarbanes-Oxley)",
-      description: "Section 404 internal-control documentation requirements. Document control as a SOX 404 control.",
-    },
-    {
-      label: "FINRA / SEC requirements",
-      description: "Regulatory communication and disclosure standards for broker-dealers and investment advisers.",
-    },
-    {
-      label: "Banking regulator examination standards",
-      description: "OCC, FRB, FDIC examination materials and response documentation requirements.",
-    },
-    {
-      label: "Internal audit standards",
-      description: "IIA standards for audit documentation, IT general controls (ITGC) documentation requirements.",
-    },
-    {
-      label: "ISO 20022",
-      description: "International standard for financial-services messaging. Increasingly load-bearing for payments platforms, securities reporting, and the global migration off legacy SWIFT MT formats. Documentation surfaces: message-schema reference content, integration guides, and migration playbooks.",
-    },
-  ]}
-  controlChain={{
-    eyebrow: "CONTROL CHAIN — FINANCIAL SERVICES",
-    heading: "Documentation as a SOX control.",
-    lead: "Policy and procedure content in financial services functions as a SOX 404 control — not just as informational text. Auditors trace a chain of evidence from authorship through external disclosure. The chain has five stages; a break in any one becomes a material weakness in the 10-K.",
-    stages: [
-      {
-        number: "01",
-        name: "Authorship",
-        description: "SMEs draft policy and procedure; regulatory-framework references tagged; controlled vocabulary applied.",
-        artifact: "Draft document + metadata",
+<BaseLayout
+  title="Financial Services Documentation & Compliance — Industries"
+  description="Documentation as control infrastructure for banking, fintech, and capital markets. Single-source policy reuse, XBRL filing, multi-jurisdiction profiling, and SOX-traceable audit trails."
+>
+  <Hero
+    variant="universal"
+    title="Financial Services Documentation & Compliance"
+    subdeck="Precision, compliance, and auditability for banking, fintech, and capital markets — where a single content error can trigger regulatory action."
+    subdeckMaxWidth="520px"
+  >
+    <svg
+      class="fs-hero-flow"
+      id="fs-hero-flow"
+      viewBox="0 0 560 320"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Content architecture: one policy source, audit-traceable metadata, four deliverables."
+      role="img"
+    >
+      <g class="corner--accent fx" style="--d: 0ms">
+        <path d="M 12 24 L 12 12 L 24 12" />
+        <path d="M 536 12 L 548 12 L 548 24" />
+        <path d="M 12 296 L 12 308 L 24 308" />
+        <path d="M 536 308 L 548 308 L 548 296" />
+      </g>
+
+      <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: financial.architecture</text>
+
+      {/* Row 1: <policy> chip at top */}
+      <g class="fx" style="--d: 200ms">
+        <rect class="node node--custom" x="210" y="58" width="140" height="44" rx="3" />
+        <rect class="artifact-strip" x="210" y="58" width="140" height="6" />
+        <text class="node-label node-label--custom" x="280" y="82" text-anchor="middle">&lt;policy&gt;</text>
+        <text class="node-caption" x="280" y="95" text-anchor="middle">extense.compliance</text>
+      </g>
+
+      {/* Vertical spine: policy → audit band */}
+      <path class="flow-conn" style="--d: 320ms" d="M 280 102 L 280 124 M 275 119 L 280 124 L 285 119" />
+
+      {/* Row 2: audit metadata band — 3 cells */}
+      <g class="fx" style="--d: 400ms">
+        <rect class="node node--soft" x="40" y="124" width="150" height="46" rx="3" />
+        <text class="meta-label" x="115" y="142" text-anchor="middle">VERSION</text>
+        <text class="meta-value" x="115" y="159" text-anchor="middle">v3.2 · 2025-Q2</text>
+      </g>
+      <g class="fx" style="--d: 440ms">
+        <rect class="node node--soft" x="205" y="124" width="150" height="46" rx="3" />
+        <text class="meta-label" x="280" y="142" text-anchor="middle">SOX 404</text>
+        <text class="meta-value" x="280" y="159" text-anchor="middle">linked</text>
+      </g>
+      <g class="fx" style="--d: 480ms">
+        <rect class="node node--soft" x="370" y="124" width="150" height="46" rx="3" />
+        <text class="meta-label" x="445" y="142" text-anchor="middle">DIFF</text>
+        <text class="meta-value meta-value--diff" x="445" y="159" text-anchor="middle">a1b2c3 → d4e5f6</text>
+      </g>
+
+      {/* Vertical spine: audit → distribution */}
+      <path class="flow-conn" style="--d: 580ms" d="M 280 170 L 280 192" />
+
+      {/* Fan: spine → 4 deliverables */}
+      <path class="flow-conn" style="--d: 640ms" d="M 280 192 L 80 220" />
+      <path class="flow-conn" style="--d: 660ms" d="M 280 192 L 215 220" />
+      <path class="flow-conn" style="--d: 680ms" d="M 280 192 L 350 220" />
+      <path class="flow-conn" style="--d: 700ms" d="M 280 192 L 480 220" />
+
+      {/* Row 3: 4 deliverable chips */}
+      <g class="fx" style="--d: 760ms">
+        <rect class="node node--custom" x="20" y="220" width="120" height="36" rx="3" />
+        <text class="node-label node-label--custom" x="80" y="243" text-anchor="middle">HANDBOOK</text>
+      </g>
+      <g class="fx" style="--d: 780ms">
+        <rect class="node node--custom" x="155" y="220" width="120" height="36" rx="3" />
+        <text class="node-label node-label--custom" x="215" y="243" text-anchor="middle">COMPLIANCE</text>
+      </g>
+      <g class="fx" style="--d: 800ms">
+        <rect class="node node--custom" x="290" y="220" width="120" height="36" rx="3" />
+        <text class="node-label node-label--custom" x="350" y="243" text-anchor="middle">TRAINING</text>
+      </g>
+      <g class="fx" style="--d: 820ms">
+        <rect class="node node--custom" x="425" y="220" width="120" height="36" rx="3" />
+        <text class="node-label node-label--custom" x="485" y="243" text-anchor="middle">DISCLOSURE</text>
+      </g>
+
+      {/* Bottom chrome */}
+      <g class="fx" style="--d: 920ms">
+        <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+        <rect class="build-dot" x="32" y="296" width="6" height="6" />
+        <text class="chrome chrome--strong" x="46"  y="302">FIG. 01</text>
+        <text class="chrome"               x="92"  y="302">/</text>
+        <text class="chrome chrome--strong" x="100" y="302">financial.architecture</text>
+        <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">SOURCE &rarr; AUDIT &rarr; DISTRIBUTION</text>
+      </g>
+    </svg>
+  </Hero>
+
+  <SectionSiblings variant="industries" current="financial-services" />
+
+  {/* ───────── S3 — Regulatory Velocity ───────── */}
+  <section class="fs-section" aria-labelledby="fs-velocity-heading">
+    <div class="container-page fs-section__inner">
+      <div class="fs-heading-block">
+        <h2 id="fs-velocity-heading" class="fs-heading">Regulatory Velocity</h2>
+        <p class="fs-intro">
+          Financial regulations change daily. Your documentation — policies, procedures, prospectuses, and disclosures — must keep pace without error, without duplication, and with a complete audit trail.
+        </p>
+      </div>
+      <ul class="fs-grid-3">
+        {velocityCards.map((c) => (
+          <li class="fs-card">
+            <span class="fs-card__icon" aria-hidden="true">
+              {c.icon === "doc" && (
+                <svg viewBox="0 0 20 20"><path d="M5 3 H12 L15 6 V17 H5 Z" /><polyline points="12,3 12,6 15,6" /><line x1="7" y1="9" x2="13" y2="9" /><line x1="7" y1="12" x2="13" y2="12" /></svg>
+              )}
+              {c.icon === "monitor" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="10" rx="0.5" /><line x1="7" y1="17" x2="13" y2="17" /><line x1="10" y1="14" x2="10" y2="17" /><polyline points="5,11 8,8 11,10 15,6" /></svg>
+              )}
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /></svg>
+              )}
+            </span>
+            <h3 class="fs-card__title">{c.title}</h3>
+            <p class="fs-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S4 — The Single Source of Truth (banded) ───────── */}
+  <section class="fs-section fs-section--band" aria-labelledby="fs-sot-heading">
+    <div class="container-page fs-section__inner">
+      <div class="fs-heading-block">
+        <h2 id="fs-sot-heading" class="fs-heading">The Single Source of Truth for Financial Institutions</h2>
+        <p class="fs-intro">
+          Banks and financial firms share a common problem: the same policy content is rewritten independently by Risk, Operations, Training, and Legal — creating inconsistencies that auditors flag.
+        </p>
+      </div>
+
+      <div class="fs-subblock">
+        <h3 class="fs-subblock__heading">Unified Content Strategy</h3>
+        <p class="fs-subblock__body">
+          The Risk team authors the core regulatory requirement once. That specific paragraph is technically transcluded (conref) into the Operations Manual, the Training Deck, and the Client-Facing Disclosure. If Risk updates the policy, every downstream deliverable reflects the change automatically — with a full audit trail of who changed what, when, and why.
+        </p>
+      </div>
+
+      <ul class="fs-grid-3">
+        {sourceOfTruthCards.map((c) => (
+          <li class="fs-card">
+            <span class="fs-card__icon" aria-hidden="true">
+              {c.icon === "pulse" && (
+                <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="0.5" /><polyline points="4,10 7,10 9,6 11,14 13,10 16,10" /></svg>
+              )}
+              {c.icon === "globe" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><ellipse cx="10" cy="10" rx="3" ry="7" /><line x1="3" y1="10" x2="17" y2="10" /></svg>
+              )}
+              {c.icon === "users" && (
+                <svg viewBox="0 0 20 20"><circle cx="7" cy="6" r="2" /><path d="M3 14 c0-3 2-5 4-5 c2 0 4 2 4 5" /><circle cx="13" cy="7" r="1.7" /><path d="M11 14 c0-2 1.5-4 3-4 c1.5 0 3 2 3 4" /></svg>
+              )}
+            </span>
+            <h3 class="fs-card__title">{c.title}</h3>
+            <p class="fs-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S5 — Explore Related (3-card) ───────── */}
+  <section class="fs-section" aria-labelledby="fs-related-heading">
+    <div class="container-page fs-section__inner">
+      <div class="fs-heading-block">
+        <h2 id="fs-related-heading" class="fs-heading">Explore Related</h2>
+      </div>
+      <ul class="fs-related-grid">
+        {related.map((r) => (
+          <li class="fs-related-card-item">
+            <a href={r.href} class="fs-related-card">
+              <span class="fs-related-card__eyebrow">{r.eyebrow}</span>
+              <h3 class="fs-related-card__title">{r.title}</h3>
+              <p class="fs-related-card__body">{r.body}</p>
+              <span class="fs-related-card__cta">
+                Explore <span class="fs-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Free Compliance Content Assessment"
+    body="Share a sample policy or disclosure document. We'll analyze reuse potential, identify duplication risk across departments, and map the path to a single-source content architecture. No commitment required."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Hero side visual (Option E — stacked spine) ─── */
+  .fs-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .fs-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .fs-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .fs-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .fs-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .fs-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .fs-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .fs-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .fs-hero-flow .node--soft {
+    fill: var(--color-page-bg);
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .fs-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .fs-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .fs-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .fs-hero-flow .artifact-strip {
+    fill: var(--color-accent-primary);
+    stroke: none;
+  }
+  .fs-hero-flow .meta-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.12em;
+  }
+  .fs-hero-flow .meta-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+  .fs-hero-flow .meta-value--diff {
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.06em;
+  }
+  .fs-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .fs-hero-flow .fx {
+    opacity: 0;
+  }
+  .fs-hero-flow.drawn .fx {
+    animation: fs-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .fs-hero-flow.drawn .flow-conn {
+    animation: fs-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes fs-fade {
+    to { opacity: 1; }
+  }
+  @keyframes fs-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fs-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .fs-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
+  /* ─── Section shell ─── */
+  .fs-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .fs-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .fs-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Section heading block ─── */
+  .fs-heading-block {
+    margin-bottom: var(--space-12);
+    max-width: 80ch;
+  }
+  .fs-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .fs-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Sub-block (S4 Unified Content Strategy) ─── */
+  .fs-subblock {
+    border-top: var(--border-hairline);
+    padding-top: var(--space-8);
+    margin-bottom: var(--space-12);
+    max-width: 80ch;
+  }
+  .fs-subblock__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+  }
+  .fs-subblock__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 3-card grid ─── */
+  .fs-grid-3 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .fs-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .fs-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .fs-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .fs-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .fs-card__icon svg circle,
+  .fs-card__icon svg ellipse,
+  .fs-card__icon svg line,
+  .fs-card__icon svg polyline,
+  .fs-card__icon svg polygon,
+  .fs-card__icon svg rect,
+  .fs-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .fs-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .fs-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Related grid (3-card cross-link) ─── */
+  .fs-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .fs-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .fs-related-card-item {
+    display: flex;
+  }
+  .fs-related-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+  .fs-related-card:hover,
+  .fs-related-card:focus-visible {
+    border-color: var(--color-accent-primary);
+  }
+  .fs-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .fs-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .fs-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .fs-related-card__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+  }
+  .fs-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .fs-related-card:hover .fs-related-card__arrow,
+  .fs-related-card:focus-visible .fs-related-card__arrow {
+    transform: translateX(2px);
+  }
+</style>
+
+<script>
+  function setupFsHero() {
+    const svg = document.getElementById("fs-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
       },
-      {
-        number: "02",
-        name: "Approval",
-        description: "Multi-tier review — legal, compliance, business owner. Sign-off timestamps captured electronically.",
-        artifact: "Approval record + reviewer chain",
-      },
-      {
-        number: "03",
-        name: "Version Control",
-        description: "Published into CCMS with version tracking and change history. Prior version superseded; both retained for audit.",
-        artifact: "Version history + audit trail",
-      },
-      {
-        number: "04",
-        name: "Audit & Attestation",
-        description: "SOX 404 testing samples the documentation control; internal audit tests effectiveness; management certifies.",
-        artifact: "Test results + management attestation",
-      },
-      {
-        number: "05",
-        name: "External Disclosure",
-        description: "10-K certification, SOC 2 report, or regulator filing. The chain of evidence becomes externally visible.",
-        artifact: "10-K · SOC 2 report · regulator submission",
-      },
-    ],
-    callout: "A break anywhere in the chain becomes a SOX 404 material weakness in the 10-K.",
-    footnote: "Stages illustrative. Actual control-evidence chains carry more granularity — sub-stages within approval, multi-cycle audit testing, regulator-specific filing variants — but the five named stages cover the core SOX 404 testing surface.",
-  }}
-  failureMode={{
-    eyebrow: "FINANCIAL SERVICES / SOX",
-    heading: "A SOX deficiency surfaces as a material weakness disclosure in the 10-K.",
-    body: "Document control is a SOX 404 control. Weakness in the control surfaces as a material weakness disclosure — stock-price hit, increased audit fees, regulatory scrutiny, board-level remediation. The trace runs from version control gaps in policy documentation back to the control deficiency the auditor flagged.",
-  }}
-  signals={[
-    {
-      line: "A SOX 404 deficiency is surfacing in our 10-K disclosure prep.",
-      body: "Tactical, immediate. SOX deficiencies tied to documentation usually mean the version-control chain broke, approvals didn't capture timestamps consistently, or supersession wasn't tracked. The audit response runs through the documentation architecture, not through better policy writing.",
-    },
-    {
-      line: "Our SOC 2 audit is in six weeks and our control narratives don't match the actual controls.",
-      body: "Tactical, pre-audit. SOC 2 control narratives drift from operational reality when the documentation system is separate from how the controls actually run. Reconciling the narrative to the control surface — and getting evidence collection automated — is structural work, not editorial.",
-    },
-    {
-      line: "Examiners flagged our policy library as fragmented across business lines.",
-      body: "Operational, post-exam. Policy fragmentation usually means parallel libraries by business unit (often acquisition residue), inconsistent terminology, and version drift. Consolidation requires both target architecture and migration program — not just better governance committee meetings.",
-    },
-    {
-      line: "Our compliance assistant is giving advisers inconsistent regulatory guidance.",
-      body: "Operational, AI-readiness. RAG over policy libraries fails when the source content has implicit regulatory-framework linkage that the chunking strategy breaks. Provenance metadata has to survive the pipeline; otherwise the assistant cites outdated or wrong-jurisdiction policy.",
-    },
-  ]}
-  capabilityRelevance={[
-    {
-      pillarLabel: "Information Architecture",
-      pillarHref: "/capabilities/information-architecture",
-      context: "Policy libraries designed as control artifacts. Reuse strategy for procedures that share regulatory references; metadata for audit-traceable change control.",
-      engagementShape: "Project-Based — policy architecture work with named acceptance criteria against the control-chain requirements.",
-    },
-    {
-      pillarLabel: "Content Migration",
-      pillarHref: "/capabilities/content-migration",
-      context: "Consolidation of policy libraries across acquired entities; conversion from Word-document-based control documentation to single-source DITA.",
-      engagementShape: "Project-Based — fixed scope, conversion-fidelity acceptance criteria. Often post-M&A consolidation across acquired entities.",
-    },
-    {
-      pillarLabel: "CCMS & Publishing",
-      pillarHref: "/capabilities/ccms-and-publishing",
-      context: "CCMS-driven workflows with audit-traceable approval and publishing — version control as a control artifact, not an afterthought.",
-      engagementShape: "Project-Based for implementation; Managed Services for ongoing administration of audit-traceable workflows.",
-    },
-    {
-      pillarLabel: "AI-Ready Content",
-      pillarHref: "/capabilities/ai-ready-content",
-      context: "Banks and asset managers deploying RAG over policy libraries for compliance assistants and adviser-facing tools — increasingly load-bearing in this vertical.",
-      engagementShape: "Often starts as Staff Augmentation during compliance-assistant exploratory work; converts to Project-Based once retrieval architecture firms up.",
-    },
-  ]}
-  caseStudies={[
-    {
-      framing: "A top-five U.S. brokerage consolidating policy libraries across acquired entities.",
-      body: "Mixed source formats and control regimes converged into a single DITA-based system with audit-traceable change control. Reuse strategy reduced policy duplication; controlled vocabulary aligned regulatory references across business lines.",
-    },
-    {
-      framing: "A fintech firm establishing SOC 2-defensible documentation operations.",
-      body: "Documentation control patterns engineered as part of the SOC 2 readiness program. Single-source authoring with version-controlled approvals; publishing automation across customer-facing and internal documentation surfaces.",
-    },
-  ]}
-  ctaBody="Submit a 20-page sample. We'll return a documentation-control assessment — what would change if your policy library were engineered as the control artifact it actually is. Two business days, no obligation to proceed."
-/>
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+  document.addEventListener("DOMContentLoaded", setupFsHero);
+</script>
