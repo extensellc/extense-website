@@ -1,164 +1,631 @@
 ---
-import IndustryPageLayout from "../../layouts/IndustryPageLayout.astro";
+/*
+  /industries/life-sciences
+
+  Faithful reframe of the old ex-tense.co page (Life Sciences & Pharma).
+  All 5 old sections pulled forward [OLD] verbatim; single-register page.
+  See docs/reframe-2026/life-sciences.md.
+
+  Section order:
+    1. Hero (universal) — H1 + [OLD] subdeck + Option-D side visual
+       (component change propagation: <component> + Δ marker -> 4 artifacts
+       (IFU · SPL · CSR · Module 3) + multi-market multiplier footer)
+    2. SectionSiblings (industries)
+    3. Labeling & Clinical Documentation [OLD] - 3-card grid
+    4. Regulatory Compliance Infrastructure [OLD] - 3-card grid + amber
+       "Regulatory Agility in Practice" callout (banded)
+    5. Explore Related [OLD + DRAFT] - 3-card cross-link
+       (Industry: G&D / Solution: XML Data Interop / Service: CCMS Services)
+    6. CTA - "Free Regulatory Content Assessment" [OLD]
+
+  Page-local CSS prefix: ls-. Hero SVG inline, scroll-revealed via
+  IntersectionObserver (.drawn), with reduced-motion fallback.
+
+  Replaces the prior IndustryPageLayout-based version; the layout's stale
+  /capabilities/* links go away with it.
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/site/Hero.astro";
+import SectionSiblings from "../../components/site/SectionSiblings.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+interface Card {
+  title: string;
+  body: string;
+  icon: string;
+}
+
+const labelingCards: Card[] = [
+  {
+    title: "Structured Product Labeling (SPL)",
+    icon: "doc",
+    body: "We convert unstructured design files into FDA-compliant SPL XML. Drug listing data, package inserts, and medication guides are structured once and published to DailyMed, the FDA Electronic Submissions Gateway, and print simultaneously. Every element carries HL7 SPL vocabulary codes.",
+  },
+  {
+    title: "Instructions for Use (IFU)",
+    icon: "globe",
+    body: "IFUs for medical devices must be published in 30+ languages and comply with EU MDR, FDA 21 CFR Part 820, and ISO 13485. We manage translations at the component level — change a safety warning once, and the system flags all 30 language versions for translation update with full traceability.",
+  },
+  {
+    title: "Clinical Study Reports (CSR)",
+    icon: "pulse",
+    body: "CSRs are the backbone of regulatory submissions. We structure them so data tables auto-populate from SAS/R datasets, narrative sections follow ICH E3 guidelines, and cross-references resolve automatically. This accelerates the submission-ready timeline from months to weeks.",
+  },
+];
+
+const complianceCards: Card[] = [
+  {
+    title: "21 CFR Part 11 Compliance",
+    icon: "shield",
+    body: "Electronic signatures, audit trails, and access controls that satisfy FDA Part 11 requirements. Every content change is timestamped, attributed to a named individual, and locked into a tamper-evident baseline. No content leaves the system without validated sign-off.",
+  },
+  {
+    title: "UDI & Symbol Management",
+    icon: "grid",
+    body: "Unique Device Identification (UDI) data and ISO 15223 symbols are managed as structured metadata — not embedded images. When the EU MDR changes a symbol requirement, update the central library once and republish thousands of IFUs with the correct symbols overnight.",
+  },
+  {
+    title: "Multi-Market Submissions",
+    icon: "users",
+    body: "A single content repository serves FDA (eCTD Module 3), EMA (NeeS/eCTD), and regional agencies. Market-specific profiling generates the correct document set for each authority — same source content, different regulatory packaging.",
+  },
+];
+
+interface RelatedCard {
+  eyebrow: string;
+  title: string;
+  body: string;
+  href: string;
+}
+
+const related: RelatedCard[] = [
+  {
+    eyebrow: "Industry",
+    title: "Government & Defense",
+    body: "S1000D, MIL-STD, and ITAR-compliant documentation with air-gapped publishing pipelines.",
+    href: "/industries/government-and-defense",
+  },
+  {
+    eyebrow: "Solution",
+    title: "XML Data Interoperability",
+    body: "FDA SPL XML generation, eCTD submission assembly, and HL7 vocabulary integration from structured content.",
+    href: "/solutions/xml-data-interoperability",
+  },
+  {
+    eyebrow: "Service",
+    title: "CCMS Services",
+    body: "Validated CCMS implementation for regulated content — 21 CFR Part 11 authoring workflows, audit trails, and multi-market publishing.",
+    href: "/services/ccms-services",
+  },
+];
 ---
 
-<IndustryPageLayout
-  pageTitle="Life Sciences — Industries"
-  pageDescription="Regulatory documentation engineering for medical device manufacturers, pharmaceutical companies, and biotech. IFU authoring, FDA submission components, 21 CFR Part 11-validated workflows, GxP-defensible methodology."
-  heroTitle="Life Sciences"
-  heroSubdeck="Where IFU errors trigger FDA Class I recalls. Patient safety, not paperwork. Regulatory documentation is the bottleneck on submission timelines and the surface where compliance and patient-safety failures originate."
-  industryHref="/industries/life-sciences"
-  documentTypes={[
-    {
-      label: "Instructions for Use (IFU) and labeling",
-      description: "Patient-facing and clinician-facing IFUs. Labeling content across global markets with single-source authoring and profiling.",
-    },
-    {
-      label: "Regulatory submission components",
-      description: "510(k), PMA, NDA, BLA, ANDA submission content. Module structure and component-level reuse across submissions.",
-    },
-    {
-      label: "Clinical study documentation",
-      description: "Clinical Study Reports (CSRs), study protocols, investigator brochures.",
-    },
-    {
-      label: "Validated documentation programs",
-      description: "21 CFR Part 11-compliant authoring workflows with electronic signatures and audit trails.",
-    },
-    {
-      label: "Training and procedural content",
-      description: "GxP-aligned training materials, standard operating procedures, manufacturing documentation.",
-    },
-  ]}
-  standards={[
-    {
-      label: "21 CFR Part 11",
-      description: "FDA electronic-records and electronic-signatures requirements. Validated authoring workflows that meet Part 11 controls.",
-    },
-    {
-      label: "GxP / cGMP / cGCP / cGLP",
-      description: "Good Practice frameworks for manufacturing, clinical, and laboratory operations. Documentation as a GxP control artifact.",
-    },
-    {
-      label: "ISO 13485",
-      description: "Medical device quality-management-system requirements. FDA-recognized standard for device documentation.",
-    },
-    {
-      label: "MedDRA",
-      description: "Medical Dictionary for Regulatory Activities — controlled terminology for adverse-event reporting and safety documentation.",
-    },
-    {
-      label: "SNOMED CT",
-      description: "Clinical terminology used in clinical documentation and regulatory submissions.",
-    },
-    {
-      label: "EU MDR (Medical Device Regulation)",
-      description: "Required for any medical device sold into the EU market. Documentation obligations span IFU/labeling, risk-management files, and post-market surveillance — distinct from FDA frameworks and increasingly load-bearing for global device portfolios.",
-    },
-    {
-      label: "ISO 14971",
-      description: "Risk management for medical devices. The standard FDA recognizes for device risk-management documentation; risk-control traceability runs through it.",
-    },
-  ]}
-  auditCycle={{
-    eyebrow: "AUDIT CYCLE — LIFE SCIENCES",
-    heading: "When the documentation gets tested.",
-    lead: "Documentation in life sciences gets tested on three different cadences. Submissions are episodic events; surveillance audits are continuous; recall and safety events are unpredictable. The same content estate has to satisfy all three.",
-    axisLabels: [
-      { position: 0,     label: "M0" },
-      { position: 16.67, label: "M6" },
-      { position: 33.33, label: "M12" },
-      { position: 50,    label: "M18" },
-      { position: 66.67, label: "M24" },
-      { position: 83.33, label: "M30" },
-      { position: 100,   label: "M36" },
-    ],
-    lanes: [
-      {
-        label: "Submissions",
-        type: "discrete",
-        events: [
-          { position: 16.67, label: "PMA" },
-          { position: 38.89, label: "ANDA" },
-          { position: 61.11, label: "510(k)" },
-          { position: 83.33, label: "BLA" },
-        ],
+<BaseLayout
+  title="Life Sciences & Pharma — Industries"
+  description="Structured content management for FDA, EMA, and MDR compliance. Component content management for SPL, IFU, CSR, and submission modules — 21 CFR Part 11 validated, multi-market profiled, audit-traceable."
+>
+  <Hero
+    variant="universal"
+    title="Life Sciences & Pharma"
+    subdeck="Structured content management for FDA, EMA, and MDR compliance — where content errors affect patient safety and can delay market authorization by months."
+    subdeckMaxWidth="520px"
+  >
+    <svg
+      class="ls-hero-flow"
+      id="ls-hero-flow"
+      viewBox="0 0 560 320"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Component change propagation: one source change updates IFU, SPL, CSR, and submission module deliverables across markets and languages."
+      role="img"
+    >
+      <g class="corner--accent fx" style="--d: 0ms">
+        <path d="M 12 24 L 12 12 L 24 12" />
+        <path d="M 536 12 L 548 12 L 548 24" />
+        <path d="M 12 296 L 12 308 L 24 308" />
+        <path d="M 536 308 L 548 308 L 548 296" />
+      </g>
+
+      <text class="chrome fx" x="30" y="30" style="--d: 80ms">in :: lifesci.propagation</text>
+
+      {/* Source <component> chip with change marker */}
+      <g class="fx" style="--d: 200ms">
+        <rect class="node node--custom" x="200" y="58" width="160" height="56" rx="3" />
+        <rect class="artifact-strip" x="200" y="58" width="160" height="6" />
+        <text class="node-label node-label--custom" x="280" y="86" text-anchor="middle">&lt;component&gt;</text>
+        <text class="node-caption" x="280" y="104" text-anchor="middle">Δ safety warning · v3.2</text>
+      </g>
+
+      {/* Vertical spine with Δ propagation annotation */}
+      <path class="flow-conn" style="--d: 340ms" d="M 280 114 L 280 180 M 275 175 L 280 180 L 285 175" />
+      <text class="propagation-label fx" x="296" y="150" style="--d: 420ms">Δ propagating</text>
+
+      {/* Fan to 4 deliverables */}
+      <path class="flow-conn" style="--d: 500ms" d="M 280 180 L 80 200" />
+      <path class="flow-conn" style="--d: 520ms" d="M 280 180 L 215 200" />
+      <path class="flow-conn" style="--d: 540ms" d="M 280 180 L 350 200" />
+      <path class="flow-conn" style="--d: 560ms" d="M 280 180 L 485 200" />
+
+      {/* 4 deliverable chips */}
+      <g class="fx" style="--d: 620ms">
+        <rect class="node node--custom" x="20" y="200" width="120" height="40" rx="3" />
+        <text class="node-label node-label--custom" x="80" y="225" text-anchor="middle">IFU</text>
+      </g>
+      <g class="fx" style="--d: 640ms">
+        <rect class="node node--custom" x="155" y="200" width="120" height="40" rx="3" />
+        <text class="node-label node-label--custom" x="215" y="225" text-anchor="middle">SPL</text>
+      </g>
+      <g class="fx" style="--d: 660ms">
+        <rect class="node node--custom" x="290" y="200" width="120" height="40" rx="3" />
+        <text class="node-label node-label--custom" x="350" y="225" text-anchor="middle">CSR</text>
+      </g>
+      <g class="fx" style="--d: 680ms">
+        <rect class="node node--custom" x="425" y="200" width="120" height="40" rx="3" />
+        <text class="node-label node-label--custom" x="485" y="225" text-anchor="middle">MODULE 3</text>
+      </g>
+
+      {/* Footer multiplier annotation */}
+      <text class="multiplier-label fx" x="280" y="262" text-anchor="middle" style="--d: 780ms">each &times; 30+ language variants &middot; multi-market &middot; audit-traceable</text>
+
+      {/* Bottom chrome */}
+      <g class="fx" style="--d: 880ms">
+        <line class="chrome-rule" x1="30" y1="286" x2="530" y2="286" />
+        <rect class="build-dot" x="32" y="296" width="6" height="6" />
+        <text class="chrome chrome--strong" x="46"  y="302">FIG. 01</text>
+        <text class="chrome"               x="92"  y="302">/</text>
+        <text class="chrome chrome--strong" x="100" y="302">lifesci.propagation</text>
+        <text class="chrome chrome--strong" x="530" y="302" text-anchor="end">ONE CHANGE &rarr; ALL ARTIFACTS</text>
+      </g>
+    </svg>
+  </Hero>
+
+  <SectionSiblings variant="industries" current="life-sciences" />
+
+  {/* ───────── S3 — Labeling & Clinical Documentation ───────── */}
+  <section class="ls-section" aria-labelledby="ls-labeling-heading">
+    <div class="container-page ls-section__inner">
+      <div class="ls-heading-block">
+        <h2 id="ls-labeling-heading" class="ls-heading">Labeling &amp; Clinical Documentation</h2>
+        <p class="ls-intro">
+          In Life Sciences, content is a regulated asset. We implement component content management systems (CCMS) that enforce data integrity, traceability, and multi-market compliance at the paragraph level.
+        </p>
+      </div>
+      <ul class="ls-grid-3">
+        {labelingCards.map((c) => (
+          <li class="ls-card">
+            <span class="ls-card__icon" aria-hidden="true">
+              {c.icon === "doc" && (
+                <svg viewBox="0 0 20 20"><path d="M5 3 H12 L15 6 V17 H5 Z" /><polyline points="12,3 12,6 15,6" /><line x1="7" y1="9" x2="13" y2="9" /><line x1="7" y1="12" x2="13" y2="12" /></svg>
+              )}
+              {c.icon === "globe" && (
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><ellipse cx="10" cy="10" rx="3" ry="7" /><line x1="3" y1="10" x2="17" y2="10" /></svg>
+              )}
+              {c.icon === "pulse" && (
+                <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="0.5" /><polyline points="4,10 7,10 9,6 11,14 13,10 16,10" /></svg>
+              )}
+            </span>
+            <h3 class="ls-card__title">{c.title}</h3>
+            <p class="ls-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ───────── S4 — Regulatory Compliance Infrastructure (banded) ───────── */}
+  <section class="ls-section ls-section--band" aria-labelledby="ls-compliance-heading">
+    <div class="container-page ls-section__inner">
+      <div class="ls-heading-block">
+        <h2 id="ls-compliance-heading" class="ls-heading">Regulatory Compliance Infrastructure</h2>
+        <p class="ls-intro">
+          Regulatory requirements differ by market (FDA, EMA, PMDA, TGA) and product class. Your content system must enforce compliance rules, not rely on authors to remember them.
+        </p>
+      </div>
+      <ul class="ls-grid-3">
+        {complianceCards.map((c) => (
+          <li class="ls-card">
+            <span class="ls-card__icon" aria-hidden="true">
+              {c.icon === "shield" && (
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L16 4.6 V9.2 c0 4-3 6.4-6 7.8 c-3-1.4-6-3.8-6-7.8 V4.6 Z" /></svg>
+              )}
+              {c.icon === "grid" && (
+                <svg viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="0.5" /><rect x="11" y="3" width="6" height="6" rx="0.5" /><rect x="3" y="11" width="6" height="6" rx="0.5" /><rect x="11" y="11" width="6" height="6" rx="0.5" /></svg>
+              )}
+              {c.icon === "users" && (
+                <svg viewBox="0 0 20 20"><circle cx="7" cy="6" r="2" /><path d="M3 14 c0-3 2-5 4-5 c2 0 4 2 4 5" /><circle cx="13" cy="7" r="1.7" /><path d="M11 14 c0-2 1.5-4 3-4 c1.5 0 3 2 3 4" /></svg>
+              )}
+            </span>
+            <h3 class="ls-card__title">{c.title}</h3>
+            <p class="ls-card__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+
+      {/* "Regulatory Agility in Practice" callout */}
+      <aside class="ls-callout" aria-labelledby="ls-callout-heading">
+        <p class="ls-callout__eyebrow">PROOF POINT</p>
+        <h3 id="ls-callout-heading" class="ls-callout__heading">Regulatory Agility in Practice</h3>
+        <p class="ls-callout__body">
+          When the EU MDR regulations changed requirements for standard symbols on medical device IFUs, our clients updated their central symbol library once. The system automatically republished 4,500 IFUs with the correct symbols overnight — across 30+ languages, with full audit trail documentation for notified body review.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  {/* ───────── S5 — Explore Related (3-card) ───────── */}
+  <section class="ls-section" aria-labelledby="ls-related-heading">
+    <div class="container-page ls-section__inner">
+      <div class="ls-heading-block">
+        <h2 id="ls-related-heading" class="ls-heading">Explore Related</h2>
+      </div>
+      <ul class="ls-related-grid">
+        {related.map((r) => (
+          <li class="ls-related-card-item">
+            <a href={r.href} class="ls-related-card">
+              <span class="ls-related-card__eyebrow">{r.eyebrow}</span>
+              <h3 class="ls-related-card__title">{r.title}</h3>
+              <p class="ls-related-card__body">{r.body}</p>
+              <span class="ls-related-card__cta">
+                Explore <span class="ls-related-card__arrow" aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Free Regulatory Content Assessment"
+    body="Share a sample IFU, SPL, or submission component. We'll analyze structure, identify multi-market profiling opportunities, and map the path to a component-based regulatory content architecture. No commitment required."
+  />
+</BaseLayout>
+
+<style>
+  /* ─── Hero side visual (Option D — change propagation) ─── */
+  .ls-hero-flow {
+    width: 560px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .ls-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .ls-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .ls-hero-flow .corner--accent {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .ls-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .ls-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .ls-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .ls-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .ls-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .ls-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .ls-hero-flow .node-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .ls-hero-flow .artifact-strip {
+    fill: var(--color-accent-primary);
+    stroke: none;
+  }
+  .ls-hero-flow .propagation-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-semibold);
+    fill: var(--color-accent-primary-pressed);
+    letter-spacing: 0.08em;
+  }
+  .ls-hero-flow .multiplier-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+  }
+  .ls-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .ls-hero-flow .fx {
+    opacity: 0;
+  }
+  .ls-hero-flow.drawn .fx {
+    animation: ls-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .ls-hero-flow.drawn .flow-conn {
+    animation: ls-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes ls-fade {
+    to { opacity: 1; }
+  }
+  @keyframes ls-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ls-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .ls-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
+  /* ─── Section shell ─── */
+  .ls-section {
+    padding-top: var(--section-pad-default);
+    padding-bottom: var(--section-pad-default);
+    border-top: var(--border-hairline);
+  }
+  .ls-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .ls-section {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+  }
+
+  /* ─── Section heading block ─── */
+  .ls-heading-block {
+    margin-bottom: var(--space-12);
+    max-width: 80ch;
+  }
+  .ls-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .ls-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── 3-card grid ─── */
+  .ls-grid-3 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .ls-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ls-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+  }
+  .ls-card__icon {
+    display: inline-flex;
+    align-self: flex-start;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+  }
+  .ls-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .ls-card__icon svg circle,
+  .ls-card__icon svg ellipse,
+  .ls-card__icon svg line,
+  .ls-card__icon svg polyline,
+  .ls-card__icon svg polygon,
+  .ls-card__icon svg rect,
+  .ls-card__icon svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ls-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    text-wrap: balance;
+  }
+  .ls-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── "Regulatory Agility in Practice" callout ─── */
+  .ls-callout {
+    margin-top: var(--space-12);
+    padding: var(--space-6) var(--space-8);
+    background-color: #fef3c7;
+    border-left: 3px solid var(--color-accent-primary);
+    border-radius: var(--radius-sm);
+    max-width: 80ch;
+  }
+  .ls-callout__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .ls-callout__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    line-height: var(--leading-snug);
+  }
+  .ls-callout__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── Related grid (3-card cross-link) ─── */
+  .ls-related-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .ls-related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ls-related-card-item {
+    display: flex;
+  }
+  .ls-related-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-hairline);
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    background-color: var(--color-page-bg);
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    transition: border-color var(--duration-base) var(--easing-out);
+  }
+  .ls-related-card:hover,
+  .ls-related-card:focus-visible {
+    border-color: var(--color-accent-primary);
+  }
+  .ls-related-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin-bottom: var(--space-3);
+  }
+  .ls-related-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .ls-related-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-5) 0;
+    text-wrap: pretty;
+    flex-grow: 1;
+  }
+  .ls-related-card__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-link);
+    margin-top: auto;
+  }
+  .ls-related-card__arrow {
+    display: inline-block;
+    transition: transform var(--duration-base) var(--easing-out);
+  }
+  .ls-related-card:hover .ls-related-card__arrow,
+  .ls-related-card:focus-visible .ls-related-card__arrow {
+    transform: translateX(2px);
+  }
+</style>
+
+<script>
+  function setupLsHero() {
+    const svg = document.getElementById("ls-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
       },
-      {
-        label: "Surveillance",
-        type: "continuous",
-        peakPositions: [33.33, 66.67, 100],
-        notes: "FDA QSR · ISO 13485 · EU MDR · ICH GCP",
-      },
-      {
-        label: "Safety events",
-        type: "ad-hoc",
-        events: [
-          { position: 44.44, label: "Form 483", annotation: "(unpredictable)" },
-          { position: 77.78, label: "Recall trigger", annotation: "(unpredictable)" },
-        ],
-      },
-    ],
-    footnote: "Representative cadence. Actual schedules vary by product class, regulatory geography, and program.",
-  }}
-  failureMode={{
-    eyebrow: "LIFE SCIENCES / FDA",
-    heading: "An IFU error triggers an FDA Class I recall.",
-    body: "Direct remediation runs into the millions. Brand damage lasts years. Class I recalls invoke notification cascades across distribution, customer-facing communications, regulatory reporting, and field-engineer deployment. The document was the safety control — and the safety control failed.",
-  }}
-  signals={[
-    {
-      line: "Our IFU just got flagged in an FDA inspection.",
-      body: "Tactical, immediate. A 483 observation tied to documentation usually means the IFU content didn't match the labeled use, the labeling didn't match the predicate device, or the IFU wasn't single-sourced and divergent versions surfaced in field copy. The fix runs through architecture before it runs through writing.",
-    },
-    {
-      line: "We're approaching an EU MDR submission and the IFUs aren't single-source.",
-      body: "Pre-submission. EU MDR's documentation requirements multiply if every market variant is independently maintained — translation cost, version control, post-market surveillance reporting all expand linearly with variant count. Single-sourcing under DITA profiling is the structural fix.",
-    },
-    {
-      line: "Our GxP-validated authoring environment is brittle and slowing submissions.",
-      body: "Operational. Validated environments tend to ossify — vendor consolidation, deprecated authoring tools, custom integrations holding the system together. Replacement requires GxP-defensible methodology, not just a new tool.",
-    },
-    {
-      line: "A Class III device recall triggered a documentation root-cause review.",
-      body: "Reactive, post-event. Recalls send investigators looking for the documentation failure. If the content estate isn't auditable — version history, approval chain, traceability to risk controls — the root cause becomes \"the entire documentation system\" rather than a single document.",
-    },
-  ]}
-  capabilityRelevance={[
-    {
-      pillarLabel: "Information Architecture",
-      pillarHref: "/capabilities/information-architecture",
-      context: "Device-family content models with regulatory-variant profiling. Controlled vocabulary aligned to MedDRA. Reuse strategy across IFUs and labeling.",
-      engagementShape: "Typically Project-Based with a defined acceptance gate against the new content model.",
-    },
-    {
-      pillarLabel: "Content Migration",
-      pillarHref: "/capabilities/content-migration",
-      context: "Heavy in this vertical. Legacy Word and FrameMaker IFU estates converted to clean DITA, with QA harnesses that surface pre-existing content errors as part of the migration.",
-      engagementShape: "Project-Based — fixed scope, fixed fee, conversion-fidelity acceptance criteria.",
-    },
-    {
-      pillarLabel: "CCMS & Publishing",
-      pillarHref: "/capabilities/ccms-and-publishing",
-      context: "CCMS adoption growing fast in regulated content. Validated authoring workflows; multi-format publishing across regulatory submissions and patient-facing surfaces.",
-      engagementShape: "Project-Based for the implementation; Managed Services for ongoing administration once stable.",
-    },
-    {
-      pillarLabel: "AI-Ready Content",
-      pillarHref: "/capabilities/ai-ready-content",
-      context: "Emerges carefully — validation requirements slow but don't stop deployment. RAG over regulated content estates requires evaluation discipline and provenance metadata that survives the pipeline.",
-      engagementShape: "Often starts as Staff Augmentation during exploratory work; converts to Project-Based once the architecture firms up.",
-    },
-  ]}
-  caseStudies={[
-    {
-      framing: "A Class III medical device manufacturer consolidating IFUs across global markets.",
-      body: "Single-source DITA across device families, regulatory-variant profiling for FDA-recognized markets, controlled vocabulary aligned to MedDRA. Translation costs reduced through reuse rather than retranslation; submissions accelerated by component-level approval.",
-    },
-    {
-      framing: "A pharmaceutical company restructuring regulatory submission components for FDA eCTD.",
-      body: "Component-level reuse across submission programs; metadata-driven assembly for module structure. Authoring workflows validated under 21 CFR Part 11; audit trails preserved through publication.",
-    },
-  ]}
-  ctaBody="Submit a 20-page sample (IFU, labeling, or submission component). We'll return a content-readiness assessment — what's recoverable, what's at risk, and what GxP-defensible methodology would change. Two business days, no obligation to proceed."
-/>
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+  document.addEventListener("DOMContentLoaded", setupLsHero);
+</script>

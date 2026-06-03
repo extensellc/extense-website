@@ -103,7 +103,7 @@ template wireframe + a content-variant table, not N independent docs.
 | Industry template (×6) | –         | –        | –         | –        | –           | – |
 | Industry › Govt Agencies & Defense | done | done | done | done | done | [government-and-defense.md](government-and-defense.md) |
 | Industry › Financial Services | done | done | done | done | done | [financial-services.md](financial-services.md) |
-| Industry › Life Sciences | done | done | done | pending | – | [life-sciences.md](life-sciences.md) |
+| Industry › Life Sciences | done | done | done | done | done | [life-sciences.md](life-sciences.md) |
 | Service template (×3)  | –         | –        | –         | –        | –           | – |
 | Solution › Tech Docs   | done      | done     | done      | done     | done (uncommitted) | [technical-docs-and-publishing.md](technical-docs-and-publishing.md) |
 | Solution › Migration   | done      | done     | done      | done     | done (uncommitted) | [content-migration.md](content-migration.md) |
