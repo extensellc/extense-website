@@ -96,22 +96,63 @@ interface LifecycleStep {
   num: string;
   title: string;
   desc: string;
+  body: string;
 }
 
 const defenseLifecycle: LifecycleStep[] = [
-  { num: "01", title: "DM Authoring",   desc: "Create data modules in XML" },
-  { num: "02", title: "CSDB Check-in",  desc: "Validate against BREX & Schema" },
-  { num: "03", title: "QA & Review",    desc: "SME sign-off & release marking" },
-  { num: "04", title: "Despatch",       desc: "DMRL distribution to partners" },
-  { num: "05", title: "IETP Build",     desc: "Interactive Electronic Technical Pubs" },
+  {
+    num: "01", title: "DM Authoring",
+    desc: "Create data modules in XML",
+    body: "Procedure, description, illustration, and fault-isolation modules typed against the S1000D schema, with applicability metadata and SNS codes attached at authoring time.",
+  },
+  {
+    num: "02", title: "CSDB Check-in",
+    desc: "Validate against BREX & Schema",
+    body: "Submission to the Common Source Data Base runs schema, BREX, and applicability validation. Failed modules return to the author with diagnostic output.",
+  },
+  {
+    num: "03", title: "QA & Review",
+    desc: "SME sign-off & release marking",
+    body: "Subject-matter experts verify technical accuracy; editors verify standards conformance. Approved modules are stamped with release status and distribution marking.",
+  },
+  {
+    num: "04", title: "Despatch",
+    desc: "DMRL distribution to partners",
+    body: "Controlled distribution to OEMs, suppliers, and ILS partners per the Data Module Requirements List, with each delivery logged for DCMA audit.",
+  },
+  {
+    num: "05", title: "IETP Build",
+    desc: "Interactive Electronic Technical Pubs",
+    body: "Approved data modules compile into the deliverable IETM — searchable, applicability-filtered, and consumed in-cockpit, in-field, or at the depot.",
+  },
 ];
 
 const civilianLifecycle: LifecycleStep[] = [
-  { num: "01", title: "Authoring",          desc: "Draft against agency publishing standards" },
-  { num: "02", title: "Section 508 Review", desc: "Accessibility conformance" },
-  { num: "03", title: "Approval & Sign-off",desc: "Internal & inter-agency review" },
-  { num: "04", title: "Publication",        desc: "Release via agency channel or Federal Register" },
-  { num: "05", title: "Records Retention",  desc: "NARA archival & FOIA-readiness" },
+  {
+    num: "01", title: "Authoring",
+    desc: "Draft against agency publishing standards",
+    body: "Content authored to the agency's specific publishing manual — IRS publication guides, FAA directive formats, GSA documentation standards — with semantic structure baked into the source.",
+  },
+  {
+    num: "02", title: "Section 508 Review",
+    desc: "Accessibility conformance",
+    body: "Automated checks cover alt-text, heading structure, contrast, and form labels; manual review verifies screen-reader compatibility and keyboard navigation.",
+  },
+  {
+    num: "03", title: "Approval & Sign-off",
+    desc: "Internal & inter-agency review",
+    body: "Program-office and legal review, plus inter-agency clearance where required. Records-retention metadata attaches as part of the workflow, not after.",
+  },
+  {
+    num: "04", title: "Publication",
+    desc: "Release via agency channel or Federal Register",
+    body: "Public-facing content to the agency website or Federal Register; internal content to the agency knowledge base. Publication metadata captures channel, version, and retention obligations.",
+  },
+  {
+    num: "05", title: "Records Retention",
+    desc: "NARA archival & FOIA-readiness",
+    body: "Records scheduled per NARA-approved schedules, indexed for FOIA discovery, with audit trails for every access, edit, and disposition event.",
+  },
 ];
 
 interface RelatedCard {
@@ -390,6 +431,7 @@ const related: RelatedCard[] = [
               <span class="gd-step__num">{s.num}</span>
               <h3 class="gd-step__title">{s.title}</h3>
               <p class="gd-step__desc">{s.desc}</p>
+              <p class="gd-step__body">{s.body}</p>
             </li>
             {i < defenseLifecycle.length - 1 && (
               <li class="gd-step__arrow" aria-hidden="true">&rarr;</li>
@@ -414,6 +456,7 @@ const related: RelatedCard[] = [
               <span class="gd-step__num">{s.num}</span>
               <h3 class="gd-step__title">{s.title}</h3>
               <p class="gd-step__desc">{s.desc}</p>
+              <p class="gd-step__body">{s.body}</p>
             </li>
             {i < civilianLifecycle.length - 1 && (
               <li class="gd-step__arrow" aria-hidden="true">&rarr;</li>
@@ -721,6 +764,14 @@ const related: RelatedCard[] = [
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
     margin: 0;
+    text-wrap: pretty;
+  }
+  .gd-step__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: var(--space-3) 0 0 0;
     text-wrap: pretty;
   }
   .gd-step__arrow {
