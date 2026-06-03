@@ -75,14 +75,35 @@ interface WorkflowStep {
   num: string;
   title: string;
   desc: string;
+  body: string;
 }
 
 const pipeline: WorkflowStep[] = [
-  { num: "01", title: "Base Form",         desc: "Base policy with all clauses and state variants" },
-  { num: "02", title: "Profiling",         desc: "Apply state, product, and coverage filters" },
-  { num: "03", title: "Endorsement Stack", desc: "Attach applicable endorsements by metadata" },
-  { num: "04", title: "Review & Approve",  desc: "Multi-stakeholder sign-off workflow" },
-  { num: "05", title: "Publish & File",    desc: "Generate customer PDF + SERFF filing package" },
+  {
+    num: "01", title: "Base Form",
+    desc: "Base policy with all clauses and state variants",
+    body: "The unprofiled master containing every clause, declaration, and state variation across product lines. Versioned, audit-trailed, and serving as the canonical source for all derived policies.",
+  },
+  {
+    num: "02", title: "Profiling",
+    desc: "Apply state, product, and coverage filters",
+    body: "DITA conditional-content profiling resolves which clauses, exclusions, and endorsements apply to this specific jurisdiction, product line, and coverage type. The output is a target-state-ready content tree.",
+  },
+  {
+    num: "03", title: "Endorsement Stack",
+    desc: "Attach applicable endorsements by metadata",
+    body: "Endorsement library lookup by base-form reference, effective date, and jurisdiction attaches the correct modules to the profiled content. Stack order honors filing precedence and state-specific layering rules.",
+  },
+  {
+    num: "04", title: "Review & Approve",
+    desc: "Multi-stakeholder sign-off workflow",
+    body: "Actuarial, legal, compliance, and product reviewers sign off in their domain only. Role-based workflow gates filing until every approval is recorded with timestamp, reviewer identity, and tamper-evident baseline.",
+  },
+  {
+    num: "05", title: "Publish & File",
+    desc: "Generate customer PDF + SERFF filing package",
+    body: "The publishing engine emits the customer-facing PDF alongside the SERFF-compliant filing package — base form, endorsement stack, rate pages, and machine-readable change log — ready for DOI submission.",
+  },
 ];
 
 interface RelatedCard {
@@ -277,6 +298,9 @@ const related: RelatedCard[] = [
     <div class="container-page ins-section__inner">
       <div class="ins-heading-block">
         <h2 id="ins-pipeline-heading" class="ins-heading">Policy Assembly Pipeline</h2>
+        <p class="ins-intro">
+          The operational arc from base form to SERFF-filed package — five gated stages, each assembling components into an audit-traceable, jurisdiction-specific output.
+        </p>
       </div>
       <ol class="ins-roadmap">
         {pipeline.map((s, i) => (
@@ -285,6 +309,7 @@ const related: RelatedCard[] = [
               <span class="ins-step__num">{s.num}</span>
               <h3 class="ins-step__title">{s.title}</h3>
               <p class="ins-step__desc">{s.desc}</p>
+              <p class="ins-step__body">{s.body}</p>
             </li>
             {i < pipeline.length - 1 && (
               <li class="ins-step__arrow" aria-hidden="true">&rarr;</li>
@@ -586,6 +611,14 @@ const related: RelatedCard[] = [
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
     margin: 0;
+    text-wrap: pretty;
+  }
+  .ins-step__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: var(--space-3) 0 0 0;
     text-wrap: pretty;
   }
   .ins-step__arrow {
