@@ -423,6 +423,16 @@ const pscCodes: PscCode[] = [
     margin-bottom: 0;
   }
 
+  /* Let the methodology intro extend past the head column's right edge
+     into the inter-column gap on desktop, so the line breaks have more
+     horizontal room without changing the head/rows column proportions
+     or the rows content layout. */
+  @media (min-width: 1024px) {
+    .co-spread__head .co-section__intro {
+      width: calc(100% + var(--space-16));
+    }
+  }
+
   /* Principles-in-practice subsection — sits below the 5 phases
      in the right column of the editorial spread. Separated from the
      phases by a mono eyebrow + hairline, giving it visual weight as
