@@ -33,14 +33,40 @@ interface OverviewPhase {
   number: string;
   name: string;
   subtitle: string;
+  body: string;
 }
 
 const overviewPhases: OverviewPhase[] = [
-  { number: "01", name: "Discovery",      subtitle: "Stakeholder interviews & content audit" },
-  { number: "02", name: "Architecture",   subtitle: "Taxonomy & DITA model design" },
-  { number: "03", name: "Migration",      subtitle: "Batch conversion & cleanup" },
-  { number: "04", name: "Implementation", subtitle: "CCMS config & stylesheet dev" },
-  { number: "05", name: "Enablement",     subtitle: "Training & handover" },
+  {
+    number: "01",
+    name: "Discovery",
+    subtitle: "Stakeholder interviews & content audit",
+    body: "Surface the constraints the architecture has to obey. Interview producers and consumers, audit existing content, map use cases the system must support.",
+  },
+  {
+    number: "02",
+    name: "Architecture",
+    subtitle: "Taxonomy & DITA model design",
+    body: "Design schema, taxonomy, metadata strategy, and reuse model against this client's constraints — not against textbook structured-content principles.",
+  },
+  {
+    number: "03",
+    name: "Migration",
+    subtitle: "Batch conversion & cleanup",
+    body: "Recover reusable assets from legacy content; retire or rewrite what isn't. QA harness designed before the first batch runs.",
+  },
+  {
+    number: "04",
+    name: "Implementation",
+    subtitle: "CCMS config & stylesheet dev",
+    body: "Wire the architecture into the toolchain — CCMS, publishing pipeline, integration points. Deliver the smallest implementation that runs.",
+  },
+  {
+    number: "05",
+    name: "Enablement",
+    subtitle: "Training & handover",
+    body: "Train the team, document the runbook, transfer ownership cleanly. 30/60/90-day check-ins after handover.",
+  },
 ];
 
 interface Facet {
@@ -135,19 +161,24 @@ const outcomes: OutcomeStat[] = [
     <div class="container-page proc-section__inner">
       <h1 id="proc-hero-heading" class="proc-hero__title">Our Process</h1>
       <p class="proc-hero__subdeck">
-        Five phases. Continuous improvement. Inspectable artifacts at every step.
+        Five phases. Continuous improvement. Inspectable artifacts at every step. We move linearly from Discovery to Enablement, then settle into a continuous improvement loop — every phase ends with a signed-off deliverable, not a status update.
       </p>
 
-      <ol class="proc-strip">
+      <ol class="proc-strip" id="proc-strip">
         {overviewPhases.map((p, i) => (
           <>
-            <li class="proc-strip__card">
+            <li class="proc-strip__card fx" style={`--d: ${i * 280}ms`}>
               <span class="proc-strip__num">{p.number}</span>
               <h2 class="proc-strip__name">{p.name}</h2>
               <p class="proc-strip__subtitle">{p.subtitle}</p>
+              <p class="proc-strip__body">{p.body}</p>
             </li>
             {i < overviewPhases.length - 1 && (
-              <li class="proc-strip__arrow" aria-hidden="true">→</li>
+              <li class="proc-strip__arrow fx" aria-hidden="true" style={`--d: ${i * 280 + 200}ms`}>
+                <svg viewBox="0 0 32 16" class="proc-strip__arrow-svg" aria-hidden="true">
+                  <path class="proc-strip__arrow-path" d="M 0 8 L 28 8 M 24 4 L 28 8 L 24 12" />
+                </svg>
+              </li>
             )}
           </>
         ))}
@@ -451,22 +482,87 @@ const outcomes: OutcomeStat[] = [
   .proc-strip__subtitle {
     font-family: var(--font-body);
     font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .proc-strip__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
-    margin: 0;
+    margin: var(--space-2) 0 0 0;
     text-wrap: pretty;
   }
   .proc-strip__arrow {
     display: none;
-    color: var(--color-accent-primary-hover);
-    font-family: var(--font-mono);
-    font-size: 18px;
     align-self: center;
-    text-align: center;
+    color: var(--color-accent-primary-hover);
   }
   @media (min-width: 1024px) {
     .proc-strip__arrow {
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .proc-strip__arrow-svg {
+    width: 32px;
+    height: 16px;
+    color: currentColor;
+    overflow: visible;
+    display: block;
+  }
+  .proc-strip__arrow-path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: square;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Scroll-reveal: cards fade + translateY in sequence, arrows draw with
+     stroke-dashoffset between them. IntersectionObserver adds .drawn to
+     the strip container when in viewport; per-element --d controls
+     stagger. Reduced-motion fallback removes both. */
+  .proc-strip .fx {
+    opacity: 0;
+  }
+  .proc-strip__card.fx {
+    transform: translateY(8px);
+    transition:
+      opacity 360ms ease-out,
+      transform 360ms ease-out;
+  }
+  .proc-strip__arrow.fx .proc-strip__arrow-path {
+    stroke-dasharray: 36;
+    stroke-dashoffset: 36;
+    transition: stroke-dashoffset 480ms ease-out;
+  }
+  .proc-strip.drawn .fx {
+    opacity: 1;
+    transition-delay: var(--d, 0ms);
+  }
+  .proc-strip.drawn .proc-strip__card.fx {
+    transform: translateY(0);
+  }
+  .proc-strip.drawn .proc-strip__arrow.fx .proc-strip__arrow-path {
+    stroke-dashoffset: 0;
+    transition-delay: var(--d, 0ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .proc-strip .fx {
+      opacity: 1 !important;
+      transition: none !important;
+    }
+    .proc-strip__card.fx {
+      transform: none !important;
+    }
+    .proc-strip__arrow.fx .proc-strip__arrow-path {
+      stroke-dashoffset: 0 !important;
+      transition: none !important;
     }
   }
 
@@ -737,23 +833,36 @@ const outcomes: OutcomeStat[] = [
 </style>
 
 <script>
-  function setupProcCircle() {
-    const svg = document.getElementById("proc-circle-flow");
-    if (!svg) return;
+  function setupProcReveal() {
+    const targets = [
+      document.getElementById("proc-circle-flow"),
+      document.getElementById("proc-strip"),
+    ].filter(Boolean);
+
+    if (!targets.length) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            svg.classList.add("drawn");
+            entry.target.classList.add("drawn");
             observer.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.15 }
     );
-    observer.observe(svg);
+
+    targets.forEach((el) => observer.observe(el));
   }
 
-  document.addEventListener("DOMContentLoaded", setupProcCircle);
-  document.addEventListener("astro:page-load", setupProcCircle);
+  // Module scripts default to deferred — by the time this runs,
+  // DOMContentLoaded may have already fired. Check readyState instead
+  // of relying solely on the event listener.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupProcReveal);
+  } else {
+    setupProcReveal();
+  }
+  document.addEventListener("astro:page-load", setupProcReveal);
 </script>
