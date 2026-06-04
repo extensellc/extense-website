@@ -10,14 +10,14 @@
   See docs/reframe-2026/our-process.md for the locked wireframe + decisions.
 
   Section order:
-    S1 Hero + 5-phase strip + Full Circle — single combined section
-       carrying the page thesis: H1 + subdeck (left-aligned), then the
-       5-card linear strip with scroll-reveal motion, then the 6-cell
-       continuous-loop SVG. The subdeck's two-part claim (linear five
-       phases + continuous improvement loop) is reinforced twice — once
-       as a card sequence, once as a topology diagram. No separate
-       'Full Circle' heading or intro — the subdeck and the SVG's FIG.
-       chrome already name the concept.
+    S1 Hero + 5-phase strip — single combined section. Top of section
+       is a 2-column lead+aside (H1 + subdeck on the left, compact
+       linear-with-loopback SVG on the right at ≥1024px). Below: the
+       5-card linear strip with scroll-reveal motion. The compact loop
+       SVG renders the subdeck's 'linear five phases + continuous loop'
+       claim as a single 5-dot row with an amber loopback curve
+       underneath; no separate Full Circle heading/intro — the SVG's
+       FIG. chrome self-labels.
     S2 Phase by phase (5 deep-dive sections) — [DRAFT extended from OLD + /company]
        2.1 Discovery
        2.2 Architecture
@@ -163,10 +163,86 @@ const outcomes: OutcomeStat[] = [
   {/* ───────── S1 — Hero + 5-phase overview strip (combined) ───────── */}
   <section class="proc-section proc-section--hero" aria-labelledby="proc-hero-heading">
     <div class="container-page proc-section__inner">
-      <h1 id="proc-hero-heading" class="proc-hero__title">Our Process</h1>
-      <p class="proc-hero__subdeck">
-        Five phases. Continuous improvement. Inspectable artifacts at every step. We move linearly from Discovery to Enablement, then settle into a continuous improvement loop — every phase ends with a signed-off deliverable, not a status update.
-      </p>
+      <div class="proc-hero__top">
+        <div class="proc-hero__lead">
+          <h1 id="proc-hero-heading" class="proc-hero__title">Our Process</h1>
+          <p class="proc-hero__subdeck">
+            Five phases. Continuous improvement. Inspectable artifacts at every step. We move linearly from Discovery to Enablement, then settle into a continuous improvement loop — every phase ends with a signed-off deliverable, not a status update.
+          </p>
+        </div>
+
+        <div class="proc-hero__aside">
+          <svg
+            class="proc-circle-flow"
+            id="proc-circle-flow"
+            viewBox="0 0 480 220"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            role="presentation"
+          >
+            {/* corner reg marks */}
+            <g class="corner fx" style="--d: 0ms">
+              <path d="M 12 22 L 12 12 L 22 12" />
+              <path d="M 458 12 L 468 12 L 468 22" />
+              <path d="M 12 198 L 12 208 L 22 208" />
+              <path d="M 458 208 L 468 208 L 468 198" />
+            </g>
+
+            <text class="chrome fx" x="24" y="30" style="--d: 80ms">in :: process.continuous</text>
+
+            {/* 5 numbered phase markers */}
+            <g class="fx" style="--d: 200ms">
+              <text class="toc-num" x="60" y="68" text-anchor="middle">01</text>
+              <circle class="dot" cx="60" cy="90" r="7" />
+            </g>
+            <g class="fx" style="--d: 280ms">
+              <text class="toc-num" x="150" y="68" text-anchor="middle">02</text>
+              <circle class="dot" cx="150" cy="90" r="7" />
+            </g>
+            <g class="fx" style="--d: 360ms">
+              <text class="toc-num" x="240" y="68" text-anchor="middle">03</text>
+              <circle class="dot" cx="240" cy="90" r="7" />
+            </g>
+            <g class="fx" style="--d: 440ms">
+              <text class="toc-num" x="330" y="68" text-anchor="middle">04</text>
+              <circle class="dot" cx="330" cy="90" r="7" />
+            </g>
+            <g class="fx" style="--d: 520ms">
+              <text class="toc-num" x="420" y="68" text-anchor="middle">05</text>
+              <circle class="dot" cx="420" cy="90" r="7" />
+            </g>
+
+            {/* Linear arrows between dots */}
+            <path class="flow-conn" style="--d: 600ms" d="M70 90 L140 90 M135 86 L140 90 L135 94" />
+            <path class="flow-conn" style="--d: 680ms" d="M160 90 L230 90 M225 86 L230 90 L225 94" />
+            <path class="flow-conn" style="--d: 760ms" d="M250 90 L320 90 M315 86 L320 90 L315 94" />
+            <path class="flow-conn" style="--d: 840ms" d="M340 90 L410 90 M405 86 L410 90 L405 94" />
+
+            {/* Loopback: from dot 5 down/left/up back to dot 1 */}
+            <path
+              class="flow-conn"
+              style="--d: 920ms"
+              d="M420 100 C 460 140, 460 160, 380 160 L 100 160 C 20 160, 20 140, 60 100 M55 104 L60 100 L65 104"
+            />
+
+            {/* ↻ continuous chip on the loopback */}
+            <g class="fx" style="--d: 1180ms">
+              <rect class="node node--custom" x="200" y="148" width="80" height="22" rx="3" />
+              <text class="node-label node-label--custom node-label--sm" x="240" y="164" text-anchor="middle">↻ continuous</text>
+            </g>
+
+            {/* Bottom chrome */}
+            <g class="fx" style="--d: 1300ms">
+              <line class="chrome-rule" x1="24" y1="194" x2="456" y2="194" />
+              <rect class="build-dot" x="172" y="201" width="6" height="6" />
+              <text class="chrome chrome--strong" x="186" y="207">FIG. 01</text>
+              <text class="chrome" x="236" y="207">/</text>
+              <text class="chrome chrome--strong" x="244" y="207">process.continuous</text>
+              <text class="chrome chrome--strong" x="456" y="207" text-anchor="end">5 + 1</text>
+            </g>
+          </svg>
+        </div>
+      </div>
 
       <ol class="proc-strip" id="proc-strip">
         {overviewPhases.map((p, i) => (
@@ -188,95 +264,6 @@ const outcomes: OutcomeStat[] = [
         ))}
       </ol>
 
-      {/* Full Circle continuous-loop diagram — integrated into the hero
-          section as visual proof of the subdeck's 'continuous improvement'
-          claim. Renders without a separate heading/intro; the FIG. chrome
-          inside the SVG names the diagram. */}
-      <div class="proc-circle proc-circle--in-hero">
-        <svg
-          class="proc-circle-flow"
-          id="proc-circle-flow"
-          viewBox="0 0 960 400"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          role="presentation"
-        >
-          {/* corner reg marks */}
-          <g class="corner fx" style="--d: 0ms">
-            <path d="M 12 24 L 12 12 L 24 12" />
-            <path d="M 936 12 L 948 12 L 948 24" />
-            <path d="M 12 376 L 12 388 L 24 388" />
-            <path d="M 936 388 L 948 388 L 948 376" />
-          </g>
-
-          <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: process.continuous</text>
-
-          {/* Top row L→R: 01 Discover, 02 Architect, 03 Migrate */}
-          <g class="fx" style="--d: 200ms">
-            <rect class="cell" x="40" y="70" width="240" height="100" rx="3" />
-            <text class="cell-num" x="56" y="92">01</text>
-            <text class="cell-name" x="160" y="132" text-anchor="middle">Discover</text>
-          </g>
-          <g class="fx" style="--d: 280ms">
-            <rect class="cell" x="360" y="70" width="240" height="100" rx="3" />
-            <text class="cell-num" x="376" y="92">02</text>
-            <text class="cell-name" x="480" y="132" text-anchor="middle">Architect</text>
-          </g>
-          <g class="fx" style="--d: 360ms">
-            <rect class="cell" x="680" y="70" width="240" height="100" rx="3" />
-            <text class="cell-num" x="696" y="92">03</text>
-            <text class="cell-name" x="800" y="132" text-anchor="middle">Migrate</text>
-          </g>
-
-          {/* Bottom row visually L→R but the SEQUENCE is 4→5→6 right-to-left:
-              06 Optimize (left), 05 Enable (center), 04 Build (right) */}
-          <g class="fx" style="--d: 540ms">
-            <rect class="cell" x="40" y="230" width="240" height="100" rx="3" />
-            <text class="cell-num" x="56" y="252">06</text>
-            <text class="cell-name" x="160" y="292" text-anchor="middle">Optimize</text>
-          </g>
-          <g class="fx" style="--d: 500ms">
-            <rect class="cell" x="360" y="230" width="240" height="100" rx="3" />
-            <text class="cell-num" x="376" y="252">05</text>
-            <text class="cell-name" x="480" y="292" text-anchor="middle">Enable</text>
-          </g>
-          <g class="fx" style="--d: 460ms">
-            <rect class="cell" x="680" y="230" width="240" height="100" rx="3" />
-            <text class="cell-num" x="696" y="252">04</text>
-            <text class="cell-name" x="800" y="292" text-anchor="middle">Build</text>
-          </g>
-
-          {/* Connector arrows — amber, with arrowheads */}
-          {/* 01 → 02 */}
-          <path class="flow-conn" style="--d: 600ms" d="M280 120 L360 120 M355 115 L360 120 L355 125" />
-          {/* 02 → 03 */}
-          <path class="flow-conn" style="--d: 640ms" d="M600 120 L680 120 M675 115 L680 120 L675 125" />
-          {/* 03 → 04 (right edge, top→bottom) */}
-          <path class="flow-conn" style="--d: 720ms" d="M800 170 L800 230 M795 225 L800 230 L805 225" />
-          {/* 04 → 05 (bottom row, R→L) */}
-          <path class="flow-conn" style="--d: 760ms" d="M680 280 L600 280 M605 275 L600 280 L605 285" />
-          {/* 05 → 06 */}
-          <path class="flow-conn" style="--d: 800ms" d="M360 280 L280 280 M285 275 L280 280 L285 285" />
-          {/* 06 → 01 (left edge, bottom→top) */}
-          <path class="flow-conn" style="--d: 840ms" d="M160 230 L160 170 M155 175 L160 170 L165 175" />
-
-          {/* Central continuous-improvement chip */}
-          <g class="fx" style="--d: 900ms">
-            <rect class="node node--custom" x="380" y="186" width="200" height="28" rx="3" />
-            <text class="node-label node-label--custom" x="480" y="205" text-anchor="middle">↻ extense.continuous</text>
-          </g>
-
-          {/* Bottom chrome */}
-          <g class="fx" style="--d: 1020ms">
-            <line class="chrome-rule" x1="30" y1="358" x2="930" y2="358" />
-            <rect class="build-dot" x="408" y="366" width="6" height="6" />
-            <text class="chrome chrome--strong" x="422" y="372">FIG. 01</text>
-            <text class="chrome" x="472" y="372">/</text>
-            <text class="chrome chrome--strong" x="480" y="372">process.continuous</text>
-            <text class="chrome chrome--strong" x="930" y="372" text-anchor="end">5 LINEAR · 1 LOOP</text>
-          </g>
-        </svg>
-      </div>
     </div>
   </section>
 
@@ -395,13 +382,41 @@ const outcomes: OutcomeStat[] = [
     font-weight: var(--weight-regular);
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
-    margin: 0 0 var(--space-12) 0;
-    max-width: 720px;
+    margin: 0;
+    max-width: 540px;
     text-wrap: pretty;
   }
-  @media (min-width: 768px) {
-    .proc-hero__subdeck {
+
+  /* Hero top — lead block (H1 + subdeck) on the left, compact loop SVG
+     on the right at ≥1024px; stacked on mobile. Mirrors the case-study
+     header layout. */
+  .proc-hero__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
+  }
+  @media (min-width: 1024px) {
+    .proc-hero__top {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-16);
       margin-bottom: var(--space-16);
+    }
+  }
+  .proc-hero__lead {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .proc-hero__aside {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 520px;
+  }
+  @media (min-width: 1024px) {
+    .proc-hero__aside {
+      width: 520px;
+      max-width: 50%;
     }
   }
 
@@ -670,25 +685,10 @@ const outcomes: OutcomeStat[] = [
     text-wrap: pretty;
   }
 
-  /* ─── Full Circle SVG (now lives in the hero section) ─── */
-  .proc-circle {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-  /* Spacing when the SVG sits directly under the 5-card strip in the
-     combined hero section. */
-  .proc-circle--in-hero {
-    margin-top: var(--space-12);
-  }
-  @media (min-width: 768px) {
-    .proc-circle--in-hero {
-      margin-top: var(--space-16);
-    }
-  }
+  /* ─── Compact linear-with-loopback SVG (hero aside) ─── */
   .proc-circle-flow {
     width: 100%;
-    max-width: 960px;
+    max-width: 520px;
     height: auto;
     color: var(--color-text-primary);
     overflow: visible;
@@ -719,24 +719,18 @@ const outcomes: OutcomeStat[] = [
     fill: var(--color-accent-primary-hover);
     stroke: none;
   }
-  .proc-circle-flow .cell {
-    fill: var(--color-page-bg);
-    stroke: var(--color-text-primary);
+  .proc-circle-flow .dot {
+    fill: var(--color-accent-primary);
+    stroke: var(--color-accent-primary-pressed);
     stroke-width: 1.5;
     vector-effect: non-scaling-stroke;
   }
-  .proc-circle-flow .cell-num {
+  .proc-circle-flow .toc-num {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: var(--weight-semibold);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.04em;
     fill: var(--color-accent-primary-pressed);
-  }
-  .proc-circle-flow .cell-name {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: var(--weight-medium);
-    fill: var(--color-text-primary);
   }
   .proc-circle-flow .node {
     fill: var(--color-page-bg);
@@ -750,13 +744,16 @@ const outcomes: OutcomeStat[] = [
   }
   .proc-circle-flow .node-label {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: var(--weight-medium);
     fill: var(--color-text-primary);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
   }
   .proc-circle-flow .node-label--custom {
     fill: var(--color-accent-primary-pressed);
+  }
+  .proc-circle-flow .node-label--sm {
+    font-size: 10px;
   }
   .proc-circle-flow .flow-conn {
     stroke: var(--color-accent-primary-hover);
