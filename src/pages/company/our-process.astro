@@ -287,6 +287,7 @@ const outcomes: OutcomeStat[] = [
               <h3 class="proc-phase__heading">{p.name}</h3>
               <p class="proc-phase__body">{p.body}</p>
 
+              <p class="proc-phase__eyebrow">Example profile</p>
               <dl class="proc-facets">
                 {p.facets.map((f) => (
                   <div class="proc-facet">
@@ -665,6 +666,20 @@ const outcomes: OutcomeStat[] = [
     text-wrap: pretty;
   }
 
+  /* Small mono eyebrow above each phase's 4-facet panel. Signals that
+     the deliverables / duration / exit criteria / touchpoints below are
+     illustrative — drawn from a typical engagement profile rather than
+     a fixed spec. */
+  .proc-phase__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
   /* 4-facet grid: 2x2 desktop, 1-col mobile.
      Row gap intentionally larger than column gap so the bottom-row
      labels (EXIT CRITERIA / CLIENT TOUCHPOINTS) get clear breathing
@@ -674,7 +689,7 @@ const outcomes: OutcomeStat[] = [
      in `gap` shorthand invalidates the entire declaration, falling
      back to `gap: normal` (0). Use space-8 / space-12 only. */
   .proc-facets {
-    margin: var(--space-2) 0 0 0;
+    margin: 0;
     padding: var(--space-6) 0 0 0;
     border-top: var(--border-hairline);
     display: grid;
