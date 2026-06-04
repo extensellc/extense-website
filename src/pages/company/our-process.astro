@@ -1,24 +1,723 @@
 ---
 /*
-  /company/our-process — STUB. Page in development.
+  /company/our-process
 
-  Empty placeholder so the URL exists in the new IA. Build out later;
-  source material likely draws from the 5-phase methodology (Discovery →
-  Architecture → Migration → Implementation → Enablement) referenced
-  across the site.
+  Process deep-dive — the 5-phase methodology that /company summarizes,
+  with per-phase deliverables, typical duration, exit criteria, and
+  client touchpoints. Carries forward the old page's continuous-improvement
+  loop ("The Full Circle") and the 4-stat outcomes band.
+
+  See docs/reframe-2026/our-process.md for the locked wireframe + decisions.
+
+  Section order:
+    S1 Hero (universal, no side visual) — [OLD] H1 + [DRAFT] subdeck
+    S2 The five phases (overview strip) — [OLD]
+    S3 Phase by phase (5 deep-dive sections) — [DRAFT extended from OLD + /company]
+       3.1 Discovery
+       3.2 Architecture
+       3.3 Migration
+       3.4 Implementation
+       3.5 Enablement
+    S4 The Full Circle — [OLD intro + redesigned 6-cell SVG]
+    S5 Typical client outcomes (4-stat band) — [OLD]
+    S6 CTAModule — shared
+
+  Page-local CSS prefix: proc-.
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/site/Hero.astro";
+import CTAModule from "../../components/site/CTAModule.astro";
+
+interface OverviewPhase {
+  number: string;
+  name: string;
+  subtitle: string;
+}
+
+const overviewPhases: OverviewPhase[] = [
+  { number: "01", name: "Discovery",      subtitle: "Stakeholder interviews & content audit" },
+  { number: "02", name: "Architecture",   subtitle: "Taxonomy & DITA model design" },
+  { number: "03", name: "Migration",      subtitle: "Batch conversion & cleanup" },
+  { number: "04", name: "Implementation", subtitle: "CCMS config & stylesheet dev" },
+  { number: "05", name: "Enablement",     subtitle: "Training & handover" },
+];
+
+interface Facet {
+  label: string;
+  value: string;
+}
+
+interface PhaseDeepDive {
+  number: string;
+  name: string;
+  body: string;
+  facets: Facet[];
+}
+
+const phases: PhaseDeepDive[] = [
+  {
+    number: "01",
+    name: "Discovery",
+    body: "We don't move past Discovery until the constraints that would otherwise sink a content model have surfaced. That includes interviewing the people who will produce, edit, and consume the content, auditing what exists today, and mapping the use cases the system has to support. The goal isn't to gather requirements; it's to find the constraints the architecture has to obey.",
+    facets: [
+      { label: "Deliverables",       value: "Stakeholder interview synthesis · Content inventory and audit · Use-case map · Constraints register" },
+      { label: "Typical duration",   value: "2–4 weeks, depending on content corpus size and the number of stakeholder groups" },
+      { label: "Exit criteria",      value: "Constraints register signed off; use cases mapped to capabilities; no surfaced blocker remains unresolved" },
+      { label: "Client touchpoints", value: "Weekly working session with content owners; one full readout at end of phase with stakeholder review" },
+    ],
+  },
+  {
+    number: "02",
+    name: "Architecture",
+    body: "The architecture is the leverage point. Schema design, taxonomy, metadata strategy, and reuse decisions made here determine what's possible in every downstream phase. We design against the use cases Discovery surfaced, not against generic structured-content principles. The architecture has to work for this client's content, not for a textbook example of DITA.",
+    facets: [
+      { label: "Deliverables",       value: "Information model (DITA specialization, schema, subject scheme) · Taxonomy and metadata strategy · Reuse model · Publishing target spec" },
+      { label: "Typical duration",   value: "3–6 weeks" },
+      { label: "Exit criteria",      value: "Schema validates against a representative content sample; metadata fields enumerated; reuse boundaries explicit; client team can author a topic in the model and have it validate" },
+      { label: "Client touchpoints", value: "Weekly schema review with editorial leads; one mid-phase prototyping checkpoint with sample topic walkthrough" },
+    ],
+  },
+  {
+    number: "03",
+    name: "Migration",
+    body: "Migration is recovery, not transcription. The conversion engine identifies reusable assets in legacy content and lifts them into the target schema; what isn't recoverable gets retired or rewritten with intent. We design the QA harness before the first batch runs — failing migrations fail because the validation strategy was an afterthought.",
+    facets: [
+      { label: "Deliverables",       value: "QA harness · Conversion pipeline · Migration batches (typically iterative) · Per-batch recovery report" },
+      { label: "Typical duration",   value: "4–12 weeks, proportional to corpus size; the first batch often spans 2–3 weeks alone" },
+      { label: "Exit criteria",      value: "QA harness passes on a representative sample; recovery rate target met; rejected content categorized for retirement or rewrite" },
+      { label: "Client touchpoints", value: "Weekly migration status reports with batch metrics; per-batch review of QA failures" },
+    ],
+  },
+  {
+    number: "04",
+    name: "Implementation",
+    body: "Implementation makes the architecture operational across the toolchain — CCMS configuration, publishing pipelines, integration points. The discipline at this phase is to resist scope expansion: every feature added during implementation is a feature the team has to maintain afterward. We deliver the smallest implementation that runs.",
+    facets: [
+      { label: "Deliverables",       value: "CCMS configuration · Publishing pipeline (containerized DITA-OT or equivalent) · Integration points (API connectors, webhooks) · CI/CD wiring · System documentation" },
+      { label: "Typical duration",   value: "6–10 weeks" },
+      { label: "Exit criteria",      value: "End-to-end publish from CCMS to all target outputs; production push tested; rollback procedure validated" },
+      { label: "Client touchpoints", value: "Biweekly sprint reviews with engineering and content stakeholders; UAT with author cohort before go-live" },
+    ],
+  },
+  {
+    number: "05",
+    name: "Enablement",
+    body: "Enablement runs through every phase, not at the end. Discovery teaches the practitioner how the program works. Architecture documentation becomes the team's runbook. Migration training transitions authors. CCMS rollout becomes the operating manual. The handover isn't a phase — it's a discipline applied throughout.",
+    facets: [
+      { label: "Deliverables",       value: "Author training materials · Schema runbook · Troubleshooting guide · Ongoing-support playbook (escalation paths, common issues)" },
+      { label: "Typical duration",   value: "Runs through every prior phase; concentrated 3–4 weeks at the close of Implementation for formal training" },
+      { label: "Exit criteria",      value: "Authors produce valid topics independently; CCMS operations team resolves 80%+ of operational tasks without Extense; runbook captures known issues" },
+      { label: "Client touchpoints", value: "Continuous from Phase 1; formal training events at end of Implementation; 30/60/90-day check-ins post-handover" },
+    ],
+  },
+];
+
+interface OutcomeStat {
+  value: string;
+  label: string;
+}
+
+const outcomes: OutcomeStat[] = [
+  { value: "60%", label: "Faster publishing" },
+  { value: "72%", label: "Translation savings" },
+  { value: "45%", label: "Content reuse rate" },
+  { value: "90%", label: "Fewer support tickets" },
+];
 ---
 
 <BaseLayout
-  title="Our Process — Company"
-  description="The Extense engagement process — page in development."
+  title="Our Process — Five phases, continuous improvement"
+  description="The Extense engagement process from Discovery to Enablement: deliverables, typical durations, exit criteria, and client touchpoints for every phase, plus the continuous-improvement loop that follows handover."
 >
   <Hero
     variant="universal"
     title="Our Process"
-    subdeck="Coming soon — this page is in development."
+    subdeck="Five phases. Continuous improvement. Inspectable artifacts at every step."
+    subdeckMaxWidth="540px"
+  />
+
+  {/* ───────── S2 — The five phases (overview strip) ───────── */}
+  <section class="proc-section" aria-labelledby="proc-overview-heading">
+    <div class="container-page proc-section__inner">
+      <div class="proc-heading-block">
+        <h2 id="proc-overview-heading" class="proc-heading">The five phases</h2>
+        <p class="proc-intro">
+          A proven sequence from raw content to a published, operational, AI-ready program. Every phase produces inspectable artifacts you can review before the next begins.
+        </p>
+      </div>
+
+      <ol class="proc-strip">
+        {overviewPhases.map((p, i) => (
+          <>
+            <li class="proc-strip__card">
+              <span class="proc-strip__num">{p.number}</span>
+              <h3 class="proc-strip__name">{p.name}</h3>
+              <p class="proc-strip__subtitle">{p.subtitle}</p>
+            </li>
+            {i < overviewPhases.length - 1 && (
+              <li class="proc-strip__arrow" aria-hidden="true">→</li>
+            )}
+          </>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ───────── S3 — Phase by phase deep-dive ───────── */}
+  <section class="proc-section proc-section--band" aria-labelledby="proc-deep-heading">
+    <div class="container-page proc-section__inner">
+      <div class="proc-heading-block">
+        <h2 id="proc-deep-heading" class="proc-heading">Phase by phase</h2>
+        <p class="proc-intro">
+          What each phase produces, how long it usually takes, when we know it's done, and how often you'll see progress.
+        </p>
+      </div>
+
+      <ol class="proc-phases">
+        {phases.map((p) => (
+          <li class="proc-phase">
+            <div class="proc-phase__rail">
+              <span class="proc-phase__num">{p.number}</span>
+            </div>
+            <div class="proc-phase__content">
+              <h3 class="proc-phase__heading">{p.name}</h3>
+              <p class="proc-phase__body">{p.body}</p>
+
+              <dl class="proc-facets">
+                {p.facets.map((f) => (
+                  <div class="proc-facet">
+                    <dt class="proc-facet__label">{f.label}</dt>
+                    <dd class="proc-facet__value">{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ───────── S4 — The Full Circle ───────── */}
+  <section class="proc-section" aria-labelledby="proc-circle-heading">
+    <div class="container-page proc-section__inner">
+      <div class="proc-heading-block proc-heading-block--centered">
+        <h2 id="proc-circle-heading" class="proc-heading">The Full Circle</h2>
+        <p class="proc-intro">
+          Every phase feeds the next. There is no hand-off gap — Implementation flows into ongoing optimization, and that optimization feeds the next iteration of Discovery.
+        </p>
+      </div>
+
+      <div class="proc-circle">
+        <svg
+          class="proc-circle-flow"
+          id="proc-circle-flow"
+          viewBox="0 0 960 400"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          role="presentation"
+        >
+          {/* corner reg marks */}
+          <g class="corner fx" style="--d: 0ms">
+            <path d="M 12 24 L 12 12 L 24 12" />
+            <path d="M 936 12 L 948 12 L 948 24" />
+            <path d="M 12 376 L 12 388 L 24 388" />
+            <path d="M 936 388 L 948 388 L 948 376" />
+          </g>
+
+          <text class="chrome fx" x="30" y="32" style="--d: 80ms">in :: process.continuous</text>
+
+          {/* Top row L→R: 01 Discover, 02 Architect, 03 Migrate */}
+          <g class="fx" style="--d: 200ms">
+            <rect class="cell" x="40" y="70" width="240" height="100" rx="3" />
+            <text class="cell-num" x="56" y="92">01</text>
+            <text class="cell-name" x="160" y="132" text-anchor="middle">Discover</text>
+          </g>
+          <g class="fx" style="--d: 280ms">
+            <rect class="cell" x="360" y="70" width="240" height="100" rx="3" />
+            <text class="cell-num" x="376" y="92">02</text>
+            <text class="cell-name" x="480" y="132" text-anchor="middle">Architect</text>
+          </g>
+          <g class="fx" style="--d: 360ms">
+            <rect class="cell" x="680" y="70" width="240" height="100" rx="3" />
+            <text class="cell-num" x="696" y="92">03</text>
+            <text class="cell-name" x="800" y="132" text-anchor="middle">Migrate</text>
+          </g>
+
+          {/* Bottom row visually L→R but the SEQUENCE is 4→5→6 right-to-left:
+              06 Optimize (left), 05 Enable (center), 04 Build (right) */}
+          <g class="fx" style="--d: 540ms">
+            <rect class="cell" x="40" y="230" width="240" height="100" rx="3" />
+            <text class="cell-num" x="56" y="252">06</text>
+            <text class="cell-name" x="160" y="292" text-anchor="middle">Optimize</text>
+          </g>
+          <g class="fx" style="--d: 500ms">
+            <rect class="cell" x="360" y="230" width="240" height="100" rx="3" />
+            <text class="cell-num" x="376" y="252">05</text>
+            <text class="cell-name" x="480" y="292" text-anchor="middle">Enable</text>
+          </g>
+          <g class="fx" style="--d: 460ms">
+            <rect class="cell" x="680" y="230" width="240" height="100" rx="3" />
+            <text class="cell-num" x="696" y="252">04</text>
+            <text class="cell-name" x="800" y="292" text-anchor="middle">Build</text>
+          </g>
+
+          {/* Connector arrows — amber, with arrowheads */}
+          {/* 01 → 02 */}
+          <path class="flow-conn" style="--d: 600ms" d="M280 120 L360 120 M355 115 L360 120 L355 125" />
+          {/* 02 → 03 */}
+          <path class="flow-conn" style="--d: 640ms" d="M600 120 L680 120 M675 115 L680 120 L675 125" />
+          {/* 03 → 04 (right edge, top→bottom) */}
+          <path class="flow-conn" style="--d: 720ms" d="M800 170 L800 230 M795 225 L800 230 L805 225" />
+          {/* 04 → 05 (bottom row, R→L) */}
+          <path class="flow-conn" style="--d: 760ms" d="M680 280 L600 280 M605 275 L600 280 L605 285" />
+          {/* 05 → 06 */}
+          <path class="flow-conn" style="--d: 800ms" d="M360 280 L280 280 M285 275 L280 280 L285 285" />
+          {/* 06 → 01 (left edge, bottom→top) */}
+          <path class="flow-conn" style="--d: 840ms" d="M160 230 L160 170 M155 175 L160 170 L165 175" />
+
+          {/* Central continuous-improvement chip */}
+          <g class="fx" style="--d: 900ms">
+            <rect class="node node--custom" x="380" y="186" width="200" height="28" rx="3" />
+            <text class="node-label node-label--custom" x="480" y="205" text-anchor="middle">↻ extense.continuous</text>
+          </g>
+
+          {/* Bottom chrome */}
+          <g class="fx" style="--d: 1020ms">
+            <line class="chrome-rule" x1="30" y1="358" x2="930" y2="358" />
+            <rect class="build-dot" x="408" y="366" width="6" height="6" />
+            <text class="chrome chrome--strong" x="422" y="372">FIG. 01</text>
+            <text class="chrome" x="472" y="372">/</text>
+            <text class="chrome chrome--strong" x="480" y="372">process.continuous</text>
+            <text class="chrome chrome--strong" x="930" y="372" text-anchor="end">5 LINEAR · 1 LOOP</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── S5 — Typical client outcomes ───────── */}
+  <section class="proc-section proc-section--band" aria-labelledby="proc-outcomes-heading">
+    <div class="container-page proc-section__inner">
+      <div class="proc-heading-block">
+        <h2 id="proc-outcomes-heading" class="proc-heading">Typical client outcomes</h2>
+        <p class="proc-intro">
+          Aggregate improvements measured across recent engagements. Numbers reflect the methodology applied — not best-case projections.
+        </p>
+      </div>
+
+      <ul class="proc-stat-band">
+        {outcomes.map((s) => (
+          <li class="proc-stat">
+            <span class="proc-stat__value">{s.value}</span>
+            <span class="proc-stat__label">{s.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTAModule
+    audience="general"
+    compact
+    accentLine
+    heading="Free Content Health Check"
+    body="Upload a 20-page sample document. We'll return conversion feasibility, reuse potential, and ROI projection within two business days — at no cost."
   />
 </BaseLayout>
+
+<style>
+  /* ─── Section shell ─── */
+  .proc-section {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    border-top: var(--border-hairline);
+  }
+  .proc-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .proc-section {
+      padding-top: var(--space-8);
+      padding-bottom: var(--space-8);
+    }
+  }
+
+  .proc-heading-block {
+    margin-bottom: var(--space-10);
+    max-width: 80ch;
+  }
+  .proc-heading-block--centered {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .proc-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .proc-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── S2 — 5-phase overview strip ─── */
+  .proc-strip {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 1024px) {
+    .proc-strip {
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: stretch;
+      gap: var(--space-3);
+    }
+  }
+  .proc-strip__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-5) var(--space-6);
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+  }
+  .proc-strip__num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary-pressed);
+  }
+  .proc-strip__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .proc-strip__subtitle {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .proc-strip__arrow {
+    display: none;
+    color: var(--color-accent-primary-hover);
+    font-family: var(--font-mono);
+    font-size: 18px;
+    align-self: center;
+    text-align: center;
+  }
+  @media (min-width: 1024px) {
+    .proc-strip__arrow {
+      display: block;
+    }
+  }
+
+  /* ─── S3 — Phase deep-dive ─── */
+  .proc-phases {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .proc-phase {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding: var(--space-12) 0;
+    border-top: var(--border-hairline);
+  }
+  .proc-phase:last-child {
+    border-bottom: var(--border-hairline);
+  }
+  @media (min-width: 768px) {
+    .proc-phase {
+      grid-template-columns: 120px 1fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+  }
+  @media (min-width: 1024px) {
+    .proc-phase {
+      grid-template-columns: 160px 1fr;
+      gap: var(--space-12);
+    }
+  }
+  .proc-phase__rail {
+    display: flex;
+    align-items: baseline;
+  }
+  .proc-phase__num {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: var(--color-accent-primary-pressed);
+    font-feature-settings: "tnum";
+  }
+  @media (min-width: 1024px) {
+    .proc-phase__num {
+      font-size: 88px;
+    }
+  }
+  .proc-phase__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .proc-phase__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .proc-phase__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 75ch;
+    text-wrap: pretty;
+  }
+
+  /* 4-facet grid: 2x2 desktop, 1-col mobile */
+  .proc-facets {
+    margin: var(--space-2) 0 0 0;
+    padding: var(--space-6) 0 0 0;
+    border-top: var(--border-hairline);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6) var(--space-10);
+  }
+  @media (min-width: 768px) {
+    .proc-facets {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .proc-facet {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .proc-facet__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+  .proc-facet__value {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ─── S4 — Full Circle SVG ─── */
+  .proc-circle {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .proc-circle-flow {
+    width: 100%;
+    max-width: 960px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .proc-circle-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .proc-circle-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .proc-circle-flow .corner {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .proc-circle-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .proc-circle-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .proc-circle-flow .cell {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .proc-circle-flow .cell-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    fill: var(--color-accent-primary-pressed);
+  }
+  .proc-circle-flow .cell-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+  }
+  .proc-circle-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .proc-circle-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .proc-circle-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+  }
+  .proc-circle-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .proc-circle-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 540;
+    stroke-dashoffset: 540;
+  }
+  .proc-circle-flow .fx {
+    opacity: 0;
+  }
+  .proc-circle-flow.drawn .fx {
+    animation: proc-circle-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .proc-circle-flow.drawn .flow-conn {
+    animation: proc-circle-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes proc-circle-fade {
+    to { opacity: 1; }
+  }
+  @keyframes proc-circle-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .proc-circle-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .proc-circle-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
+  /* ─── S5 — 4-stat band ─── */
+  .proc-stat-band {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-8) 0;
+    border-top: var(--border-hairline);
+    border-bottom: var(--border-hairline);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8) var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .proc-stat-band {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .proc-stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: center;
+    text-align: center;
+  }
+  .proc-stat__value {
+    font-family: var(--font-display);
+    font-size: var(--text-display-xl);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: var(--color-accent-primary-pressed);
+    font-feature-settings: "tnum";
+  }
+  .proc-stat__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+</style>
+
+<script>
+  function setupProcCircle() {
+    const svg = document.getElementById("proc-circle-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  document.addEventListener("DOMContentLoaded", setupProcCircle);
+  document.addEventListener("astro:page-load", setupProcCircle);
+</script>
