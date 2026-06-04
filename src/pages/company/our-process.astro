@@ -10,9 +10,10 @@
   See docs/reframe-2026/our-process.md for the locked wireframe + decisions.
 
   Section order:
-    S1 Hero (universal, no side visual) — [OLD] H1 + [DRAFT] subdeck
-    S2 The five phases (overview strip) — [OLD]
-    S3 Phase by phase (5 deep-dive sections) — [DRAFT extended from OLD + /company]
+    S1 Hero + 5-phase overview strip — single combined section with H1,
+       subdeck, and the 5-card strip below. Per owner direction (combine
+       hero with the 'five phases' overview into one section).
+    S2 Phase by phase (5 deep-dive sections) — [DRAFT extended from OLD + /company]
        3.1 Discovery
        3.2 Architecture
        3.3 Migration
@@ -26,7 +27,6 @@
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Hero from "../../components/site/Hero.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 
 interface OverviewPhase {
@@ -130,29 +130,20 @@ const outcomes: OutcomeStat[] = [
   title="Our Process — Five phases, continuous improvement"
   description="The Extense engagement process from Discovery to Enablement: deliverables, typical durations, exit criteria, and client touchpoints for every phase, plus the continuous-improvement loop that follows handover."
 >
-  <Hero
-    variant="universal"
-    title="Our Process"
-    subdeck="Five phases. Continuous improvement. Inspectable artifacts at every step."
-    subdeckMaxWidth="540px"
-  />
-
-  {/* ───────── S2 — The five phases (overview strip) ───────── */}
-  <section class="proc-section" aria-labelledby="proc-overview-heading">
+  {/* ───────── S1 — Hero + 5-phase overview strip (combined) ───────── */}
+  <section class="proc-section proc-section--hero" aria-labelledby="proc-hero-heading">
     <div class="container-page proc-section__inner">
-      <div class="proc-heading-block">
-        <h2 id="proc-overview-heading" class="proc-heading">The five phases</h2>
-        <p class="proc-intro">
-          A proven sequence from raw content to a published, operational, AI-ready program. Every phase produces inspectable artifacts you can review before the next begins.
-        </p>
-      </div>
+      <h1 id="proc-hero-heading" class="proc-hero__title">Our Process</h1>
+      <p class="proc-hero__subdeck">
+        Five phases. Continuous improvement. Inspectable artifacts at every step.
+      </p>
 
       <ol class="proc-strip">
         {overviewPhases.map((p, i) => (
           <>
             <li class="proc-strip__card">
               <span class="proc-strip__num">{p.number}</span>
-              <h3 class="proc-strip__name">{p.name}</h3>
+              <h2 class="proc-strip__name">{p.name}</h2>
               <p class="proc-strip__subtitle">{p.subtitle}</p>
             </li>
             {i < overviewPhases.length - 1 && (
@@ -341,6 +332,49 @@ const outcomes: OutcomeStat[] = [
     .proc-section {
       padding-top: var(--space-8);
       padding-bottom: var(--space-8);
+    }
+  }
+
+  /* Top section — combined hero + 5-phase strip. No border-top (it's the
+     first section on the page). Generous padding-top to match the
+     hero-section feel; padding-bottom matches the other proc sections. */
+  .proc-section--hero {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-12);
+    border-top: 0;
+  }
+  @media (min-width: 768px) {
+    .proc-section--hero {
+      padding-top: var(--space-32);
+    }
+  }
+
+  /* ─── Inline hero typography (replaces the Hero component for this
+     combined section). Matches the Hero component's universal variant. ─── */
+  .proc-hero__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-xl);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+    max-width: var(--container-prose);
+  }
+  .proc-hero__subdeck {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-12) 0;
+    max-width: 540px;
+    text-wrap: pretty;
+  }
+  @media (min-width: 768px) {
+    .proc-hero__subdeck {
+      margin-bottom: var(--space-16);
     }
   }
 
