@@ -665,14 +665,17 @@ const outcomes: OutcomeStat[] = [
     text-wrap: pretty;
   }
 
-  /* 4-facet grid: 2x2 desktop, 1-col mobile */
+  /* 4-facet grid: 2x2 desktop, 1-col mobile.
+     Row gap intentionally larger than column gap so the bottom-row
+     labels (EXIT CRITERIA / CLIENT TOUCHPOINTS) get clear breathing
+     room from the top-row body text above them. */
   .proc-facets {
     margin: var(--space-2) 0 0 0;
     padding: var(--space-6) 0 0 0;
     border-top: var(--border-hairline);
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-6) var(--space-10);
+    gap: var(--space-12) var(--space-10);
   }
   @media (min-width: 768px) {
     .proc-facets {
