@@ -461,7 +461,7 @@ const pscCodes: PscCode[] = [
      scroll past the methodology phases. Standard editorial spread
      pattern; eliminates the perceived empty space below the intro.
 
-     Also shifted ~78px (≈ 0.5in + 8mm at 96 DPI) to the left visually so
+     Also shifted ~86px (≈ 0.5in + 10mm at 96 DPI) to the left visually so
      the heading + intro sit closer to the container's outer margin. Pure
      transform, no layout reflow — rows column stays exactly where it was. */
   @media (min-width: 1024px) {
@@ -469,7 +469,7 @@ const pscCodes: PscCode[] = [
       position: sticky;
       top: var(--space-12);
       align-self: start;
-      transform: translateX(-78px);
+      transform: translateX(-86px);
     }
   }
 
