@@ -15,15 +15,19 @@
     6. AnimatedDivider
     7. Our journey — timeline of firm milestones
     8. AnimatedDivider
-    9. Firm record — procurement-ready vendor details
+    9. Client roster — LogoBench full marquee (locked-out rule lifted
+       2026-06-03; clients now appear on home + /company)
    10. AnimatedDivider
-   11. CTAModule (general)
+   11. Firm record — procurement-ready vendor details
+   12. AnimatedDivider
+   13. CTAModule (general)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/site/Hero.astro";
 import ContentEngineeringGlossary from "../../components/site/ContentEngineeringGlossary.astro";
 import DocumentRow from "../../components/site/DocumentRow.astro";
+import LogoBench from "../../components/site/LogoBench.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
 
@@ -278,6 +282,15 @@ const pscCodes: PscCode[] = [
         ))}
       </ol>
     </div>
+  </section>
+
+  <AnimatedDivider />
+
+  <section class="co-section co-section--logos" aria-label="Client roster">
+    <LogoBench
+      variant="full"
+      eyebrow="Trusted by Government Agencies, Fortune 500 Companies, & Non-Profit Organizations"
+    />
   </section>
 
   <AnimatedDivider />

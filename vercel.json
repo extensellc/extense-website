@@ -21,6 +21,11 @@
       "source": "/resources/case-studies/:slug",
       "destination": "/company/our-work-and-case-studies/:slug",
       "permanent": true
+    },
+    {
+      "source": "/company/about-us",
+      "destination": "/company",
+      "permanent": true
     }
   ]
 }

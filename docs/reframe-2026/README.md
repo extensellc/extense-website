@@ -31,7 +31,10 @@ amendment **after the homepage validates the approach** (not before).
 - Canonical thesis: "documentation has to be right."
 - Prohibited mentions: no woman-owned / minority-owned / SBA 8(a) / WOSB / MBE /
   sole-source eligibility (Extense holds none).
-- No newsletter. No client logos outside the homepage marquee.
+- No newsletter.
+- Client logos: homepage marquee + `/company` (unlocked 2026-06-03 to allow
+  the same LogoBench full marquee on the Company main page; not on
+  industry/solution/service pages).
 
 ---
 
