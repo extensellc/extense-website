@@ -10,18 +10,22 @@
   See docs/reframe-2026/our-process.md for the locked wireframe + decisions.
 
   Section order:
-    S1 Hero + 5-phase overview strip — single combined section with H1,
-       subdeck, and the 5-card strip below. Per owner direction (combine
-       hero with the 'five phases' overview into one section).
+    S1 Hero + 5-phase strip + Full Circle — single combined section
+       carrying the page thesis: H1 + subdeck (left-aligned), then the
+       5-card linear strip with scroll-reveal motion, then the 6-cell
+       continuous-loop SVG. The subdeck's two-part claim (linear five
+       phases + continuous improvement loop) is reinforced twice — once
+       as a card sequence, once as a topology diagram. No separate
+       'Full Circle' heading or intro — the subdeck and the SVG's FIG.
+       chrome already name the concept.
     S2 Phase by phase (5 deep-dive sections) — [DRAFT extended from OLD + /company]
-       3.1 Discovery
-       3.2 Architecture
-       3.3 Migration
-       3.4 Implementation
-       3.5 Enablement
-    S4 The Full Circle — [OLD intro + redesigned 6-cell SVG]
-    S5 Typical client outcomes (4-stat band) — [OLD]
-    S6 CTAModule — shared
+       2.1 Discovery
+       2.2 Architecture
+       2.3 Migration
+       2.4 Implementation
+       2.5 Enablement
+    S3 Typical client outcomes (4-stat band) — [OLD]
+    S4 CTAModule — shared
 
   Page-local CSS prefix: proc-.
 */
@@ -183,55 +187,12 @@ const outcomes: OutcomeStat[] = [
           </>
         ))}
       </ol>
-    </div>
-  </section>
 
-  {/* ───────── S3 — Phase by phase deep-dive ───────── */}
-  <section class="proc-section proc-section--band" aria-labelledby="proc-deep-heading">
-    <div class="container-page proc-section__inner">
-      <div class="proc-heading-block">
-        <h2 id="proc-deep-heading" class="proc-heading">Phase by phase</h2>
-        <p class="proc-intro">
-          What each phase produces, how long it usually takes, when we know it's done, and how often you'll see progress.
-        </p>
-      </div>
-
-      <ol class="proc-phases">
-        {phases.map((p) => (
-          <li class="proc-phase">
-            <div class="proc-phase__rail">
-              <span class="proc-phase__num">{p.number}</span>
-            </div>
-            <div class="proc-phase__content">
-              <h3 class="proc-phase__heading">{p.name}</h3>
-              <p class="proc-phase__body">{p.body}</p>
-
-              <dl class="proc-facets">
-                {p.facets.map((f) => (
-                  <div class="proc-facet">
-                    <dt class="proc-facet__label">{f.label}</dt>
-                    <dd class="proc-facet__value">{f.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  {/* ───────── S4 — The Full Circle ───────── */}
-  <section class="proc-section" aria-labelledby="proc-circle-heading">
-    <div class="container-page proc-section__inner">
-      <div class="proc-heading-block proc-heading-block--centered">
-        <h2 id="proc-circle-heading" class="proc-heading">The Full Circle</h2>
-        <p class="proc-intro">
-          Every phase feeds the next. There is no hand-off gap — Implementation flows into ongoing optimization, and that optimization feeds the next iteration of Discovery.
-        </p>
-      </div>
-
-      <div class="proc-circle">
+      {/* Full Circle continuous-loop diagram — integrated into the hero
+          section as visual proof of the subdeck's 'continuous improvement'
+          claim. Renders without a separate heading/intro; the FIG. chrome
+          inside the SVG names the diagram. */}
+      <div class="proc-circle proc-circle--in-hero">
         <svg
           class="proc-circle-flow"
           id="proc-circle-flow"
@@ -319,7 +280,42 @@ const outcomes: OutcomeStat[] = [
     </div>
   </section>
 
-  {/* ───────── S5 — Typical client outcomes ───────── */}
+  {/* ───────── S3 — Phase by phase deep-dive ───────── */}
+  <section class="proc-section proc-section--band" aria-labelledby="proc-deep-heading">
+    <div class="container-page proc-section__inner">
+      <div class="proc-heading-block">
+        <h2 id="proc-deep-heading" class="proc-heading">Phase by phase</h2>
+        <p class="proc-intro">
+          What each phase produces, how long it usually takes, when we know it's done, and how often you'll see progress.
+        </p>
+      </div>
+
+      <ol class="proc-phases">
+        {phases.map((p) => (
+          <li class="proc-phase">
+            <div class="proc-phase__rail">
+              <span class="proc-phase__num">{p.number}</span>
+            </div>
+            <div class="proc-phase__content">
+              <h3 class="proc-phase__heading">{p.name}</h3>
+              <p class="proc-phase__body">{p.body}</p>
+
+              <dl class="proc-facets">
+                {p.facets.map((f) => (
+                  <div class="proc-facet">
+                    <dt class="proc-facet__label">{f.label}</dt>
+                    <dd class="proc-facet__value">{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ───────── S3 — Typical client outcomes ───────── */}
   <section class="proc-section proc-section--band" aria-labelledby="proc-outcomes-heading">
     <div class="container-page proc-section__inner">
       <div class="proc-heading-block">
@@ -389,10 +385,9 @@ const outcomes: OutcomeStat[] = [
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
-    margin: 0 auto var(--space-6) auto;
+    margin: 0 0 var(--space-6) 0;
     text-wrap: balance;
     max-width: var(--container-prose);
-    text-align: center;
   }
   .proc-hero__subdeck {
     font-family: var(--font-body);
@@ -400,10 +395,9 @@ const outcomes: OutcomeStat[] = [
     font-weight: var(--weight-regular);
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
-    margin: 0 auto var(--space-12) auto;
-    max-width: 540px;
+    margin: 0 0 var(--space-12) 0;
+    max-width: 720px;
     text-wrap: pretty;
-    text-align: center;
   }
   @media (min-width: 768px) {
     .proc-hero__subdeck {
@@ -676,11 +670,21 @@ const outcomes: OutcomeStat[] = [
     text-wrap: pretty;
   }
 
-  /* ─── S4 — Full Circle SVG ─── */
+  /* ─── Full Circle SVG (now lives in the hero section) ─── */
   .proc-circle {
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+  /* Spacing when the SVG sits directly under the 5-card strip in the
+     combined hero section. */
+  .proc-circle--in-hero {
+    margin-top: var(--space-12);
+  }
+  @media (min-width: 768px) {
+    .proc-circle--in-hero {
+      margin-top: var(--space-16);
+    }
   }
   .proc-circle-flow {
     width: 100%;
