@@ -270,7 +270,7 @@ const outcomes: OutcomeStat[] = [
   {/* ───────── S3 — Phase by phase deep-dive ───────── */}
   <section class="proc-section proc-section--band" aria-labelledby="proc-deep-heading">
     <div class="container-page proc-section__inner">
-      <div class="proc-heading-block">
+      <div class="proc-heading-block proc-heading-block--wide">
         <h2 id="proc-deep-heading" class="proc-heading">Phase by phase</h2>
         <p class="proc-intro">
           What each phase produces, how long it usually takes, when we know it's done, and how often you'll see progress.
@@ -423,6 +423,23 @@ const outcomes: OutcomeStat[] = [
   .proc-heading-block {
     margin-bottom: var(--space-10);
     max-width: 80ch;
+  }
+  /* Wide variant — drops the 80ch cap so a long single-line intro can
+     span the full container without wrapping. */
+  .proc-heading-block--wide {
+    max-width: none;
+  }
+  .proc-heading-block--wide .proc-intro {
+    max-width: none;
+    white-space: nowrap;
+  }
+  /* Re-enable wrapping below desktop so very narrow viewports don't
+     overflow horizontally. */
+  @media (max-width: 1023px) {
+    .proc-heading-block--wide .proc-intro {
+      white-space: normal;
+      text-wrap: pretty;
+    }
   }
   .proc-heading-block--centered {
     text-align: center;
