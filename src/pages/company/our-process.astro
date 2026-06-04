@@ -304,7 +304,7 @@ const outcomes: OutcomeStat[] = [
   </section>
 
   {/* ───────── S3 — Typical client outcomes ───────── */}
-  <section class="proc-section" aria-labelledby="proc-outcomes-heading">
+  <section class="proc-section proc-section--no-rules" aria-labelledby="proc-outcomes-heading">
     <div class="container-page proc-section__inner">
       <div class="proc-heading-block proc-heading-block--wide">
         <h2 id="proc-outcomes-heading" class="proc-heading">Typical client outcomes</h2>
@@ -357,6 +357,18 @@ const outcomes: OutcomeStat[] = [
     padding-top: var(--space-16);
     padding-bottom: var(--space-12);
     border-top: 0;
+  }
+
+  /* Modifier — strips the section's top divider AND the inner stat
+     band's top/bottom hairlines. Used on the Typical client outcomes
+     section so the 4 numbers float on the page background without any
+     framing rules. */
+  .proc-section--no-rules {
+    border-top: 0;
+  }
+  .proc-section--no-rules .proc-stat-band {
+    border-top: 0;
+    border-bottom: 0;
   }
   @media (min-width: 768px) {
     .proc-section--hero {
