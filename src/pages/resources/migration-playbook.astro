@@ -226,7 +226,7 @@ const fieldRules: FieldRule[] = [
     <div class="container-data mp-section__inner">
       <h2 id="framing-heading" class="mp-section__heading">Why migration is recovery.</h2>
       <p class="mp-section__lead mp-framing__lead">
-        Migration is recovery, not transcription. How a migration is approached decides whether the new system inherits the old corpus's problems or sheds them.
+        Migration is recovery, not transcription. How a migration is approached decides whether the new system inherits the old corpus's problems or sheds them — and that decision is made long before the first file converts. Treated as transcription, the work looks finished the moment the schema is full; treated as recovery, it is the one chance to set the content right.
       </p>
 
       <div class="mp-contrast">
@@ -469,7 +469,9 @@ const fieldRules: FieldRule[] = [
 
   /* ─── Framing: Transcription vs Recovery contrast panel ─── */
   .mp-framing__lead {
-    max-width: 60ch;
+    /* Stretch to the full container-data width so it spans the same
+       width as the contrast panel below it. */
+    max-width: none;
   }
 
   .mp-contrast {
