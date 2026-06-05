@@ -17,16 +17,28 @@
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/site/Hero.astro";
-import MigrationLifecycleCard from "../../components/site/MigrationLifecycleCard.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
 import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
 
-const lifecycleStages = [
-  { number: "01", name: "Audit",   body: "Catalog the corpus. Delete ROT before anything converts." },
-  { number: "02", name: "Map",     body: "Define topic types, taxonomy, and metadata before mapping styles." },
-  { number: "03", name: "Convert", body: "Run the refined engine across the full corpus in one pass." },
-  { number: "04", name: "Refine",  body: "Deduplicate, enrich, and resolve the structural exceptions." },
-  { number: "05", name: "Publish", body: "Validate outputs against the use cases that defined the architecture." },
+/* Hero side-visual data — Option C (recovery before/after). 10 source
+   pages on the left with 4 marked ROT (struck-through); 6 typed DITA
+   topics on the right. Renders the H1 thesis 'migration is recovery,
+   not transcription' as a single image. */
+const sourcePages = Array.from({ length: 10 }).map((_, i) => {
+  const rotIndexes = new Set([1, 4, 6, 9]);
+  return {
+    label: `page-${String(i + 1).padStart(2, "0")}.docx`,
+    isRot: rotIndexes.has(i),
+  };
+});
+
+const recoveredTopics = [
+  { label: "topic-01 · concept" },
+  { label: "topic-02 · task" },
+  { label: "topic-03 · task" },
+  { label: "topic-04 · reference" },
+  { label: "topic-05 · concept" },
+  { label: "topic-06 · task" },
 ];
 
 interface Discipline {
@@ -116,10 +128,88 @@ const fieldRules: FieldRule[] = [
 >
   <Hero
     variant="universal"
-    title="Migration is recovery, not transcription."
-    subdeck="A practitioner playbook for moving content from unstructured legacy formats — Word, FrameMaker, MadCap, RoboHelp, AuthorIT — into typed, validated DITA. The disciplines, the lifecycle, and the field rules drawn from the practice."
+    title="The Ultimate DITA Migration Playbook"
+    subdeck="Don't just copy-paste — transform. A practitioner playbook for moving content from unstructured legacy formats (Word, FrameMaker, MadCap, RoboHelp, AuthorIT) into typed, validated DITA. Migration is recovery, not transcription — the disciplines, the lifecycle, and the field rules drawn from the practice."
+    subdeckMaxWidth="540px"
   >
-    <MigrationLifecycleCard stages={lifecycleStages} />
+    <div class="mp-hero-visual">
+      <svg
+        class="mp-hero-flow"
+        id="mp-hero-flow"
+        viewBox="0 0 520 260"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        {/* corner reg marks */}
+        <g class="corner fx" style="--d: 0ms">
+          <path d="M 12 22 L 12 12 L 22 12" />
+          <path d="M 498 12 L 508 12 L 508 22" />
+          <path d="M 12 238 L 12 248 L 22 248" />
+          <path d="M 498 248 L 508 248 L 508 238" />
+        </g>
+
+        <text class="chrome fx" x="24" y="30" style="--d: 80ms">in :: corpus.recovered</text>
+
+        {/* Section labels above each side */}
+        <text class="chrome label--muted fx" x="80" y="60" text-anchor="middle" style="--d: 160ms">SOURCE · 10 PAGES</text>
+        <text class="chrome label--accent fx" x="440" y="60" text-anchor="middle" style="--d: 220ms">RECOVERED · 6 TOPICS</text>
+
+        {/* Left stack — 10 source pages, 4 marked ROT (struck-through) */}
+        {sourcePages.map((p, i) => {
+          const y = 76 + i * 14;
+          const delay = 280 + i * 40;
+          return (
+            <g class="fx" style={`--d: ${delay}ms`}>
+              <rect class={p.isRot ? "page-row page-row--rot" : "page-row"} x="20" y={y} width="124" height="11" />
+              <text class={p.isRot ? "page-label page-label--rot" : "page-label"} x="26" y={y + 8}>{p.isRot ? `${p.label} · ROT` : p.label}</text>
+            </g>
+          );
+        })}
+
+        {/* Strikethroughs over the 4 ROT rows (drawn) */}
+        {sourcePages.map((p, i) => {
+          if (!p.isRot) return null;
+          const y = 76 + i * 14;
+          // strike sequence among the 4 ROT pages: order them 0..3 by appearance
+          const rotOrder = sourcePages.filter((sp) => sp.isRot).indexOf(p);
+          const strikeDelay = 720 + rotOrder * 40;
+          return (
+            <line class="strike" x1="20" y1={y + 5.5} x2="144" y2={y + 5.5} style={`--d: ${strikeDelay}ms`} />
+          );
+        })}
+
+        {/* Center: amber arrow + recover chip */}
+        <path class="flow-conn" style="--d: 880ms" d="M148 140 L380 140 M375 135 L380 140 L375 145" />
+
+        <g class="fx" style="--d: 980ms">
+          <rect class="node node--custom" x="200" y="128" width="128" height="24" rx="3" />
+          <text class="node-label node-label--custom" x="264" y="144" text-anchor="middle">↻ extense.recover</text>
+        </g>
+
+        {/* Right stack — 6 typed DITA topics, amber-bordered */}
+        {recoveredTopics.map((t, i) => {
+          const y = 92 + i * 18;
+          const delay = 1080 + i * 60;
+          return (
+            <g class="fx" style={`--d: ${delay}ms`}>
+              <rect class="page-row page-row--custom" x="380" y={y} width="120" height="14" />
+              <text class="page-label page-label--custom" x="386" y={y + 10}>{t.label}</text>
+            </g>
+          );
+        })}
+
+        {/* Bottom chrome */}
+        <g class="fx" style="--d: 1440ms">
+          <line class="chrome-rule" x1="24" y1="220" x2="496" y2="220" />
+          <rect class="build-dot" x="172" y="227" width="6" height="6" />
+          <text class="chrome chrome--strong" x="186" y="233">FIG. 01</text>
+          <text class="chrome" x="236" y="233">/</text>
+          <text class="chrome chrome--strong" x="244" y="233">corpus.recovered</text>
+          <text class="chrome chrome--strong" x="496" y="233" text-anchor="end">10 → 6 + 4 ROT</text>
+        </g>
+      </svg>
+    </div>
   </Hero>
 
   <AnimatedDivider />
@@ -511,4 +601,185 @@ const fieldRules: FieldRule[] = [
     color: var(--color-text-muted);
     margin-right: var(--space-2);
   }
+
+  /* ─── Hero side-visual: recovery before/after SVG (document-grade idiom) ─── */
+  .mp-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .mp-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+  .mp-hero-flow {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .mp-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .mp-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .mp-hero-flow .label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .mp-hero-flow .label--accent {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .mp-hero-flow .corner {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .mp-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .mp-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .mp-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .mp-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .mp-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .mp-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .mp-hero-flow .page-row {
+    fill: var(--color-page-bg);
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .mp-hero-flow .page-row--rot {
+    fill: var(--color-surface-elevated);
+    stroke: var(--color-border-subtle);
+  }
+  .mp-hero-flow .page-row--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+    stroke-width: 1;
+  }
+  .mp-hero-flow .page-label {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .mp-hero-flow .page-label--rot {
+    fill: var(--color-text-muted);
+  }
+  .mp-hero-flow .page-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+
+  /* Strikethroughs over ROT rows — draw with stroke-dasharray */
+  .mp-hero-flow .strike {
+    stroke: var(--color-text-muted);
+    stroke-width: 0.75;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 130;
+    stroke-dashoffset: 130;
+  }
+  .mp-hero-flow.drawn .strike {
+    animation: mp-hero-strike 400ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  /* Center flow connector — draw with stroke-dasharray */
+  .mp-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .mp-hero-flow.drawn .flow-conn {
+    animation: mp-hero-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  /* fx fade-in for all other layered groups */
+  .mp-hero-flow .fx {
+    opacity: 0;
+  }
+  .mp-hero-flow.drawn .fx {
+    animation: mp-hero-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes mp-hero-fade {
+    to { opacity: 1; }
+  }
+  @keyframes mp-hero-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes mp-hero-strike {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mp-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .mp-hero-flow .flow-conn,
+    .mp-hero-flow .strike {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
 </style>
+
+<script>
+  function setupMpHero() {
+    const svg = document.getElementById("mp-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupMpHero);
+  } else {
+    setupMpHero();
+  }
+  document.addEventListener("astro:page-load", setupMpHero);
+</script>
