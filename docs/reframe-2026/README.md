@@ -112,6 +112,7 @@ template wireframe + a content-variant table, not N independent docs.
 | Industry › Technology & Semiconductors | done | done | done | done | done | [technology.md](technology.md) |
 | Company › Our Work & Case Studies | done | done | done | done | done | [our-work-and-case-studies.md](our-work-and-case-studies.md) |
 | Company › Our Process | done | done | done | done | done | [our-process.md](our-process.md) |
+| Resources › AI-Readiness | done | done | done | pending | – | [ai-readiness.md](ai-readiness.md) |
 | Service template (×3)  | –         | –        | –         | –        | –           | – |
 | Solution › Tech Docs   | done      | done     | done      | done     | done (uncommitted) | [technical-docs-and-publishing.md](technical-docs-and-publishing.md) |
 | Solution › Migration   | done      | done     | done      | done     | done (uncommitted) | [content-migration.md](content-migration.md) |
