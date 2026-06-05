@@ -468,10 +468,17 @@ const fieldRules: FieldRule[] = [
   }
 
   /* ─── Framing: Transcription vs Recovery contrast panel ─── */
+  /* Framing heading + lead are centered (scoped to this section only so
+     other sections' shared .mp-section__heading stays left-aligned). */
+  .mp-section--framing .mp-section__heading {
+    text-align: center;
+  }
+
   .mp-framing__lead {
     /* Stretch to the full container-data width so it spans the same
        width as the contrast panel below it. */
     max-width: none;
+    text-align: center;
   }
 
   .mp-contrast {
