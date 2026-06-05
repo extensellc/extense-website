@@ -488,7 +488,7 @@ const outputFiles = [
   {/* ───────── S7 — Output: chatbot-ready JSONL (banded) ───────── */}
   <section class="air-section air-section--band" aria-labelledby="air-output-heading">
     <div class="container-page air-section__inner">
-      <div class="air-heading-block">
+      <div class="air-heading-block air-heading-block--wide">
         <h2 id="air-output-heading" class="air-heading">Output: chatbot-ready JSONL.</h2>
         <p class="air-intro">
           Each section becomes a JSONL record with the text content, topic title, section heading, topic type (concept / task / reference), all metadata fields, the section ID for deep-linking, and the parent map path for breadcrumb context. A glossary index maps terms to definitions with synonyms. A content manifest provides a searchable index of all topics.
@@ -545,6 +545,13 @@ const outputFiles = [
   .air-heading-block {
     margin-bottom: var(--space-12);
     max-width: 80ch;
+  }
+  /* Wide modifier — drops the 80ch cap on the heading block AND the
+     75ch cap on the intro so a long single paragraph can span the full
+     container-page width without wrapping prematurely. */
+  .air-heading-block--wide,
+  .air-heading-block--wide .air-intro {
+    max-width: none;
   }
   .air-heading {
     font-family: var(--font-display);
