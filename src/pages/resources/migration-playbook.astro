@@ -615,8 +615,12 @@ const fieldRules: FieldRule[] = [
     }
   }
   .mp-hero-flow {
-    width: 100%;
-    max-width: 520px;
+    /* width: 520px (not 100%) — the Hero component's .hero__side is
+       flex: 0 0 auto, so 'width: 100%' has no definite parent size and
+       the SVG falls back to its intrinsic ~300px. Use an explicit width
+       capped by max-width: 100% for narrow viewports. */
+    width: 520px;
+    max-width: 100%;
     height: auto;
     color: var(--color-text-primary);
     overflow: visible;
