@@ -275,6 +275,17 @@ the old page a clear visual breakpoint was buried inside the hero.
 - **D-8** *(locked)* — Drop newsletter.
 - **D-9** *(locked, current)* — AnimatedDivider between sections; no
   banded rhythm.
+- **D-11** *(locked, shipped — pass d)* — Fix the marooned prose
+  sections. Framing, Phase 1, Source formats, and Phase 2 were on
+  `container-prose` (720px) while the lifecycle / field-rules / stat
+  band were on `container-data` (1080px), leaving ~280px dead margin
+  each side on the prose sections (owner-flagged). Widened all four to
+  `container-data` so the whole page shares one 1080px edge, AND
+  horizontalized the discipline rows into the same 3-column grid the
+  Field Rules section uses (`64px | name+stage | body` at >=1024px) so
+  they fill the width. Framing prose flows into two columns at >=1024px
+  for the same reason (capped at 72ch below that). Chosen over the
+  lighter "align only" and the wider `container-page` (1280px) options.
 - **D-10** *(locked, shipped — pass c)* — Add the practice stat band
   (2M+ / 13 / 4) after the framing prose, resolving pending item #1.
   Numbers are grounded in copy already live on the page (no new claims).

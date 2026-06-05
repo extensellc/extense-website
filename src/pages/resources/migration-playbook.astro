@@ -225,7 +225,7 @@ const fieldRules: FieldRule[] = [
   <AnimatedDivider />
 
   <section class="mp-section mp-section--framing" aria-labelledby="framing-heading">
-    <div class="container-prose mp-section__inner">
+    <div class="container-data mp-section__inner">
       <h2 id="framing-heading" class="mp-section__heading">Why migration is recovery.</h2>
       <div class="mp-framing">
         <p>
@@ -273,7 +273,7 @@ const fieldRules: FieldRule[] = [
 
   {/* ───────── Phase 1 — Analysis & Strategy (disciplines 01–03) ───────── */}
   <section class="mp-section mp-section--disciplines" aria-labelledby="phase1-heading">
-    <div class="container-prose mp-section__inner">
+    <div class="container-data mp-section__inner">
       <p class="mp-phase__eyebrow">Phase 1</p>
       <h2 id="phase1-heading" class="mp-section__heading">Analysis & strategy.</h2>
       <p class="mp-section__lead">
@@ -284,11 +284,11 @@ const fieldRules: FieldRule[] = [
         {disciplines.slice(0, 3).map((d) => (
           <li class="mp-discipline">
             <span class="mp-discipline__num" aria-hidden="true">{d.number}</span>
-            <div class="mp-discipline__body">
+            <div class="mp-discipline__head">
               <p class="mp-discipline__stage">Lifecycle stage · {d.stage}</p>
               <h3 class="mp-discipline__name">{d.name}</h3>
-              <p class="mp-discipline__text">{d.body}</p>
             </div>
+            <p class="mp-discipline__text">{d.body}</p>
           </li>
         ))}
       </ol>
@@ -329,7 +329,7 @@ const fieldRules: FieldRule[] = [
   <AnimatedDivider />
 
   <section class="mp-section mp-section--formats" aria-labelledby="formats-heading">
-    <div class="container-prose mp-section__inner">
+    <div class="container-data mp-section__inner">
       <h2 id="formats-heading" class="mp-section__heading">Source formats covered.</h2>
       <p class="mp-section__lead">
         The conversion engine handles thirteen named source formats. Conversion rules differ by format — Word's style-driven model is not the same problem as FrameMaker's structural conditions or RoboHelp's compiled output — and each has named patterns the engine recognizes.
@@ -350,7 +350,7 @@ const fieldRules: FieldRule[] = [
 
   {/* ───────── Phase 2 — Conversion & Enrichment (disciplines 04–05) ───────── */}
   <section class="mp-section mp-section--disciplines" aria-labelledby="phase2-heading">
-    <div class="container-prose mp-section__inner">
+    <div class="container-data mp-section__inner">
       <p class="mp-phase__eyebrow">Phase 2</p>
       <h2 id="phase2-heading" class="mp-section__heading">Conversion & enrichment.</h2>
       <p class="mp-section__lead">
@@ -361,11 +361,11 @@ const fieldRules: FieldRule[] = [
         {disciplines.slice(3).map((d) => (
           <li class="mp-discipline">
             <span class="mp-discipline__num" aria-hidden="true">{d.number}</span>
-            <div class="mp-discipline__body">
+            <div class="mp-discipline__head">
               <p class="mp-discipline__stage">Lifecycle stage · {d.stage}</p>
               <h3 class="mp-discipline__name">{d.name}</h3>
-              <p class="mp-discipline__text">{d.body}</p>
             </div>
+            <p class="mp-discipline__text">{d.body}</p>
           </li>
         ))}
       </ol>
@@ -469,7 +469,27 @@ const fieldRules: FieldRule[] = [
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
     margin: 0;
+    max-width: 72ch;
     text-wrap: pretty;
+  }
+
+  /* At >=1024px flow the framing prose into two columns so it uses the
+     full container-data width rather than leaving the right side empty. */
+  @media (min-width: 1024px) {
+    .mp-framing {
+      display: block;
+      columns: 2;
+      column-gap: var(--space-16);
+    }
+
+    .mp-framing p {
+      max-width: none;
+      margin: 0 0 var(--space-6);
+    }
+
+    .mp-framing p:last-child {
+      margin-bottom: 0;
+    }
   }
 
   /* ─── Practice stat band (2M+ credibility) ─── */
@@ -657,8 +677,8 @@ const fieldRules: FieldRule[] = [
 
   .mp-discipline {
     display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: var(--space-4);
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
     padding: var(--space-8) 0;
     border-top: var(--border-hairline);
   }
@@ -666,7 +686,46 @@ const fieldRules: FieldRule[] = [
   @media (min-width: 768px) {
     .mp-discipline {
       grid-template-columns: 64px 1fr;
-      gap: var(--space-6);
+      grid-template-rows: auto auto;
+      gap: var(--space-2) var(--space-6);
+      align-items: start;
+    }
+
+    .mp-discipline__num {
+      grid-row: 1 / -1;
+      grid-column: 1;
+    }
+
+    .mp-discipline__head,
+    .mp-discipline__text {
+      grid-column: 2;
+    }
+  }
+
+  /* At >=1024px spread across the full width: number | name | body,
+     mirroring the Field Rules row layout already on this page. */
+  @media (min-width: 1024px) {
+    .mp-discipline {
+      grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1.8fr);
+      grid-template-rows: auto;
+      gap: var(--space-8);
+      padding: var(--space-12) 0;
+      align-items: start;
+    }
+
+    .mp-discipline__num {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .mp-discipline__head {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .mp-discipline__text {
+      grid-row: 1;
+      grid-column: 3;
     }
   }
 
@@ -690,10 +749,10 @@ const fieldRules: FieldRule[] = [
     }
   }
 
-  .mp-discipline__body {
+  .mp-discipline__head {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-2);
   }
 
   .mp-discipline__stage {
