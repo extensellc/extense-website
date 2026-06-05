@@ -11,7 +11,9 @@
 >       strip between Phase 1 and Source Formats, restoring the old
 >       page's narrative arc.
 >
-> Live as of commit `ede84f3`.
+> Live as of commit `ede84f3`. A third pass (c) added the **practice
+> stat band** (2M+ / 13 / 4) after the framing prose — see D-10 / S2.5,
+> resolving pending item #1.
 >
 > Tags: `[OLD]` / `[NEW]` / `[DRAFT]`. Conventions in [README.md](README.md).
 
@@ -171,6 +173,32 @@ the old page a clear visual breakpoint was buried inside the hero.
 - 3-paragraph framing prose (kept verbatim from pre-redesign new-site
   version — the substantive elaboration of the H1 thesis).
 
+### S2.5 — Practice stat band `[DRAFT, numbers grounded in copy already live]`
+- **Purpose:** surface the "2M+ pages" credibility that was buried in the
+  framing prose into a visually prominent, document-grade stat band.
+  Resolves pending item #1.
+- **3 stats** (`container-data`, `.mp-stats`):
+  - **2M+** / "Pages migrated" / "to date" — from the framing prose's
+    "two million pages of migration work."
+  - **13** / "Source formats" / "handled" — from "thirteen named source
+    formats" (S5).
+  - **4** / "Sectors served" / "Federal · defense · life sciences ·
+    commercial" — from "federal, defense, life sciences, and enterprise
+    commercial engagements" (framing prose).
+- **Treatment:** large display-serif numbers (`clamp(40px, 6vw, 56px)`,
+  text-primary) + mono amber-pressed uppercase label + body sub-line.
+  Bracketed top/bottom hairlines (`mp-rule`), vertical hairline dividers
+  between stats at ≥768px, stacks to one column on mobile.
+- **No `.section-band` tint** — kept on plain bg so this pass doesn't
+  pre-empt the deferred banded-rhythm decision (pending item #4);
+  prominence comes from the type scale. Tint is a one-line toggle.
+- **Reveal:** JS-armed (`.mp-stats--armed`) so the band is never hidden
+  for no-JS users; IntersectionObserver adds `.in-view` for a staggered
+  rise (0/100/200ms), reduced-motion fallback keeps it static-visible.
+  Wired alongside `setupMpHero()` in the page's script block.
+- **Position:** after S2 (framing prose), before S3 (Phase 1), keeping
+  the existing AnimatedDivider rhythm on both sides.
+
 ### S3 — Phase 1: Analysis & strategy `[DRAFT, derived from OLD 2-phase grouping]`
 - **Eyebrow** `[DRAFT]`: "Phase 1" (mono amber-pressed uppercase)
 - **Heading** `[DRAFT]`: "Analysis & strategy."
@@ -247,6 +275,13 @@ the old page a clear visual breakpoint was buried inside the hero.
 - **D-8** *(locked)* — Drop newsletter.
 - **D-9** *(locked, current)* — AnimatedDivider between sections; no
   banded rhythm.
+- **D-10** *(locked, shipped — pass c)* — Add the practice stat band
+  (2M+ / 13 / 4) after the framing prose, resolving pending item #1.
+  Numbers are grounded in copy already live on the page (no new claims).
+  Hairline-ruled on plain bg (not `.section-band`) to avoid pre-empting
+  the deferred banded-rhythm call. Chosen over the Field Rules eyebrow
+  and hero-SVG chrome alternatives because it directly fixes the
+  "not visually prominent" problem.
 
 ---
 
@@ -255,6 +290,7 @@ the old page a clear visual breakpoint was buried inside the hero.
 | Loc | Tag | Item |
 |-----|-----|------|
 | S1  | `[DRAFT-merge]` | Combined subdeck |
+| S2.5| `[DRAFT]` | Practice stat band (2M+ / 13 / 4) — numbers grounded in live copy |
 | S3  | `[DRAFT]` | Phase 1 eyebrow + heading + intro |
 | S4  | `[DRAFT]` | Migration lifecycle heading + intro |
 | S6  | `[DRAFT]` | Phase 2 eyebrow + heading + intro |
@@ -270,13 +306,10 @@ formats, field rules, CTA body, framing prose) is `[OLD]` or
 These came up during the discussion but weren't implemented in the
 redesign — flagging them as candidates for a follow-up pass:
 
-- **"2M+ pages of migration experience" credibility framing.** The OLD
-  page's section heading "Pro Tips from 2M+ Pages of Migration
-  Experience" surfaced the volume as a load-bearing credibility line.
-  Currently "two million pages" appears once in the framing prose
-  but isn't visually prominent. Could become: a small mono chrome
-  label in the lifecycle SVG, a stat band somewhere on the page, or
-  the eyebrow of the Field Rules section.
+- ~~**"2M+ pages of migration experience" credibility framing.**~~
+  **DONE (pass c, D-10):** shipped as the S2.5 practice stat band
+  (2M+ / 13 / 4) after the framing prose. The Field-Rules-eyebrow and
+  hero-SVG-chrome alternatives were considered and not taken.
 - **Color-coded phase bars.** The OLD page's discipline steps had
   colored vertical bars (red/amber/blue/green) per phase. Currently
   all disciplines use the same hairline + amber-number styling. Could

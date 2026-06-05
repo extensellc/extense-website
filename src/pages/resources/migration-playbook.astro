@@ -243,6 +243,34 @@ const fieldRules: FieldRule[] = [
 
   <AnimatedDivider />
 
+  {/* ───────── Practice stat band — 2M+ credibility (grounded in copy above) ───────── */}
+  <section class="mp-section mp-stats" aria-labelledby="stats-heading">
+    <div class="container-data mp-section__inner">
+      <h2 id="stats-heading" class="mp-section__visually-hidden">Migration practice by the numbers.</h2>
+      <hr class="mp-rule" />
+      <ul class="mp-stats__grid">
+        <li class="mp-stat" style="--d: 0ms">
+          <span class="mp-stat__value">2M+</span>
+          <span class="mp-stat__label">Pages migrated</span>
+          <span class="mp-stat__sub">to date</span>
+        </li>
+        <li class="mp-stat" style="--d: 100ms">
+          <span class="mp-stat__value">13</span>
+          <span class="mp-stat__label">Source formats</span>
+          <span class="mp-stat__sub">handled</span>
+        </li>
+        <li class="mp-stat" style="--d: 200ms">
+          <span class="mp-stat__value">4</span>
+          <span class="mp-stat__label">Sectors served</span>
+          <span class="mp-stat__sub">Federal &middot; defense &middot; life sciences &middot; commercial</span>
+        </li>
+      </ul>
+      <hr class="mp-rule" />
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
   {/* ───────── Phase 1 — Analysis & Strategy (disciplines 01–03) ───────── */}
   <section class="mp-section mp-section--disciplines" aria-labelledby="phase1-heading">
     <div class="container-prose mp-section__inner">
@@ -442,6 +470,94 @@ const fieldRules: FieldRule[] = [
     color: var(--color-text-secondary);
     margin: 0;
     text-wrap: pretty;
+  }
+
+  /* ─── Practice stat band (2M+ credibility) ─── */
+  .mp-stats__grid {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-8) 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .mp-stats__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+  }
+
+  .mp-stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 768px) {
+    .mp-stat {
+      padding-left: var(--space-6);
+      border-left: var(--border-hairline);
+    }
+
+    .mp-stat:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+
+  .mp-stat__value {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 56px);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    font-feature-settings: "tnum";
+  }
+
+  .mp-stat__label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+  }
+
+  .mp-stat__sub {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+  }
+
+  /* Reveal — armed by JS so the band is never hidden if the script
+     doesn't run (credibility content must always render). */
+  .mp-stats--armed .mp-stat {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .mp-stats--armed.in-view .mp-stat {
+    animation: mp-stat-rise 480ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes mp-stat-rise {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mp-stats--armed .mp-stat {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
   }
 
   /* ─── Phase eyebrow (above Phase 1 / Phase 2 headings) ─── */
@@ -935,10 +1051,33 @@ const fieldRules: FieldRule[] = [
     observer.observe(svg);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", setupMpHero);
-  } else {
-    setupMpHero();
+  function setupMpStats() {
+    const band = document.querySelector(".mp-stats");
+    if (!band) return;
+    band.classList.add("mp-stats--armed");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            band.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(band);
   }
-  document.addEventListener("astro:page-load", setupMpHero);
+
+  function setupMp() {
+    setupMpHero();
+    setupMpStats();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupMp);
+  } else {
+    setupMp();
+  }
+  document.addEventListener("astro:page-load", setupMp);
 </script>
