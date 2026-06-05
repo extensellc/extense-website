@@ -539,8 +539,11 @@ const outputFiles = [
     }
   }
 
+  /* NOTE: do NOT use var(--space-10) — space-10 isn't on the scale
+     (skips 7/9/10/11/13). Silently computes to 0, collapsing the
+     intro-to-content gap. Use space-12 (48px). */
   .air-heading-block {
-    margin-bottom: var(--space-10);
+    margin-bottom: var(--space-12);
     max-width: 80ch;
   }
   .air-heading {
