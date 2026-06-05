@@ -1,28 +1,24 @@
 ---
 /*
-  /resources/ai-readiness — practitioner guide to making content AI-ready.
+  /resources/ai-readiness — practitioner guide, redesigned.
+
+  See docs/reframe-2026/ai-readiness.md for the locked wireframe + decisions.
 
   Section order:
-    1. Hero (universal, with ScorecardDimensionCard side panel — static)
-    2. Framing prose — names the asymmetry
-    3. AnimatedDivider
-    4. The 7-Dimension Scorecard (two-column grid: 4 + 3)
-    5. Interpret your score (4-row rubric)
-    6. AnimatedDivider
-    7. The Preparation Roadmap (5 vertical phases + typical timeline)
-    8. AnimatedDivider
-    9. What AI-Ready Content Looks Like (3 sub-sections: metadata filtering,
-       section-aware chunking, controlled vocabulary)
-   10. Output: chatbot-ready JSONL (3-file schema)
-   11. AnimatedDivider
-   12. CTAModule (general)
+    S1 Hero — H1 + subdeck (left) + compact score-arc SVG (right)
+    S2 Why this matters — 3 rail-rows (banded)
+    S3 The 7-dimension scorecard — 6 cards 3-col + 1 wide card
+    S4 Interpret your score — 4-row rubric
+    S5 Preparation roadmap — 5-card horizontal strip + inline typical timeline (banded)
+    S6 What AI-ready content looks like — 3 sub-sections (metadata · chunking · vocabulary)
+    S7 Output: chatbot-ready JSONL — 3-file row table (banded)
+    S8 CTAModule
+
+  Page-local CSS prefix: air-
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Hero from "../../components/site/Hero.astro";
-import ScorecardDimensionCard from "../../components/site/ScorecardDimensionCard.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
-import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
 
 interface Dimension {
   number: string;
@@ -112,6 +108,21 @@ const dimensions: Dimension[] = [
   },
 ];
 
+const whyCards = [
+  {
+    label: "The problem",
+    body: "Most enterprise content sits in unstructured formats — Word, PDF, wiki pages, Markdown. When that lands in a vector store, the AI treats every paragraph as undifferentiated text. It can't distinguish a safety warning from a marketing blurb, a step-by-step procedure from a concept explanation, or a beginner topic from an expert reference.",
+  },
+  {
+    label: "The cost of inaction",
+    body: "Organizations that deploy chatbots on unstructured content see retrieval precision around 25–35%. Users get wrong answers, lose trust, and escalate to human support. Worse, AI hallucinations fill gaps where metadata should have guided the system — and a hallucinated citation is materially worse than a missed one.",
+  },
+  {
+    label: "The opportunity",
+    body: "Content that is semantically typed, metadata-enriched, and section-addressable delivers 85%+ retrieval precision. The AI knows what each piece of content is, who it's for, and when to surface it. That's the difference between a chatbot that guesses and one that answers — and it's an engineering problem, not a model-selection problem.",
+  },
+];
+
 const interpretation = [
   { range: "0 – 4",   meaning: "AI will treat your content as plain text. Chatbot answers will be imprecise, often wrong. This is where most organizations start." },
   { range: "5 – 7",   meaning: "Partial readiness. Some AI features work, but gaps in metadata or structure cause retrieval failures for edge cases." },
@@ -122,47 +133,35 @@ const interpretation = [
 const roadmap = [
   {
     phase: "Audit & baseline",
-    body: "Score your current content on the seven dimensions above. Identify the biggest gaps. Inventory content by type, volume, language, and update frequency. This baseline is what every improvement will be measured against.",
+    body: "Score your current content on the seven dimensions above. Identify the biggest gaps. Inventory content by type, volume, language, and update frequency.",
     deliverable: "Content audit report with AI-readiness score and gap analysis.",
   },
   {
     phase: "Structure & type",
-    body: "Convert content to a typed format (DITA concept / task / reference, or equivalent). Split monolithic documents into focused single-purpose topics. Add section IDs to every major block. This is the foundation — without it, nothing downstream works.",
+    body: "Convert content to a typed format (DITA concept / task / reference, or equivalent). Split monolithic documents into focused single-purpose topics. Add section IDs to every major block.",
     deliverable: "Typed, modular topics with section-level addressability.",
   },
   {
     phase: "Enrich metadata",
-    body: "Define a controlled vocabulary (subject scheme or taxonomy) with facets for audience, difficulty, content domain, content intent, and any organization-specific dimensions. Apply metadata to every topic via batch tooling — not manual entry.",
+    body: "Define a controlled vocabulary (subject scheme or taxonomy) with facets for audience, difficulty, content domain, content intent. Apply metadata to every topic via batch tooling — not manual entry.",
     deliverable: "100% metadata coverage with enforced vocabulary.",
   },
   {
     phase: "Build the pipeline",
-    body: "Configure the publishing toolchain to produce chatbot-ready output alongside traditional formats. JSONL export with section-aware chunking, metadata inheritance, and glossary extraction. Test the chunks against sample queries.",
+    body: "Configure the publishing toolchain to produce chatbot-ready output alongside traditional formats. JSONL export with section-aware chunking, metadata inheritance, and glossary extraction.",
     deliverable: "Automated build producing HTML5, PDF, and JSONL from a single source.",
   },
   {
     phase: "Integrate & validate",
-    body: "Connect the JSONL output to your vector store and chatbot. Configure metadata filters for intent routing and audience matching. Run retrieval tests with real user queries. Measure precision and iterate on vocabulary and chunking strategy.",
+    body: "Connect the JSONL output to your vector store and chatbot. Configure metadata filters for intent routing and audience matching. Run retrieval tests with real user queries.",
     deliverable: "Working AI retrieval with measured precision rate.",
   },
 ];
 
 const timelineRows = [
-  {
-    scale: "Small corpus",
-    range: "50 – 200 topics",
-    duration: "4 – 8 weeks through all 5 phases.",
-  },
-  {
-    scale: "Medium corpus",
-    range: "200 – 1,000 topics",
-    duration: "8 – 16 weeks, often with phases 2 and 3 running in parallel batches.",
-  },
-  {
-    scale: "Large corpus",
-    range: "1,000+ topics",
-    duration: "3 – 6 months, phased rollout by product line or content domain. Automation tooling (enrich-metadata.py, dita-to-chatbot-json.py) is critical at this scale.",
-  },
+  { scale: "Small corpus",  range: "50 – 200 topics",    duration: "4 – 8 weeks through all 5 phases." },
+  { scale: "Medium corpus", range: "200 – 1,000 topics", duration: "8 – 16 weeks, often with phases 2 and 3 running in parallel batches." },
+  { scale: "Large corpus",  range: "1,000+ topics",      duration: "3 – 6 months, phased rollout by product line or content domain." },
 ];
 
 const metadataExamples = [
@@ -181,18 +180,9 @@ const metadataExamples = [
 ];
 
 const outputFiles = [
-  {
-    name: "chunks.jsonl",
-    purpose: "One JSON object per section. Ready for vector store embedding. Metadata fields enable filtered retrieval.",
-  },
-  {
-    name: "glossary-index.json",
-    purpose: "Term definitions with synonyms. Enables the chatbot to resolve terminology and expand queries.",
-  },
-  {
-    name: "content-manifest.json",
-    purpose: "Topic inventory with metadata. Used for corpus validation, coverage analysis, and pipeline health checks.",
-  },
+  { name: "chunks.jsonl",         purpose: "One JSON object per section. Ready for vector store embedding. Metadata fields enable filtered retrieval." },
+  { name: "glossary-index.json",  purpose: "Term definitions with synonyms. Enables the chatbot to resolve terminology and expand queries." },
+  { name: "content-manifest.json", purpose: "Topic inventory with metadata. Used for corpus validation, coverage analysis, and pipeline health checks." },
 ];
 ---
 
@@ -200,63 +190,136 @@ const outputFiles = [
   title="AI-Readiness Guide — Extense LLC"
   description="A practitioner guide to making content AI-ready: a seven-dimension scorecard, a five-phase preparation roadmap, and worked examples of what AI-ready DITA, metadata, and JSONL output actually look like."
 >
-  <Hero
-    variant="universal"
-    title="AI-readiness is a content engineering problem."
-    subdeck="Retrieval precision is upstream of model selection. A practitioner guide to the seven dimensions of content engineering that determine whether your AI pipeline returns the right answer or the closest keyword match."
-  >
-    <ScorecardDimensionCard
-      number="01"
-      total="07"
-      dimension={dimensions[0].name}
-      question={dimensions[0].question}
-      scores={dimensions[0].scores}
-    />
-  </Hero>
+  {/* ───────── S1 — Hero ───────── */}
+  <section class="air-section air-section--hero" aria-labelledby="air-hero-heading">
+    <div class="container-page air-section__inner">
+      <div class="air-hero__top">
+        <div class="air-hero__lead">
+          <h1 id="air-hero-heading" class="air-hero__title">AI-readiness is a content engineering problem.</h1>
+          <p class="air-hero__subdeck">
+            Retrieval precision is upstream of model selection. A practitioner guide to the seven dimensions of content engineering that determine whether your AI pipeline returns the right answer or the closest keyword match.
+          </p>
+        </div>
 
-  <AnimatedDivider />
+        <div class="air-hero__aside">
+          <svg
+            class="air-hero-flow"
+            id="air-hero-flow"
+            viewBox="0 0 480 220"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            role="presentation"
+          >
+            <g class="corner fx" style="--d: 0ms">
+              <path d="M 12 22 L 12 12 L 22 12" />
+              <path d="M 458 12 L 468 12 L 468 22" />
+              <path d="M 12 198 L 12 208 L 22 208" />
+              <path d="M 458 208 L 468 208 L 468 198" />
+            </g>
 
-  <section class="air-section air-section--framing" aria-labelledby="framing-heading">
-    <div class="container-prose air-section__inner">
-      <h2 id="framing-heading" class="air-section__heading">Why AI-readiness matters.</h2>
-      <div class="air-framing">
-        <p>
-          Most enterprise content sits in unstructured formats — Word, PDF, wiki pages, Markdown. When that content gets ingested into a vector store, the AI treats every paragraph as undifferentiated text. It can't distinguish a worked example from a marketing blurb, a step-by-step procedure from a concept explanation, or a beginner topic from an expert reference.
-        </p>
-        <p>
-          The failure shows up downstream as retrieval precision in the 25–35% range. Users get wrong answers, lose trust, and escalate to human support. Worse, AI hallucinations fill gaps where metadata should have guided the system. The asymmetry that matters in regulated workloads: a hallucinated citation is materially worse than a missed one. The missed result gets escalated; the hallucinated citation gets followed.
-        </p>
-        <p>
-          Content that is semantically typed, metadata-enriched, and section-addressable delivers production-grade retrieval precision because the AI knows what each piece of content is, who it's for, and when to surface it. That's the difference between a chatbot that guesses and one that answers — and it's an engineering problem, not a model selection problem.
-        </p>
+            <text class="chrome fx" x="24" y="30" style="--d: 80ms">in :: readiness.scored</text>
+            <text class="chrome label--muted fx" x="24" y="46" style="--d: 160ms">15-POINT SCALE · 0 → 14</text>
+
+            {/* Axis line */}
+            <line class="axis fx" x1="30" y1="120" x2="450" y2="120" style="--d: 240ms" />
+
+            {/* 15 tick marks at integer positions (x = 30 + i*30) */}
+            {Array.from({ length: 15 }).map((_, i) => {
+              const x = 30 + i * 30;
+              const isAnchor = i === 0 || i === 14;
+              const delay = 320 + i * 30;
+              return (
+                <g class="fx" style={`--d: ${delay}ms`}>
+                  <line class={isAnchor ? "tick tick--strong" : "tick"} x1={x} y1="114" x2={x} y2="126" />
+                  <text class="tick-num" x={x} y="142" text-anchor="middle">{i}</text>
+                </g>
+              );
+            })}
+
+            {/* Amber arc/line from baseline (3) to target (10), drawn */}
+            <path class="flow-conn" style="--d: 820ms" d="M120 120 L330 120" />
+
+            {/* Baseline dot at x=120 (tick 3) */}
+            <g class="fx" style="--d: 940ms">
+              <circle class="dot dot--baseline" cx="120" cy="120" r="7" />
+              <text class="dot-label dot-label--muted" x="120" y="172" text-anchor="middle">BASELINE</text>
+              <text class="dot-value dot-value--muted" x="120" y="190" text-anchor="middle">3</text>
+            </g>
+
+            {/* Target dot at x=330 (tick 10) */}
+            <g class="fx" style="--d: 1060ms">
+              <circle class="dot dot--target" cx="330" cy="120" r="9" />
+              <text class="dot-label dot-label--accent" x="330" y="172" text-anchor="middle">TARGET</text>
+              <text class="dot-value dot-value--accent" x="330" y="190" text-anchor="middle">10</text>
+            </g>
+
+            {/* "+7 measured" chip on the arc */}
+            <g class="fx" style="--d: 1180ms">
+              <rect class="node node--custom" x="195" y="90" width="120" height="22" rx="3" />
+              <text class="node-label node-label--custom" x="255" y="106" text-anchor="middle">+7 measured</text>
+            </g>
+
+            {/* Bottom chrome */}
+            <g class="fx" style="--d: 1320ms">
+              <line class="chrome-rule" x1="24" y1="200" x2="456" y2="200" />
+              <rect class="build-dot" x="172" y="207" width="6" height="6" />
+              <text class="chrome chrome--strong" x="186" y="213">FIG. 01</text>
+              <text class="chrome" x="236" y="213">/</text>
+              <text class="chrome chrome--strong" x="244" y="213">readiness.scored</text>
+              <text class="chrome chrome--strong" x="456" y="213" text-anchor="end">0 → 14</text>
+            </g>
+          </svg>
+        </div>
       </div>
     </div>
   </section>
 
-  <AnimatedDivider />
+  {/* ───────── S2 — Why this matters ───────── */}
+  <section class="air-section air-section--band" aria-labelledby="air-why-heading">
+    <div class="container-page air-section__inner">
+      <div class="air-heading-block">
+        <h2 id="air-why-heading" class="air-heading">Why AI-readiness matters.</h2>
+        <p class="air-intro">
+          Most enterprise content sits in unstructured formats. When it lands in a vector store, the AI treats every paragraph as undifferentiated text.
+        </p>
+      </div>
 
-  <section class="air-section air-section--scorecard" aria-labelledby="scorecard-heading">
-    <div class="container-data air-section__inner">
-      <h2 id="scorecard-heading" class="air-section__heading">The seven-dimension scorecard.</h2>
-      <p class="air-section__lead">
-        Rate your content on each dimension below: 0, 1, or 2 points. Total range is 0–14. Sum your score and consult the interpretation rubric at the end. Honest self-scoring is the prerequisite for an honest baseline.
-      </p>
+      <ol class="air-why">
+        {whyCards.map((card) => (
+          <li class="air-rail-row">
+            <p class="air-rail-row__label">{card.label}</p>
+            <p class="air-rail-row__body">{card.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
 
-      <ol class="air-grid">
-        {dimensions.map((d) => (
-          <li class="air-dim">
-            <span class="air-dim__num" aria-hidden="true">{d.number}</span>
-            <p class="air-dim__name">{d.name}</p>
-            <div class="air-dim__col air-dim__col--question">
-              <p class="air-dim__question">{d.question}</p>
+  {/* ───────── S3 — The 7-dimension scorecard ───────── */}
+  <section class="air-section" aria-labelledby="air-scorecard-heading">
+    <div class="container-page air-section__inner">
+      <div class="air-heading-block">
+        <h2 id="air-scorecard-heading" class="air-heading">The seven-dimension scorecard.</h2>
+        <p class="air-intro">
+          Rate your content on each dimension below: 0, 1, or 2 points. Total range is 0–14. Sum your score and consult the interpretation rubric below.
+        </p>
+      </div>
+
+      <ol class="air-dim-grid">
+        {dimensions.slice(0, 6).map((d) => (
+          <li class="air-dim-card">
+            <header class="air-dim-card__head">
+              <span class="air-dim-card__num">{d.number}</span>
+              <p class="air-dim-card__name">{d.name}</p>
+            </header>
+            <p class="air-dim-card__question">{d.question}</p>
+            <div class="air-dim-card__why">
+              <p class="air-dim-card__sub-label">Why it matters</p>
+              <p class="air-dim-card__sub-body">{d.why}</p>
             </div>
-            <div class="air-dim__col air-dim__col--why">
-              <p class="air-dim__why-label">Why it matters</p>
-              <p class="air-dim__why">{d.why}</p>
-            </div>
-            <div class="air-dim__col air-dim__col--scoring">
-              <p class="air-dim__scoring-label">Scoring</p>
-              <ul class="air-dim__scores">
+            <div class="air-dim-card__scoring">
+              <p class="air-dim-card__sub-label">Scoring</p>
+              <ul class="air-dim-card__scores">
                 {d.scores.map((s) => (
                   <li class="air-score">
                     <span class="air-score__num">{s.level}</span>
@@ -268,92 +331,130 @@ const outputFiles = [
           </li>
         ))}
       </ol>
+
+      {/* Dimension 07 — full-width card matching the old page layout */}
+      <article class="air-dim-card air-dim-card--wide">
+        <header class="air-dim-card__head">
+          <span class="air-dim-card__num">{dimensions[6].number}</span>
+          <p class="air-dim-card__name">{dimensions[6].name}</p>
+        </header>
+        <div class="air-dim-card__wide-grid">
+          <p class="air-dim-card__question">{dimensions[6].question}</p>
+          <div class="air-dim-card__why">
+            <p class="air-dim-card__sub-label">Why it matters</p>
+            <p class="air-dim-card__sub-body">{dimensions[6].why}</p>
+          </div>
+          <div class="air-dim-card__scoring">
+            <p class="air-dim-card__sub-label">Scoring</p>
+            <ul class="air-dim-card__scores">
+              {dimensions[6].scores.map((s) => (
+                <li class="air-score">
+                  <span class="air-score__num">{s.level}</span>
+                  <span class="air-score__body">{s.body}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
-  <section class="air-section air-section--interpret" aria-labelledby="interpret-heading">
-    <div class="container-prose air-section__inner">
-      <h2 id="interpret-heading" class="air-section__heading">Interpret your score.</h2>
+  {/* ───────── S4 — Interpret your score ───────── */}
+  <section class="air-section" aria-labelledby="air-interpret-heading">
+    <div class="container-page air-section__inner">
+      <div class="air-heading-block">
+        <h2 id="air-interpret-heading" class="air-heading">Interpret your score.</h2>
+      </div>
+
       <dl class="air-interpret">
         {interpretation.map((row) => (
-          <div class="air-interpret__row">
-            <dt class="air-interpret__range">{row.range}</dt>
-            <dd class="air-interpret__meaning">{row.meaning}</dd>
+          <div class="air-rail-row air-rail-row--interpret">
+            <dt class="air-rail-row__label air-interpret__range">{row.range}</dt>
+            <dd class="air-rail-row__body">{row.meaning}</dd>
           </div>
         ))}
       </dl>
     </div>
   </section>
 
-  <AnimatedDivider />
+  {/* ───────── S5 — The preparation roadmap (banded) ───────── */}
+  <section class="air-section air-section--band" aria-labelledby="air-roadmap-heading">
+    <div class="container-page air-section__inner">
+      <div class="air-heading-block">
+        <h2 id="air-roadmap-heading" class="air-heading">The preparation roadmap.</h2>
+        <p class="air-intro">
+          Five phases to take content from unstructured to AI-ready. Each phase builds on the previous one; skipping the foundation phases is the most common way these programs fail.
+        </p>
+      </div>
 
-  <section class="air-section air-section--roadmap" aria-labelledby="roadmap-heading">
-    <div class="container-prose air-section__inner">
-      <h2 id="roadmap-heading" class="air-section__heading">The preparation roadmap.</h2>
-      <p class="air-section__lead">
-        Five phases to take content from unstructured to AI-ready. Each phase builds on the previous one; skipping the foundation phases is the most common way these programs fail.
-      </p>
-
-      <ol class="air-roadmap">
+      <ol class="air-strip">
         {roadmap.map((r, i) => (
-          <li class="air-phase">
-            <span class="air-phase__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-            <div class="air-phase__body">
-              <h3 class="air-phase__name">{r.phase}</h3>
-              <p class="air-phase__text">{r.body}</p>
-              <p class="air-phase__deliverable">
-                <span class="air-phase__deliverable-tag">Deliverable:</span> {r.deliverable}
+          <>
+            <li class="air-strip__card">
+              <span class="air-strip__num">{String(i + 1).padStart(2, "0")}</span>
+              <h3 class="air-strip__name">{r.phase}</h3>
+              <p class="air-strip__body">{r.body}</p>
+              <p class="air-strip__deliverable">
+                <span class="air-strip__deliverable-tag">Deliverable:</span> {r.deliverable}
               </p>
-            </div>
-          </li>
+            </li>
+            {i < roadmap.length - 1 && (
+              <li class="air-strip__arrow" aria-hidden="true">
+                <svg viewBox="0 0 32 16" class="air-strip__arrow-svg" aria-hidden="true">
+                  <path class="air-strip__arrow-path" d="M 0 8 L 28 8 M 24 4 L 28 8 L 24 12" />
+                </svg>
+              </li>
+            )}
+          </>
         ))}
       </ol>
 
+      {/* Inline timeline addendum */}
       <div class="air-timeline">
         <p class="air-timeline__eyebrow">Typical timeline</p>
-        <hr class="air-rule" />
         <dl class="air-timeline__rows">
           {timelineRows.map((t) => (
-            <div class="air-timeline__row">
-              <dt class="air-timeline__scale">
+            <div class="air-rail-row air-rail-row--timeline">
+              <dt class="air-rail-row__label air-timeline__scale">
                 <span class="air-timeline__scale-name">{t.scale}</span>
                 <span class="air-timeline__scale-range">{t.range}</span>
               </dt>
-              <dd class="air-timeline__duration">{t.duration}</dd>
+              <dd class="air-rail-row__body">{t.duration}</dd>
             </div>
           ))}
         </dl>
-        <hr class="air-rule" />
       </div>
     </div>
   </section>
 
-  <AnimatedDivider />
-
-  <section class="air-section air-section--examples" aria-labelledby="examples-heading">
-    <div class="container-prose air-section__inner">
-      <h2 id="examples-heading" class="air-section__heading">What AI-ready content looks like.</h2>
-      <p class="air-section__lead">
-        Concrete examples of the transformations the scorecard measures. Each pair shows the failure mode at score 0 and the working pattern at score 2.
-      </p>
+  {/* ───────── S6 — What AI-ready content looks like ───────── */}
+  <section class="air-section" aria-labelledby="air-examples-heading">
+    <div class="container-page air-section__inner">
+      <div class="air-heading-block">
+        <h2 id="air-examples-heading" class="air-heading">What AI-ready content looks like.</h2>
+        <p class="air-intro">
+          Concrete examples of the transformations the scorecard measures. Each pair shows the failure mode at score 0 and the working pattern at score 2.
+        </p>
+      </div>
 
       <div class="air-examples">
+        {/* Sub-section: metadata filtering — 3 rail-rows */}
         <div class="air-example-group">
-          <h3 class="air-example-group__label">Metadata that AI systems can filter</h3>
-          <hr class="air-rule" />
-          <ul class="air-meta-list">
+          <p class="air-example-group__label">Metadata that AI systems can filter</p>
+          <ul class="air-example-group__rows">
             {metadataExamples.map((e) => (
-              <li class="air-meta-row">
-                <p class="air-meta-row__label">{e.label}</p>
-                <p class="air-meta-row__body">{e.body}</p>
+              <li class="air-rail-row air-rail-row--example">
+                <p class="air-rail-row__label">{e.label}</p>
+                <p class="air-rail-row__body">{e.body}</p>
               </li>
             ))}
           </ul>
-          <hr class="air-rule" />
         </div>
 
+        {/* Sub-section: section-aware chunking — 2-col before/after */}
         <div class="air-example-group">
-          <h3 class="air-example-group__label">Section-aware chunking</h3>
+          <p class="air-example-group__label">Section-aware chunking</p>
           <div class="air-ba-grid">
             <article class="air-ba">
               <p class="air-ba__label">Without section IDs</p>
@@ -366,8 +467,9 @@ const outputFiles = [
           </div>
         </div>
 
+        {/* Sub-section: controlled vocabulary vs free-text — 2-col before/after */}
         <div class="air-example-group">
-          <h3 class="air-example-group__label">Controlled vocabulary vs. free-text tags</h3>
+          <p class="air-example-group__label">Controlled vocabulary vs. free-text tags</p>
           <div class="air-ba-grid">
             <article class="air-ba">
               <p class="air-ba__label">Free-text chaos</p>
@@ -383,28 +485,26 @@ const outputFiles = [
     </div>
   </section>
 
-  <section class="air-section air-section--output" aria-labelledby="output-heading">
-    <div class="container-prose air-section__inner">
-      <h2 id="output-heading" class="air-section__heading">Output: chatbot-ready JSONL.</h2>
-      <p class="air-section__lead">
-        Each section becomes a JSONL record with the text content, topic title, section heading, topic type (concept / task / reference), all metadata fields (audience, difficulty, domain, intent, duration, chatbot-priority), the section ID for deep-linking, and the parent map path for breadcrumb context. A glossary index maps terms to definitions with synonyms. A content manifest provides a searchable index of all topics.
-      </p>
+  {/* ───────── S7 — Output: chatbot-ready JSONL (banded) ───────── */}
+  <section class="air-section air-section--band" aria-labelledby="air-output-heading">
+    <div class="container-page air-section__inner">
+      <div class="air-heading-block">
+        <h2 id="air-output-heading" class="air-heading">Output: chatbot-ready JSONL.</h2>
+        <p class="air-intro">
+          Each section becomes a JSONL record with the text content, topic title, section heading, topic type (concept / task / reference), all metadata fields, the section ID for deep-linking, and the parent map path for breadcrumb context. A glossary index maps terms to definitions with synonyms. A content manifest provides a searchable index of all topics.
+        </p>
+      </div>
 
-      <p class="air-output__eyebrow">Three exported artifacts</p>
-      <hr class="air-rule" />
       <dl class="air-output">
         {outputFiles.map((f) => (
-          <div class="air-output__row">
-            <dt class="air-output__name">{f.name}</dt>
-            <dd class="air-output__purpose">{f.purpose}</dd>
+          <div class="air-rail-row air-rail-row--output">
+            <dt class="air-rail-row__label air-output__name">{f.name}</dt>
+            <dd class="air-rail-row__body">{f.purpose}</dd>
           </div>
         ))}
       </dl>
-      <hr class="air-rule" />
     </div>
   </section>
-
-  <AnimatedDivider />
 
   <CTAModule
     audience="general"
@@ -413,371 +513,527 @@ const outputFiles = [
 </BaseLayout>
 
 <style>
-  /* ─── Section spacing ─── */
+  /* ─── Section shell ─── */
   .air-section {
-    padding-top: var(--space-16);
-    padding-bottom: var(--space-16);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    border-top: var(--border-hairline);
   }
-
+  .air-section--hero {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-12);
+    border-top: 0;
+  }
   @media (min-width: 768px) {
-    .air-section {
+    .air-section--hero {
       padding-top: var(--space-20);
-      padding-bottom: var(--space-20);
+    }
+  }
+  .air-section--band {
+    background-color: var(--color-surface-band);
+  }
+  @media (max-width: 767px) {
+    .air-section {
+      padding-top: var(--space-8);
+      padding-bottom: var(--space-8);
     }
   }
 
-  .air-section__heading {
+  .air-heading-block {
+    margin-bottom: var(--space-10);
+    max-width: 80ch;
+  }
+  .air-heading {
     font-family: var(--font-display);
     font-size: var(--text-display-lg);
     font-weight: var(--weight-regular);
     line-height: var(--leading-snug);
     letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
-    margin: 0 0 var(--space-6) 0;
+    margin: 0 0 var(--space-4) 0;
     text-wrap: balance;
   }
-
-  .air-section__lead {
+  .air-intro {
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
     color: var(--color-text-secondary);
     line-height: var(--leading-normal);
-    margin: 0 0 var(--space-12) 0;
-    text-wrap: pretty;
-    max-width: 65ch;
-  }
-
-  .air-section__visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  .air-rule {
-    border: 0;
-    border-top: var(--border-hairline);
     margin: 0;
+    text-wrap: pretty;
+    max-width: 75ch;
   }
 
-  /* ─── Framing prose ─── */
-  .air-framing {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
+  /* ─── Hero — lead + aside ─── */
+  .air-hero__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-xl);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-6) 0;
+    text-wrap: balance;
+    max-width: var(--container-prose);
   }
-
-  .air-framing p {
+  .air-hero__subdeck {
     font-family: var(--font-body);
     font-size: var(--text-body-lg);
+    font-weight: var(--weight-regular);
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
     margin: 0;
+    max-width: 540px;
     text-wrap: pretty;
   }
-
-  /* ─── Scorecard: horizontal-row layout ─── */
-  .air-grid {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .air-hero__top {
     display: flex;
     flex-direction: column;
+    gap: var(--space-8);
+  }
+  @media (min-width: 1024px) {
+    .air-hero__top {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-16);
+    }
+  }
+  .air-hero__lead {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .air-hero__aside {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 520px;
+  }
+  @media (min-width: 1024px) {
+    .air-hero__aside {
+      width: 520px;
+      max-width: 50%;
+    }
   }
 
-  /* Mobile (<768px): vertical stack inside each row */
-  .air-dim {
+  /* ─── Hero score-arc SVG (document-grade idiom) ─── */
+  .air-hero-flow {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .air-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .air-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .air-hero-flow .label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .air-hero-flow .corner {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .air-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .air-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .air-hero-flow .axis {
+    stroke: var(--color-text-primary);
+    stroke-width: 1;
+  }
+  .air-hero-flow .tick {
+    stroke: var(--color-text-muted);
+    stroke-width: 1;
+  }
+  .air-hero-flow .tick--strong {
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+  }
+  .air-hero-flow .tick-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-secondary);
+  }
+  .air-hero-flow .dot--baseline {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-muted);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  .air-hero-flow .dot--target {
+    fill: var(--color-accent-primary);
+    stroke: var(--color-accent-primary-pressed);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  .air-hero-flow .dot-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+  }
+  .air-hero-flow .dot-label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .air-hero-flow .dot-label--accent {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .air-hero-flow .dot-value {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: var(--weight-medium);
+  }
+  .air-hero-flow .dot-value--muted {
+    fill: var(--color-text-secondary);
+  }
+  .air-hero-flow .dot-value--accent {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .air-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .air-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .air-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .air-hero-flow .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .air-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 2.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .air-hero-flow .fx {
+    opacity: 0;
+  }
+  .air-hero-flow.drawn .fx {
+    animation: air-hero-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .air-hero-flow.drawn .flow-conn {
+    animation: air-hero-draw 620ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes air-hero-fade {
+    to { opacity: 1; }
+  }
+  @keyframes air-hero-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .air-hero-flow .fx {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+    .air-hero-flow .flow-conn {
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+  }
+
+  /* ─── Generic rail-row pattern ─── */
+  .air-rail-row {
     display: grid;
-    grid-template-columns: 40px 1fr;
-    gap: var(--space-2) var(--space-4);
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
     padding: var(--space-6) 0;
     border-top: var(--border-hairline);
   }
-
-  .air-dim:last-child {
+  .air-rail-row:last-child {
     border-bottom: var(--border-hairline);
   }
-
-  /* Tablet (≥768px): 2-zone — number column + content column.
-     Name + the three content columns stack vertically inside column 2. */
   @media (min-width: 768px) {
-    .air-dim {
-      grid-template-columns: 56px 1fr;
-      gap: var(--space-3) var(--space-6);
-      align-items: start;
-    }
-
-    .air-dim__num {
-      grid-row: 1 / -1;
-      grid-column: 1;
-    }
-
-    .air-dim__name,
-    .air-dim__col {
-      grid-column: 2;
+    .air-rail-row {
+      grid-template-columns: 220px 1fr;
+      gap: var(--space-12);
+      align-items: baseline;
     }
   }
-
-  /* Desktop (≥1024px): full 5-column horizontal row.
-     num | name | question | why | scoring */
-  @media (min-width: 1024px) {
-    .air-dim {
-      grid-template-columns: 48px 150px minmax(0, 1.3fr) minmax(0, 1.3fr) 240px;
-      grid-template-rows: auto;
-      gap: var(--space-6);
-      align-items: start;
-      padding: var(--space-8) 0;
-    }
-
-    .air-dim__num {
-      grid-row: 1;
-      grid-column: 1;
-    }
-
-    .air-dim__name {
-      grid-row: 1;
-      grid-column: 2;
-      padding-top: 6px;
-    }
-
-    .air-dim__col--question { grid-row: 1; grid-column: 3; padding-top: 2px; }
-    .air-dim__col--why      { grid-row: 1; grid-column: 4; }
-    .air-dim__col--scoring  { grid-row: 1; grid-column: 5; }
-  }
-
-  .air-dim__col {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .air-dim__num {
-    font-family: var(--font-display);
-    font-size: 28px;
-    font-weight: var(--weight-regular);
-    line-height: 1;
-    color: #fcd34d;
-    font-feature-settings: "tnum";
-    padding-top: 2px;
-    margin: 0;
-  }
-
-  .air-dim__name {
+  .air-rail-row__label {
     font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: var(--weight-semibold);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-text-primary);
-    margin: 0;
-  }
-
-  .air-dim__question {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 16px;
-    line-height: 1.4;
-    color: var(--color-text-primary);
-    margin: 0;
-    text-wrap: pretty;
-  }
-
-  .air-dim__why-label,
-  .air-dim__scoring-label {
-    font-family: var(--font-mono);
-    font-size: 10.5px;
+    font-size: 11px;
     font-weight: var(--weight-medium);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-text-muted);
     margin: 0;
   }
-
-  .air-dim__why {
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    line-height: var(--leading-normal);
-    color: var(--color-text-secondary);
-    margin: 0;
-    text-wrap: pretty;
-  }
-
-  .air-dim__scores {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .air-score {
-    display: grid;
-    grid-template-columns: 24px 1fr;
-    gap: var(--space-3);
-    align-items: baseline;
-  }
-
-  .air-score__num {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: var(--weight-semibold);
-    color: #fcd34d;
-    font-feature-settings: "tnum";
-  }
-
-  .air-score__body {
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    line-height: 1.4;
-    color: var(--color-text-secondary);
-    text-wrap: pretty;
-  }
-
-  /* ─── Interpret your score ─── */
-  .air-interpret {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .air-interpret__row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
-    padding: var(--space-4) 0;
-    border-top: var(--border-hairline);
-  }
-
-  .air-interpret__row:last-child {
-    border-bottom: var(--border-hairline);
-  }
-
-  @media (min-width: 768px) {
-    .air-interpret__row {
-      grid-template-columns: 140px 1fr;
-      gap: var(--space-6);
-      align-items: baseline;
-    }
-  }
-
-  .air-interpret__range {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: var(--weight-semibold);
-    color: #fcd34d;
-    font-feature-settings: "tnum";
-    margin: 0;
-  }
-
-  .air-interpret__meaning {
+  .air-rail-row__body {
     font-family: var(--font-body);
     font-size: var(--text-body);
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
     margin: 0;
     text-wrap: pretty;
+    max-width: 80ch;
   }
 
-  /* ─── Roadmap phases ─── */
-  .air-roadmap {
+  /* ─── Why this matters (S2) ─── */
+  .air-why {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
   }
 
-  .air-phase {
+  /* ─── 7-dim scorecard grid (S3) ─── */
+  .air-dim-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: var(--space-4);
-    padding: var(--space-8) 0;
-    border-top: var(--border-hairline);
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
-
   @media (min-width: 768px) {
-    .air-phase {
-      grid-template-columns: 64px 1fr;
-      gap: var(--space-6);
+    .air-dim-grid {
+      grid-template-columns: 1fr 1fr;
     }
   }
-
-  .air-phase:last-child {
+  @media (min-width: 1024px) {
+    .air-dim-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+  .air-dim-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+  }
+  .air-dim-card--wide {
+    margin-top: var(--space-6);
+  }
+  @media (min-width: 1024px) {
+    .air-dim-card--wide .air-dim-card__wide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-8);
+    }
+  }
+  .air-dim-card--wide .air-dim-card__wide-grid > * {
+    margin: 0;
+  }
+  .air-dim-card__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding-bottom: var(--space-3);
     border-bottom: var(--border-hairline);
   }
-
-  .air-phase__num {
-    font-family: var(--font-display);
-    font-size: 28px;
-    font-weight: var(--weight-regular);
-    line-height: 1;
-    color: #fcd34d;
-    font-feature-settings: "tnum";
-    padding-top: 2px;
+  .air-dim-card__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    color: var(--color-accent-primary-pressed);
   }
-
-  @media (min-width: 768px) {
-    .air-phase__num {
-      font-size: 36px;
-    }
-  }
-
-  .air-phase__body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .air-phase__name {
+  .air-dim-card__name {
     font-family: var(--font-display);
     font-size: var(--text-display-sm);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
     color: var(--color-text-primary);
     margin: 0;
     text-wrap: balance;
   }
-
-  .air-phase__text {
+  .air-dim-card__question {
     font-family: var(--font-body);
-    font-size: var(--text-body);
-    line-height: var(--leading-normal);
-    color: var(--color-text-secondary);
-    margin: 0;
-    text-wrap: pretty;
-  }
-
-  .air-phase__deliverable {
-    font-family: var(--font-body);
+    font-style: italic;
     font-size: var(--text-body-sm);
     line-height: var(--leading-normal);
     color: var(--color-text-primary);
     margin: 0;
     text-wrap: pretty;
   }
-
-  .air-phase__deliverable-tag {
+  .air-dim-card__sub-label {
     font-family: var(--font-mono);
     font-size: 10.5px;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2) 0;
+  }
+  .air-dim-card__sub-body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .air-dim-card__scores {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .air-score {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: var(--space-2);
+    align-items: baseline;
+  }
+  .air-score__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-accent-primary-pressed);
+    font-feature-settings: "tnum";
+  }
+  .air-score__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-secondary);
+  }
+
+  /* ─── Interpret your score (S4) ─── */
+  .air-interpret {
+    margin: 0;
+  }
+  .air-rail-row--interpret {
+    padding: var(--space-4) 0;
+  }
+  .air-interpret__range {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-accent-primary-pressed);
+    font-feature-settings: "tnum";
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── Roadmap strip (S5) ─── */
+  .air-strip {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 1024px) {
+    .air-strip {
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: stretch;
+      gap: var(--space-3);
+    }
+  }
+  .air-strip__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-5) var(--space-6);
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+  }
+  .air-strip__num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary-pressed);
+  }
+  .air-strip__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .air-strip__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .air-strip__deliverable {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-primary);
+    margin: var(--space-3) 0 0 0;
+    padding-top: var(--space-3);
+    border-top: var(--border-hairline);
+    text-wrap: pretty;
+  }
+  .air-strip__deliverable-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
     font-weight: var(--weight-medium);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-text-muted);
     margin-right: var(--space-2);
   }
+  .air-strip__arrow {
+    display: none;
+    color: var(--color-accent-primary-hover);
+    align-self: center;
+  }
+  @media (min-width: 1024px) {
+    .air-strip__arrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .air-strip__arrow-svg {
+    width: 32px;
+    height: 16px;
+    color: currentColor;
+    overflow: visible;
+    display: block;
+  }
+  .air-strip__arrow-path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: square;
+    vector-effect: non-scaling-stroke;
+  }
 
-  /* ─── Typical timeline ─── */
+  /* ─── Inline typical timeline (S5 addendum) ─── */
   .air-timeline {
     margin-top: var(--space-12);
   }
-
   .air-timeline__eyebrow {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -785,134 +1041,84 @@ const outputFiles = [
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-text-muted);
-    margin: 0 0 var(--space-4) 0;
+    margin: 0 0 var(--space-2) 0;
   }
-
   .air-timeline__rows {
     margin: 0;
-    padding: var(--space-6) 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
   }
-
-  .air-timeline__row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
+  .air-rail-row--timeline {
+    padding: var(--space-4) 0;
   }
-
-  @media (min-width: 768px) {
-    .air-timeline__row {
-      grid-template-columns: 220px 1fr;
-      gap: var(--space-6);
-      align-items: baseline;
-    }
-  }
-
   .air-timeline__scale {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    margin: 0;
+    text-transform: none;
+    letter-spacing: 0;
   }
-
   .air-timeline__scale-name {
     font-family: var(--font-body);
     font-size: var(--text-body-sm);
     font-weight: var(--weight-semibold);
     color: var(--color-text-primary);
   }
-
   .air-timeline__scale-range {
     font-family: var(--font-mono);
     font-size: 11px;
-    letter-spacing: 0.04em;
     color: var(--color-text-muted);
+    letter-spacing: 0.04em;
   }
 
-  .air-timeline__duration {
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    line-height: 1.5;
-    color: var(--color-text-secondary);
-    margin: 0;
-    text-wrap: pretty;
-  }
-
-  /* ─── Worked examples ─── */
+  /* ─── Worked examples (S6) ─── */
   .air-examples {
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
   }
-
   .air-example-group__label {
     font-family: var(--font-mono);
     font-size: 12px;
     font-weight: var(--weight-semibold);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-text-primary);
     margin: 0 0 var(--space-4) 0;
   }
-
-  /* Metadata filtering list */
-  .air-meta-list {
+  .air-example-group__rows {
     list-style: none;
     margin: 0;
-    padding: var(--space-6) 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
+    padding: 0;
   }
-
-  .air-meta-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
+  .air-rail-row--example {
+    padding: var(--space-5) 0;
   }
-
-  @media (min-width: 768px) {
-    .air-meta-row {
-      grid-template-columns: 200px 1fr;
-      gap: var(--space-8);
-      align-items: baseline;
-    }
-  }
-
-  .air-meta-row__label {
+  .air-rail-row--example .air-rail-row__label {
     font-family: var(--font-body);
     font-size: var(--text-body);
     font-weight: var(--weight-semibold);
     color: var(--color-text-primary);
-    margin: 0;
+    text-transform: none;
+    letter-spacing: 0;
   }
 
-  .air-meta-row__body {
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    line-height: var(--leading-normal);
-    color: var(--color-text-secondary);
-    margin: 0;
-    text-wrap: pretty;
-  }
-
-  /* Before/after two-column */
+  /* Before/after 2-col */
   .air-ba-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-8);
     margin-top: var(--space-4);
   }
-
   @media (min-width: 768px) {
     .air-ba-grid {
       grid-template-columns: 1fr 1fr;
       gap: var(--space-12);
     }
   }
-
+  .air-ba {
+    padding: var(--space-6);
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+  }
   .air-ba__label {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -924,71 +1130,61 @@ const outputFiles = [
     padding-bottom: var(--space-3);
     border-bottom: var(--border-hairline);
   }
-
   .air-ba__body {
     font-family: var(--font-body);
     font-size: var(--text-body-sm);
-    line-height: 1.5;
+    line-height: var(--leading-normal);
     color: var(--color-text-secondary);
     margin: 0;
     text-wrap: pretty;
   }
-
   .air-ba__body code {
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--color-text-primary);
-    background-color: var(--color-surface-elevated);
+    background-color: var(--color-surface-band);
     padding: 1px 4px;
   }
 
-  /* ─── Output schema ─── */
-  .air-output__eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0 0 var(--space-4) 0;
-  }
-
+  /* ─── Output schema (S7) ─── */
   .air-output {
     margin: 0;
-    padding: var(--space-6) 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
   }
-
-  .air-output__row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
+  .air-rail-row--output {
+    padding: var(--space-4) 0;
   }
-
-  @media (min-width: 768px) {
-    .air-output__row {
-      grid-template-columns: 220px 1fr;
-      gap: var(--space-6);
-      align-items: baseline;
-    }
-  }
-
   .air-output__name {
     font-family: var(--font-mono);
     font-size: 13px;
     font-weight: var(--weight-semibold);
     color: var(--color-text-primary);
-    margin: 0;
-  }
-
-  .air-output__purpose {
-    font-family: var(--font-body);
-    font-size: var(--text-body-sm);
-    line-height: 1.5;
-    color: var(--color-text-secondary);
-    margin: 0;
-    text-wrap: pretty;
+    text-transform: none;
+    letter-spacing: 0.02em;
   }
 </style>
+
+<script>
+  function setupAirHero() {
+    const svg = document.getElementById("air-hero-flow");
+    if (!svg) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            svg.classList.add("drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(svg);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupAirHero);
+  } else {
+    setupAirHero();
+  }
+  document.addEventListener("astro:page-load", setupAirHero);
+</script>
