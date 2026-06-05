@@ -41,6 +41,16 @@ const recoveredTopics = [
   { label: "topic-06 · task" },
 ];
 
+/* Migration Lifecycle 5-stage strip data — sits between Phase 1 and the
+   Source Formats section, mirroring the old page's lifecycle row. */
+const lifecycleStages = [
+  { number: "01", name: "Audit",   body: "Catalog the corpus. Delete ROT before anything converts." },
+  { number: "02", name: "Map",     body: "Define topic types, taxonomy, and metadata before mapping styles." },
+  { number: "03", name: "Convert", body: "Run the refined engine across the full corpus in one pass." },
+  { number: "04", name: "Refine",  body: "Deduplicate, enrich, and resolve the structural exceptions." },
+  { number: "05", name: "Publish", body: "Validate outputs against the use cases that defined the architecture." },
+];
+
 interface Discipline {
   number: string;
   name: string;
@@ -233,15 +243,17 @@ const fieldRules: FieldRule[] = [
 
   <AnimatedDivider />
 
-  <section class="mp-section mp-section--disciplines" aria-labelledby="disciplines-heading">
+  {/* ───────── Phase 1 — Analysis & Strategy (disciplines 01–03) ───────── */}
+  <section class="mp-section mp-section--disciplines" aria-labelledby="phase1-heading">
     <div class="container-prose mp-section__inner">
-      <h2 id="disciplines-heading" class="mp-section__heading">The five disciplines.</h2>
+      <p class="mp-phase__eyebrow">Phase 1</p>
+      <h2 id="phase1-heading" class="mp-section__heading">Analysis & strategy.</h2>
       <p class="mp-section__lead">
-        Each discipline maps to one or more stages of the migration lifecycle. They are sequential — skipping the foundation disciplines is the most common way migration programs fail.
+        Three disciplines that take you from corpus to architecture. Skip them and you migrate dead weight into a new system.
       </p>
 
       <ol class="mp-disciplines">
-        {disciplines.map((d) => (
+        {disciplines.slice(0, 3).map((d) => (
           <li class="mp-discipline">
             <span class="mp-discipline__num" aria-hidden="true">{d.number}</span>
             <div class="mp-discipline__body">
@@ -250,6 +262,37 @@ const fieldRules: FieldRule[] = [
               <p class="mp-discipline__text">{d.body}</p>
             </div>
           </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  {/* ───────── The Migration Lifecycle — 5-card strip between phases ───────── */}
+  <section class="mp-section mp-section--lifecycle" aria-labelledby="lifecycle-heading">
+    <div class="container-data mp-section__inner">
+      <h2 id="lifecycle-heading" class="mp-section__heading">The migration lifecycle.</h2>
+      <p class="mp-section__lead">
+        Five stages that sit underneath the disciplines. The disciplines are <em>what</em> a migration team does; the lifecycle is <em>where</em> in the program each one applies.
+      </p>
+
+      <ol class="mp-lifecycle">
+        {lifecycleStages.map((s, i) => (
+          <>
+            <li class="mp-lifecycle__card">
+              <span class="mp-lifecycle__num">{s.number}</span>
+              <h3 class="mp-lifecycle__name">{s.name}</h3>
+              <p class="mp-lifecycle__body">{s.body}</p>
+            </li>
+            {i < lifecycleStages.length - 1 && (
+              <li class="mp-lifecycle__arrow" aria-hidden="true">
+                <svg viewBox="0 0 32 16" class="mp-lifecycle__arrow-svg" aria-hidden="true">
+                  <path class="mp-lifecycle__arrow-path" d="M 0 8 L 28 8 M 24 4 L 28 8 L 24 12" />
+                </svg>
+              </li>
+            )}
+          </>
         ))}
       </ol>
     </div>
@@ -272,6 +315,32 @@ const fieldRules: FieldRule[] = [
         ))}
       </ul>
       <hr class="mp-rule" />
+    </div>
+  </section>
+
+  <AnimatedDivider />
+
+  {/* ───────── Phase 2 — Conversion & Enrichment (disciplines 04–05) ───────── */}
+  <section class="mp-section mp-section--disciplines" aria-labelledby="phase2-heading">
+    <div class="container-prose mp-section__inner">
+      <p class="mp-phase__eyebrow">Phase 2</p>
+      <h2 id="phase2-heading" class="mp-section__heading">Conversion & enrichment.</h2>
+      <p class="mp-section__lead">
+        Two disciplines that take you from converted content to enriched, validated DITA — the part where the architecture pays off.
+      </p>
+
+      <ol class="mp-disciplines">
+        {disciplines.slice(3).map((d) => (
+          <li class="mp-discipline">
+            <span class="mp-discipline__num" aria-hidden="true">{d.number}</span>
+            <div class="mp-discipline__body">
+              <p class="mp-discipline__stage">Lifecycle stage · {d.stage}</p>
+              <h3 class="mp-discipline__name">{d.name}</h3>
+              <p class="mp-discipline__text">{d.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 
@@ -373,6 +442,92 @@ const fieldRules: FieldRule[] = [
     color: var(--color-text-secondary);
     margin: 0;
     text-wrap: pretty;
+  }
+
+  /* ─── Phase eyebrow (above Phase 1 / Phase 2 headings) ─── */
+  .mp-phase__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  /* ─── Migration Lifecycle 5-card strip (between Phase 1 and Source Formats) ─── */
+  .mp-lifecycle {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 1024px) {
+    .mp-lifecycle {
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: stretch;
+      gap: var(--space-3);
+    }
+  }
+  .mp-lifecycle__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-5) var(--space-6);
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+  }
+  .mp-lifecycle__num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    color: var(--color-accent-primary-pressed);
+  }
+  .mp-lifecycle__name {
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .mp-lifecycle__body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .mp-lifecycle__arrow {
+    display: none;
+    align-self: center;
+    color: var(--color-accent-primary-hover);
+  }
+  @media (min-width: 1024px) {
+    .mp-lifecycle__arrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .mp-lifecycle__arrow-svg {
+    width: 32px;
+    height: 16px;
+    color: currentColor;
+    overflow: visible;
+    display: block;
+  }
+  .mp-lifecycle__arrow-path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: square;
+    vector-effect: non-scaling-stroke;
   }
 
   /* ─── The five disciplines (vertical entries) ─── */
