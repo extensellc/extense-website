@@ -1,0 +1,483 @@
+---
+/*
+  TEMP — Hero side-visual mockups for /resources/migration-playbook.
+  Three candidate concepts (A: format fan-in, B: lifecycle strip,
+  C: recovery before/after) laid out vertically for in-browser
+  comparison. Delete this file after selection.
+
+  Route: /resources/migration-playbook-mock
+*/
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Migration Playbook — Hero visual mockups"
+  description="Temporary mockup page; delete after selection."
+>
+  <div class="container-page mpm-wrap">
+    <header class="mpm-page-head">
+      <p class="mpm-eyebrow">TEMP · MOCKUPS</p>
+      <h1 class="mpm-page-h1">Migration Playbook — hero side-visual candidates</h1>
+      <p class="mpm-page-intro">
+        Three concepts to replace the current <code>MigrationLifecycleCard</code>
+        static side panel on <code>/resources/migration-playbook</code>. Each
+        sized to fit the upper-right slot beside the H1 + subdeck.
+      </p>
+    </header>
+
+    {/* ───────────── CONCEPT A — Format fan-in ───────────── */}
+    <section class="mpm-mock">
+      <header class="mpm-mock__head">
+        <p class="mpm-mock__tag">CONCEPT A</p>
+        <h2 class="mpm-mock__title">Format fan-in → typed DITA</h2>
+        <p class="mpm-mock__desc">
+          Five source-format chips on the left flowing into a central amber
+          <code>extense.migrate</code> engine chip, with one amber
+          <code>dita.typed</code> document emerging on the right. Renders
+          "many formats → one structured target."
+        </p>
+      </header>
+      <div class="mpm-svg-frame">
+        <svg
+          class="mpm-svg drawn"
+          viewBox="0 0 520 260"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          role="presentation"
+        >
+          <g class="corner">
+            <path d="M 12 22 L 12 12 L 22 12" />
+            <path d="M 498 12 L 508 12 L 508 22" />
+            <path d="M 12 238 L 12 248 L 22 248" />
+            <path d="M 498 248 L 508 248 L 508 238" />
+          </g>
+
+          <text class="chrome" x="24" y="30">in :: format.fan-in</text>
+          <text class="chrome label--muted" x="24" y="46">SOURCE FORMATS · 5 → 1</text>
+
+          {/* 5 source-format chips on the left */}
+          <g>
+            <rect class="node node--soft" x="20" y="68" width="120" height="24" rx="3" />
+            <text class="node-label node-label--muted" x="80" y="84" text-anchor="middle">.docx</text>
+          </g>
+          <g>
+            <rect class="node node--soft" x="20" y="98" width="120" height="24" rx="3" />
+            <text class="node-label node-label--muted" x="80" y="114" text-anchor="middle">.fm</text>
+          </g>
+          <g>
+            <rect class="node node--soft" x="20" y="128" width="120" height="24" rx="3" />
+            <text class="node-label node-label--muted" x="80" y="144" text-anchor="middle">.mcp</text>
+          </g>
+          <g>
+            <rect class="node node--soft" x="20" y="158" width="120" height="24" rx="3" />
+            <text class="node-label node-label--muted" x="80" y="174" text-anchor="middle">.html</text>
+          </g>
+          <g>
+            <rect class="node node--soft" x="20" y="188" width="120" height="24" rx="3" />
+            <text class="node-label node-label--muted" x="80" y="204" text-anchor="middle">.md</text>
+          </g>
+
+          {/* Fan-in lines from each chip to engine */}
+          <path class="conn" d="M140 80 C 180 80, 200 140, 220 140" />
+          <path class="conn" d="M140 110 C 180 110, 200 140, 220 140" />
+          <path class="conn" d="M140 140 L220 140" />
+          <path class="conn" d="M140 170 C 180 170, 200 140, 220 140" />
+          <path class="conn" d="M140 200 C 180 200, 200 140, 220 140" />
+
+          {/* Central engine chip */}
+          <rect class="node node--custom" x="220" y="124" width="120" height="32" rx="3" />
+          <text class="node-label node-label--custom" x="280" y="144" text-anchor="middle">extense.migrate</text>
+
+          {/* Arrow from engine to output */}
+          <path class="flow-conn" d="M340 140 L400 140 M395 135 L400 140 L395 145" />
+
+          {/* Output typed DITA chip */}
+          <g>
+            <rect class="node node--custom" x="400" y="124" width="100" height="32" rx="3" />
+            <text class="node-label node-label--custom" x="450" y="144" text-anchor="middle">dita.typed</text>
+          </g>
+
+          {/* Bottom chrome */}
+          <line class="chrome-rule" x1="24" y1="220" x2="496" y2="220" />
+          <rect class="build-dot" x="172" y="227" width="6" height="6" />
+          <text class="chrome chrome--strong" x="186" y="233">FIG. 01</text>
+          <text class="chrome" x="236" y="233">/</text>
+          <text class="chrome chrome--strong" x="244" y="233">format.fan-in</text>
+          <text class="chrome chrome--strong" x="496" y="233" text-anchor="end">5 → 1</text>
+        </svg>
+      </div>
+    </section>
+
+    {/* ───────────── CONCEPT B — Lifecycle strip ───────────── */}
+    <section class="mpm-mock">
+      <header class="mpm-mock__head">
+        <p class="mpm-mock__tag">CONCEPT B</p>
+        <h2 class="mpm-mock__title">5-stage lifecycle strip</h2>
+        <p class="mpm-mock__desc">
+          Audit → Map → Convert → Refine → Publish in a horizontal strip with
+          amber arrows between each cell. Direct visualization of the old
+          page's Migration Lifecycle row. <strong>Risk:</strong> duplicates the
+          "five disciplines" section below.
+        </p>
+      </header>
+      <div class="mpm-svg-frame">
+        <svg
+          class="mpm-svg drawn"
+          viewBox="0 0 520 220"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          role="presentation"
+        >
+          <g class="corner">
+            <path d="M 12 22 L 12 12 L 22 12" />
+            <path d="M 498 12 L 508 12 L 508 22" />
+            <path d="M 12 198 L 12 208 L 22 208" />
+            <path d="M 498 208 L 508 208 L 508 198" />
+          </g>
+
+          <text class="chrome" x="24" y="30">in :: lifecycle.5-stages</text>
+
+          {/* 5 cells with arrows between
+              Cells: 80w × 80h
+              Positions: cell at x=18+i*98, y=80
+              Arrows between: x_arrow = cell.x + 80 to cell.x + 98 = 18-px arrow */}
+          {[
+            { num: "01", name: "Audit",   sub: "Delete ROT" },
+            { num: "02", name: "Map",     sub: "Type · IA" },
+            { num: "03", name: "Convert", sub: "Engine pass" },
+            { num: "04", name: "Refine",  sub: "Dedup · Enrich" },
+            { num: "05", name: "Publish", sub: "Validate" },
+          ].map((stage, i) => {
+            const x = 18 + i * 98;
+            return (
+              <>
+                <rect class="cell" x={x} y="80" width="80" height="80" rx="3" />
+                <text class="cell-num" x={x + 8} y={94}>{stage.num}</text>
+                <text class="cell-name" x={x + 40} y={124} text-anchor="middle">{stage.name}</text>
+                <text class="cell-sub" x={x + 40} y={144} text-anchor="middle">{stage.sub}</text>
+                {i < 4 && (
+                  <path class="flow-conn" d={`M${x + 80} 120 L${x + 96} 120 M${x + 92} 116 L${x + 96} 120 L${x + 92} 124`} />
+                )}
+              </>
+            );
+          })}
+
+          {/* Bottom chrome */}
+          <line class="chrome-rule" x1="24" y1="180" x2="496" y2="180" />
+          <rect class="build-dot" x="172" y="187" width="6" height="6" />
+          <text class="chrome chrome--strong" x="186" y="193">FIG. 01</text>
+          <text class="chrome" x="236" y="193">/</text>
+          <text class="chrome chrome--strong" x="244" y="193">lifecycle.5-stages</text>
+          <text class="chrome chrome--strong" x="496" y="193" text-anchor="end">SEQUENTIAL</text>
+        </svg>
+      </div>
+    </section>
+
+    {/* ───────────── CONCEPT C — Recovery framing ───────────── */}
+    <section class="mpm-mock">
+      <header class="mpm-mock__head">
+        <p class="mpm-mock__tag">CONCEPT C</p>
+        <h2 class="mpm-mock__title">Recovery framing (before / after)</h2>
+        <p class="mpm-mock__desc">
+          A stack of source pages on the left — some struck-through to mark
+          <code>ROT</code> destined for retirement — flowing through an amber
+          <code>extense.recover</code> chip into a smaller, enriched stack of
+          typed DITA topics on the right. Directly renders the H1 thesis
+          ("migration is recovery, not transcription") as one image.
+        </p>
+      </header>
+      <div class="mpm-svg-frame">
+        <svg
+          class="mpm-svg drawn"
+          viewBox="0 0 520 260"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          role="presentation"
+        >
+          <g class="corner">
+            <path d="M 12 22 L 12 12 L 22 12" />
+            <path d="M 498 12 L 508 12 L 508 22" />
+            <path d="M 12 238 L 12 248 L 22 248" />
+            <path d="M 498 248 L 508 248 L 508 238" />
+          </g>
+
+          <text class="chrome" x="24" y="30">in :: corpus.recovered</text>
+
+          {/* Section labels above each side */}
+          <text class="chrome label--muted" x="80" y="60" text-anchor="middle">SOURCE · 10 PAGES</text>
+          <text class="chrome label--accent" x="440" y="60" text-anchor="middle">RECOVERED · 6 TOPICS</text>
+
+          {/* Left stack — 10 source pages, 4 marked ROT (struck-through) */}
+          {Array.from({ length: 10 }).map((_, i) => {
+            const y = 76 + i * 14;
+            const isRot = i === 1 || i === 4 || i === 6 || i === 9;
+            const label = isRot ? `page-${String(i + 1).padStart(2, "0")}.docx · ROT` : `page-${String(i + 1).padStart(2, "0")}.docx`;
+            return (
+              <>
+                <rect class={isRot ? "page-row page-row--rot" : "page-row"} x="20" y={y} width="124" height="11" />
+                <text class={isRot ? "page-label page-label--rot" : "page-label"} x="26" y={y + 8}>{label}</text>
+                {isRot && (
+                  <line class="strike" x1="20" y1={y + 5.5} x2="144" y2={y + 5.5} />
+                )}
+              </>
+            );
+          })}
+
+          {/* Center: amber arrow + recover chip */}
+          <path class="flow-conn" d="M148 140 L380 140 M375 135 L380 140 L375 145" />
+          <rect class="node node--custom" x="200" y="128" width="128" height="24" rx="3" />
+          <text class="node-label node-label--custom" x="264" y="144" text-anchor="middle">↻ extense.recover</text>
+
+          {/* Right stack — 6 typed DITA topics, amber-bordered */}
+          {Array.from({ length: 6 }).map((_, i) => {
+            const y = 92 + i * 18;
+            const types = ["concept", "task", "task", "reference", "concept", "task"];
+            const label = `topic-${String(i + 1).padStart(2, "0")} · ${types[i]}`;
+            return (
+              <>
+                <rect class="page-row page-row--custom" x="380" y={y} width="120" height="14" />
+                <text class="page-label page-label--custom" x="386" y={y + 10}>{label}</text>
+              </>
+            );
+          })}
+
+          {/* Bottom chrome */}
+          <line class="chrome-rule" x1="24" y1="220" x2="496" y2="220" />
+          <rect class="build-dot" x="172" y="227" width="6" height="6" />
+          <text class="chrome chrome--strong" x="186" y="233">FIG. 01</text>
+          <text class="chrome" x="236" y="233">/</text>
+          <text class="chrome chrome--strong" x="244" y="233">corpus.recovered</text>
+          <text class="chrome chrome--strong" x="496" y="233" text-anchor="end">10 → 6 + 4 ROT</text>
+        </svg>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ─── Page chrome ─── */
+  .mpm-wrap {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-24);
+  }
+  .mpm-page-head {
+    margin-bottom: var(--space-16);
+    max-width: 80ch;
+  }
+  .mpm-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .mpm-page-h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4) 0;
+    text-wrap: balance;
+  }
+  .mpm-page-intro {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .mpm-page-intro code,
+  .mpm-mock__desc code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    color: var(--color-text-primary);
+    background-color: var(--color-surface-band);
+    padding: 0 var(--space-1);
+  }
+
+  /* ─── Mock section ─── */
+  .mpm-mock {
+    margin-bottom: var(--space-16);
+    border-top: var(--border-hairline);
+    padding-top: var(--space-12);
+  }
+  .mpm-mock__head {
+    margin-bottom: var(--space-8);
+    max-width: 80ch;
+  }
+  .mpm-mock__tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-2) 0;
+  }
+  .mpm-mock__title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-3) 0;
+    line-height: var(--leading-snug);
+  }
+  .mpm-mock__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .mpm-svg-frame {
+    background-color: var(--color-page-bg);
+    border: var(--border-hairline);
+    padding: var(--space-6);
+    max-width: 560px;
+  }
+
+  /* ─── Shared SVG styling (document-grade idiom) ─── */
+  .mpm-svg {
+    width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .mpm-svg .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+  }
+  .mpm-svg .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .mpm-svg .label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .mpm-svg .label--accent {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .mpm-svg .corner {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .mpm-svg .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .mpm-svg .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .mpm-svg .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .mpm-svg .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .mpm-svg .node--soft {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+  .mpm-svg .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .mpm-svg .node-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .mpm-svg .node-label--muted {
+    fill: var(--color-text-secondary);
+  }
+  .mpm-svg .conn {
+    fill: none;
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    vector-effect: non-scaling-stroke;
+  }
+  .mpm-svg .flow-conn {
+    fill: none;
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Cells for concept B */
+  .mpm-svg .cell {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .mpm-svg .cell-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    fill: var(--color-accent-primary-pressed);
+  }
+  .mpm-svg .cell-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+  }
+  .mpm-svg .cell-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+
+  /* Page rows for concept C */
+  .mpm-svg .page-row {
+    fill: var(--color-page-bg);
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .mpm-svg .page-row--rot {
+    fill: var(--color-surface-elevated);
+    stroke: var(--color-border-subtle);
+  }
+  .mpm-svg .page-row--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+    stroke-width: 1;
+  }
+  .mpm-svg .page-label {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .mpm-svg .page-label--rot {
+    fill: var(--color-text-muted);
+  }
+  .mpm-svg .page-label--custom {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .mpm-svg .strike {
+    stroke: var(--color-text-muted);
+    stroke-width: 0.75;
+    vector-effect: non-scaling-stroke;
+  }
+</style>
