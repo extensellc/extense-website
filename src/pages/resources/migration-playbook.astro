@@ -225,16 +225,43 @@ const fieldRules: FieldRule[] = [
   <section class="mp-section mp-section--framing" aria-labelledby="framing-heading">
     <div class="container-data mp-section__inner">
       <h2 id="framing-heading" class="mp-section__heading">Why migration is recovery.</h2>
-      <div class="mp-framing">
-        <p>
-          A migration that copy-pastes source content into a new schema is not a migration — it's a lift-and-shift. The schema gets populated; the structural problems in the source travel intact into the target. The new system inherits the same redundancies, the same broken navigation, the same ungoverned metadata. Two years later, the team is asking why the CCMS investment didn't pay off.
-        </p>
-        <p>
-          Migration is recovery, not transcription. The conversion engine identifies reusable assets in legacy content and lifts them into the target schema; what isn't recoverable gets retired or rewritten with intent. The QA harness is designed before the first batch runs — failing migrations fail because the validation strategy was an afterthought. The architecture decisions get made before the conversion rules, not after.
-        </p>
-        <p>
-          The playbook below codifies the disciplines, the lifecycle, and the field rules — patterns drawn from two million pages of migration work across federal, defense, life sciences, and enterprise commercial engagements. None of it is theory; all of it is what a migration team has to do, not just what they have to know.
-        </p>
+      <p class="mp-section__lead mp-framing__lead">
+        Migration is recovery, not transcription. How a migration is approached decides whether the new system inherits the old corpus's problems or sheds them.
+      </p>
+
+      <div class="mp-contrast">
+        <div class="mp-contrast__card mp-contrast__card--bad">
+          <div class="mp-contrast__head">
+            <p class="mp-contrast__eyebrow">Transcription</p>
+            <p class="mp-contrast__sub">lift-and-shift</p>
+          </div>
+          <p class="mp-contrast__method">Copy-paste source content into a new schema.</p>
+          <ul class="mp-contrast__list">
+            <li>The same redundancies</li>
+            <li>The same broken navigation</li>
+            <li>The same ungoverned metadata</li>
+          </ul>
+          <p class="mp-contrast__out">
+            <span class="mp-contrast__mark mp-contrast__mark--x" aria-hidden="true">&#10005;</span>
+            Two years on, the CCMS investment hasn't paid off.
+          </p>
+        </div>
+        <div class="mp-contrast__card mp-contrast__card--good">
+          <div class="mp-contrast__head">
+            <p class="mp-contrast__eyebrow">Recovery</p>
+            <p class="mp-contrast__sub">extense</p>
+          </div>
+          <p class="mp-contrast__method">Lift reusable assets; retire ROT; rewrite the rest with intent.</p>
+          <ul class="mp-contrast__list">
+            <li>Typed, validated topics</li>
+            <li>Governed metadata</li>
+            <li>Architecture before conversion rules</li>
+          </ul>
+          <p class="mp-contrast__out">
+            <span class="mp-contrast__mark mp-contrast__mark--check" aria-hidden="true">&#10003;</span>
+            The architecture pays off.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -440,40 +467,135 @@ const fieldRules: FieldRule[] = [
     margin: 0;
   }
 
-  /* ─── Framing prose ─── */
-  .mp-framing {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
+  /* ─── Framing: Transcription vs Recovery contrast panel ─── */
+  .mp-framing__lead {
+    max-width: 60ch;
   }
 
-  .mp-framing p {
-    font-family: var(--font-body);
-    font-size: var(--text-body-lg);
-    line-height: var(--leading-normal);
-    color: var(--color-text-secondary);
+  .mp-contrast {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .mp-contrast {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  .mp-contrast__card {
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .mp-contrast__card--good {
+    border-top: 2px solid var(--color-accent-primary);
+  }
+
+  .mp-contrast__card--bad {
+    border-top: 2px solid var(--color-border-subtle);
+  }
+
+  .mp-contrast__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .mp-contrast__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     margin: 0;
-    max-width: 72ch;
+  }
+
+  .mp-contrast__card--bad .mp-contrast__eyebrow {
+    color: var(--color-text-muted);
+  }
+
+  .mp-contrast__card--good .mp-contrast__eyebrow {
+    color: var(--color-accent-primary-pressed);
+  }
+
+  .mp-contrast__sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .mp-contrast__method {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--color-text-primary);
+    margin: 0;
     text-wrap: pretty;
   }
 
-  /* At >=1024px flow the framing prose into two columns so it uses the
-     full container-data width rather than leaving the right side empty. */
-  @media (min-width: 1024px) {
-    .mp-framing {
-      display: block;
-      columns: 2;
-      column-gap: var(--space-16);
-    }
+  .mp-contrast__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
 
-    .mp-framing p {
-      max-width: none;
-      margin: 0 0 var(--space-6);
-    }
+  .mp-contrast__list li {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-4);
+    position: relative;
+  }
 
-    .mp-framing p:last-child {
-      margin-bottom: 0;
-    }
+  .mp-contrast__list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-text-muted);
+  }
+
+  .mp-contrast__out {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    border-top: var(--border-hairline);
+    padding-top: var(--space-3);
+    margin: 0;
+    margin-top: auto;
+  }
+
+  .mp-contrast__card--bad .mp-contrast__out {
+    color: var(--color-text-muted);
+  }
+
+  .mp-contrast__card--good .mp-contrast__out {
+    color: var(--color-text-primary);
+  }
+
+  .mp-contrast__mark {
+    font-weight: var(--weight-semibold);
+  }
+
+  .mp-contrast__mark--x {
+    color: var(--color-text-muted);
+  }
+
+  .mp-contrast__mark--check {
+    color: var(--color-accent-primary-pressed);
   }
 
   /* ─── Practice stat band (2M+ credibility) ─── */

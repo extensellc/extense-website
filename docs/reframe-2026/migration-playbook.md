@@ -168,10 +168,31 @@ the old page a clear visual breakpoint was buried inside the hero.
   - IntersectionObserver `.drawn` scroll-reveal, staggered fade-in (~14
     elements with cascading delays), reduced-motion fallback.
 
-### S2 — Why migration is recovery `[NEW-current, unchanged]`
+### S2 — Why migration is recovery `[DRAFT condensed + visual, pass f]`
 - **Heading**: "Why migration is recovery."
-- 3-paragraph framing prose (kept verbatim from pre-redesign new-site
-  version — the substantive elaboration of the H1 thesis).
+- **Lead** `[DRAFT]`: "Migration is recovery, not transcription. How a
+  migration is approached decides whether the new system inherits the
+  old corpus's problems or sheds them." (Replaces the 3 verbose
+  paragraphs — owner found them too wordy; the detail moved into the
+  visual below.)
+- **Visual: Transcription vs Recovery contrast panel** (`.mp-contrast`,
+  2-up). Picked from four mocked concepts (A contrast panel / B three-
+  fates router SVG / C pull-quote / D compact != band) on the temporary
+  `/migration-playbook-mock` route. Concept A chosen — renders the "X,
+  not Y" thesis literally and is distinct from the hero's corpus
+  before/after.
+  - Left card (Transcription / lift-and-shift, muted, gray top border):
+    "Copy-paste source content into a new schema." + list (same
+    redundancies / broken navigation / ungoverned metadata) + outcome
+    "x  Two years on, the CCMS investment hasn't paid off."
+  - Right card (Recovery / extense, amber top border): "Lift reusable
+    assets; retire ROT; rewrite the rest with intent." + list (typed,
+    validated topics / governed metadata / architecture before
+    conversion rules) + outcome "v  The architecture pays off."
+  - Equal-height cards (outcome line pinned to the bottom via
+    margin-top:auto); stacks to one column <768px.
+- The dropped 3rd paragraph's "2M+ pages / sectors" credibility is now
+  carried by the S2.5 stat band, so removing it is not a loss.
 
 ### S2.5 — Practice stat band `[DRAFT, numbers grounded in copy already live]`
 - **Purpose:** surface the "2M+ pages" credibility that was buried in the
@@ -275,6 +296,14 @@ the old page a clear visual breakpoint was buried inside the hero.
 - **D-8** *(locked)* — Drop newsletter.
 - **D-9** *(superseded by D-12)* — ~~AnimatedDivider between sections;
   no banded rhythm.~~
+- **D-13** *(locked, shipped — pass f)* — Framing section: condense +
+  add a visual. Owner found the 3-paragraph prose too wordy and wanted a
+  visual to help convey it. Condensed to a 2-sentence lead and added the
+  Transcription vs Recovery contrast panel (Concept A, chosen in-browser
+  from four mocked on `/migration-playbook-mock`, since deleted). Detail
+  lives in the panel; the dropped credibility recitation is covered by
+  the S2.5 stat band. Supersedes the D-11 two-column framing-prose
+  treatment (no longer prose).
 - **D-12** *(locked, shipped — pass e)* — Divider treatment. Owner: the
   only amber horizontal line should be the one above the CTA; everything
   else a regular gray hairline like the other pages. Removed all eight
@@ -311,6 +340,7 @@ the old page a clear visual breakpoint was buried inside the hero.
 | Loc | Tag | Item |
 |-----|-----|------|
 | S1  | `[DRAFT-merge]` | Combined subdeck |
+| S2  | `[DRAFT]` | Condensed lead + Transcription vs Recovery contrast panel copy |
 | S2.5| `[DRAFT]` | Practice stat band (2M+ / 13 / 4) — numbers grounded in live copy |
 | S3  | `[DRAFT]` | Phase 1 eyebrow + heading + intro |
 | S4  | `[DRAFT]` | Migration lifecycle heading + intro |
