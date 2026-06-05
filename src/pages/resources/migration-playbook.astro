@@ -286,6 +286,11 @@ const fieldRules: FieldRule[] = [
           <span class="mp-stat__label">Sectors served</span>
           <span class="mp-stat__sub">Federal &middot; defense &middot; life sciences &middot; commercial</span>
         </li>
+        <li class="mp-stat" style="--d: 300ms">
+          <span class="mp-stat__value">~40%</span>
+          <span class="mp-stat__label">Typical ROT</span>
+          <span class="mp-stat__sub">Dead content in a legacy corpus</span>
+        </li>
       </ul>
     </div>
   </section>
@@ -296,7 +301,7 @@ const fieldRules: FieldRule[] = [
       <p class="mp-phase__eyebrow">Phase 1</p>
       <h2 id="phase1-heading" class="mp-section__heading">Analysis & strategy.</h2>
       <p class="mp-section__lead">
-        Three disciplines that take you from corpus to architecture. Skip them and you migrate dead weight into a new system.
+        Three disciplines that take you from corpus to architecture. Skip them and you migrate dead weight into a new system. Done in order, they turn an unfamiliar corpus into a plan the conversion can follow.
       </p>
 
       <ol class="mp-disciplines">
@@ -350,14 +355,11 @@ const fieldRules: FieldRule[] = [
         The conversion engine handles thirteen named source formats. Conversion rules differ by format — Word's style-driven model is not the same problem as FrameMaker's structural conditions or RoboHelp's compiled output — and each has named patterns the engine recognizes.
       </p>
 
-      <p class="mp-formats__eyebrow">Formats</p>
-      <hr class="mp-rule" />
       <ul class="mp-formats">
         {sourceFormats.map((f) => (
           <li class="mp-format">{f}</li>
         ))}
       </ul>
-      <hr class="mp-rule" />
     </div>
   </section>
 
@@ -367,7 +369,7 @@ const fieldRules: FieldRule[] = [
       <p class="mp-phase__eyebrow">Phase 2</p>
       <h2 id="phase2-heading" class="mp-section__heading">Conversion & enrichment.</h2>
       <p class="mp-section__lead">
-        Two disciplines that take you from converted content to enriched, validated DITA — the part where the architecture pays off.
+        Two disciplines that take you from converted content to enriched, validated DITA — the part where the architecture pays off. It is where reuse and metadata stop being intentions and become properties of the corpus.
       </p>
 
       <ol class="mp-disciplines">
@@ -389,7 +391,7 @@ const fieldRules: FieldRule[] = [
     <div class="container-data mp-section__inner">
       <h2 id="rules-heading" class="mp-section__heading">Field rules from the practice.</h2>
       <p class="mp-section__lead">
-        Four positions taken — backed by named failure modes and measured costs. None of these are stylistic; all of them are reasoning a migration team has to apply, not just remember.
+        Four positions taken — backed by named failure modes and measured costs. None of these are stylistic; all of them are reasoning a migration team has to apply, not just remember. Each is a place migrations lose time or money when the call goes the other way.
       </p>
 
       <ol class="mp-rules">
@@ -475,6 +477,12 @@ const fieldRules: FieldRule[] = [
     /* Stretch to the full container-data width so it spans the same
        width as the contrast panel below it (centered text comes from
        the base .mp-section__lead rule). */
+    max-width: none;
+  }
+
+  /* Stretch the Source-formats and Field-rules leads to full width too. */
+  .mp-section--formats .mp-section__lead,
+  .mp-section--rules .mp-section__lead {
     max-width: none;
   }
 
@@ -616,7 +624,7 @@ const fieldRules: FieldRule[] = [
 
   @media (min-width: 768px) {
     .mp-stats__grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: var(--space-6);
     }
   }
@@ -894,45 +902,27 @@ const fieldRules: FieldRule[] = [
     text-wrap: pretty;
   }
 
-  /* ─── Source formats (3-col mono grid) ─── */
-  .mp-formats__eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0 0 var(--space-4) 0;
-  }
-
+  /* ─── Source formats (amber pill badges, centered cloud) ─── */
   .mp-formats {
     list-style: none;
     margin: 0;
-    padding: var(--space-6) 0;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-3) var(--space-8);
-  }
-
-  @media (min-width: 640px) {
-    .mp-formats {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .mp-formats {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
   }
 
   .mp-format {
     font-family: var(--font-mono);
     font-size: 13px;
-    line-height: 1.4;
-    color: var(--color-text-primary);
-    padding: var(--space-2) 0;
-    border-bottom: var(--border-hairline);
+    line-height: 1;
+    color: var(--color-accent-primary-pressed);
+    background-color: #fef3c7;
+    border: 1px solid var(--color-accent-primary);
+    border-radius: 999px;
+    padding: var(--space-2) var(--space-4);
+    white-space: nowrap;
   }
 
   /* ─── Field rules (horizontal-row layout) ─── */

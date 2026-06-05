@@ -296,6 +296,17 @@ the old page a clear visual breakpoint was buried inside the hero.
 - **D-8** *(locked)* — Drop newsletter.
 - **D-9** *(superseded by D-12)* — ~~AnimatedDivider between sections;
   no banded rhythm.~~
+- **D-14** *(locked, shipped — pass g)* — Section polish round (owner
+  requests): (1) added a 4th stat — **~40% typical ROT** ("dead content
+  in a legacy corpus", grounded in the audit copy) so the band is now
+  2M+ / 13 / 4 / ~40% in a 4-col row; (2) extended the Phase 1, Phase 2,
+  and Field-rules intros by one sentence each `[DRAFT]`; (3) stretched
+  the Source-formats and Field-rules leads to the full container width
+  (scoped `max-width: none`, like the framing lead); (4) **Source
+  formats are now amber pill badges** (`#fef3c7` wash + amber-pressed
+  text + amber border, centered wrap cloud) replacing the mono hairline
+  grid — dropped the redundant "Formats" eyebrow and the bracketing
+  rules. "Colored" = amber-toned (locked amber-only palette).
 - **D-13** *(locked, shipped — pass f)* — Framing section: condense +
   add a visual. Owner found the 3-paragraph prose too wordy and wanted a
   visual to help convey it. Condensed to a 2-sentence lead and added the
