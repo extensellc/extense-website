@@ -929,6 +929,16 @@ const outputFiles = [
   .air-rail-row--interpret {
     padding: var(--space-4) 0;
   }
+  /* Tighten the rail/gap for interpret rows — the range strings ('0 – 4'
+     etc.) are short, so the generic 220px / space-12 layout leaves a
+     visually awkward block of empty horizontal space between range and
+     meaning. Use 100px / space-6 instead. */
+  @media (min-width: 768px) {
+    .air-rail-row--interpret {
+      grid-template-columns: 100px 1fr;
+      gap: var(--space-6);
+    }
+  }
   .air-interpret__range {
     font-family: var(--font-mono);
     font-size: 13px;
