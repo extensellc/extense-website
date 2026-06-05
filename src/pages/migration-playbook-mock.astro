@@ -1,0 +1,390 @@
+---
+/*
+  TEMP staging route — framing-visual concepts for the
+  /resources/migration-playbook "Why migration is recovery" section.
+  Unlinked; delete (git rm) once a concept is chosen and built into the
+  real page. Four concepts (A–D) stacked for in-browser comparison.
+*/
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="MOCK — Migration framing visuals"
+  description="Temporary staging route for picking the Why-migration-is-recovery section visual."
+>
+  <section class="mk-intro">
+    <div class="container-data">
+      <p class="mk-kicker">TEMP · pick one · delete after selection</p>
+      <h1 class="mk-title">"Why migration is recovery" — visual concepts</h1>
+      <p class="mk-note">
+        Four options for adding a visual to the framing section, each shown with the
+        condensed copy it would pair with. The hero already carries the corpus
+        before/after, so these convey the two <em>philosophies</em> instead.
+      </p>
+    </div>
+  </section>
+
+  {/* ───────────────────── Concept A — Transcription vs Recovery panel ───────────────────── */}
+  <section class="mk-concept">
+    <div class="container-data">
+      <p class="mk-label">Concept A · Transcription vs Recovery panel</p>
+      <h2 class="mk-heading">Why migration is recovery.</h2>
+      <p class="mk-lead">
+        Migration is recovery, not transcription. How a migration is approached decides
+        whether the new system inherits the old corpus's problems or sheds them.
+      </p>
+
+      <div class="mkA-grid">
+        <div class="mkA-card mkA-card--bad">
+          <div class="mkA-head">
+            <p class="mkA-eyebrow">Transcription</p>
+            <p class="mkA-sub">lift-and-shift</p>
+          </div>
+          <p class="mkA-method">Copy-paste source content into a new schema.</p>
+          <ul class="mkA-list">
+            <li>The same redundancies</li>
+            <li>The same broken navigation</li>
+            <li>The same ungoverned metadata</li>
+          </ul>
+          <p class="mkA-out"><span class="mkA-x">&#10005;</span> Two years on, the CCMS investment hasn't paid off.</p>
+        </div>
+        <div class="mkA-card mkA-card--good">
+          <div class="mkA-head">
+            <p class="mkA-eyebrow">Recovery</p>
+            <p class="mkA-sub">extense</p>
+          </div>
+          <p class="mkA-method">Lift reusable assets; retire ROT; rewrite the rest with intent.</p>
+          <ul class="mkA-list">
+            <li>Typed, validated topics</li>
+            <li>Governed metadata</li>
+            <li>Architecture before conversion rules</li>
+          </ul>
+          <p class="mkA-out"><span class="mkA-check">&#10003;</span> The architecture pays off.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────────────────── Concept B — Three-fates router SVG ───────────────────── */}
+  <section class="mk-concept mk-concept--alt">
+    <div class="container-data">
+      <p class="mk-label">Concept B · "Three fates" router (SVG)</p>
+      <h2 class="mk-heading">Why migration is recovery.</h2>
+      <p class="mk-lead">
+        Migration is recovery, not transcription. The conversion engine reads each legacy
+        asset and decides its fate — lift what's reusable, retire what isn't, rewrite the
+        rest with intent.
+      </p>
+
+      <svg class="mkB-svg" viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+        <g class="corner">
+          <path d="M 12 22 L 12 12 L 22 12" />
+          <path d="M 498 12 L 508 12 L 508 22" />
+          <path d="M 12 198 L 12 208 L 22 208" />
+          <path d="M 498 208 L 508 208 L 508 198" />
+        </g>
+        <text class="chrome" x="24" y="28">in :: asset.disposition</text>
+
+        {/* left: legacy asset */}
+        <rect class="node" x="24" y="96" width="120" height="28" rx="3" />
+        <text class="nl" x="84" y="114" text-anchor="middle">legacy asset</text>
+
+        {/* connectors */}
+        <path class="conn" d="M144 110 L356 73 M351 70 L356 73 L351 78" />
+        <path class="conn" d="M144 110 L356 113 M351 110 L356 113 L351 116" />
+        <path class="conn" d="M144 110 L356 153 M351 150 L356 153 L351 158" />
+
+        {/* right: three fates */}
+        <rect class="node node--custom" x="360" y="60" width="136" height="26" rx="3" />
+        <text class="nl nl--custom" x="372" y="77">RECOVERED · lifted</text>
+
+        <rect class="node node--rot" x="360" y="100" width="136" height="26" rx="3" />
+        <text class="nl nl--muted" x="372" y="117">RETIRED · ROT</text>
+        <line class="strike" x1="366" y1="113" x2="490" y2="113" />
+
+        <rect class="node" x="360" y="140" width="136" height="26" rx="3" />
+        <text class="nl" x="372" y="157">REWRITTEN · intent</text>
+
+        {/* bottom chrome */}
+        <line class="chrome-rule" x1="24" y1="190" x2="496" y2="190" />
+        <rect class="build-dot" x="172" y="197" width="6" height="6" />
+        <text class="chrome chrome--strong" x="186" y="203">FIG.</text>
+        <text class="chrome" x="212" y="203">/</text>
+        <text class="chrome chrome--strong" x="220" y="203">asset.disposition</text>
+        <text class="chrome chrome--strong" x="496" y="203" text-anchor="end">recover · retire · rewrite</text>
+      </svg>
+    </div>
+  </section>
+
+  {/* ───────────────────── Concept C — Pull-quote thesis ───────────────────── */}
+  <section class="mk-concept">
+    <div class="container-data">
+      <p class="mk-label">Concept C · Pull-quote thesis (typographic)</p>
+      <h2 class="mk-heading">Why migration is recovery.</h2>
+
+      <div class="mkC-grid">
+        <blockquote class="mkC-quote">Migration is recovery, not transcription.</blockquote>
+        <div class="mkC-body">
+          <p>
+            A copy-paste into a new schema is a lift-and-shift — the same redundancies,
+            broken navigation, and ungoverned metadata travel intact, and two years on
+            the CCMS hasn't paid off.
+          </p>
+          <p>
+            The conversion engine lifts what's reusable, retires what isn't, and makes
+            the architecture decisions before the conversion rules.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────────────────── Concept D — Compact ≠ statement ───────────────────── */}
+  <section class="mk-concept mk-concept--alt">
+    <div class="container-data">
+      <p class="mk-label">Concept D · Compact &#8800; statement</p>
+      <h2 class="mk-heading">Why migration is recovery.</h2>
+      <p class="mk-lead">
+        Migration is recovery, not transcription. How a migration is approached decides
+        whether the new system inherits the old corpus's problems or sheds them.
+      </p>
+
+      <div class="mkD-band">
+        <div class="mkD-side mkD-side--bad">
+          <p class="mkD-label"><span class="mkA-x">&#10005;</span> Transcription</p>
+          <p class="mkD-gloss">Lift-and-shift. Problems travel intact; the CCMS doesn't pay off.</p>
+        </div>
+        <div class="mkD-op" aria-hidden="true">&#8800;</div>
+        <div class="mkD-side mkD-side--good">
+          <p class="mkD-label"><span class="mkA-check">&#10003;</span> Recovery</p>
+          <p class="mkD-gloss">Lift, retire, rewrite with intent. Typed, validated, governed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── Mock scaffolding ── */
+  .mk-intro {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-8);
+  }
+  .mk-kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-3);
+  }
+  .mk-title {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-4);
+  }
+  .mk-note {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+    max-width: 70ch;
+    margin: 0;
+  }
+  .mk-concept {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+    border-top: var(--border-hairline);
+  }
+  .mk-concept--alt {
+    background-color: var(--color-surface-band);
+  }
+  .mk-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+    margin: 0 0 var(--space-5);
+  }
+  .mk-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-lg);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-5);
+  }
+  .mk-lead {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    max-width: 68ch;
+    margin: 0 0 var(--space-8);
+  }
+
+  /* ── Concept A — contrast panel ── */
+  .mkA-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  @media (min-width: 768px) {
+    .mkA-grid { grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+  }
+  .mkA-card {
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .mkA-card--good { border-top: 2px solid var(--color-accent-primary); }
+  .mkA-card--bad { border-top: 2px solid var(--color-border-subtle); }
+  .mkA-head { display: flex; align-items: baseline; gap: var(--space-3); }
+  .mkA-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .mkA-card--bad .mkA-eyebrow { color: var(--color-text-muted); }
+  .mkA-card--good .mkA-eyebrow { color: var(--color-accent-primary-pressed); }
+  .mkA-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+  .mkA-method {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .mkA-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .mkA-list li {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-4);
+    position: relative;
+  }
+  .mkA-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-text-muted);
+  }
+  .mkA-out {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    border-top: var(--border-hairline);
+    padding-top: var(--space-3);
+    margin: 0;
+  }
+  .mkA-card--bad .mkA-out { color: var(--color-text-muted); }
+  .mkA-card--good .mkA-out { color: var(--color-text-primary); }
+  .mkA-x { color: var(--color-text-muted); font-weight: 600; }
+  .mkA-check { color: var(--color-accent-primary-pressed); font-weight: 600; }
+
+  /* ── Concept B — router SVG ── */
+  .mkB-svg {
+    width: 520px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+    shape-rendering: geometricPrecision;
+  }
+  .mkB-svg .chrome { font-family: var(--font-mono); font-size: 9px; fill: var(--color-text-muted); letter-spacing: 0.06em; }
+  .mkB-svg .chrome--strong { fill: var(--color-text-primary); font-weight: var(--weight-medium); }
+  .mkB-svg .corner { stroke: var(--color-accent-primary-hover); stroke-width: 1.25; fill: none; }
+  .mkB-svg .conn { stroke: var(--color-accent-primary-hover); stroke-width: 1.5; fill: none; vector-effect: non-scaling-stroke; }
+  .mkB-svg .node { fill: var(--color-page-bg); stroke: var(--color-text-primary); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .mkB-svg .node--custom { fill: #fef3c7; stroke: var(--color-accent-primary); }
+  .mkB-svg .node--rot { fill: var(--color-surface-elevated); stroke: var(--color-border-subtle); }
+  .mkB-svg .nl { font-family: var(--font-mono); font-size: 10px; fill: var(--color-text-primary); letter-spacing: 0.02em; }
+  .mkB-svg .nl--custom { fill: var(--color-accent-primary-pressed); }
+  .mkB-svg .nl--muted { fill: var(--color-text-muted); }
+  .mkB-svg .strike { stroke: var(--color-text-muted); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .mkB-svg .chrome-rule { stroke: var(--color-border-subtle); stroke-width: 1; }
+  .mkB-svg .build-dot { fill: var(--color-accent-primary-hover); }
+
+  /* ── Concept C — pull-quote ── */
+  .mkC-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .mkC-grid { grid-template-columns: 1.05fr 1fr; gap: var(--space-12); align-items: start; }
+  }
+  .mkC-quote {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+    padding-left: var(--space-5);
+    border-left: 2px solid var(--color-accent-primary);
+    text-wrap: balance;
+  }
+  .mkC-body { display: flex; flex-direction: column; gap: var(--space-5); }
+  .mkC-body p {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* ── Concept D — compact ≠ band ── */
+  .mkD-band {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    align-items: center;
+    border: var(--border-hairline);
+    padding: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .mkD-band { grid-template-columns: 1fr auto 1fr; gap: var(--space-8); }
+  }
+  .mkD-side { display: flex; flex-direction: column; gap: var(--space-2); }
+  .mkD-side--good { }
+  .mkD-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .mkD-side--bad .mkD-label { color: var(--color-text-muted); }
+  .mkD-side--good .mkD-label { color: var(--color-accent-primary-pressed); }
+  .mkD-gloss {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .mkD-op {
+    font-family: var(--font-display);
+    font-size: 40px;
+    color: var(--color-accent-primary);
+    text-align: center;
+    line-height: 1;
+  }
+</style>
