@@ -2,23 +2,23 @@
 /*
   /resources/migration-playbook — practitioner playbook for DITA migration.
 
-  Section order:
-    1. Hero (universal, with MigrationLifecycleCard side panel — static)
-    2. Framing prose — names the principle and the 2M+ pages context
-    3. AnimatedDivider
-    4. The five disciplines (vertical entries — like AI Readiness phases)
-    5. AnimatedDivider
+  Section order (sections separated by a gray hairline border-top on
+  .mp-section, matching /resources/ai-readiness; the only amber line is
+  the CTA's accentLine):
+    1. Hero (universal, with the Option C recovery before/after SVG)
+    2. Framing prose — "Why migration is recovery."
+    3. Practice stat band — 2M+ / 13 / 4
+    4. Phase 1: Analysis & strategy (disciplines 01-03, horizontal rows)
+    5. The migration lifecycle (5-card strip)
     6. Source formats covered (typographic 3-col mono grid)
-    7. AnimatedDivider
-    8. Field rules from the practice (horizontal-row, like Decisions section)
-    9. AnimatedDivider
-   10. CTAModule (general)
+    7. Phase 2: Conversion & enrichment (disciplines 04-05, horizontal rows)
+    8. Field rules from the practice (horizontal rows)
+    9. CTAModule (general, accentLine)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/site/Hero.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
-import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
 
 /* Hero side-visual data — Option C (recovery before/after). 10 source
    pages on the left with 4 marked ROT (struck-through); 6 typed DITA
@@ -222,8 +222,6 @@ const fieldRules: FieldRule[] = [
     </div>
   </Hero>
 
-  <AnimatedDivider />
-
   <section class="mp-section mp-section--framing" aria-labelledby="framing-heading">
     <div class="container-data mp-section__inner">
       <h2 id="framing-heading" class="mp-section__heading">Why migration is recovery.</h2>
@@ -241,13 +239,10 @@ const fieldRules: FieldRule[] = [
     </div>
   </section>
 
-  <AnimatedDivider />
-
   {/* ───────── Practice stat band — 2M+ credibility (grounded in copy above) ───────── */}
   <section class="mp-section mp-stats" aria-labelledby="stats-heading">
     <div class="container-data mp-section__inner">
       <h2 id="stats-heading" class="mp-section__visually-hidden">Migration practice by the numbers.</h2>
-      <hr class="mp-rule" />
       <ul class="mp-stats__grid">
         <li class="mp-stat" style="--d: 0ms">
           <span class="mp-stat__value">2M+</span>
@@ -265,11 +260,8 @@ const fieldRules: FieldRule[] = [
           <span class="mp-stat__sub">Federal &middot; defense &middot; life sciences &middot; commercial</span>
         </li>
       </ul>
-      <hr class="mp-rule" />
     </div>
   </section>
-
-  <AnimatedDivider />
 
   {/* ───────── Phase 1 — Analysis & Strategy (disciplines 01–03) ───────── */}
   <section class="mp-section mp-section--disciplines" aria-labelledby="phase1-heading">
@@ -294,8 +286,6 @@ const fieldRules: FieldRule[] = [
       </ol>
     </div>
   </section>
-
-  <AnimatedDivider />
 
   {/* ───────── The Migration Lifecycle — 5-card strip between phases ───────── */}
   <section class="mp-section mp-section--lifecycle" aria-labelledby="lifecycle-heading">
@@ -326,8 +316,6 @@ const fieldRules: FieldRule[] = [
     </div>
   </section>
 
-  <AnimatedDivider />
-
   <section class="mp-section mp-section--formats" aria-labelledby="formats-heading">
     <div class="container-data mp-section__inner">
       <h2 id="formats-heading" class="mp-section__heading">Source formats covered.</h2>
@@ -345,8 +333,6 @@ const fieldRules: FieldRule[] = [
       <hr class="mp-rule" />
     </div>
   </section>
-
-  <AnimatedDivider />
 
   {/* ───────── Phase 2 — Conversion & Enrichment (disciplines 04–05) ───────── */}
   <section class="mp-section mp-section--disciplines" aria-labelledby="phase2-heading">
@@ -372,8 +358,6 @@ const fieldRules: FieldRule[] = [
     </div>
   </section>
 
-  <AnimatedDivider />
-
   <section class="mp-section mp-section--rules" aria-labelledby="rules-heading">
     <div class="container-data mp-section__inner">
       <h2 id="rules-heading" class="mp-section__heading">Field rules from the practice.</h2>
@@ -395,10 +379,9 @@ const fieldRules: FieldRule[] = [
     </div>
   </section>
 
-  <AnimatedDivider />
-
   <CTAModule
     audience="general"
+    accentLine
     body="Submit a 20-page sample document. We'll return conversion feasibility, expected content recovery rate, ROT estimate, and engineering effort within two business days. The analysis is the basis for any further engagement, with no obligation to proceed."
   />
 </BaseLayout>
@@ -408,6 +391,7 @@ const fieldRules: FieldRule[] = [
   .mp-section {
     padding-top: var(--space-16);
     padding-bottom: var(--space-16);
+    border-top: var(--border-hairline);
   }
 
   @media (min-width: 768px) {
@@ -729,10 +713,6 @@ const fieldRules: FieldRule[] = [
     }
   }
 
-  .mp-discipline:last-child {
-    border-bottom: var(--border-hairline);
-  }
-
   .mp-discipline__num {
     font-family: var(--font-display);
     font-size: 28px;
@@ -841,10 +821,6 @@ const fieldRules: FieldRule[] = [
     gap: var(--space-3);
     padding: var(--space-8) 0;
     border-top: var(--border-hairline);
-  }
-
-  .mp-rule-row:last-child {
-    border-bottom: var(--border-hairline);
   }
 
   @media (min-width: 768px) {

@@ -273,8 +273,18 @@ the old page a clear visual breakpoint was buried inside the hero.
   CTA banner.
 - **D-7** *(locked, shipped)* — Drop OLD Related Resources 3-card grid.
 - **D-8** *(locked)* — Drop newsletter.
-- **D-9** *(locked, current)* — AnimatedDivider between sections; no
-  banded rhythm.
+- **D-9** *(superseded by D-12)* — ~~AnimatedDivider between sections;
+  no banded rhythm.~~
+- **D-12** *(locked, shipped — pass e)* — Divider treatment. Owner: the
+  only amber horizontal line should be the one above the CTA; everything
+  else a regular gray hairline like the other pages. Removed all eight
+  amber `AnimatedDivider`s and the import; separate sections with a gray
+  `border-top: var(--border-hairline)` on `.mp-section` (the
+  /resources/ai-readiness model); enabled the CTA's `accentLine` (its
+  moving amber top edge) as the single amber line. Removed the stat
+  band's two bracket `mp-rule` hairlines and the `:last-child`
+  bottom-borders on disciplines / rules so they don't double with the
+  new section borders.
 - **D-11** *(locked, shipped — pass d)* — Fix the marooned prose
   sections. Framing, Phase 1, Source formats, and Phase 2 were on
   `container-prose` (720px) while the lifecycle / field-rules / stat
