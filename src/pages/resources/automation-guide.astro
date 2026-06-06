@@ -425,31 +425,35 @@ const plugins: Plugin[] = [
       <p class="pa-section__lead">
         DITA-OT depends on Java, Saxon, Apache FOP, and a stack of plugins — each with version-specific behavior. When Writer A runs DITA-OT 4.1 with Java 17 and Writer B runs DITA-OT 3.7 with Java 11, the same source produces different output. In regulated industries — defense, life sciences, financial services — that is a compliance failure, not a stylistic one.
       </p>
-      <p class="pa-section__body">
-        A Docker image locks the entire toolchain into a single, versioned artifact: DITA-OT version, Java version, custom plugins, fonts, and configuration. The pipeline pulls the image and runs the build. Every build. Every environment. Identical output. The "it works on my machine" failure mode disappears because the machine is now the image.
-      </p>
+      <div class="pa-split">
+        <div class="pa-split__main">
+          <p class="pa-section__body">
+            A Docker image locks the entire toolchain into a single, versioned artifact: DITA-OT version, Java version, custom plugins, fonts, and configuration. The pipeline pulls the image and runs the build. Every build. Every environment. Identical output. The "it works on my machine" failure mode disappears because the machine is now the image.
+          </p>
 
-      <p class="pa-stack__eyebrow">What's in the image</p>
-      <hr class="pa-rule" />
-      <dl class="pa-stack">
-        {containerLayers.map((row) => (
-          <div class="pa-stack__row">
-            <dt class="pa-stack__label">{row.label}</dt>
-            <dd class="pa-stack__value">{row.value}</dd>
-          </div>
-        ))}
-      </dl>
-      <hr class="pa-rule" />
+          <p class="pa-stack__eyebrow">What's in the image</p>
+          <hr class="pa-rule" />
+          <dl class="pa-stack">
+            {containerLayers.map((row) => (
+              <div class="pa-stack__row">
+                <dt class="pa-stack__label">{row.label}</dt>
+                <dd class="pa-stack__value">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <hr class="pa-rule" />
 
-      <p class="pa-code__eyebrow">Dockerfile</p>
-      <pre class="pa-code"><code>{dockerfile}</code></pre>
-
-      <p class="pa-section__body">
-        Once the image is built and pushed to a container registry, every CI job uses the same image. GitHub Actions, Azure DevOps, Jenkins, and GitLab CI all support container-based jobs natively — the CI platform pulls the image, mounts the source, and runs the build.
-      </p>
-
-      <p class="pa-code__eyebrow">Pipeline usage</p>
-      <pre class="pa-code"><code>{dockerRun}</code></pre>
+          <p class="pa-section__body">
+            Once the image is built and pushed to a container registry, every CI job uses the same image. GitHub Actions, Azure DevOps, Jenkins, and GitLab CI all support container-based jobs natively — the CI platform pulls the image, mounts the source, and runs the build.
+          </p>
+        </div>
+        <aside class="pa-split__aside">
+          <p class="pa-code__eyebrow">Dockerfile</p>
+          <pre class="pa-code"><code>{dockerfile}</code></pre>
+          <p class="pa-code__eyebrow">Pipeline usage</p>
+          <pre class="pa-code"><code>{dockerRun}</code></pre>
+        </aside>
+      </div>
     </div>
   </section>
 
@@ -581,15 +585,6 @@ const plugins: Plugin[] = [
     text-align: center;
     text-wrap: pretty;
     max-width: 70ch;
-  }
-
-  /* Containerization is a prose + code section; left-align its intro to
-     match the left body, stack, and code below (heading stays centered). */
-  .pa-section--container .pa-section__lead {
-    text-align: left;
-    margin-left: 0;
-    margin-right: 0;
-    max-width: 75ch;
   }
 
   .pa-section__body {
@@ -1018,8 +1013,11 @@ const plugins: Plugin[] = [
     }
   }
 
-  /* The code eyebrow sits at the top of the sticky panel — no extra gap. */
-  .pa-split__aside .pa-code__eyebrow {
+  /* First eyebrow/child in each split column sits flush at the top so the
+     two columns start on the same line. (A second eyebrow in the aside —
+     e.g. "Pipeline usage" — keeps its top gap.) */
+  .pa-split__aside > .pa-code__eyebrow:first-child,
+  .pa-split__main > :first-child {
     margin-top: 0;
   }
 

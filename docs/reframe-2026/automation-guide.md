@@ -93,10 +93,17 @@ no Before/After visual; no prominent stats.
   `border-top` on `.pa-section`; single amber line = the CTA `accentLine`.
 - **D-9 — Keep the shared CTAModule** (accentLine); drop the OLD custom
   "Free Pipeline Assessment" banner, Related Resources, and newsletter.
-- **D-11 — Containerization intro left-aligned (pass b).** Owner: the
-  centered lead clashed with the left body/stack/code. Left-aligned the
-  lead + body paragraphs; heading stays centered (page rhythm). Scoped to
-  `.pa-section--container`.
+- **D-11 — Containerization restructured into a sticky split (pass b →
+  pass c).** First tried left-aligning just the lead/body (pass b) but
+  that left a centered-heading / left-lead mismatch and three ragged
+  right edges. Pass c reverted to centered heading + centered lead (like
+  every section) and moved the body prose + "What's in the image" stack
+  into the LEFT of a `.pa-split`, with the Dockerfile + pipeline-usage
+  code in the sticky RIGHT aside — the same pattern as Output formats /
+  CI/CD platforms. (Aside holds two code blocks; only the first eyebrow
+  is flush-top so "Pipeline usage" keeps its gap. Columns near-equal
+  height, so the sticky barely pins — the win is the unified edges and
+  filled space.)
 - **D-12 — Sticky code panels in Output formats + CI/CD platforms
   (pass b).** Owner: the full-width code blocks left a dead right half.
   Reworked both into a `.pa-split` 2-col grid (≥1024px): the numbered
