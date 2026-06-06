@@ -174,7 +174,9 @@ const categories: Category[] = [
     title="Frequently asked questions."
     subdeck="Answers to common questions about content engineering, AI-ready content, publishing automation, CCMS platforms, and what it's like to work with Extense."
     subdeckMaxWidth="620px"
-  />
+  >
+    <div slot="background" class="faq-hero-bg" aria-hidden="true"></div>
+  </Hero>
 
   {categories.map((cat, idx) => (
     <section class="faq-section" aria-labelledby={`cat-${cat.id}`}>
@@ -215,6 +217,40 @@ const categories: Category[] = [
 </BaseLayout>
 
 <style>
+  /* ─── Hero moving background: dotted field + slow amber light-sweep ─── */
+  .faq-hero-bg {
+    position: absolute;
+    inset: 0;
+  }
+  .faq-hero-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--color-border-subtle) 1.2px, transparent 1.6px);
+    background-size: 26px 26px;
+    opacity: 0.65;
+    -webkit-mask-image: radial-gradient(ellipse 78% 80% at 50% 50%, #000 30%, transparent 85%);
+            mask-image: radial-gradient(ellipse 78% 80% at 50% 50%, #000 30%, transparent 85%);
+  }
+  .faq-hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 42%, rgba(245, 158, 11, 0.12) 50%, transparent 58%);
+    background-size: 280% 100%;
+    animation: faq-hero-sweep 9s ease-in-out infinite;
+  }
+  @keyframes faq-hero-sweep {
+    0% { background-position: 130% 0; }
+    100% { background-position: -30% 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-hero-bg::after {
+      animation: none;
+      background-position: 50% 0;
+    }
+  }
+
   /* ─── Section spacing + gray hairline dividers ─── */
   .faq-section {
     padding-top: var(--space-16);

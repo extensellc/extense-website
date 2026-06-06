@@ -51,9 +51,13 @@ interface Props {
 
 const { title, subdeck, variant = "universal", badges, eyebrow, subdeckMaxWidth, centered = false } = Astro.props;
 const hasSideContent = Astro.slots.has('default');
+const hasBg = Astro.slots.has('background');
 ---
 
-<section class:list={["hero", `hero--${variant}`, hasSideContent && "hero--has-side", centered && "hero--centered"]}>
+<section class:list={["hero", `hero--${variant}`, hasSideContent && "hero--has-side", centered && "hero--centered", hasBg && "hero--has-bg"]}>
+  {hasBg && (
+    <div class="hero__bg" aria-hidden="true"><slot name="background" /></div>
+  )}
   <div class="container-page hero__inner">
     <div class="hero__content">
       {eyebrow && <p class="eyebrow hero__eyebrow">{eyebrow}</p>}
@@ -152,6 +156,23 @@ const hasSideContent = Astro.slots.has('default');
   .hero--centered .hero__subdeck {
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* Optional moving/background slot — rendered behind the hero content.
+     The page supplies the visual via slot="background". */
+  .hero--has-bg {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hero--has-bg .hero__inner {
+    position: relative;
+    z-index: 1;
   }
 
   /* Variant-specific class hooks — currently no visual deviation,
