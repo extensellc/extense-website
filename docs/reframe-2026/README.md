@@ -115,6 +115,7 @@ template wireframe + a content-variant table, not N independent docs.
 | Resources › AI-Readiness | done | done | done | done | done | [ai-readiness.md](ai-readiness.md) |
 | Resources › Migration Playbook | done | done | done | done | done | [migration-playbook.md](migration-playbook.md) |
 | Resources › Automation Guide | done | done | done | done | done | [automation-guide.md](automation-guide.md) |
+| Resources › FAQ | done | done | done | done | done | content port from old FAQ (was /company/faqs) |
 | Service template (×3)  | –         | –        | –         | –        | –           | – |
 | Solution › Tech Docs   | done      | done     | done      | done     | done (uncommitted) | [technical-docs-and-publishing.md](technical-docs-and-publishing.md) |
 | Solution › Migration   | done      | done     | done      | done     | done (uncommitted) | [content-migration.md](content-migration.md) |

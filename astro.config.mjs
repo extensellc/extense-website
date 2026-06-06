@@ -16,6 +16,8 @@ export default defineConfig({
     '/capabilities/content-migration': '/services',
     '/capabilities/ccms-and-publishing': '/services',
     '/capabilities/ai-ready-content': '/services',
+    // FAQ moved under Resources; old Company URL 301s to the new location.
+    '/company/faqs': '/resources/faq',
   },
   adapter: vercel({
     webAnalytics: { enabled: false },
