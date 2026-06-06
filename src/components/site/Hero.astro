@@ -41,13 +41,19 @@ interface Props {
    * shared default. Omit to use the natural content-column width.
    */
   subdeckMaxWidth?: string;
+  /**
+   * Center the hero text (title + subdeck) across the full page width.
+   * For text-only heroes (no side visual) that would otherwise leave the
+   * right half empty — e.g. /resources/faq.
+   */
+  centered?: boolean;
 }
 
-const { title, subdeck, variant = "universal", badges, eyebrow, subdeckMaxWidth } = Astro.props;
+const { title, subdeck, variant = "universal", badges, eyebrow, subdeckMaxWidth, centered = false } = Astro.props;
 const hasSideContent = Astro.slots.has('default');
 ---
 
-<section class:list={["hero", `hero--${variant}`, hasSideContent && "hero--has-side"]}>
+<section class:list={["hero", `hero--${variant}`, hasSideContent && "hero--has-side", centered && "hero--centered"]}>
   <div class="container-page hero__inner">
     <div class="hero__content">
       {eyebrow && <p class="eyebrow hero__eyebrow">{eyebrow}</p>}
@@ -135,6 +141,17 @@ const hasSideContent = Astro.slots.has('default');
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
     text-wrap: pretty;
+  }
+
+  /* Centered text-only hero (e.g. /resources/faq) — fills the full page
+     width instead of leaving the right half empty. */
+  .hero--centered .hero__content {
+    max-width: none;
+    text-align: center;
+  }
+  .hero--centered .hero__subdeck {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Variant-specific class hooks — currently no visual deviation,

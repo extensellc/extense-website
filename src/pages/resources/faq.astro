@@ -170,33 +170,39 @@ const categories: Category[] = [
 >
   <Hero
     variant="universal"
+    centered
     title="Frequently asked questions."
     subdeck="Answers to common questions about content engineering, AI-ready content, publishing automation, CCMS platforms, and what it's like to work with Extense."
+    subdeckMaxWidth="620px"
   />
 
   {categories.map((cat, idx) => (
     <section class="faq-section" aria-labelledby={`cat-${cat.id}`}>
-      <div class="container-prose faq-section__inner">
-        <p class="faq-section__eyebrow">Category {String(idx + 1).padStart(2, "0")}</p>
-        <h2 id={`cat-${cat.id}`} class="faq-section__heading">{cat.label}</h2>
-        <p class="faq-section__intro">{cat.intro}</p>
+      <div class="container-data faq-section__inner">
+        <div class="faq-split">
+          <div class="faq-section__head">
+            <p class="faq-section__eyebrow">Category {String(idx + 1).padStart(2, "0")}</p>
+            <h2 id={`cat-${cat.id}`} class="faq-section__heading">{cat.label}</h2>
+            <p class="faq-section__intro">{cat.intro}</p>
+          </div>
 
-        <ol class="faq-list">
-          {cat.questions.map((q) => (
-            <li class="faq-list__item">
-              <details class="faq-item">
-                <summary class="faq-item__summary">
-                  <span class="faq-item__num">{q.number}</span>
-                  <span class="faq-item__question">{q.question}</span>
-                  <span class="faq-item__indicator" aria-hidden="true"></span>
-                </summary>
-                <div class="faq-item__answer">
-                  <Fragment set:html={q.answer} />
-                </div>
-              </details>
-            </li>
-          ))}
-        </ol>
+          <ol class="faq-list">
+            {cat.questions.map((q) => (
+              <li class="faq-list__item">
+                <details class="faq-item">
+                  <summary class="faq-item__summary">
+                    <span class="faq-item__num">{q.number}</span>
+                    <span class="faq-item__question">{q.question}</span>
+                    <span class="faq-item__indicator" aria-hidden="true"></span>
+                  </summary>
+                  <div class="faq-item__answer">
+                    <Fragment set:html={q.answer} />
+                  </div>
+                </details>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   ))}
@@ -223,6 +229,27 @@ const categories: Category[] = [
     }
   }
 
+  /* Two-column split: category rail (left, sticky) + accordion (right). */
+  .faq-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .faq-split {
+      grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+      column-gap: var(--space-20);
+      align-items: start;
+    }
+
+    .faq-section__head {
+      position: sticky;
+      /* clear the 105px sticky TopNav (+ a small gap) */
+      top: 120px;
+    }
+  }
+
   .faq-section__eyebrow {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -231,18 +258,16 @@ const categories: Category[] = [
     text-transform: uppercase;
     color: var(--color-text-muted);
     margin: 0 0 var(--space-3) 0;
-    text-align: center;
   }
 
   .faq-section__heading {
     font-family: var(--font-display);
-    font-size: var(--text-display-lg);
+    font-size: 26px;
     font-weight: var(--weight-regular);
     line-height: var(--leading-snug);
     letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
     margin: 0 0 var(--space-4) 0;
-    text-align: center;
     text-wrap: balance;
   }
 
@@ -251,10 +276,8 @@ const categories: Category[] = [
     font-size: var(--text-body);
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
-    margin: 0 auto var(--space-12);
-    text-align: center;
+    margin: 0;
     text-wrap: pretty;
-    max-width: 65ch;
   }
 
   /* ─── FAQ list & accordion items ─── */
