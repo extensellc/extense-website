@@ -93,6 +93,20 @@ no Before/After visual; no prominent stats.
   `border-top` on `.pa-section`; single amber line = the CTA `accentLine`.
 - **D-9 — Keep the shared CTAModule** (accentLine); drop the OLD custom
   "Free Pipeline Assessment" banner, Related Resources, and newsletter.
+- **D-11 — Containerization intro left-aligned (pass b).** Owner: the
+  centered lead clashed with the left body/stack/code. Left-aligned the
+  lead + body paragraphs; heading stays centered (page rhythm). Scoped to
+  `.pa-section--container`.
+- **D-12 — Sticky code panels in Output formats + CI/CD platforms
+  (pass b).** Owner: the full-width code blocks left a dead right half.
+  Reworked both into a `.pa-split` 2-col grid (≥1024px): the numbered
+  list scrolls on the left, the code sits in a `position: sticky` aside
+  on the right (`top: 120px` to clear the 105px sticky TopNav). The left
+  list is taller than the code in both sections, so the sticky has scroll
+  room. Stacks to one column (code below list, static) <1024px.
+- **D-13 — Plugins principle = centered amber callout (pass b).** Owner:
+  centered the closing principle in a light-amber (`#fef3c7`) callout box,
+  near-black text for legibility, and removed the hairline above it.
 - **D-10 — Keep all four code blocks** (Dockerfile, docker run, Gradle,
   GitHub Actions) — they're the practitioner substance; now aligned in
   the wider container with horizontal scroll guard.

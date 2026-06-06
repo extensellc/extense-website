@@ -461,7 +461,8 @@ const plugins: Plugin[] = [
         Four production-grade output formats generated in parallel from one DITA bookmap. JSONL is treated as a first-class output, not a separate "AI pipeline" — it ships from the same commit, validated by the same gates.
       </p>
 
-      <ol class="pa-formats">
+      <div class="pa-split">
+        <ol class="pa-formats pa-split__main">
         {outputFormats.map((f, i) => (
           <li class="pa-format">
             <span class="pa-format__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
@@ -474,10 +475,12 @@ const plugins: Plugin[] = [
             </div>
           </li>
         ))}
-      </ol>
-
-      <p class="pa-code__eyebrow">Build configuration</p>
-      <pre class="pa-code"><code>{gradle}</code></pre>
+        </ol>
+        <aside class="pa-split__aside">
+          <p class="pa-code__eyebrow">Build configuration</p>
+          <pre class="pa-code"><code>{gradle}</code></pre>
+        </aside>
+      </div>
     </div>
   </section>
 
@@ -489,7 +492,8 @@ const plugins: Plugin[] = [
         The pipeline is platform-portable because containerization decouples the build from the CI runner. Below: four supported platforms and the criteria for choosing each. The GitHub Actions configuration is included as a worked example — the Azure DevOps, Jenkins, and GitLab equivalents are structurally similar.
       </p>
 
-      <ol class="pa-platforms">
+      <div class="pa-split">
+        <ol class="pa-platforms pa-split__main">
         {platforms.map((p, i) => (
           <li class="pa-platform">
             <span class="pa-platform__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
@@ -499,10 +503,12 @@ const plugins: Plugin[] = [
             </div>
           </li>
         ))}
-      </ol>
-
-      <p class="pa-code__eyebrow">GitHub Actions — worked example</p>
-      <pre class="pa-code"><code>{githubActionsYml}</code></pre>
+        </ol>
+        <aside class="pa-split__aside">
+          <p class="pa-code__eyebrow">GitHub Actions — worked example</p>
+          <pre class="pa-code"><code>{githubActionsYml}</code></pre>
+        </aside>
+      </div>
     </div>
   </section>
 
@@ -577,6 +583,15 @@ const plugins: Plugin[] = [
     max-width: 70ch;
   }
 
+  /* Containerization is a prose + code section; left-align its intro to
+     match the left body, stack, and code below (heading stays centered). */
+  .pa-section--container .pa-section__lead {
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 75ch;
+  }
+
   .pa-section__body {
     font-family: var(--font-body);
     font-size: var(--text-body);
@@ -587,10 +602,15 @@ const plugins: Plugin[] = [
     max-width: 70ch;
   }
 
+  /* Closing principle as a centered light-amber callout (no hairline). */
   .pa-section__body--principle {
-    margin-top: var(--space-12);
-    padding-top: var(--space-6);
-    border-top: var(--border-hairline);
+    margin: var(--space-12) auto 0;
+    max-width: 78ch;
+    padding: var(--space-6) var(--space-8);
+    background-color: #fef3c7;
+    text-align: center;
+    color: var(--color-text-primary);
+    border-top: 0;
   }
 
   .pa-section__visually-hidden {
@@ -975,6 +995,32 @@ const plugins: Plugin[] = [
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     display: block;
+  }
+
+  /* ─── Split layout: scrolling list (left) + sticky code panel (right) ─── */
+  .pa-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .pa-split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
+      gap: var(--space-12);
+      align-items: start;
+    }
+
+    .pa-split__aside {
+      position: sticky;
+      /* clear the 105px sticky TopNav (+ a small gap) */
+      top: 120px;
+    }
+  }
+
+  /* The code eyebrow sits at the top of the sticky panel — no extra gap. */
+  .pa-split__aside .pa-code__eyebrow {
+    margin-top: 0;
   }
 
   /* ─── Vertical-entry sections (formats, platforms, plugins) ─── */
