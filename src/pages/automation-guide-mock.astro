@@ -1,0 +1,207 @@
+---
+/*
+  TEMP staging route — hero side-visual concepts for the
+  /resources/automation-guide redesign. Unlinked; delete (git rm) once a
+  concept is chosen and built into the real hero. Document-grade SVG idiom
+  (corner reg marks, mono FIG chrome, amber connectors).
+*/
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="MOCK — Automation Guide hero visuals"
+  description="Temporary staging route for picking the automation-guide hero visual."
+>
+  <section class="mk-intro">
+    <div class="container-data">
+      <p class="mk-kicker">TEMP · pick one · delete after selection</p>
+      <h1 class="mk-title">Automation Guide — hero visual concepts</h1>
+      <p class="mk-note">
+        Three document-grade options for the hero side-visual. The page is about a
+        validated CI/CD pipeline that ships multiple formats from one commit — each
+        concept emphasizes a different part of that story.
+      </p>
+    </div>
+  </section>
+
+  {/* ─────────────── Concept A — Linear pipeline run ─────────────── */}
+  <section class="mk-concept">
+    <div class="container-data">
+      <p class="mk-label">Concept A · Linear pipeline run (commit → ship)</p>
+      <svg class="mk-svg" viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+        <g class="corner">
+          <path d="M 12 22 L 12 12 L 22 12" />
+          <path d="M 498 12 L 508 12 L 508 22" />
+          <path d="M 12 178 L 12 188 L 22 188" />
+          <path d="M 498 188 L 508 188 L 508 178" />
+        </g>
+        <text class="chrome" x="24" y="28">in :: pipeline.run</text>
+
+        <rect class="node" x="16" y="92" width="96" height="30" rx="3" />
+        <text class="nl" x="64" y="111" text-anchor="middle">git push</text>
+
+        <path class="conn" d="M114 107 L150 107 M146 103 L150 107 L146 111" />
+
+        <rect class="node node--custom" x="152" y="92" width="96" height="30" rx="3" />
+        <text class="nl nl--custom" x="200" y="111" text-anchor="middle">validate</text>
+
+        <path class="conn" d="M250 107 L286 107 M282 103 L286 107 L282 111" />
+
+        <rect class="node" x="288" y="92" width="96" height="30" rx="3" />
+        <text class="nl" x="336" y="111" text-anchor="middle">build &#215;3</text>
+
+        <path class="conn" d="M386 107 L422 107 M418 103 L422 107 L418 111" />
+
+        <rect class="node node--custom" x="424" y="92" width="80" height="30" rx="3" />
+        <text class="nl nl--custom" x="464" y="111" text-anchor="middle">ship</text>
+
+        {/* three output ticks under build */}
+        <text class="micro" x="288" y="140">html5</text>
+        <text class="micro" x="324" y="140">pdf</text>
+        <text class="micro" x="352" y="140">jsonl</text>
+
+        <line class="chrome-rule" x1="24" y1="170" x2="496" y2="170" />
+        <rect class="build-dot" x="172" y="177" width="6" height="6" />
+        <text class="chrome chrome--strong" x="186" y="183">FIG. 01</text>
+        <text class="chrome" x="236" y="183">/</text>
+        <text class="chrome chrome--strong" x="244" y="183">commit &#8594; production</text>
+        <text class="chrome chrome--strong" x="496" y="183" text-anchor="end">one pass</text>
+      </svg>
+    </div>
+  </section>
+
+  {/* ─────────────── Concept B — One commit → many outputs ─────────────── */}
+  <section class="mk-concept mk-concept--alt">
+    <div class="container-data">
+      <p class="mk-label">Concept B · One commit → three artifacts (fan-out)</p>
+      <svg class="mk-svg" viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+        <g class="corner">
+          <path d="M 12 22 L 12 12 L 22 12" />
+          <path d="M 498 12 L 508 12 L 508 22" />
+          <path d="M 12 198 L 12 208 L 22 208" />
+          <path d="M 498 208 L 508 208 L 508 198" />
+        </g>
+        <text class="chrome" x="24" y="28">in :: publish.fanout</text>
+
+        <rect class="node" x="20" y="96" width="128" height="28" rx="3" />
+        <text class="nl" x="84" y="114" text-anchor="middle">main.ditamap</text>
+
+        <path class="conn" d="M148 110 L212 110 M208 106 L212 110 L208 114" />
+
+        <rect class="node node--custom" x="214" y="95" width="98" height="30" rx="3" />
+        <text class="nl nl--custom" x="263" y="114" text-anchor="middle">extense.ci</text>
+
+        {/* fan to three outputs */}
+        <path class="conn" d="M312 110 L368 64 M363 64 L368 64 L367 69" />
+        <path class="conn" d="M312 110 L368 110 M364 106 L368 110 L364 114" />
+        <path class="conn" d="M312 110 L368 156 M367 151 L368 156 L363 156" />
+
+        <rect class="node" x="370" y="51" width="130" height="26" rx="3" />
+        <text class="nl" x="382" y="68">out.html5</text>
+
+        <rect class="node" x="370" y="97" width="130" height="26" rx="3" />
+        <text class="nl" x="382" y="114">out.pdf</text>
+
+        <rect class="node node--custom" x="370" y="143" width="130" height="26" rx="3" />
+        <text class="nl nl--custom" x="382" y="160">out.jsonl</text>
+
+        <line class="chrome-rule" x1="24" y1="190" x2="496" y2="190" />
+        <rect class="build-dot" x="150" y="197" width="6" height="6" />
+        <text class="chrome chrome--strong" x="164" y="203">FIG. 01</text>
+        <text class="chrome" x="214" y="203">/</text>
+        <text class="chrome chrome--strong" x="222" y="203">1 source &#8594; 3 artifacts</text>
+        <text class="chrome chrome--strong" x="496" y="203" text-anchor="end">in parallel</text>
+      </svg>
+    </div>
+  </section>
+
+  {/* ─────────────── Concept C — Gated build (valid ships, invalid blocks) ─────────────── */}
+  <section class="mk-concept">
+    <div class="container-data">
+      <p class="mk-label">Concept C · Gated build (valid ships · invalid is blocked)</p>
+      <svg class="mk-svg" viewBox="0 0 520 240" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+        <g class="corner">
+          <path d="M 12 22 L 12 12 L 22 12" />
+          <path d="M 498 12 L 508 12 L 508 22" />
+          <path d="M 12 218 L 12 228 L 22 228" />
+          <path d="M 498 228 L 508 228 L 508 218" />
+        </g>
+        <text class="chrome" x="24" y="28">in :: build.gated</text>
+
+        {/* central gate */}
+        <rect class="node node--custom" x="212" y="92" width="96" height="36" rx="3" />
+        <text class="nl nl--custom" x="260" y="108" text-anchor="middle">validate</text>
+        <text class="micro micro--custom" x="260" y="120" text-anchor="middle">gate</text>
+
+        {/* top row: valid -> ships */}
+        <rect class="node" x="20" y="58" width="120" height="26" rx="3" />
+        <text class="nl" x="80" y="75" text-anchor="middle">commit &#10003;</text>
+        <path class="conn" d="M140 71 L210 96 M205 92 L210 96 L204 100" />
+        <path class="conn" d="M308 104 L378 78 M373 78 L378 78 L377 83" />
+        <rect class="node node--custom" x="380" y="58" width="120" height="26" rx="3" />
+        <text class="nl nl--custom" x="440" y="75" text-anchor="middle">shipped &#215;3</text>
+
+        {/* bottom row: invalid -> blocked */}
+        <rect class="node node--rot" x="20" y="156" width="120" height="26" rx="3" />
+        <text class="nl nl--muted" x="80" y="173" text-anchor="middle">commit &#10007;</text>
+        <path class="conn conn--muted" d="M140 169 L210 124 M205 124 L210 124 L209 129" />
+        <path class="conn--blocked" d="M312 124 L360 150" />
+        <rect class="node node--rot" x="380" y="156" width="120" height="26" rx="3" />
+        <text class="nl nl--muted" x="440" y="173" text-anchor="middle">blocked</text>
+        <line class="strike" x1="386" y1="169" x2="494" y2="169" />
+
+        <line class="chrome-rule" x1="24" y1="208" x2="496" y2="208" />
+        <rect class="build-dot" x="150" y="215" width="6" height="6" />
+        <text class="chrome chrome--strong" x="164" y="221">FIG. 01</text>
+        <text class="chrome" x="214" y="221">/</text>
+        <text class="chrome chrome--strong" x="222" y="221">valid ships &#183; invalid blocks</text>
+      </svg>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .mk-intro { padding-top: var(--space-16); padding-bottom: var(--space-8); }
+  .mk-kicker {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--color-accent-primary-pressed); margin: 0 0 var(--space-3);
+  }
+  .mk-title {
+    font-family: var(--font-display); font-size: var(--text-display-lg); font-weight: var(--weight-regular);
+    letter-spacing: var(--tracking-tight); color: var(--color-text-primary); margin: 0 0 var(--space-4);
+  }
+  .mk-note {
+    font-family: var(--font-body); font-size: var(--text-body); color: var(--color-text-secondary);
+    max-width: 70ch; margin: 0;
+  }
+  .mk-concept {
+    padding-top: var(--space-12); padding-bottom: var(--space-12); border-top: var(--border-hairline);
+  }
+  .mk-concept--alt { background-color: var(--color-surface-band); }
+  .mk-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--color-accent-primary-pressed); margin: 0 0 var(--space-6);
+  }
+
+  .mk-svg {
+    width: 520px; max-width: 100%; height: auto; display: block;
+    overflow: visible; shape-rendering: geometricPrecision;
+  }
+  .mk-svg .chrome { font-family: var(--font-mono); font-size: 9px; fill: var(--color-text-muted); letter-spacing: 0.06em; }
+  .mk-svg .chrome--strong { fill: var(--color-text-primary); font-weight: var(--weight-medium); }
+  .mk-svg .corner { stroke: var(--color-accent-primary-hover); stroke-width: 1.25; fill: none; }
+  .mk-svg .conn { stroke: var(--color-accent-primary-hover); stroke-width: 1.5; fill: none; vector-effect: non-scaling-stroke; }
+  .mk-svg .conn--muted { stroke: var(--color-border-subtle); }
+  .mk-svg .conn--blocked { stroke: var(--color-text-muted); stroke-width: 1.5; stroke-dasharray: 3 3; fill: none; }
+  .mk-svg .node { fill: var(--color-page-bg); stroke: var(--color-text-primary); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .mk-svg .node--custom { fill: #fef3c7; stroke: var(--color-accent-primary); }
+  .mk-svg .node--rot { fill: var(--color-surface-elevated); stroke: var(--color-border-subtle); }
+  .mk-svg .nl { font-family: var(--font-mono); font-size: 11px; fill: var(--color-text-primary); letter-spacing: 0.02em; }
+  .mk-svg .nl--custom { fill: var(--color-accent-primary-pressed); }
+  .mk-svg .nl--muted { fill: var(--color-text-muted); }
+  .mk-svg .micro { font-family: var(--font-mono); font-size: 8px; fill: var(--color-text-muted); letter-spacing: 0.04em; }
+  .mk-svg .micro--custom { fill: var(--color-accent-primary-pressed); }
+  .mk-svg .strike { stroke: var(--color-text-muted); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .mk-svg .chrome-rule { stroke: var(--color-border-subtle); stroke-width: 1; }
+  .mk-svg .build-dot { fill: var(--color-accent-primary-hover); }
+</style>
