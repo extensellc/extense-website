@@ -1,0 +1,167 @@
+---
+/*
+  TEMP staging route — hero side-visual concepts for /resources/faq.
+  Unlinked; delete (git rm) once a concept is chosen and built into the
+  real hero. Document-grade SVG idiom (corner reg marks, mono FIG chrome,
+  amber connectors).
+*/
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="MOCK — FAQ hero visuals" description="Temporary staging route for picking the FAQ hero visual.">
+  <section class="mk-intro">
+    <div class="container-data">
+      <p class="mk-kicker">TEMP · pick one · delete after selection</p>
+      <h1 class="mk-title">FAQ — hero visual concepts</h1>
+      <p class="mk-note">
+        Three document-grade options for the FAQ hero side-visual. Adding one lets the
+        hero text move left and the visual fill the right (like the other Resources heroes),
+        instead of the centered text-only treatment.
+      </p>
+    </div>
+  </section>
+
+  {/* ─────────────── Concept A — Question resolves to a typed answer ─────────────── */}
+  <section class="mk-concept">
+    <div class="container-data">
+      <p class="mk-label">Concept A · A question resolves through typed topics to an answer</p>
+      <svg class="mk-svg" viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+        <g class="corner">
+          <path d="M 12 22 L 12 12 L 22 12" /><path d="M 498 12 L 508 12 L 508 22" />
+          <path d="M 12 178 L 12 188 L 22 188" /><path d="M 498 188 L 508 188 L 508 178" />
+        </g>
+        <text class="chrome" x="24" y="28">in :: faq.resolve</text>
+
+        <rect class="node node--custom" x="20" y="86" width="108" height="30" rx="3" />
+        <text class="nl nl--custom" x="74" y="105" text-anchor="middle">? question</text>
+
+        <path class="conn" d="M128 101 L172 101 M168 97 L172 101 L168 105" />
+
+        <rect class="page-row" x="178" y="72" width="120" height="16" rx="2" />
+        <text class="micro" x="184" y="84">topic · concept</text>
+        <rect class="page-row" x="178" y="93" width="120" height="16" rx="2" />
+        <text class="micro" x="184" y="105">topic · task</text>
+        <rect class="page-row" x="178" y="114" width="120" height="16" rx="2" />
+        <text class="micro" x="184" y="126">topic · reference</text>
+
+        <path class="conn" d="M298 101 L352 101 M348 97 L352 101 L348 105" />
+
+        <rect class="node node--custom" x="354" y="86" width="120" height="30" rx="3" />
+        <text class="nl nl--custom" x="414" y="105" text-anchor="middle">answer</text>
+
+        <line class="chrome-rule" x1="24" y1="170" x2="496" y2="170" />
+        <rect class="build-dot" x="150" y="177" width="6" height="6" />
+        <text class="chrome chrome--strong" x="164" y="183">FAQ.resolve</text>
+        <text class="chrome chrome--strong" x="496" y="183" text-anchor="end">question &#8594; typed topics &#8594; answer</text>
+      </svg>
+    </div>
+  </section>
+
+  {/* ─────────────── Concept B — FAQ category map ─────────────── */}
+  <section class="mk-concept mk-concept--alt">
+    <div class="container-data">
+      <p class="mk-label">Concept B · FAQ category map (previews the page structure)</p>
+      <svg class="mk-svg" viewBox="0 0 520 210" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+        <g class="corner">
+          <path d="M 12 22 L 12 12 L 22 12" /><path d="M 498 12 L 508 12 L 508 22" />
+          <path d="M 12 188 L 12 198 L 22 198" /><path d="M 498 198 L 508 198 L 508 188" />
+        </g>
+        <text class="chrome" x="24" y="28">in :: faq.index</text>
+
+        <rect class="node node--custom" x="20" y="89" width="86" height="34" rx="3" />
+        <text class="nl nl--custom" x="63" y="110" text-anchor="middle">FAQ</text>
+
+        <path class="conn" d="M106 106 L196 64 M191 64 L196 64 L195 69" />
+        <path class="conn" d="M106 106 L196 106 M192 102 L196 106 L192 110" />
+        <path class="conn" d="M106 106 L196 148 M195 143 L196 148 L191 148" />
+
+        <rect class="node" x="198" y="51" width="300" height="28" rx="3" />
+        <text class="nl" x="210" y="69">Practice &amp; methodology</text>
+        <text class="nl nl--muted" x="486" y="69" text-anchor="end">5</text>
+
+        <rect class="node" x="198" y="92" width="300" height="28" rx="3" />
+        <text class="nl" x="210" y="110">AI-readiness &amp; automation</text>
+        <text class="nl nl--muted" x="486" y="110" text-anchor="end">4</text>
+
+        <rect class="node" x="198" y="133" width="300" height="28" rx="3" />
+        <text class="nl" x="210" y="151">Working with Extense</text>
+        <text class="nl nl--muted" x="486" y="151" text-anchor="end">6</text>
+
+        <line class="chrome-rule" x1="24" y1="180" x2="496" y2="180" />
+        <rect class="build-dot" x="150" y="187" width="6" height="6" />
+        <text class="chrome chrome--strong" x="164" y="193">FAQ.index</text>
+        <text class="chrome chrome--strong" x="496" y="193" text-anchor="end">3 categories &#183; 15 questions</text>
+      </svg>
+    </div>
+  </section>
+
+  {/* ─────────────── Concept C — Q&A accordion abstract ─────────────── */}
+  <section class="mk-concept">
+    <div class="container-data">
+      <p class="mk-label">Concept C · Q&amp;A list (echoes the accordion itself)</p>
+      <svg class="mk-svg" viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+        <g class="corner">
+          <path d="M 12 22 L 12 12 L 22 12" /><path d="M 498 12 L 508 12 L 508 22" />
+          <path d="M 12 198 L 12 208 L 22 208" /><path d="M 498 208 L 508 208 L 508 198" />
+        </g>
+        <text class="chrome" x="24" y="28">in :: faq</text>
+
+        {/* row 1 collapsed */}
+        <text class="qmark" x="24" y="56">Q</text>
+        <rect class="page-row" x="44" y="47" width="360" height="12" rx="2" />
+        <text class="plus" x="490" y="57" text-anchor="end">+</text>
+
+        {/* row 2 open (amber) */}
+        <text class="qmark qmark--custom" x="24" y="86">Q</text>
+        <rect class="page-row page-row--custom" x="44" y="77" width="360" height="12" rx="2" />
+        <text class="plus plus--custom" x="490" y="87" text-anchor="end">&#8722;</text>
+        <rect class="ans" x="44" y="97" width="300" height="8" rx="2" />
+        <rect class="ans" x="44" y="111" width="330" height="8" rx="2" />
+        <rect class="ans" x="44" y="125" width="250" height="8" rx="2" />
+
+        {/* rows 3-4 collapsed */}
+        <text class="qmark" x="24" y="156">Q</text>
+        <rect class="page-row" x="44" y="147" width="360" height="12" rx="2" />
+        <text class="plus" x="490" y="157" text-anchor="end">+</text>
+
+        <text class="qmark" x="24" y="184">Q</text>
+        <rect class="page-row" x="44" y="175" width="360" height="12" rx="2" />
+        <text class="plus" x="490" y="185" text-anchor="end">+</text>
+
+        <line class="chrome-rule" x1="24" y1="198" x2="496" y2="198" />
+        <text class="chrome chrome--strong" x="496" y="193" text-anchor="end">15 answered</text>
+      </svg>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .mk-intro { padding-top: var(--space-16); padding-bottom: var(--space-8); }
+  .mk-kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-primary-pressed); margin: 0 0 var(--space-3); }
+  .mk-title { font-family: var(--font-display); font-size: var(--text-display-lg); font-weight: var(--weight-regular); letter-spacing: var(--tracking-tight); color: var(--color-text-primary); margin: 0 0 var(--space-4); }
+  .mk-note { font-family: var(--font-body); font-size: var(--text-body); color: var(--color-text-secondary); max-width: 70ch; margin: 0; }
+  .mk-concept { padding-top: var(--space-12); padding-bottom: var(--space-12); border-top: var(--border-hairline); }
+  .mk-concept--alt { background-color: var(--color-surface-band); }
+  .mk-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-primary-pressed); margin: 0 0 var(--space-6); }
+
+  .mk-svg { width: 520px; max-width: 100%; height: auto; display: block; overflow: visible; shape-rendering: geometricPrecision; }
+  .mk-svg .chrome { font-family: var(--font-mono); font-size: 9px; fill: var(--color-text-muted); letter-spacing: 0.06em; }
+  .mk-svg .chrome--strong { fill: var(--color-text-primary); font-weight: var(--weight-medium); }
+  .mk-svg .corner { stroke: var(--color-accent-primary-hover); stroke-width: 1.25; fill: none; }
+  .mk-svg .conn { stroke: var(--color-accent-primary-hover); stroke-width: 1.5; fill: none; vector-effect: non-scaling-stroke; }
+  .mk-svg .node { fill: var(--color-page-bg); stroke: var(--color-text-primary); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .mk-svg .node--custom { fill: #fef3c7; stroke: var(--color-accent-primary); }
+  .mk-svg .nl { font-family: var(--font-mono); font-size: 11px; fill: var(--color-text-primary); letter-spacing: 0.02em; }
+  .mk-svg .nl--custom { fill: var(--color-accent-primary-pressed); }
+  .mk-svg .nl--muted { fill: var(--color-text-muted); }
+  .mk-svg .page-row { fill: var(--color-page-bg); stroke: var(--color-border-subtle); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .mk-svg .page-row--custom { fill: #fef3c7; stroke: var(--color-accent-primary); }
+  .mk-svg .micro { font-family: var(--font-mono); font-size: 8px; fill: var(--color-text-muted); letter-spacing: 0.04em; }
+  .mk-svg .qmark { font-family: var(--font-mono); font-size: 12px; font-weight: var(--weight-semibold); fill: var(--color-text-muted); }
+  .mk-svg .qmark--custom { fill: var(--color-accent-primary-pressed); }
+  .mk-svg .plus { font-family: var(--font-mono); font-size: 13px; fill: var(--color-text-muted); }
+  .mk-svg .plus--custom { fill: var(--color-accent-primary-pressed); }
+  .mk-svg .ans { fill: var(--color-surface-elevated); }
+  .mk-svg .chrome-rule { stroke: var(--color-border-subtle); stroke-width: 1; }
+  .mk-svg .build-dot { fill: var(--color-accent-primary-hover); }
+</style>
