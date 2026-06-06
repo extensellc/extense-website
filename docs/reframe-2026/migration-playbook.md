@@ -307,6 +307,11 @@ the old page a clear visual breakpoint was buried inside the hero.
   text + amber border, centered wrap cloud) replacing the mono hairline
   grid — dropped the redundant "Formats" eyebrow and the bracketing
   rules. "Colored" = amber-toned (locked amber-only palette).
+  - *Refinement (pass g.1):* metric order set to **2M+ / ~40% / 13 / 4**
+    (ROT second); the Source-formats and Field-rules leads pulled in from
+    full width to `max-width: 900px`; the badge cloud capped at
+    `max-width: 840px` (centered) so the 13 badges break into an even
+    **7 / 6** two-row layout instead of a long first row.
 - **D-13** *(locked, shipped — pass f)* — Framing section: condense +
   add a visual. Owner found the 3-paragraph prose too wordy and wanted a
   visual to help convey it. Condensed to a 2-sentence lead and added the

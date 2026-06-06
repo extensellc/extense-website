@@ -277,19 +277,19 @@ const fieldRules: FieldRule[] = [
           <span class="mp-stat__sub">to date</span>
         </li>
         <li class="mp-stat" style="--d: 100ms">
+          <span class="mp-stat__value">~40%</span>
+          <span class="mp-stat__label">Typical ROT</span>
+          <span class="mp-stat__sub">Dead content in a legacy corpus</span>
+        </li>
+        <li class="mp-stat" style="--d: 200ms">
           <span class="mp-stat__value">13</span>
           <span class="mp-stat__label">Source formats</span>
           <span class="mp-stat__sub">handled</span>
         </li>
-        <li class="mp-stat" style="--d: 200ms">
+        <li class="mp-stat" style="--d: 300ms">
           <span class="mp-stat__value">4</span>
           <span class="mp-stat__label">Sectors served</span>
           <span class="mp-stat__sub">Federal &middot; defense &middot; life sciences &middot; commercial</span>
-        </li>
-        <li class="mp-stat" style="--d: 300ms">
-          <span class="mp-stat__value">~40%</span>
-          <span class="mp-stat__label">Typical ROT</span>
-          <span class="mp-stat__sub">Dead content in a legacy corpus</span>
         </li>
       </ul>
     </div>
@@ -480,10 +480,11 @@ const fieldRules: FieldRule[] = [
     max-width: none;
   }
 
-  /* Stretch the Source-formats and Field-rules leads to full width too. */
+  /* Source-formats and Field-rules leads: wider than the default, but
+     pulled in a little from full width for readability. */
   .mp-section--formats .mp-section__lead,
   .mp-section--rules .mp-section__lead {
-    max-width: none;
+    max-width: 900px;
   }
 
   .mp-contrast {
@@ -905,7 +906,10 @@ const fieldRules: FieldRule[] = [
   /* ─── Source formats (amber pill badges, centered cloud) ─── */
   .mp-formats {
     list-style: none;
-    margin: 0;
+    /* capped + centered so 13 badges break into two roughly even rows
+       (~7 / ~6) instead of a long first row and a short second one */
+    max-width: 840px;
+    margin: 0 auto;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
