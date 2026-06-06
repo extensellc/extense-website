@@ -2,47 +2,31 @@
 /*
   /resources/automation-guide — practitioner guide to publishing automation.
 
-  Section order:
-    1. Hero (universal, with PublishingPipelineCard side panel — static)
-    2. AnimatedDivider
-    3. Framing prose + before/after outcome strip
-    4. AnimatedDivider
-    5. The eight-stage pipeline (horizontal-row layout; validation gates
-       folded into each stage's "Validates" line)
-    6. AnimatedDivider
-    7. Containerization (prose + Dockerfile code block + What's in the image)
-    8. AnimatedDivider
-    9. Output formats (typographic table + Gradle code block)
-   10. AnimatedDivider
-   11. CI/CD platforms (vertical entries + GitHub Actions code block)
-   12. AnimatedDivider
-   13. Custom DITA-OT plugins (vertical entries + maintenance principle)
-   14. AnimatedDivider
-   15. CTAModule (general)
+  Section order (sections separated by a gray hairline border-top on
+  .pa-section, matching /resources/migration-playbook; the only amber line
+  is the CTA's accentLine; headings + intros centered):
+    1. Hero (universal) — combined OLD+NEW copy + gated-build SVG (Concept C)
+    2. Why manual publishing fails — condensed lead + Manual vs Automated
+       contrast panel (brings the old Before/After forward)
+    3. Before -> after stat band (40m->3m / 1->4 / 0->100% / ~70%)
+    4. The eight-stage pipeline (validation gates folded into the stages)
+    5. Containerization (prose + stack + Dockerfile + pipeline-usage code)
+    6. Output formats (numbered rows + Gradle code)
+    7. CI/CD platforms (numbered rows + GitHub Actions code)
+    8. Custom DITA-OT plugins (numbered rows + maintenance principle)
+    9. CTAModule (general, accentLine)
 */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/site/Hero.astro";
-import PublishingPipelineCard from "../../components/site/PublishingPipelineCard.astro";
 import CTAModule from "../../components/site/CTAModule.astro";
-import AnimatedDivider from "../../components/site/AnimatedDivider.astro";
 
-const pipelineCardStages = [
-  { number: "01", name: "Git push",   body: "Writer commits and opens a PR." },
-  { number: "02", name: "Validate",   body: "DTD/RNG and Schematron block the build." },
-  { number: "03", name: "References", body: "Links, xrefs, conrefs, keyrefs verified." },
-  { number: "04", name: "Style",      body: "Vale or Acrolinx enforces terminology." },
-  { number: "05", name: "Build",      body: "HTML5, PDF, and JSONL in parallel." },
-  { number: "06", name: "Audit",      body: "Images, assets, and accessibility." },
-  { number: "07", name: "Stage",      body: "Deploy to staging URL for review." },
-  { number: "08", name: "Promote",    body: "Production push on PR approval." },
-];
-
-const beforeAfter = [
-  { label: "Build time",     value: "40 minutes → 3 minutes" },
-  { label: "Output formats", value: "1 → 4 (in parallel)" },
-  { label: "Validation",     value: "0% → 100% coverage" },
-  { label: "Rework",         value: "~70% fewer cycles" },
+/* Before -> after stat band (old page's stats, document-grade). */
+const stats = [
+  { value: "40m → 3m", label: "Build time", sub: "per 200-topic corpus" },
+  { value: "1 → 4", label: "Output formats", sub: "in parallel" },
+  { value: "0 → 100%", label: "Validation coverage", sub: "on every commit" },
+  { value: "~70%", label: "Fewer rework cycles", sub: "defects caught upstream" },
 ];
 
 interface Stage {
@@ -265,51 +249,154 @@ const plugins: Plugin[] = [
 
 <BaseLayout
   title="Publishing Automation Guide — Extense LLC"
-  description="A practitioner guide to CI/CD for documentation: containerized builds, eight-stage validated pipeline, multi-format parallel output (HTML5, PDF, JSONL), and platform-specific configurations for GitHub Actions, Azure DevOps, Jenkins, and GitLab CI."
+  description="A practitioner guide to CI/CD for documentation: containerized builds, an eight-stage validated pipeline, multi-format parallel output (HTML5, PDF, JSONL), and platform configs for GitHub Actions, Azure DevOps, Jenkins, and GitLab CI."
 >
   <Hero
     variant="universal"
-    title="Manual publishing is a risk surface."
-    subdeck="Documentation that ships from someone's laptop is a quality problem, a reproducibility problem, and an audit problem at once. A practitioner guide to the CI/CD pipeline that solves it — containerized builds, validation gates, parallel multi-format output, and chatbot-ready JSONL as a first-class artifact."
+    title="Publishing Automation Guide"
+    subdeck="Manual publishing is a risk surface: documentation that ships from a laptop is a quality, reproducibility, and audit problem at once. A practitioner guide to the CI/CD pipeline that fixes it — containerized builds, validation gates, parallel multi-format output, and chatbot-ready JSONL as a first-class artifact, from a single source on every commit."
+    subdeckMaxWidth="560px"
   >
-    <PublishingPipelineCard stages={pipelineCardStages} />
+    <div class="pa-hero-visual">
+      <svg
+        class="pa-hero-flow"
+        id="pa-hero-flow"
+        viewBox="0 0 520 240"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="presentation"
+      >
+        {/* corner reg marks */}
+        <g class="corner fx" style="--d: 0ms">
+          <path d="M 12 22 L 12 12 L 22 12" />
+          <path d="M 498 12 L 508 12 L 508 22" />
+          <path d="M 12 218 L 12 228 L 22 228" />
+          <path d="M 498 228 L 508 228 L 508 218" />
+        </g>
+
+        <text class="chrome fx" x="24" y="28" style="--d: 80ms">in :: build.gated</text>
+
+        {/* section labels */}
+        <text class="chrome label--accent fx" x="80" y="46" text-anchor="middle" style="--d: 140ms">COMMITS</text>
+        <text class="chrome label--accent fx" x="260" y="46" text-anchor="middle" style="--d: 200ms">GATE</text>
+        <text class="chrome label--accent fx" x="440" y="46" text-anchor="middle" style="--d: 260ms">RESULT</text>
+
+        {/* central validation gate */}
+        <g class="fx" style="--d: 320ms">
+          <rect class="node node--custom" x="212" y="92" width="96" height="36" rx="3" />
+          <text class="node-label node-label--custom" x="260" y="108" text-anchor="middle">validate</text>
+          <text class="node-sub node-sub--custom" x="260" y="120" text-anchor="middle">gate</text>
+        </g>
+
+        {/* top row: valid commit -> shipped */}
+        <g class="fx" style="--d: 400ms">
+          <rect class="node" x="20" y="58" width="120" height="26" rx="3" />
+          <text class="node-label" x="80" y="75" text-anchor="middle">commit &#10003;</text>
+        </g>
+        <path class="flow-conn" style="--d: 480ms" d="M140 71 L208 96 M203 92 L208 96 L202 100" />
+        <path class="flow-conn" style="--d: 620ms" d="M308 104 L378 78 M373 78 L378 78 L377 83" />
+        <g class="fx" style="--d: 700ms">
+          <rect class="node node--custom" x="380" y="58" width="120" height="26" rx="3" />
+          <text class="node-label node-label--custom" x="440" y="75" text-anchor="middle">shipped &#215;3</text>
+        </g>
+
+        {/* bottom row: invalid commit -> blocked */}
+        <g class="fx" style="--d: 540ms">
+          <rect class="node node--rot" x="20" y="156" width="120" height="26" rx="3" />
+          <text class="node-label node-label--muted" x="80" y="173" text-anchor="middle">commit &#10007;</text>
+        </g>
+        <g class="fx" style="--d: 620ms">
+          <path class="conn--muted" d="M140 169 L208 124 M203 124 L208 124 L207 129" />
+        </g>
+        <g class="fx" style="--d: 780ms">
+          <path class="conn--blocked" d="M312 124 L360 150" />
+          <rect class="node node--rot" x="380" y="156" width="120" height="26" rx="3" />
+          <text class="node-label node-label--muted" x="440" y="173" text-anchor="middle">blocked</text>
+        </g>
+        <line class="strike" x1="386" y1="169" x2="494" y2="169" style="--d: 880ms" />
+
+        {/* bottom chrome */}
+        <g class="fx" style="--d: 960ms">
+          <line class="chrome-rule" x1="24" y1="208" x2="496" y2="208" />
+          <rect class="build-dot" x="150" y="215" width="6" height="6" />
+          <text class="chrome chrome--strong" x="164" y="221">FIG. 01</text>
+          <text class="chrome" x="214" y="221">/</text>
+          <text class="chrome chrome--strong" x="222" y="221">build.gated</text>
+          <text class="chrome chrome--strong" x="496" y="221" text-anchor="end">valid ships &#183; invalid blocks</text>
+        </g>
+      </svg>
+    </div>
   </Hero>
 
-  <AnimatedDivider />
-
+  {/* ───────── Why manual publishing fails — lead + contrast panel ───────── */}
   <section class="pa-section pa-section--framing" aria-labelledby="framing-heading">
-    <div class="container-prose pa-section__inner">
+    <div class="container-data pa-section__inner">
       <h2 id="framing-heading" class="pa-section__heading">Why manual publishing fails.</h2>
-      <div class="pa-framing">
-        <p>
-          The manual publishing process looks deceptively functional. A writer runs DITA-OT locally on their laptop. PDF generation takes 15 to 40 minutes. Broken links and invalid XML are discovered <em>after</em> the build, on the rendered output. Someone emails the PDF to a reviewer. The branded template hasn't been updated in two years. There is no build for chatbot-ready JSONL because "that's an AI team problem." Every one of those steps is a quality control that isn't being run.
-        </p>
-        <p>
-          Publishing automation isn't about speed — it's about risk reduction. The pipeline is the place where validation runs deterministically, where the same toolchain produces the same output every time, where defects fail loudly at the cheapest moment to fix them. The headline numbers (build time, format count) are downstream effects of the actual change, which is moving every quality control upstream of the writer's discretion.
-        </p>
-        <p>
-          The guide below codifies the pipeline: eight stages from commit to production, four parallel output formats including JSONL for AI retrieval, four CI/CD platform options, and a containerization model that gives every build identical inputs and identical outputs. None of it is theory; all of it is what a production documentation team has to run.
-        </p>
-      </div>
+      <p class="pa-section__lead pa-framing__lead">
+        Publishing automation isn't about speed — it's about risk. Manual publishing looks functional while quietly skipping every quality control; the pipeline runs them deterministically, on every commit, and fails defects loudly at the moment they're cheapest to fix.
+      </p>
 
-      <dl class="pa-outcomes" aria-label="Before and after outcomes">
-        {beforeAfter.map((row) => (
-          <div class="pa-outcomes__row">
-            <dt class="pa-outcomes__label">{row.label}</dt>
-            <dd class="pa-outcomes__value">{row.value}</dd>
+      <div class="pa-contrast">
+        <div class="pa-contrast__card pa-contrast__card--bad">
+          <div class="pa-contrast__head">
+            <p class="pa-contrast__eyebrow">Manual</p>
+            <p class="pa-contrast__sub">from a laptop</p>
           </div>
-        ))}
-      </dl>
+          <p class="pa-contrast__method">A writer runs DITA-OT by hand, locally.</p>
+          <ul class="pa-contrast__list">
+            <li>Different Java, plugins, and results per machine</li>
+            <li>Broken links and invalid XML found after the build</li>
+            <li>PDF emailed to reviewers; feedback in a Word doc</li>
+            <li>No JSONL build — "that's an AI team problem"</li>
+          </ul>
+          <p class="pa-contrast__out">
+            <span class="pa-contrast__mark pa-contrast__mark--x" aria-hidden="true">&#10005;</span>
+            Every step is a quality control that isn't being run.
+          </p>
+        </div>
+        <div class="pa-contrast__card pa-contrast__card--good">
+          <div class="pa-contrast__head">
+            <p class="pa-contrast__eyebrow">Automated</p>
+            <p class="pa-contrast__sub">extense.ci</p>
+          </div>
+          <p class="pa-contrast__method">Every commit triggers a containerized pipeline.</p>
+          <ul class="pa-contrast__list">
+            <li>One image, one toolchain, identical output</li>
+            <li>Gates block bad XML, links, and metadata before merge</li>
+            <li>Reviewers get a staging URL; feedback is a PR comment</li>
+            <li>HTML5, PDF, and chatbot-ready JSONL in parallel</li>
+          </ul>
+          <p class="pa-contrast__out">
+            <span class="pa-contrast__mark pa-contrast__mark--check" aria-hidden="true">&#10003;</span>
+            Defects fail at the cheapest moment to fix them.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <AnimatedDivider />
+  {/* ───────── Before -> after stat band ───────── */}
+  <section class="pa-section pa-stats" aria-labelledby="stats-heading">
+    <div class="container-data pa-section__inner">
+      <h2 id="stats-heading" class="pa-section__visually-hidden">Publishing automation by the numbers.</h2>
+      <ul class="pa-stats__grid">
+        {stats.map((s, i) => (
+          <li class="pa-stat" style={`--d: ${i * 100}ms`}>
+            <span class="pa-stat__value">{s.value}</span>
+            <span class="pa-stat__label">{s.label}</span>
+            <span class="pa-stat__sub">{s.sub}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
+  {/* ───────── The eight-stage pipeline (validation folded in) ───────── */}
   <section class="pa-section pa-section--pipeline" aria-labelledby="pipeline-heading">
     <div class="container-data pa-section__inner">
       <h2 id="pipeline-heading" class="pa-section__heading">The eight-stage pipeline.</h2>
       <p class="pa-section__lead">
-        Eight stages from commit to production. Each stage names the action that runs and the result it produces. The validation gates that surface defects are integrated into the stages, not staged separately — defects fail at the moment they're cheapest to fix.
+        Eight stages from commit to production. Each names the action that runs and the result it produces. The validation gates that surface defects are integrated into the stages, not staged separately — defects fail at the moment they're cheapest to fix.
       </p>
 
       <ol class="pa-pipeline">
@@ -331,10 +418,9 @@ const plugins: Plugin[] = [
     </div>
   </section>
 
-  <AnimatedDivider />
-
+  {/* ───────── Containerization ───────── */}
   <section class="pa-section pa-section--container" aria-labelledby="container-heading">
-    <div class="container-prose pa-section__inner">
+    <div class="container-data pa-section__inner">
       <h2 id="container-heading" class="pa-section__heading">Containerization is the single largest change.</h2>
       <p class="pa-section__lead">
         DITA-OT depends on Java, Saxon, Apache FOP, and a stack of plugins — each with version-specific behavior. When Writer A runs DITA-OT 4.1 with Java 17 and Writer B runs DITA-OT 3.7 with Java 11, the same source produces different output. In regulated industries — defense, life sciences, financial services — that is a compliance failure, not a stylistic one.
@@ -367,10 +453,9 @@ const plugins: Plugin[] = [
     </div>
   </section>
 
-  <AnimatedDivider />
-
+  {/* ───────── Output formats ───────── */}
   <section class="pa-section pa-section--formats" aria-labelledby="formats-heading">
-    <div class="container-prose pa-section__inner">
+    <div class="container-data pa-section__inner">
       <h2 id="formats-heading" class="pa-section__heading">Output formats from a single source.</h2>
       <p class="pa-section__lead">
         Four production-grade output formats generated in parallel from one DITA bookmap. JSONL is treated as a first-class output, not a separate "AI pipeline" — it ships from the same commit, validated by the same gates.
@@ -396,10 +481,9 @@ const plugins: Plugin[] = [
     </div>
   </section>
 
-  <AnimatedDivider />
-
+  {/* ───────── CI/CD platforms ───────── */}
   <section class="pa-section pa-section--platforms" aria-labelledby="platforms-heading">
-    <div class="container-prose pa-section__inner">
+    <div class="container-data pa-section__inner">
       <h2 id="platforms-heading" class="pa-section__heading">CI/CD platforms.</h2>
       <p class="pa-section__lead">
         The pipeline is platform-portable because containerization decouples the build from the CI runner. Below: four supported platforms and the criteria for choosing each. The GitHub Actions configuration is included as a worked example — the Azure DevOps, Jenkins, and GitLab equivalents are structurally similar.
@@ -422,10 +506,9 @@ const plugins: Plugin[] = [
     </div>
   </section>
 
-  <AnimatedDivider />
-
+  {/* ───────── Custom DITA-OT plugins ───────── */}
   <section class="pa-section pa-section--plugins" aria-labelledby="plugins-heading">
-    <div class="container-prose pa-section__inner">
+    <div class="container-data pa-section__inner">
       <h2 id="plugins-heading" class="pa-section__heading">Custom DITA-OT plugins.</h2>
       <p class="pa-section__lead">
         Off-the-shelf DITA-OT output is a starting point. Production documentation needs custom branding, navigation, and export formats — and those customizations belong in versioned plugins, not in someone's local install.
@@ -449,19 +532,19 @@ const plugins: Plugin[] = [
     </div>
   </section>
 
-  <AnimatedDivider />
-
   <CTAModule
     audience="general"
+    accentLine
     body="Send your current build process — Jenkinsfile, GitHub Actions workflow, or a description of the manual steps — and we'll return a gap analysis with a recommended automation roadmap within two business days. No obligation to proceed."
   />
 </BaseLayout>
 
 <style>
-  /* ─── Section spacing ─── */
+  /* ─── Section spacing + gray hairline dividers ─── */
   .pa-section {
     padding-top: var(--space-16);
     padding-bottom: var(--space-16);
+    border-top: var(--border-hairline);
   }
 
   @media (min-width: 768px) {
@@ -479,6 +562,7 @@ const plugins: Plugin[] = [
     letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
     margin: 0 0 var(--space-6) 0;
+    text-align: center;
     text-wrap: balance;
   }
 
@@ -487,9 +571,10 @@ const plugins: Plugin[] = [
     font-size: var(--text-body-lg);
     line-height: var(--leading-normal);
     color: var(--color-text-secondary);
-    margin: 0 0 var(--space-12) 0;
+    margin: 0 auto var(--space-12);
+    text-align: center;
     text-wrap: pretty;
-    max-width: 65ch;
+    max-width: 70ch;
   }
 
   .pa-section__body {
@@ -499,7 +584,7 @@ const plugins: Plugin[] = [
     color: var(--color-text-secondary);
     margin: var(--space-8) 0 0 0;
     text-wrap: pretty;
-    max-width: 65ch;
+    max-width: 70ch;
   }
 
   .pa-section__body--principle {
@@ -508,74 +593,212 @@ const plugins: Plugin[] = [
     border-top: var(--border-hairline);
   }
 
+  .pa-section__visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .pa-rule {
     border: 0;
     border-top: var(--border-hairline);
     margin: 0;
   }
 
-  /* ─── Framing prose ─── */
-  .pa-framing {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-    margin-bottom: var(--space-12);
+  /* ─── Framing: Manual vs Automated contrast panel ─── */
+  .pa-framing__lead {
+    max-width: 76ch;
   }
 
-  .pa-framing p {
-    font-family: var(--font-body);
-    font-size: var(--text-body-lg);
-    line-height: var(--leading-normal);
-    color: var(--color-text-secondary);
-    margin: 0;
-    text-wrap: pretty;
-  }
-
-  .pa-framing em {
-    font-style: italic;
-  }
-
-  /* Outcomes strip (before / after) */
-  .pa-outcomes {
-    margin: 0;
-    padding: var(--space-6) 0;
-    border-top: var(--border-hairline);
-    border-bottom: var(--border-hairline);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .pa-outcomes__row {
+  .pa-contrast {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-1);
+    gap: var(--space-5);
   }
 
   @media (min-width: 768px) {
-    .pa-outcomes__row {
-      grid-template-columns: 200px 1fr;
+    .pa-contrast {
+      grid-template-columns: 1fr 1fr;
       gap: var(--space-6);
-      align-items: baseline;
     }
   }
 
-  .pa-outcomes__label {
+  .pa-contrast__card {
+    border: var(--border-hairline);
+    background-color: var(--color-page-bg);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .pa-contrast__card--good { border-top: 2px solid var(--color-accent-primary); }
+  .pa-contrast__card--bad { border-top: 2px solid var(--color-border-subtle); }
+
+  .pa-contrast__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .pa-contrast__eyebrow {
     font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: var(--weight-medium);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .pa-contrast__card--bad .pa-contrast__eyebrow { color: var(--color-text-muted); }
+  .pa-contrast__card--good .pa-contrast__eyebrow { color: var(--color-accent-primary-pressed); }
+
+  .pa-contrast__sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-text-muted);
     margin: 0;
   }
 
-  .pa-outcomes__value {
+  .pa-contrast__method {
     font-family: var(--font-body);
     font-size: var(--text-body);
-    line-height: 1.4;
+    line-height: var(--leading-normal);
     color: var(--color-text-primary);
     margin: 0;
+    text-wrap: pretty;
+  }
+
+  .pa-contrast__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .pa-contrast__list li {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-4);
+    position: relative;
+  }
+
+  .pa-contrast__list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-text-muted);
+  }
+
+  .pa-contrast__out {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    border-top: var(--border-hairline);
+    padding-top: var(--space-3);
+    margin: 0;
+    margin-top: auto;
+  }
+
+  .pa-contrast__card--bad .pa-contrast__out { color: var(--color-text-muted); }
+  .pa-contrast__card--good .pa-contrast__out { color: var(--color-text-primary); }
+
+  .pa-contrast__mark { font-weight: var(--weight-semibold); }
+  .pa-contrast__mark--x { color: var(--color-text-muted); }
+  .pa-contrast__mark--check { color: var(--color-accent-primary-pressed); }
+
+  /* ─── Before -> after stat band ─── */
+  .pa-stats__grid {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-8) 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .pa-stats__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+    }
+  }
+
+  .pa-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .pa-stat {
+      padding: 0 var(--space-3);
+      border-left: var(--border-hairline);
+    }
+    .pa-stat:first-child { border-left: 0; }
+  }
+
+  .pa-stat__value {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.4vw, 38px);
+    font-weight: var(--weight-regular);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    font-feature-settings: "tnum";
+    text-wrap: nowrap;
+  }
+
+  .pa-stat__label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-primary-pressed);
+  }
+
+  .pa-stat__sub {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+  }
+
+  .pa-stats--armed .pa-stat {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .pa-stats--armed.in-view .pa-stat {
+    animation: pa-stat-rise 480ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes pa-stat-rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pa-stats--armed .pa-stat {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
   }
 
   /* ─── Pipeline (horizontal-row stages) ─── */
@@ -593,10 +816,6 @@ const plugins: Plugin[] = [
     gap: var(--space-2) var(--space-4);
     padding: var(--space-8) 0;
     border-top: var(--border-hairline);
-  }
-
-  .pa-stage:last-child {
-    border-bottom: var(--border-hairline);
   }
 
   @media (min-width: 768px) {
@@ -625,17 +844,8 @@ const plugins: Plugin[] = [
       padding: var(--space-8) 0;
     }
 
-    .pa-stage__num {
-      grid-row: 1;
-      grid-column: 1;
-    }
-
-    .pa-stage__name {
-      grid-row: 1;
-      grid-column: 2;
-      padding-top: 6px;
-    }
-
+    .pa-stage__num { grid-row: 1; grid-column: 1; }
+    .pa-stage__name { grid-row: 1; grid-column: 2; padding-top: 6px; }
     .pa-stage__col--runs   { grid-row: 1; grid-column: 3; }
     .pa-stage__col--result { grid-row: 1; grid-column: 4; }
   }
@@ -754,6 +964,7 @@ const plugins: Plugin[] = [
     border-left: 2px solid #fcd34d;
     padding: var(--space-6);
     margin: 0;
+    overflow-x: auto;
   }
 
   .pa-code code {
@@ -870,4 +1081,191 @@ const plugins: Plugin[] = [
     color: var(--color-text-muted);
     margin-right: var(--space-2);
   }
+
+  /* ─── Hero side-visual: gated-build SVG (document-grade idiom) ─── */
+  .pa-hero-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  @media (max-width: 1023px) {
+    .pa-hero-visual {
+      margin-top: var(--space-12);
+      justify-content: flex-start;
+    }
+  }
+  .pa-hero-flow {
+    /* width: 520px (not 100%) — the Hero component's .hero__side is
+       flex: 0 0 auto, so 'width: 100%' has no definite parent and the
+       SVG falls back to its intrinsic size. */
+    width: 520px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-text-primary);
+    overflow: visible;
+    display: block;
+    shape-rendering: geometricPrecision;
+  }
+  .pa-hero-flow .chrome {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+  .pa-hero-flow .chrome--strong {
+    fill: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+  }
+  .pa-hero-flow .label--accent {
+    fill: var(--color-accent-primary-pressed);
+  }
+  .pa-hero-flow .corner {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.25;
+    fill: none;
+  }
+  .pa-hero-flow .chrome-rule {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1;
+  }
+  .pa-hero-flow .build-dot {
+    fill: var(--color-accent-primary-hover);
+    stroke: none;
+  }
+  .pa-hero-flow .node {
+    fill: var(--color-page-bg);
+    stroke: var(--color-text-primary);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .pa-hero-flow .node--custom {
+    fill: #fef3c7;
+    stroke: var(--color-accent-primary);
+  }
+  .pa-hero-flow .node--rot {
+    fill: var(--color-surface-elevated);
+    stroke: var(--color-border-subtle);
+  }
+  .pa-hero-flow .node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    fill: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+  .pa-hero-flow .node-label--custom { fill: var(--color-accent-primary-pressed); }
+  .pa-hero-flow .node-label--muted { fill: var(--color-text-muted); }
+  .pa-hero-flow .node-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+  .pa-hero-flow .node-sub--custom { fill: var(--color-accent-primary-pressed); }
+  .pa-hero-flow .conn--muted {
+    stroke: var(--color-border-subtle);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+  .pa-hero-flow .conn--blocked {
+    stroke: var(--color-text-muted);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 3;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Amber flow connectors — draw with stroke-dasharray */
+  .pa-hero-flow .flow-conn {
+    stroke: var(--color-accent-primary-hover);
+    stroke-width: 1.5;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 96;
+    stroke-dashoffset: 96;
+  }
+  .pa-hero-flow.drawn .flow-conn {
+    animation: pa-hero-draw 560ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  /* Strike over the blocked result — draw */
+  .pa-hero-flow .strike {
+    stroke: var(--color-text-muted);
+    stroke-width: 0.75;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 112;
+    stroke-dashoffset: 112;
+  }
+  .pa-hero-flow.drawn .strike {
+    animation: pa-hero-strike 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  /* fx fade-in for layered groups */
+  .pa-hero-flow .fx { opacity: 0; }
+  .pa-hero-flow.drawn .fx {
+    animation: pa-hero-fade 360ms ease-out forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes pa-hero-fade { to { opacity: 1; } }
+  @keyframes pa-hero-draw { to { stroke-dashoffset: 0; } }
+  @keyframes pa-hero-strike { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .pa-hero-flow .fx { opacity: 1 !important; animation: none !important; }
+    .pa-hero-flow .flow-conn,
+    .pa-hero-flow .strike { stroke-dashoffset: 0 !important; animation: none !important; }
+  }
 </style>
+
+<script>
+  function setupPaHero() {
+    const svg = document.getElementById("pa-hero-flow");
+    if (svg) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              svg.classList.add("drawn");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(svg);
+    }
+  }
+
+  function setupPaStats() {
+    const band = document.querySelector(".pa-stats");
+    if (!band) return;
+    band.classList.add("pa-stats--armed");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            band.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(band);
+  }
+
+  function setupPa() {
+    setupPaHero();
+    setupPaStats();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupPa);
+  } else {
+    setupPa();
+  }
+  document.addEventListener("astro:page-load", setupPa);
+</script>
