@@ -172,6 +172,37 @@ Low-risk; safe to add before cutover (extense.co serves no `.html` pages).
 
 ---
 
+## Step 7 — Retiring ex-tense.co correctly (the end state)
+
+**Target end state:**
+- `www.extense.co` serves the new site — the same build live today at
+  `extense-website.vercel.app` (already the Vercel project's production
+  deployment; Namecheap DNS already points the domain at Vercel, nameservers
+  stay at Namecheap — nothing to switch).
+- `extense.co` (apex) `301`s → `www.extense.co`.
+- `ex-tense.co` serves **only** the Step-3 301 redirects to `www.extense.co`
+  (old content removed) — i.e. it becomes a thin **redirector**, not a site.
+
+**⚠️ Do NOT take ex-tense.co fully offline.** Siteground's "offline" mode (or
+deleting the site) returns `503`/`404`, so Google sees the old URLs as dead
+and **drops the rankings instead of transferring them** — that throws away the
+entire point of the migration.
+
+**How to retire it the right way:**
+1. Keep `ex-tense.co` reachable, serving the `.htaccess` 301 block (Step 3).
+   Remove/empty the old page content, but leave the redirect rules.
+2. Keep it live for **at least ~180 days** (the GSC Change-of-Address window);
+   keeping it indefinitely on the cheapest plan is safer still.
+3. Only after that window — and after GSC shows the new URLs fully indexed and
+   old-URL impressions gone — is it safe to fully decommission `ex-tense.co`.
+
+(If keeping Siteground active that long isn't desirable, an alternative is to
+move `ex-tense.co` to any cheap host / redirect service that supports
+**path-level** 301s and apply the same map — a registrar/DNS "URL redirect"
+usually only does a single domain-level hop, which loses per-page equity.)
+
+---
+
 ## Notes / decisions captured
 - `automotive` → `transportation` and `government` → `government-and-defense`
   are the only industry **slug renames**; the rest keep their slug.
