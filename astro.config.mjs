@@ -18,6 +18,10 @@ export default defineConfig({
     '/capabilities/ai-ready-content': '/services',
     // FAQ moved under Resources; old Company URL 301s to the new location.
     '/company/faqs': '/resources/faq',
+    // Retired placeholder "insights" posts -> their dedicated guide pages.
+    '/resources/ai-content-readiness': '/resources/ai-readiness',
+    '/resources/dita-migration-playbook': '/resources/migration-playbook',
+    '/resources/publishing-automation': '/resources/automation-guide',
   },
   adapter: vercel({
     webAnalytics: { enabled: false },
