@@ -30,6 +30,10 @@ interface Props {
    * blocks alongside the site-wide Organization / WebSite / Breadcrumb.
    */
   jsonLd?: Record<string, any> | Record<string, any>[];
+  /** Auto-generate Service or TechArticle schema from title + description. */
+  schemaType?: "Service" | "Article";
+  /** serviceType label when schemaType="Service" (e.g. "DITA Engineering"). */
+  serviceType?: string;
 }
 
 const {
@@ -39,6 +43,8 @@ const {
   ogImage = "/images/og-default.png",
   pageClass,
   jsonLd,
+  schemaType,
+  serviceType,
 } = Astro.props;
 
 const siteName = "Extense LLC";
@@ -80,7 +86,39 @@ if (segments.length > 0) {
   };
 }
 
-const pageJsonLd = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+// Auto-generated Service / TechArticle schema from the page's own title +
+// description (reuses existing copy; no duplication on the page).
+const autoLd: Record<string, any>[] = [];
+if (schemaType === "Service") {
+  autoLd.push({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: cleanTitle,
+    serviceType: serviceType ?? cleanTitle,
+    description,
+    provider: { "@type": "Organization", name: siteName, url: `${siteUrl}/` },
+    areaServed: "United States",
+  });
+} else if (schemaType === "Article") {
+  autoLd.push({
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: cleanTitle,
+    description,
+    author: { "@type": "Organization", name: siteName },
+    publisher: {
+      "@type": "Organization",
+      name: siteName,
+      logo: { "@type": "ImageObject", url: `${siteUrl}/images/extense-logo.svg` },
+    },
+    mainEntityOfPage: canonical,
+  });
+}
+
+const pageJsonLd = [
+  ...autoLd,
+  ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []),
+];
 ---
 
 <!doctype html>
