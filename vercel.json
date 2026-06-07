@@ -10,14 +10,8 @@
     {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "extense.co" }],
-      "destination": "https://ex-tense.co/$1",
-      "permanent": false
-    },
-    {
-      "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.extense.co" }],
-      "destination": "https://ex-tense.co/$1",
-      "permanent": false
+      "destination": "https://www.extense.co/$1",
+      "permanent": true
     },
     {
       "source": "/resources/case-studies",
