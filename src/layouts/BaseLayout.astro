@@ -24,6 +24,12 @@ interface Props {
   canonical?: string;
   ogImage?: string;
   pageClass?: string;
+  /**
+   * Optional page-specific JSON-LD structured data (a single object or an
+   * array). Rendered as additional invisible <script type="ld+json">
+   * blocks alongside the site-wide Organization / WebSite / Breadcrumb.
+   */
+  jsonLd?: Record<string, any> | Record<string, any>[];
 }
 
 const {
@@ -32,10 +38,49 @@ const {
   canonical = new URL(Astro.url.pathname, Astro.site ?? "https://www.extense.co").toString(),
   ogImage = "/images/og-default.png",
   pageClass,
+  jsonLd,
 } = Astro.props;
 
 const siteName = "Extense LLC";
 const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
+
+const siteUrl = (Astro.site ?? new URL("https://www.extense.co")).toString().replace(/\/$/, "");
+
+// Site-wide WebSite schema.
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteName,
+  url: `${siteUrl}/`,
+  publisher: { "@type": "Organization", name: siteName },
+};
+
+// Auto BreadcrumbList from the URL path (invisible — no on-page breadcrumb bar).
+const crumbLabels: Record<string, string> = {
+  resources: "Resources", services: "Services", industries: "Industries",
+  solutions: "Solutions", company: "Company", contact: "Contact", faq: "FAQ",
+};
+const titleCase = (s: string) => s.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+const cleanTitle = title.replace(/\s*—\s*Extense LLC$/, "").replace(/\.$/, "");
+const segments = Astro.url.pathname.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
+
+let breadcrumbLd: Record<string, any> | null = null;
+if (segments.length > 0) {
+  const items = [{ name: "Home", url: `${siteUrl}/` }];
+  let acc = "";
+  segments.forEach((seg, i) => {
+    acc += `/${seg}`;
+    const isLast = i === segments.length - 1;
+    items.push({ name: isLast ? cleanTitle : (crumbLabels[seg] ?? titleCase(seg)), url: `${siteUrl}${acc}` });
+  });
+  breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, idx) => ({ "@type": "ListItem", position: idx + 1, name: it.name, item: it.url })),
+  };
+}
+
+const pageJsonLd = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 ---
 
 <!doctype html>
@@ -95,6 +140,17 @@ const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
       "sameAs": ["https://www.linkedin.com/company/ex-tense"],
       "knowsAbout": ["DITA XML", "CCMS", "S1000D", "Publishing Automation", "Content Strategy", "AI-Ready Content"]
     })} />
+
+    <!-- Structured data — WebSite -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
+
+    <!-- Structured data — BreadcrumbList (auto from URL path; no visible breadcrumb) -->
+    {breadcrumbLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />}
+
+    <!-- Structured data — page-specific (FAQPage / Service / Article / ...) -->
+    {pageJsonLd.map((obj) => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(obj)} />
+    ))}
   </head>
 
   <body class={pageClass}>

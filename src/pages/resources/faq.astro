@@ -162,11 +162,29 @@ const categories: Category[] = [
     ],
   },
 ];
+
+/* FAQPage structured data (invisible JSON-LD) — eligible for FAQ rich
+   results. Answers are stripped to plain text from the HTML above. */
+const stripHtml = (s: string) =>
+  s.replace(/<\/(p|li|ul)>/g, " ").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: categories.flatMap((cat) =>
+    cat.questions.map((q) => ({
+      "@type": "Question",
+      name: q.question,
+      acceptedAnswer: { "@type": "Answer", text: stripHtml(q.answer) },
+    }))
+  ),
+};
 ---
 
 <BaseLayout
   title="FAQ — Extense LLC"
   description="Frequently asked questions about content engineering, DITA, AI-ready content, publishing automation, CCMS platforms, and working with Extense."
+  jsonLd={faqLd}
 >
   <Hero
     variant="universal"
