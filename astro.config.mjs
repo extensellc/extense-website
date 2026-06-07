@@ -36,7 +36,7 @@ export default defineConfig({
         if (item.url === 'https://www.extense.co/') {
           return { ...item, priority: 1.0 };
         }
-        if (item.url.match(/\/(public-sector|private-sector|capabilities|about|insights|contact)\/?$/)) {
+        if (item.url.match(/\/(solutions|services|industries|resources|company|contact)\/?$/)) {
           return { ...item, priority: 0.9 };
         }
         return item;
