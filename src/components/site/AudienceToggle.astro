@@ -94,11 +94,17 @@ const segments = [
   }
 
   .audience-toggle__segment.is-active {
-    background-color: var(--color-text-primary);
-    color: var(--color-page-bg);
+    background-color: var(--color-accent-primary);
+    background-image: linear-gradient(
+      135deg,
+      var(--color-logo-gradient-1) 0%,
+      var(--color-accent-primary) 100%
+    );
+    color: var(--color-text-primary);
   }
 
   .audience-toggle__segment.is-active:hover {
-    background-color: var(--color-text-primary);
+    background-image: none;
+    background-color: var(--color-accent-primary-hover);
   }
 </style>

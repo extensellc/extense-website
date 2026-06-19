@@ -165,6 +165,14 @@ const {
     outline-offset: var(--focus-ring-offset);
   }
 
+  /* The hidden attribute must win over the display rules below — otherwise the
+     empty "file selected" panel (blank filename + remove button) renders even
+     when no file is chosen, eating the right side of the dropzone. */
+  .file-upload-field__prompt[hidden],
+  .file-upload-field__selected[hidden] {
+    display: none;
+  }
+
   .file-upload-field__prompt {
     display: flex;
     flex-direction: column;
@@ -180,6 +188,7 @@ const {
     font-size: var(--text-body);
     font-weight: var(--weight-medium);
     color: var(--color-text-primary);
+    white-space: nowrap;
   }
 
   .file-upload-field__browse {

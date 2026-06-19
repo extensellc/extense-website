@@ -56,7 +56,7 @@ const FORMSPREE_ENDPOINT =
   />
 
   <section class="contact-section contact-section--form" aria-labelledby="form-heading">
-    <div class="container-prose contact-section__inner">
+    <div class="container-data">
       <h2 id="form-heading" class="sr-only">Contact form</h2>
 
       <form
@@ -66,30 +66,26 @@ const FORMSPREE_ENDPOINT =
         enctype="multipart/form-data"
         data-contact-form
       >
-        <p class="contact-form__instructions">
-          Select the audience that best matches your context. Field set adapts to the audience.
-        </p>
-
         <AudienceToggle />
 
         <input type="hidden" name="audience" data-audience-input value="general" />
 
         <!-- Universal fields -->
-        <div class="contact-form__group" data-fieldset="all">
+        <div class="contact-form__group contact-form__group--cols" data-fieldset="all">
           <FormField id="name" name="name" label="Your name" required autocomplete="name" />
           <FormField id="email" name="email" label="Work email" type="email" required autocomplete="email" />
           <FormField id="phone" name="phone" label="Phone" type="tel" autocomplete="tel" placeholder="(optional)" />
         </div>
 
         <!-- Public Sector fields -->
-        <div class="contact-form__group" data-fieldset="public-sector" hidden>
+        <div class="contact-form__group contact-form__group--cols" data-fieldset="public-sector" hidden>
           <FormField id="ps-org" name="organization" label="Organization" autocomplete="organization" placeholder="Agency, contractor, or program office" />
           <FormField id="ps-agency" name="agency" label="Agency or program" placeholder="e.g., Department of Defense, NIH, GSA" />
           <FormField id="ps-role" name="role" label="Your role" placeholder="e.g., Contracting officer, program lead" />
         </div>
 
         <!-- Private Sector fields -->
-        <div class="contact-form__group" data-fieldset="private-sector" hidden>
+        <div class="contact-form__group contact-form__group--cols" data-fieldset="private-sector" hidden>
           <FormField id="cs-org" name="organization" label="Organization" autocomplete="organization" />
           <FormField id="cs-role" name="role" label="Your role" placeholder="e.g., Director of Documentation" />
           <FormField id="cs-problem" name="problem_area" label="Problem area" placeholder="e.g., CCMS migration, RAG enablement, IA refactor" />
@@ -103,19 +99,18 @@ const FORMSPREE_ENDPOINT =
             name="description"
             label="Brief description"
             required
-            placeholder="What are you trying to do? What's getting in the way?"
+            placeholder="What are you trying to do? What's getting in the way? How can Extense help you?"
             rows={6}
           />
           <FileUploadField />
         </div>
 
-        <div class="contact-form__commit">
+        <div class="contact-form__foot">
           <p class="contact-form__commit-text">Response within 24 business hours.</p>
+          <button type="submit" class="contact-form__submit" data-submit>
+            Submit →
+          </button>
         </div>
-
-        <button type="submit" class="contact-form__submit" data-submit>
-          Submit →
-        </button>
 
         <div class="contact-form__success" data-success hidden>
           <h3 class="contact-form__success-heading">Thanks. We'll be in touch.</h3>
@@ -133,25 +128,25 @@ const FORMSPREE_ENDPOINT =
     </div>
   </section>
 
-  <section class="contact-section contact-section--alt" aria-labelledby="alt-heading">
-    <div class="container-prose contact-section__inner">
-      <h2 id="alt-heading" class="contact-section__heading">Other ways to reach us.</h2>
-      <dl class="contact-section__channels">
-        <div class="contact-section__channel">
-          <dt class="contact-section__channel-label">Email</dt>
-          <dd class="contact-section__channel-value">
+  <section class="contact-section contact-section--channels section-band" aria-labelledby="alt-heading">
+    <div class="container-data">
+      <h2 id="alt-heading" class="contact-channels__heading">Other ways to reach us.</h2>
+      <dl class="contact-channels">
+        <div class="contact-channels__item">
+          <dt class="contact-channels__label">Email</dt>
+          <dd class="contact-channels__value">
             <a href="mailto:contactus@extense.co">contactus@extense.co</a>
           </dd>
         </div>
-        <div class="contact-section__channel">
-          <dt class="contact-section__channel-label">Phone</dt>
-          <dd class="contact-section__channel-value">
+        <div class="contact-channels__item">
+          <dt class="contact-channels__label">Phone</dt>
+          <dd class="contact-channels__value">
             <a href="tel:+12405494540">+1 (240) 549-4540</a>
           </dd>
         </div>
-        <div class="contact-section__channel">
-          <dt class="contact-section__channel-label">LinkedIn</dt>
-          <dd class="contact-section__channel-value">
+        <div class="contact-channels__item">
+          <dt class="contact-channels__label">LinkedIn</dt>
+          <dd class="contact-channels__value">
             <a href="https://www.linkedin.com/company/ex-tense" target="_blank" rel="noopener noreferrer">
               Extense LLC on LinkedIn
             </a>
@@ -173,6 +168,101 @@ const FORMSPREE_ENDPOINT =
       padding-top: var(--space-16);
       padding-bottom: var(--space-16);
     }
+  }
+
+  /* Pull the form up tight under the centered hero (hero supplies its own bottom padding). */
+  .contact-section--form {
+    padding-top: 0;
+    margin-top: calc(var(--space-12) * -1);
+  }
+
+  /* Tighter band around the contact channels. */
+  .contact-section--channels {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  /* Short fields sit two-up at desktop to fill the width and cut form height.
+     A 3-field set wraps to row 2 col 1 (e.g. name | email / phone). */
+  @media (min-width: 768px) {
+    .contact-form__group--cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6) var(--space-8);
+    }
+  }
+
+  /* Commit note + submit share one row. */
+  .contact-form__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin-top: var(--space-4);
+  }
+
+  @media (max-width: 600px) {
+    .contact-form__foot {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+  }
+
+  /* Full-width contact-channels band below the form. */
+  .contact-channels__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-display-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-8) 0;
+  }
+
+  .contact-channels {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+
+  @media (max-width: 600px) {
+    .contact-channels {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  .contact-channels__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .contact-channels__label {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .contact-channels__value {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-secondary);
+  }
+
+  .contact-channels__value a { color: var(--color-link); text-decoration: none; }
+  .contact-channels__value a:hover,
+  .contact-channels__value a:focus-visible {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
   }
 
   .contact-section__heading {
