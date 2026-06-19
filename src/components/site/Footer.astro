@@ -51,9 +51,13 @@ const columns: FooterColumn[] = [
     heading: "Services",
     headingHref: "/services",
     links: [
-      { label: "Project-Based",      href: "/services/project-based" },
-      { label: "Staff Augmentation", href: "/services/staff-augmentation" },
-      { label: "Managed Services",   href: "/services/managed-services" },
+      { label: "Technical Writing & Content Development", href: "/services/technical-writing-content-development" },
+      { label: "Structured Content Strategy",             href: "/services/structured-content-strategy" },
+      { label: "DITA Engineering",                        href: "/services/dita-engineering" },
+      { label: "Publishing Engineering",                  href: "/services/publishing-engineering" },
+      { label: "CCMS Services",                           href: "/services/ccms-services" },
+      { label: "System Integration",                      href: "/services/system-integration" },
+      { label: "XML & Schematron Engineering",            href: "/services/xml-engineering" },
     ],
   },
   {
@@ -180,7 +184,7 @@ const columns: FooterColumn[] = [
          leftover internal whitespace" (which made COMPANY↔LEGAL look
          further apart than INDUSTRIES↔RESOURCES under fixed 1fr widths). */
       grid-template-columns: repeat(6, max-content);
-      gap: var(--space-8);
+      gap: var(--space-12);
       justify-content: center;
       /* Slight optical nudge left of true-center (~2mm). The track
          centers within (full width − margin-right), so a 16px margin
